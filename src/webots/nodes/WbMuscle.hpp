@@ -27,6 +27,8 @@
 #include "WbBaseNode.hpp"
 #include "WbMatrix4.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrTransform;
 struct WrRenderable;
 struct WrMaterial;
@@ -35,7 +37,7 @@ struct WrTexture2d;
 
 class QImage;
 
-class WbMuscle : public WbBaseNode {
+class WB_LIB_EXPORT WbMuscle : public WbBaseNode {
   Q_OBJECT
 
 public:

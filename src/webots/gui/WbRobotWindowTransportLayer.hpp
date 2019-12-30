@@ -17,8 +17,10 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 // cppcheck-suppress noConstructor
-class WbRobotWindowTransportLayer : public QObject {
+class WB_LIB_EXPORT WbRobotWindowTransportLayer : public QObject {
   // This WebChannel object is used to send JS data from the robot window to WbRobotWindow.cpp.
   Q_OBJECT
   Q_PROPERTY(bool ackReceived MEMBER mAckReceived NOTIFY waitingAckCountChanged FINAL)

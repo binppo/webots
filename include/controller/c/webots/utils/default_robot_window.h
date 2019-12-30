@@ -24,15 +24,15 @@
 #ifndef WBU_DEFAULT_ROBOT_WINDOW_H
 #define WBU_DEFAULT_ROBOT_WINDOW_H
 
-#include "../robot_wwi.h"
+#include <webots/robot_wwi.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wbu_default_robot_window_configure();
-void wbu_default_robot_window_update();
-void wbu_default_robot_window_set_images_max_size(int max_width, int max_height);
+CONTROLLER_EXPORT void wbu_default_robot_window_configure();
+CONTROLLER_EXPORT void wbu_default_robot_window_update();
+CONTROLLER_EXPORT void wbu_default_robot_window_set_images_max_size(int max_width, int max_height);
 
 #ifdef __cplusplus
 }

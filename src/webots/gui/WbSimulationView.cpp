@@ -20,7 +20,6 @@
 #include "WbControlledWorld.hpp"
 #include "WbDockTitleBar.hpp"
 #include "WbLog.hpp"
-#include "WbMainWindow.hpp"
 #include "WbMessageBox.hpp"
 #include "WbNodeUtilities.hpp"
 #include "WbPreferences.hpp"
@@ -67,6 +66,7 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   mSplitter(new QSplitter()),
   mSceneTree(new WbSceneTree(mSplitter)),
   mSplitterStatus(0),
+  mHandleWidth(6),
   mSupervisorMovieRecordingEnabled(false) {
   // add container widget to 'hide' the black window by forcing it to
   // have the same position of the rendering window
@@ -142,15 +142,9 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   mRecordingTimer = new QTimer(this);
   connect(mRecordingTimer, &QTimer::timeout, this, &WbSimulationView::toggleRecordingIcon);
   connect(WbApplication::instance(), &WbApplication::requestScreenshot, this, &WbSimulationView::takeScreenshotAndSaveAs);
-  connect(WbApplication::instance(), SIGNAL(videoCaptureStarted(const QString &, int, int, int, int, int, bool)), this,
-          SLOT(startVideoCapture(const QString &, int, int, int, int, int, bool)));
-  connect(WbApplication::instance(), &WbApplication::videoCaptureStopped, this, &WbSimulationView::stopVideoCapture);
   connect(WbVideoRecorder::instance(), &WbVideoRecorder::videoCreationStatusChanged, WbApplication::instance(),
           &WbApplication::videoCreationStatusChanged);
 
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parent);
-  assert(mainWindow);
-  WbVideoRecorder::setMainWindow(mainWindow);
   mWasMinimized = false;
 }
 
@@ -185,7 +179,7 @@ QToolBar *WbSimulationView::createToolBar() {
   action = manager->action(WbActionManager::VIEW_MENU);
   mToolBar->addAction(action);
   mToolBar->widgetForAction(action)->setObjectName("menuButton");
-  QToolButton *viewMenuButton = dynamic_cast<QToolButton *>(mToolBar->widgetForAction(action));
+  QToolButton *viewMenuButton = qobject_cast<QToolButton *>(mToolBar->widgetForAction(action));
   viewMenuButton->setPopupMode(QToolButton::InstantPopup);
   QMenu *viewMenu = new QMenu(viewMenuButton);
   viewMenu->addAction(manager->action(WbActionManager::FRONT_VIEW));
@@ -338,6 +332,11 @@ void WbSimulationView::setDecorationVisible(bool visible) {
   mToolBar->setVisible(visible);
   mTitleBar->setVisible(visible);
   mIsDecorationVisible = visible;
+}
+
+void WbSimulationView::setSceneTreeVisible(bool visible)
+{
+  mSceneTree->setVisible(visible);
 }
 
 bool WbSimulationView::isSceneTreeButtonStatusVisible() const {
@@ -532,7 +531,7 @@ void WbSimulationView::toggleRecordingIcon() {
   }
 }
 
-void WbSimulationView::startVideoCapture(const QString &fileName, int codec, int width, int height, int quality,
+bool WbSimulationView::startVideoCapture(const QString &fileName, int codec, int width, int height, int quality,
                                          int acceleration, bool showCaption) {
   WbVideoRecorder *videoRecorder = WbVideoRecorder::instance();
   const bool success = videoRecorder->initRecording(this, WbWorld::instance()->worldInfo()->basicTimeStep(),
@@ -543,20 +542,16 @@ void WbSimulationView::startVideoCapture(const QString &fileName, int codec, int
     toggleMovieAction(true);
     mTakeScreenshotAction->setEnabled(false);
     switchToRunModeIfNecessary();
-    WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-    if (mainWindow->isMinimized()) {
-      mWasMinimized = true;
-      mainWindow->showMaximized();
-    }
+	mWasMinimized = true;
   }
+
+  return success;
 }
 
-void WbSimulationView::stopVideoCapture(bool canceled) {
+bool WbSimulationView::stopVideoCapture(bool canceled) {
   WbVideoRecorder::instance()->stopRecording(canceled);
   restoreFastModeIfNecessary();
   if (mWasMinimized) {
-    WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-    mainWindow->showMinimized();
     mWasMinimized = false;
   }
   // re-enable take screenshot action
@@ -564,6 +559,8 @@ void WbSimulationView::stopVideoCapture(bool canceled) {
   mRecordingTimer->stop();
   toggleMovieAction(false);
   mSupervisorMovieRecordingEnabled = false;
+
+  return true;
 }
 
 void WbSimulationView::cancelSupervisorMovieRecording() {
@@ -575,8 +572,7 @@ void WbSimulationView::cancelSupervisorMovieRecording() {
 
 void WbSimulationView::stopMovie() {
   stopVideoCapture();
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-  mainWindow->restorePerspective(false, false, true);
+  emit requestRestorePerspective(false, false, true);
 }
 
 void WbSimulationView::makeMovie() {
@@ -591,8 +587,7 @@ void WbSimulationView::makeMovie() {
     pause();
 
   // store our perspective for when we stop
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-  mainWindow->savePerspective(false, false);
+  emit requestSavePerspective(false, false);
 
   WbVideoRecorder *videoRecorder = WbVideoRecorder::instance();
   bool success = videoRecorder->initRecording(this, WbWorld::instance()->worldInfo()->basicTimeStep());
@@ -645,8 +640,9 @@ void WbSimulationView::writeScreenshot(QImage image) {
   restoreFastModeIfNecessary();
 
   if (mWasMinimized) {
-    WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-    mainWindow->showMinimized();
+	QWidget *parent = parentWidget();
+	if(parent)
+      parent->showMinimized();
     mWasMinimized = false;
   }
 }
@@ -654,10 +650,10 @@ void WbSimulationView::writeScreenshot(QImage image) {
 void WbSimulationView::takeScreenshotAndSaveAs(const QString &fileName, int quality) {
   mScreenshotQualityList.append(quality);
   mScreenshotFileNameList.append(fileName);
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-  if (mainWindow->isMinimized()) {
+  QWidget *parent = parentWidget();
+  if (parent->isMinimized()) {
     mWasMinimized = true;
-    mainWindow->showMaximized();
+    parent->showMaximized();
   }
   // In fullscreen mode we don't have a handy dialog to delay things for us so
   // we must ensure the OpenGL context is correct, delaying the screenshot like
@@ -787,7 +783,7 @@ void WbSimulationView::setWorld(WbSimulationWorld *w) {
   connect(w->worldInfo(), &WbWorldInfo::titleChanged, this, &WbSimulationView::updateTitleBarTitle);
   connect(w, &WbSimulationWorld::physicsStepEnded, WbSelection::instance(),
           &WbSelection::propagateBoundingObjectMaterialUpdate);
-  WbControlledWorld *cw = dynamic_cast<WbControlledWorld *>(w);
+  WbControlledWorld *cw = qobject_cast<WbControlledWorld *>(w);
   assert(cw);
   connect(cw, &WbControlledWorld::stepBlocked, this, &WbSimulationView::disableStepButton);
 
@@ -838,6 +834,10 @@ void WbSimulationView::updateTitleBarTitle() {
 
 void WbSimulationView::repaintView3D() {
   mView3D->renderLater();
+}
+
+void WbSimulationView::resizeView3D(int width, int height) {
+  mView3D->resizeWren(width, height);
 }
 
 void WbSimulationView::renderABlackScreen() {
@@ -1045,7 +1045,7 @@ void WbSimulationView::internalScreenChangedCallback() {
 WbRobot *WbSimulationView::selectedRobot() const {
   WbBaseNode *selectedNode = mSelection->selectedNode();
   if (selectedNode) {
-    WbRobot *robot = dynamic_cast<WbRobot *>(selectedNode);
+    WbRobot *robot = qobject_cast<WbRobot *>(selectedNode);
     if (!robot)
       robot = WbNodeUtilities::findRobotAncestor(selectedNode);
     if (robot)

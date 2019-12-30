@@ -6,13 +6,13 @@ extern "C" {
 #endif
 
 struct WrOverlay;
-typedef struct WrOverlay WrOverlay;
+//typedef struct WrOverlay WrOverlay;
 
 struct WrShaderProgram;
-typedef struct WrShaderProgram WrShaderProgram;
+//typedef struct WrShaderProgram WrShaderProgram;
 
 struct WrTexture;
-typedef struct WrTexture WrTexture;
+//typedef struct WrTexture WrTexture;
 
 void wr_overlay_set_screen_ratio(float ratio);
 

@@ -24,6 +24,8 @@
 #include <wren/static_mesh.h>
 #include <wren/transform.h>
 
+#include <core/WbConfig.h>
+
 #include <QtCore/QObject>
 
 // Abstract class //
@@ -32,7 +34,7 @@
 class WbRotation;
 class WbVector3;
 
-class WbPhysicsVectorRepresentation : public QObject {
+class WB_LIB_EXPORT WbPhysicsVectorRepresentation : public QObject {
   Q_OBJECT
 public:
   virtual ~WbPhysicsVectorRepresentation();
@@ -67,13 +69,13 @@ protected:
 
 // Implemented classes
 
-class WbForceRepresentation : public WbPhysicsVectorRepresentation {
+class WB_LIB_EXPORT WbForceRepresentation : public WbPhysicsVectorRepresentation {
   Q_OBJECT
 public:
   WbForceRepresentation();
 };
 
-class WbTorqueRepresentation : public WbPhysicsVectorRepresentation {
+class WB_LIB_EXPORT WbTorqueRepresentation : public WbPhysicsVectorRepresentation {
   Q_OBJECT
 public:
   WbTorqueRepresentation();

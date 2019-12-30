@@ -23,7 +23,9 @@
 
 #include "WbVersion.hpp"
 
-class WbWebotsUpdateManager : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWebotsUpdateManager : public QObject {
   Q_OBJECT
 
 public:

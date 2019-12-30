@@ -22,13 +22,13 @@
 
 namespace wren {
 
-  class Renderable;
-  class ShaderProgram;
-  class StaticMesh;
-  class Viewport;
+  struct Renderable;
+  struct ShaderProgram;
+  struct StaticMesh;
+  struct Viewport;
 
   // Specialized class for rendering a 2d overlay consisting of up to 3 texture layers, with an optional border
-  class Overlay {
+  struct Overlay {
   public:
     // Encapsulate memory management
     static Overlay *createOverlay() { return new Overlay(); }

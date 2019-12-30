@@ -23,12 +23,12 @@
 
 namespace wren {
 
-  class TextureRtt;
-  class Viewport;
+  struct TextureRtt;
+  struct Viewport;
 
   // Represents an off-screen buffer that can be drawn to.
   // Will store the results of a drawing operation in its attached texture(s).
-  class FrameBuffer : public GlUser {
+  struct FrameBuffer : public GlUser {
   public:
     struct RenderBuffer {
       explicit RenderBuffer(const Texture::GlFormatParams &params) : mGlName(0), mGlFormatParams(params) {}

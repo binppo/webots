@@ -60,7 +60,7 @@ void WbAddItemCommand::redo() {
 
   switch (mFieldValue->type()) {
     case WB_MF_VEC2F:
-      dynamic_cast<WbMFVector2 *>(mFieldValue)->insertItem(mIndex, mItem.toVector2());
+      qobject_cast<WbMFVector2 *>(mFieldValue)->insertItem(mIndex, mItem.toVector2());
       break;
     case WB_MF_VEC3F:
       static_cast<WbMFVector3 *>(mFieldValue)->insertItem(mIndex, mItem.toVector3());

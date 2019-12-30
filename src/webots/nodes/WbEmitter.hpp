@@ -21,9 +21,11 @@
 
 #include <QtCore/QQueue>
 
+#include <core/WbConfig.h>
+
 class WbDataPacket;
 
-class WbEmitter : public WbSolidDevice {
+class WB_LIB_EXPORT WbEmitter : public WbSolidDevice {
   Q_OBJECT
 
 public:

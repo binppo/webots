@@ -21,24 +21,24 @@
 #ifndef WBU_MOTION_H
 #define WBU_MOTION_H
 
-#include "../types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-WbMotionRef wbu_motion_new(const char *filename);
-void wbu_motion_delete(WbMotionRef motion);
+CONTROLLER_EXPORT WbMotionRef wbu_motion_new(const char *filename);
+CONTROLLER_EXPORT void wbu_motion_delete(WbMotionRef motion);
 
-void wbu_motion_play(WbMotionRef motion);
-void wbu_motion_stop(WbMotionRef motion);
-void wbu_motion_set_loop(WbMotionRef motion, bool loop);
-void wbu_motion_set_reverse(WbMotionRef motion, bool reverse);
+CONTROLLER_EXPORT void wbu_motion_play(WbMotionRef motion);
+CONTROLLER_EXPORT void wbu_motion_stop(WbMotionRef motion);
+CONTROLLER_EXPORT void wbu_motion_set_loop(WbMotionRef motion, bool loop);
+CONTROLLER_EXPORT void wbu_motion_set_reverse(WbMotionRef motion, bool reverse);
 
-bool wbu_motion_is_over(WbMotionRef motion);
-int wbu_motion_get_duration(WbMotionRef motion);
-int wbu_motion_get_time(WbMotionRef motion);
-void wbu_motion_set_time(WbMotionRef motion, int time);
+CONTROLLER_EXPORT bool wbu_motion_is_over(WbMotionRef motion);
+CONTROLLER_EXPORT int wbu_motion_get_duration(WbMotionRef motion);
+CONTROLLER_EXPORT int wbu_motion_get_time(WbMotionRef motion);
+CONTROLLER_EXPORT void wbu_motion_set_time(WbMotionRef motion, int time);
 
 #ifdef __cplusplus
 }

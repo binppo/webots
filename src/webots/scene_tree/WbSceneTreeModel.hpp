@@ -24,12 +24,14 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
 
+#include <core/WbConfig.h>
+
 class WbTreeItem;
 class WbGroup;
 class WbNode;
 class WbField;
 
-class WbSceneTreeModel : public QAbstractItemModel {
+class WB_LIB_EXPORT WbSceneTreeModel : public QAbstractItemModel {
   Q_OBJECT
 
 public:

@@ -21,6 +21,8 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 class WbProject;
 
@@ -30,7 +32,7 @@ class QLabel;
 class QPlainTextEdit;
 class QPushButton;
 
-class WbProjectRelocationDialog : public QDialog {
+class WB_LIB_EXPORT WbProjectRelocationDialog : public QDialog {
   Q_OBJECT
 
 public:

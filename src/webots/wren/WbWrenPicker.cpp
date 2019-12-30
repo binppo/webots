@@ -145,13 +145,11 @@ bool WbWrenPicker::pick(int x, int y) {
   wr_viewport_enable_skybox(mViewport, true);
   wr_scene_enable_translucence(scene, true);
 
-  char *data = new char[4];
+  char data[4];
   wr_frame_buffer_copy_pixel(mFrameBuffer, 0, x, y, data, true);
 
   unsigned char *data2 = reinterpret_cast<unsigned char *>(data);
   int id = (data2[0] << 24) | (data2[1] << 16) | (data2[2] << 8) | data2[3];
-
-  delete[] data;
 
   if (id == 0) {
     WbWrenOpenGlContext::doneWren();

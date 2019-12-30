@@ -17,18 +17,20 @@
 
 #include "sip_hash.hpp"
 
+#include <core/WbConfig.h>
+
 class WbIndexedFaceSet;
 class WbTriangleMesh;
 
 namespace WbTriangleMeshCache {
-  extern const highwayhash::HH_U64 SIPHASH_KEY[2];
+  WB_LIB_EXPORT extern const highwayhash::HH_U64 SIPHASH_KEY[2];
 
   template<class T> uint64_t sipHash13x(const T *bytes, const int size) {
     return highwayhash::SipHash13(SIPHASH_KEY, reinterpret_cast<const char *>(bytes), size * sizeof(T));
   }
 
   // TriangleMeshInfo is shared by all WbIndexedFaceSet instances requiring the same WbTriangleMesh.
-  struct TriangleMeshInfo {
+  struct WB_LIB_EXPORT TriangleMeshInfo {
     TriangleMeshInfo();
     explicit TriangleMeshInfo(WbTriangleMesh *triangleMesh);
 
@@ -37,7 +39,7 @@ namespace WbTriangleMeshCache {
   };
 
   // Key type for an instance of WbIndexedFaceSet. Instances can share a WbTriangleMesh if their keys compare equal.
-  struct IndexedFaceSetKey {
+  struct WB_LIB_EXPORT IndexedFaceSetKey {
     IndexedFaceSetKey();
     explicit IndexedFaceSetKey(WbIndexedFaceSet *indexedFaceSet);
 
@@ -48,12 +50,12 @@ namespace WbTriangleMeshCache {
   };
 
   // Key hashing function required by std::unordered_map
-  struct IndexedFaceSetKeyHasher {
+  struct WB_LIB_EXPORT IndexedFaceSetKeyHasher {
     std::size_t operator()(const IndexedFaceSetKey &k) const;
   };
 
-  void useTriangleMesh(WbIndexedFaceSet *user);
-  void releaseTriangleMesh(WbIndexedFaceSet *user);
+  WB_LIB_EXPORT void useTriangleMesh(WbIndexedFaceSet *user);
+  WB_LIB_EXPORT void releaseTriangleMesh(WbIndexedFaceSet *user);
 }  // namespace WbTriangleMeshCache
 
 #endif

@@ -171,7 +171,7 @@ void WbTemplateManager::recursiveFieldSubscribeToRegenerateNode(WbNode *node, bo
 
 void WbTemplateManager::regenerateNodeFromFieldChange(WbField *field) {
   // retrieve the right node
-  WbNode *templateNode = dynamic_cast<WbNode *>(sender());
+  WbNode *templateNode = qobject_cast<WbNode *>(sender());
   assert(templateNode);
   if (templateNode)
     regenerateNodeFromField(templateNode, field, false);
@@ -179,7 +179,7 @@ void WbTemplateManager::regenerateNodeFromFieldChange(WbField *field) {
 
 void WbTemplateManager::regenerateNodeFromParameterChange(WbField *field) {
   // retrieve the right node
-  WbNode *templateNode = dynamic_cast<WbNode *>(sender());
+  WbNode *templateNode = qobject_cast<WbNode *>(sender());
   assert(templateNode);
   if (templateNode)
     regenerateNodeFromField(templateNode, field, true);
@@ -195,7 +195,7 @@ void WbTemplateManager::regenerateNodeFromField(WbNode *templateNode, WbField *f
     return;
 
   // 2. check it's not a parameter managed by ODE
-  if (!isParameter && dynamic_cast<const WbSolid *>(templateNode) &&
+  if (!isParameter && qobject_cast<const WbSolid *>(templateNode) &&
       ((field->name() == "translation" && field->type() == WB_SF_VEC3F) ||
        (field->name() == "rotation" && field->type() == WB_SF_ROTATION) ||
        (field->name() == "position" && field->type() == WB_SF_FLOAT)))
@@ -220,7 +220,7 @@ void WbTemplateManager::regenerateNode(WbNode *node) {
   assert(parent && proto);
   if (!parent || !proto)
     return;
-  const bool isInBoundingObject = dynamic_cast<WbBaseNode *>(node)->isInBoundingObject();
+  const bool isInBoundingObject = qobject_cast<WbBaseNode *>(node)->isInBoundingObject();
 
   QList<WbField *> previousParentRedirections;
   WbField *parentField = node->parentField();
@@ -231,7 +231,7 @@ void WbTemplateManager::regenerateNode(WbNode *node) {
       previousParentRedirections.append(parameter->parameter());
   }
   int uniqueId = node->uniqueId();
-  const WbSolid *solid = dynamic_cast<const WbSolid *>(node);
+  const WbSolid *solid = qobject_cast<const WbSolid *>(node);
   WbVector3 translationFromFile;
   WbRotation rotationFromFile;
   if (solid) {
@@ -318,17 +318,17 @@ void WbTemplateManager::regenerateNode(WbNode *node) {
     }
   } else {
     // reassign pointer in parent
-    WbGroup *const parentGroup = dynamic_cast<WbGroup *>(parent);
-    WbBasicJoint *const parentJoint = dynamic_cast<WbBasicJoint *>(parent);
-    WbShape *const parentShape = dynamic_cast<WbShape *>(parent);
-    WbSkin *const parentSkin = dynamic_cast<WbSkin *>(parent);
-    WbSlot *const parentSlot = dynamic_cast<WbSlot *>(parent);
-    WbAppearance *const newAppearance = dynamic_cast<WbAppearance *>(newNode);
-    WbPbrAppearance *const newPbrAppearance = dynamic_cast<WbPbrAppearance *>(newNode);
-    WbGeometry *const newGeometry = dynamic_cast<WbGeometry *>(newNode);
-    WbSlot *const newSlot = dynamic_cast<WbSlot *>(newNode);
-    WbSolid *const newSolid = dynamic_cast<WbSolid *>(newNode);
-    WbSolidReference *const newSolidReference = dynamic_cast<WbSolidReference *>(newNode);
+    WbGroup *const parentGroup = qobject_cast<WbGroup *>(parent);
+    WbBasicJoint *const parentJoint = qobject_cast<WbBasicJoint *>(parent);
+    WbShape *const parentShape = qobject_cast<WbShape *>(parent);
+    WbSkin *const parentSkin = qobject_cast<WbSkin *>(parent);
+    WbSlot *const parentSlot = qobject_cast<WbSlot *>(parent);
+    WbAppearance *const newAppearance = qobject_cast<WbAppearance *>(newNode);
+    WbPbrAppearance *const newPbrAppearance = qobject_cast<WbPbrAppearance *>(newNode);
+    WbGeometry *const newGeometry = qobject_cast<WbGeometry *>(newNode);
+    WbSlot *const newSlot = qobject_cast<WbSlot *>(newNode);
+    WbSolid *const newSolid = qobject_cast<WbSolid *>(newNode);
+    WbSolidReference *const newSolidReference = qobject_cast<WbSolidReference *>(newNode);
 
     if (parentGroup) {
       int i = parentGroup->nodeIndex(node);
@@ -374,7 +374,7 @@ void WbTemplateManager::regenerateNode(WbNode *node) {
   newNode->setUniqueId(uniqueId);
 
   // restore translation and rotation loaded from file
-  WbSolid *newSolid = dynamic_cast<WbSolid *>(newNode);
+  WbSolid *newSolid = qobject_cast<WbSolid *>(newNode);
   if (solid && newSolid) {
     newSolid->setTranslationFromFile(translationFromFile);
     newSolid->setRotationFromFile(rotationFromFile);
@@ -393,7 +393,7 @@ void WbTemplateManager::regenerateNode(WbNode *node) {
     }
   }
 
-  WbBaseNode *base = dynamic_cast<WbBaseNode *>(newNode);
+  WbBaseNode *base = qobject_cast<WbBaseNode *>(newNode);
   if (isWorldInitialized) {
     assert(base);
     base->finalize();

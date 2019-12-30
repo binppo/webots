@@ -128,8 +128,8 @@ void WbField::reset(bool blockValueSignals) {
   if (singleType() == WB_SF_NODE) {
     // clear field and set value to NULL or []
     // but new default node instances have to be created separately
-    WbSFNode *sfnode = dynamic_cast<WbSFNode *>(mValue);
-    WbMFNode *mfnode = dynamic_cast<WbMFNode *>(mValue);
+    WbSFNode *sfnode = qobject_cast<WbSFNode *>(mValue);
+    WbMFNode *mfnode = qobject_cast<WbMFNode *>(mValue);
     if (sfnode) {
       if (blockValueSignals) {
         sfnode->blockSignals(true);
@@ -168,7 +168,7 @@ void WbField::checkValueIsAccepted() {
                 .arg(acceptedValuesList);
       reset(true);
     } else {
-      WbMultipleValue *mvalue = dynamic_cast<WbMultipleValue *>(mValue);
+      WbMultipleValue *mvalue = qobject_cast<WbMultipleValue *>(mValue);
       assert(mvalue);
       error = tr("Invalid '%1' removed from '%2' field. The values should be in the list: {%3}.")
                 .arg(mvalue->itemToString(refusedIndex))
@@ -184,7 +184,7 @@ void WbField::checkValueIsAccepted() {
 }
 
 void WbField::setValue(const WbValue *otherValue) {
-  WbMultipleValue *mvalue = dynamic_cast<WbMultipleValue *>(mValue);
+  WbMultipleValue *mvalue = qobject_cast<WbMultipleValue *>(mValue);
   if (mvalue) {
     // remove all children
     const int n = mvalue->size() - 1;
@@ -194,72 +194,72 @@ void WbField::setValue(const WbValue *otherValue) {
     // add default children
     switch (mvalue->type()) {
       case WB_MF_NODE: {
-        const WbMFNode *const otherField = dynamic_cast<const WbMFNode *>(otherValue);
-        WbMFNode *const actualField = dynamic_cast<WbMFNode *>(mvalue);
+        const WbMFNode *const otherField = qobject_cast<const WbMFNode *>(otherValue);
+        WbMFNode *const actualField = qobject_cast<WbMFNode *>(mvalue);
         WbMFIterator<WbMFNode, WbNode *> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_VEC2F: {
-        const WbMFVector2 *const otherField = dynamic_cast<const WbMFVector2 *>(otherValue);
-        WbMFVector2 *const actualField = dynamic_cast<WbMFVector2 *>(mvalue);
+        const WbMFVector2 *const otherField = qobject_cast<const WbMFVector2 *>(otherValue);
+        WbMFVector2 *const actualField = qobject_cast<WbMFVector2 *>(mvalue);
         WbMFIterator<WbMFVector2, WbVector2> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_VEC3F: {
-        const WbMFVector3 *const otherField = dynamic_cast<const WbMFVector3 *>(otherValue);
-        WbMFVector3 *const actualField = dynamic_cast<WbMFVector3 *>(mvalue);
+        const WbMFVector3 *const otherField = qobject_cast<const WbMFVector3 *>(otherValue);
+        WbMFVector3 *const actualField = qobject_cast<WbMFVector3 *>(mvalue);
         WbMFIterator<WbMFVector3, WbVector3> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_ROTATION: {
-        const WbMFRotation *const otherField = dynamic_cast<const WbMFRotation *>(otherValue);
-        WbMFRotation *const actualField = dynamic_cast<WbMFRotation *>(mvalue);
+        const WbMFRotation *const otherField = qobject_cast<const WbMFRotation *>(otherValue);
+        WbMFRotation *const actualField = qobject_cast<WbMFRotation *>(mvalue);
         WbMFIterator<WbMFRotation, WbRotation> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_COLOR: {
-        const WbMFColor *const otherField = dynamic_cast<const WbMFColor *>(otherValue);
-        WbMFColor *const actualField = dynamic_cast<WbMFColor *>(mvalue);
+        const WbMFColor *const otherField = qobject_cast<const WbMFColor *>(otherValue);
+        WbMFColor *const actualField = qobject_cast<WbMFColor *>(mvalue);
         WbMFIterator<WbMFColor, WbRgb> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_STRING: {
-        const WbMFString *const otherField = dynamic_cast<const WbMFString *>(otherValue);
-        WbMFString *const actualField = dynamic_cast<WbMFString *>(mvalue);
+        const WbMFString *const otherField = qobject_cast<const WbMFString *>(otherValue);
+        WbMFString *const actualField = qobject_cast<WbMFString *>(mvalue);
         WbMFIterator<WbMFString, QString> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_BOOL: {
-        const WbMFBool *const otherField = dynamic_cast<const WbMFBool *>(otherValue);
-        WbMFBool *const actualField = dynamic_cast<WbMFBool *>(mvalue);
+        const WbMFBool *const otherField = qobject_cast<const WbMFBool *>(otherValue);
+        WbMFBool *const actualField = qobject_cast<WbMFBool *>(mvalue);
         WbMFIterator<WbMFBool, bool> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_INT32: {
-        const WbMFInt *const otherField = dynamic_cast<const WbMFInt *>(otherValue);
-        WbMFInt *const actualField = dynamic_cast<WbMFInt *>(mvalue);
+        const WbMFInt *const otherField = qobject_cast<const WbMFInt *>(otherValue);
+        WbMFInt *const actualField = qobject_cast<WbMFInt *>(mvalue);
         WbMFIterator<WbMFInt, int> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
         break;
       }
       case WB_MF_FLOAT: {
-        const WbMFDouble *const otherField = dynamic_cast<const WbMFDouble *>(otherValue);
-        WbMFDouble *const actualField = dynamic_cast<WbMFDouble *>(mvalue);
+        const WbMFDouble *const otherField = qobject_cast<const WbMFDouble *>(otherValue);
+        WbMFDouble *const actualField = qobject_cast<WbMFDouble *>(mvalue);
         WbMFIterator<WbMFDouble, double> it(otherField);
         while (it.hasNext())
           actualField->addItem(it.next());
@@ -322,7 +322,7 @@ void WbField::redirectTo(WbField *parameter) {
   // copy parameter value to field
   mValue->copyFrom(mParameter->value());
 
-  WbMFNode *mfnode = dynamic_cast<WbMFNode *>(mParameter->value());
+  WbMFNode *mfnode = qobject_cast<WbMFNode *>(mParameter->value());
   if (mfnode) {
     connect(mfnode, &WbMFNode::itemInserted, mParameter, &WbField::parameterNodeInserted, Qt::UniqueConnection);
     connect(mfnode, &WbMFNode::itemRemoved, mParameter, &WbField::parameterNodeRemoved, Qt::UniqueConnection);
@@ -355,7 +355,7 @@ void WbField::removeInternalField(QObject *field) {
 
 // propagate change in proto parameter to a node field
 void WbField::parameterChanged() {
-  WbSFNode *sfnode = dynamic_cast<WbSFNode *>(mValue);
+  WbSFNode *sfnode = qobject_cast<WbSFNode *>(mValue);
   if (sfnode && sfnode->value()) {
     WbNode *node = sfnode->value();
 
@@ -363,7 +363,7 @@ void WbField::parameterChanged() {
     foreach (WbField *internalField, mInternalFields) {
       WbNode::setGlobalParent(internalField->parentNode(), true);
       instance = node->cloneAndReferenceProtoInstance();
-      sfnode = dynamic_cast<WbSFNode *>(internalField->value());
+      sfnode = qobject_cast<WbSFNode *>(internalField->value());
       sfnode->setValue(instance);
     }
     setParent(NULL);
@@ -376,14 +376,14 @@ void WbField::parameterChanged() {
 
 // propagate node insertion to internal fields of parameter
 void WbField::parameterNodeInserted(int index) {
-  WbMFNode *mfnode = dynamic_cast<WbMFNode *>(mValue);
+  WbMFNode *mfnode = qobject_cast<WbMFNode *>(mValue);
   WbNode *const node = mfnode->item(index);
 
   WbNode *instance = NULL;
   foreach (WbField *internalField, mInternalFields) {
     WbNode::setGlobalParent(internalField->parentNode(), true);
     instance = node->cloneAndReferenceProtoInstance();
-    mfnode = dynamic_cast<WbMFNode *>(internalField->value());
+    mfnode = qobject_cast<WbMFNode *>(internalField->value());
     mfnode->insertItem(index, instance);
   }
   setParent(NULL);
@@ -393,7 +393,7 @@ void WbField::parameterNodeInserted(int index) {
 void WbField::parameterNodeRemoved(int index) {
   WbMFNode *mfnode = NULL;
   foreach (WbField *const field, mInternalFields) {
-    mfnode = dynamic_cast<WbMFNode *>(field->value());
+    mfnode = qobject_cast<WbMFNode *>(field->value());
     mfnode->removeItem(index);
   }
 }

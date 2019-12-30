@@ -84,7 +84,7 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
         double balance;
         unsigned char loop;
         stream >> size;
-        char soundFile[size];
+        char *soundFile = new char[size];
         stream.readRawData(soundFile, size);
         stream >> volume;
         stream >> pitch;
@@ -92,6 +92,8 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
         stream >> side;
         stream >> loop;
         playSound(soundFile, volume, pitch, balance, (bool)loop, (int)side);
+
+		delete[] soundFile;
       }
       return;
     }
@@ -105,9 +107,11 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
         for (int i = 0; i < numberOfSound; ++i) {
           short size;
           stream >> size;
-          char sound[size];
+          char *sound = new char[size];
           stream.readRawData(sound, size);
           stop(sound);
+
+		  delete[] sound;
         }
       }
       return;
@@ -115,27 +119,36 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
     case C_SPEAKER_SET_ENGINE: {
       short size;
       stream >> size;
-      char engine[size];
+      char *engine = new char[size];
       stream.readRawData(engine, size);
       mEngine = QString(engine);
+
+	  delete[] engine;
+
       return;
     }
     case C_SPEAKER_SET_LANGUAGE: {
       short size;
       stream >> size;
-      char language[size];
+      char *language = new char[size];
       stream.readRawData(language, size);
       mLanguage = QString(language);
+
+	  delete[] language;
+	  
       return;
     }
     case C_SPEAKER_SPEAK: {
       short size;
       double volume;
       stream >> size;
-      char text[size];
+      char *text = new char[size];
       stream.readRawData(text, size);
       stream >> volume;
       playText(text, volume);
+
+	  delete[] text;
+
       return;
     }
     default:

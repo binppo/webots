@@ -237,7 +237,7 @@ const WbSolid *WbPhysicsPlugin::findSolidByDef(const QString &def) const {
     node = findNodeByDef(node, it.next());
 
   // make sure the correct solid is returned
-  const WbSolid *const solid = dynamic_cast<const WbSolid *>(node);
+  const WbSolid *const solid = qobject_cast<const WbSolid *>(node);
   return (solid && solid->defName() == list.last()) ? solid : NULL;
 }
 
@@ -245,7 +245,7 @@ const WbNode *WbPhysicsPlugin::findNodeByDef(const WbNode *node, const QString &
   if (node->defName() == def)
     return node;
 
-  const WbBasicJoint *const joint = dynamic_cast<const WbBasicJoint *>(node);
+  const WbBasicJoint *const joint = qobject_cast<const WbBasicJoint *>(node);
   if (joint) {
     const WbSolid *endPoint = joint->solidEndPoint();
     if (!endPoint && joint->solidReference())
@@ -258,7 +258,7 @@ const WbNode *WbPhysicsPlugin::findNodeByDef(const WbNode *node, const QString &
     }
   }
 
-  const WbGroup *const group = dynamic_cast<const WbGroup *>(node);
+  const WbGroup *const group = qobject_cast<const WbGroup *>(node);
   if (group) {
     WbMFNode::Iterator it(group->children());
     while (it.hasNext()) {

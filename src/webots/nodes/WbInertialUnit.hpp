@@ -17,12 +17,14 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbMFVector3;
 class WbSFBool;
 class WbLookupTable;
 
-class WbInertialUnit : public WbSolidDevice {
+class WB_LIB_EXPORT WbInertialUnit : public WbSolidDevice {
   Q_OBJECT
 
 public:

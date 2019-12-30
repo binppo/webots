@@ -23,10 +23,12 @@
 #include <QtWidgets/QUndoCommand>
 #include "WbVariant.hpp"
 
+#include <core/WbConfig.h>
+
 class WbField;
 class WbMultipleValue;
 
-class WbAddItemCommand : public QUndoCommand {
+class WB_LIB_EXPORT WbAddItemCommand : public QUndoCommand {
 public:
   // add item with default value
   WbAddItemCommand(WbField *const field, WbMultipleValue *fieldValue, int index, QUndoCommand *parent = 0);

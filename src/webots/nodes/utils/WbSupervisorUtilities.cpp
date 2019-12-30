@@ -84,14 +84,14 @@ protected:
 class WbBoolFieldSetRequest : public WbFieldSetRequest {
 public:
   WbBoolFieldSetRequest(WbField *f, int index, bool value) : WbFieldSetRequest(f, index), mValue(value) {
-    assert((f->type() == WB_SF_BOOL && dynamic_cast<WbSFBool *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_BOOL && dynamic_cast<WbMFBool *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_BOOL && qobject_cast<WbSFBool *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_BOOL && qobject_cast<WbMFBool *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFBool *>(mField->value()))->setValue(mValue);
+      (qobject_cast<WbSFBool *>(mField->value()))->setValue(mValue);
     else
-      (dynamic_cast<WbMFBool *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFBool *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -101,14 +101,14 @@ private:
 class WbIntFieldSetRequest : public WbFieldSetRequest {
 public:
   WbIntFieldSetRequest(WbField *f, int index, int value) : WbFieldSetRequest(f, index), mValue(value) {
-    assert((f->type() == WB_SF_INT32 && dynamic_cast<WbSFInt *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_INT32 && dynamic_cast<WbMFInt *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_INT32 && qobject_cast<WbSFInt *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_INT32 && qobject_cast<WbMFInt *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFInt *>(mField->value()))->setValue(mValue);
+      (qobject_cast<WbSFInt *>(mField->value()))->setValue(mValue);
     else
-      (dynamic_cast<WbMFInt *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFInt *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -118,14 +118,14 @@ private:
 class WbDoubleFieldSetRequest : public WbFieldSetRequest {
 public:
   WbDoubleFieldSetRequest(WbField *f, int index, double value) : WbFieldSetRequest(f, index), mValue(value) {
-    assert((f->type() == WB_SF_FLOAT && dynamic_cast<WbSFDouble *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_FLOAT && dynamic_cast<WbMFDouble *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_FLOAT && qobject_cast<WbSFDouble *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_FLOAT && qobject_cast<WbMFDouble *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFDouble *>(mField->value()))->setValue(mValue);
+      (qobject_cast<WbSFDouble *>(mField->value()))->setValue(mValue);
     else
-      (dynamic_cast<WbMFDouble *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFDouble *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -135,14 +135,14 @@ private:
 class WbVector2FieldSetRequest : public WbFieldSetRequest {
 public:
   WbVector2FieldSetRequest(WbField *f, int index, double x, double y) : WbFieldSetRequest(f, index), mValue(x, y) {
-    assert((f->type() == WB_SF_VEC2F && dynamic_cast<WbSFVector2 *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_VEC2F && dynamic_cast<WbMFVector2 *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_VEC2F && qobject_cast<WbSFVector2 *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_VEC2F && qobject_cast<WbMFVector2 *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFVector2 *>(mField->value()))->setValue(mValue);
+      (qobject_cast<WbSFVector2 *>(mField->value()))->setValue(mValue);
     else
-      (dynamic_cast<WbMFVector2 *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFVector2 *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -152,14 +152,14 @@ private:
 class WbVector3FieldSetRequest : public WbFieldSetRequest {
 public:
   WbVector3FieldSetRequest(WbField *f, int index, double x, double y, double z) : WbFieldSetRequest(f, index), mValue(x, y, z) {
-    assert((f->type() == WB_SF_VEC3F && dynamic_cast<WbSFVector3 *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_VEC3F && dynamic_cast<WbMFVector3 *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_VEC3F && qobject_cast<WbSFVector3 *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_VEC3F && qobject_cast<WbMFVector3 *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFVector3 *>(mField->value()))->setValueByUser(mValue, true);
+      (qobject_cast<WbSFVector3 *>(mField->value()))->setValueByUser(mValue, true);
     else
-      (dynamic_cast<WbMFVector3 *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFVector3 *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -171,14 +171,14 @@ public:
   WbColorFieldSetRequest(WbField *f, int index, double red, double green, double blue) :
     WbFieldSetRequest(f, index),
     mValue(red, green, blue) {
-    assert((f->type() == WB_SF_COLOR && dynamic_cast<WbSFColor *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_COLOR && dynamic_cast<WbMFColor *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_COLOR && qobject_cast<WbSFColor *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_COLOR && qobject_cast<WbMFColor *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFColor *>(mField->value()))->setValue(mValue);
+      (qobject_cast<WbSFColor *>(mField->value()))->setValue(mValue);
     else
-      (dynamic_cast<WbMFColor *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFColor *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -190,14 +190,14 @@ public:
   WbRotationFieldSetRequest(WbField *f, int index, double x, double y, double z, double a) :
     WbFieldSetRequest(f, index),
     mValue(x, y, z, a) {
-    assert((f->type() == WB_SF_ROTATION && dynamic_cast<WbSFRotation *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_ROTATION && dynamic_cast<WbMFRotation *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_ROTATION && qobject_cast<WbSFRotation *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_ROTATION && qobject_cast<WbMFRotation *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFRotation *>(mField->value()))->setValueByUser(mValue, true);
+      (qobject_cast<WbSFRotation *>(mField->value()))->setValueByUser(mValue, true);
     else
-      (dynamic_cast<WbMFRotation *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFRotation *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -207,14 +207,14 @@ private:
 class WbStringFieldSetRequest : public WbFieldSetRequest {
 public:
   WbStringFieldSetRequest(WbField *f, int index, const QString &string) : WbFieldSetRequest(f, index), mValue(string) {
-    assert((f->type() == WB_SF_STRING && dynamic_cast<WbSFString *>(f->value()) && index == -1) ||
-           (f->type() == WB_MF_STRING && dynamic_cast<WbMFString *>(f->value()) && index >= 0));
+    assert((f->type() == WB_SF_STRING && qobject_cast<WbSFString *>(f->value()) && index == -1) ||
+           (f->type() == WB_MF_STRING && qobject_cast<WbMFString *>(f->value()) && index >= 0));
   }
-  void apply() const override {
+  virtual void apply() const override {
     if (mIndex == -1)
-      (dynamic_cast<WbSFString *>(mField->value()))->setValue(mValue);
+      (qobject_cast<WbSFString *>(mField->value()))->setValue(mValue);
     else
-      (dynamic_cast<WbMFString *>(mField->value()))->setItem(mIndex, mValue);
+      (qobject_cast<WbMFString *>(mField->value()))->setItem(mIndex, mValue);
   }
 
 private:
@@ -324,7 +324,7 @@ void WbSupervisorUtilities::processImmediateMessages() {
   WbTemplateManager::instance()->blockRegeneration(true);
   for (int i = 0; i < n; ++i) {
     const WbFieldSetRequest *r = mFieldSetRequests.at(i);
-    WbWrenOpenGlContext::makeWrenCurrent();
+	WbWrenOpenGlContext::makeWrenCurrent();
     r->apply();
     WbWrenOpenGlContext::doneWren();
     delete r;
@@ -400,7 +400,7 @@ WbNode *WbSupervisorUtilities::getProtoParameterNodeInstance(WbNode *const node)
   if (node && node->isProtoParameterNode()) {
     // if node is a proto parameter node we need to find the corresponding proto parameter node instance
     for (int i = 0; i < node->protoParameterNodeInstances().size(); ++i) {
-      WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(node->protoParameterNodeInstances()[i]);
+      WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(node->protoParameterNodeInstances()[i]);
       if (baseNode->isPostFinalizedCalled())  // if there is more than one proto parameter node instance the valid one is the
                                               // one finalized
         return baseNode;
@@ -540,7 +540,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
     case C_SUPERVISOR_NODE_GET_FROM_ID: {
       int id;
       stream >> id;
-      const WbBaseNode *node = dynamic_cast<const WbBaseNode *>(WbNode::findNode(id));
+      const WbBaseNode *node = qobject_cast<const WbBaseNode *>(WbNode::findNode(id));
       if (node) {
         // since 8.6 -> each message has its own mechanism
         mGetFromId = true;
@@ -556,7 +556,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
     }
     case C_SUPERVISOR_NODE_GET_FROM_DEF: {
       const QString &nodeName = readString(stream);
-      const WbBaseNode *baseNode = dynamic_cast<const WbBaseNode *>(getNodeFromDEF(nodeName));
+      const WbBaseNode *baseNode = qobject_cast<const WbBaseNode *>(getNodeFromDEF(nodeName));
       if (baseNode && !baseNode->parentField())  // make sure the parent field is visible
         baseNode = NULL;
       mFoundNodeUniqueId = baseNode ? baseNode->uniqueId() : 0;
@@ -575,7 +575,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       return;
     }
     case C_SUPERVISOR_NODE_GET_SELECTED: {
-      const WbBaseNode *baseNode = dynamic_cast<const WbBaseNode *>(WbSelection::instance()->selectedNode());
+      const WbBaseNode *baseNode = qobject_cast<const WbBaseNode *>(WbSelection::instance()->selectedNode());
       if (baseNode) {
         mGetSelectedNode = true;
         mCurrentDefName = baseNode->defName();
@@ -599,7 +599,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbTransform *const transform = dynamic_cast<WbTransform *>(node);
+      WbTransform *const transform = qobject_cast<WbTransform *>(node);
       mNodeGetPosition = transform;
       if (!transform)
         mRobot->warn(tr("wb_supervisor_node_get_position() can exclusively be used with Transform (or derived)."));
@@ -611,7 +611,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbTransform *const transform = dynamic_cast<WbTransform *>(node);
+      WbTransform *const transform = qobject_cast<WbTransform *>(node);
       mNodeGetOrientation = transform;
       if (!transform)
         mRobot->warn(tr("wb_supervisor_node_get_orientation() can exclusively be used with Transform (or derived)."));
@@ -623,7 +623,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+      WbSolid *const solid = qobject_cast<WbSolid *>(node);
       mNodeGetCenterOfMass = solid;
       if (!solid)
         mRobot->warn(tr("wb_supervisor_node_get_center_of_mass() can exclusively be used with Solid"));
@@ -635,7 +635,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+      WbSolid *const solid = qobject_cast<WbSolid *>(node);
       mNodeGetContactPoints = solid;
       if (!solid)
         mRobot->warn(
@@ -649,7 +649,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+      WbSolid *const solid = qobject_cast<WbSolid *>(node);
       mNodeGetStaticBalance = solid;
       if (!solid || !solid->isTopLevel())
         mRobot->warn(tr("wb_supervisor_node_get_static_balance() can exclusively be used with a top Solid"));
@@ -661,7 +661,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+      WbSolid *const solid = qobject_cast<WbSolid *>(node);
       if (solid)
         mNodeGetVelocity = solid;
       else
@@ -683,7 +683,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       const double linearVelocity[3] = {l0, l1, l2};
       const double angularVelocity[3] = {a0, a1, a2};
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+      WbSolid *const solid = qobject_cast<WbSolid *>(node);
       if (solid) {
         solid->setLinearVelocity(linearVelocity);
         solid->setAngularVelocity(angularVelocity);
@@ -697,7 +697,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+      WbSolid *const solid = qobject_cast<WbSolid *>(node);
       if (solid)
         solid->resetPhysics();
       else
@@ -710,7 +710,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       stream >> id;
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(id));
-      WbRobot *const robot = dynamic_cast<WbRobot *>(node);
+      WbRobot *const robot = qobject_cast<WbRobot *>(node);
       if (robot == mRobot)
         // we can't restart the controller associated to this supervisor here
         // we postpone it to the end of the physic step
@@ -731,9 +731,9 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
 
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(nodeId));
       WbNode *const cameraNode = getProtoParameterNodeInstance(WbNode::findNode(fromId));
-      WbAbstractCamera *const camera = dynamic_cast<WbAbstractCamera *>(cameraNode);
-      WbViewpoint *const viewpoint = dynamic_cast<WbViewpoint *>(cameraNode);
-      WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+      WbAbstractCamera *const camera = qobject_cast<WbAbstractCamera *>(cameraNode);
+      WbViewpoint *const viewpoint = qobject_cast<WbViewpoint *>(cameraNode);
+      WbBaseNode *const baseNode = qobject_cast<WbBaseNode *>(node);
       assert(baseNode);
       if (camera)
         // cppcheck-suppress knownConditionTrueFalse
@@ -747,7 +747,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
       unsigned int nodeId;
       stream >> nodeId;
       WbNode *const node = getProtoParameterNodeInstance(WbNode::findNode(nodeId));
-      WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+      WbBaseNode *const baseNode = qobject_cast<WbBaseNode *>(node);
       assert(baseNode);
       if (WbNodeUtilities::boundingSphereAncestor(baseNode) != NULL)
         WbWorld::instance()->viewpoint()->moveViewpointToObject(baseNode);
@@ -793,7 +793,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
         if (id != -1) {
           WbField *field = node->field(id);
           if (field) {
-            WbMultipleValue *mv = dynamic_cast<WbMultipleValue *>(field->value());
+            WbMultipleValue *mv = qobject_cast<WbMultipleValue *>(field->value());
             mFoundFieldCount = mv ? mv->size() : -1;
             mFoundFieldId = id;
             mFoundFieldType = field->type();
@@ -909,19 +909,19 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
           unsigned char value;
           stream >> value;
           // cppcheck-suppress knownConditionTrueFalse
-          (dynamic_cast<WbMFBool *>(field->value()))->insertItem(index, value == 1);
+          (qobject_cast<WbMFBool *>(field->value()))->insertItem(index, value == 1);
           break;
         }
         case WB_MF_INT32: {
           int value;
           stream >> value;
-          (dynamic_cast<WbMFInt *>(field->value()))->insertItem(index, value);
+          (qobject_cast<WbMFInt *>(field->value()))->insertItem(index, value);
           break;
         }
         case WB_MF_FLOAT: {
           double value;
           stream >> value;
-          (dynamic_cast<WbMFDouble *>(field->value()))->insertItem(index, value);
+          (qobject_cast<WbMFDouble *>(field->value()))->insertItem(index, value);
           break;
         }
         case WB_MF_VEC2F: {
@@ -929,7 +929,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
           stream >> d0;
           stream >> d1;
           WbVector2 value(d0, d1);
-          (dynamic_cast<WbMFVector2 *>(field->value()))->insertItem(index, value);
+          (qobject_cast<WbMFVector2 *>(field->value()))->insertItem(index, value);
           break;
         }
         case WB_MF_VEC3F: {
@@ -938,7 +938,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
           stream >> d1;
           stream >> d2;
           WbVector3 value(d0, d1, d2);
-          (dynamic_cast<WbMFVector3 *>(field->value()))->insertItem(index, value);
+          (qobject_cast<WbMFVector3 *>(field->value()))->insertItem(index, value);
           break;
         }
         case WB_MF_ROTATION: {
@@ -948,7 +948,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
           stream >> d2;
           stream >> d3;
           WbRotation value(d0, d1, d2, d3);
-          (dynamic_cast<WbMFRotation *>(field->value()))->insertItem(index, value);
+          (qobject_cast<WbMFRotation *>(field->value()))->insertItem(index, value);
           break;
         }
         case WB_MF_COLOR: {
@@ -957,12 +957,12 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
           stream >> d1;
           stream >> d2;
           WbRgb value(d0, d1, d2);
-          (dynamic_cast<WbMFColor *>(field->value()))->insertItem(index, value);
+          (qobject_cast<WbMFColor *>(field->value()))->insertItem(index, value);
           break;
         }
         case WB_MF_STRING: {
           const QString string = readString(stream);
-          (dynamic_cast<WbMFString *>(field->value()))->insertItem(index, string);
+          (qobject_cast<WbMFString *>(field->value()))->insertItem(index, string);
           break;
         }
         case WB_MF_NODE: {
@@ -1034,19 +1034,19 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
         case WB_MF_ROTATION:
         case WB_MF_COLOR:
         case WB_MF_STRING: {
-          WbMultipleValue *multipleValue = dynamic_cast<WbMultipleValue *>(field->value());
+          WbMultipleValue *multipleValue = qobject_cast<WbMultipleValue *>(field->value());
           assert(multipleValue->size() > index);
           multipleValue->removeItem(index);
           emit worldModified();
           break;
         }
         case WB_MF_NODE: {
-          WbMFNode *mfNode = dynamic_cast<WbMFNode *>(field->value());
+          WbMFNode *mfNode = qobject_cast<WbMFNode *>(field->value());
           assert(mfNode->size() > index);
           WbNode *node = mfNode->item(index);
 
-          WbViewpoint *viewpoint = dynamic_cast<WbViewpoint *>(node);
-          WbWorldInfo *worldInfo = dynamic_cast<WbWorldInfo *>(node);
+          WbViewpoint *viewpoint = qobject_cast<WbViewpoint *>(node);
+          WbWorldInfo *worldInfo = qobject_cast<WbWorldInfo *>(node);
           if (viewpoint || worldInfo) {
             node = NULL;
             mRobot->warn(tr(
@@ -1115,7 +1115,7 @@ void WbSupervisorUtilities::writeNode(QDataStream &stream, const WbBaseNode *bas
 void WbSupervisorUtilities::writeAnswer(QDataStream &stream) {
   if (!mUpdatedNodeIds.isEmpty()) {
     foreach (int id, mUpdatedNodeIds) {
-      const WbBaseNode *baseNode = dynamic_cast<const WbBaseNode *>(WbNode::findNode(id));
+      const WbBaseNode *baseNode = qobject_cast<const WbBaseNode *>(WbNode::findNode(id));
       if (baseNode) {
         stream << (short unsigned int)0;
         stream << (unsigned char)C_SUPERVISOR_NODE_GET_FROM_ID;
@@ -1175,7 +1175,7 @@ void WbSupervisorUtilities::writeAnswer(QDataStream &stream) {
       QByteArray ba = deletedNodeInfo.parentField->name().toUtf8();
       stream.writeRawData(ba.constData(), ba.size() + 1);
       if (deletedNodeInfo.parentField->isMultiple())
-        stream << (int)dynamic_cast<WbMultipleValue *>(deletedNodeInfo.parentField->value())->size();
+        stream << (int)qobject_cast<WbMultipleValue *>(deletedNodeInfo.parentField->value())->size();
       else
         stream << (int)-1;
     }
@@ -1259,35 +1259,35 @@ void WbSupervisorUtilities::writeAnswer(QDataStream &stream) {
     stream << (int)field->type();
     switch (field->type()) {
       case WB_SF_BOOL: {
-        bool v = dynamic_cast<WbSFBool *>(field->value())->value();
+        bool v = qobject_cast<WbSFBool *>(field->value())->value();
         stream << (unsigned char)v;
         break;
       }
       case WB_SF_INT32: {
-        int v = dynamic_cast<WbSFInt *>(field->value())->value();
+        int v = qobject_cast<WbSFInt *>(field->value())->value();
         stream << (int)v;
         break;
       }
       case WB_SF_FLOAT: {
-        double v = dynamic_cast<WbSFDouble *>(field->value())->value();
+        double v = qobject_cast<WbSFDouble *>(field->value())->value();
         stream << (double)v;
         break;
       }
       case WB_SF_VEC2F: {
-        const WbVector2 &v = dynamic_cast<WbSFVector2 *>(field->value())->value();
+        const WbVector2 &v = qobject_cast<WbSFVector2 *>(field->value())->value();
         stream << (double)v.x();
         stream << (double)v.y();
         break;
       }
       case WB_SF_VEC3F: {
-        const WbVector3 &v = dynamic_cast<WbSFVector3 *>(field->value())->value();
+        const WbVector3 &v = qobject_cast<WbSFVector3 *>(field->value())->value();
         stream << (double)v.x();
         stream << (double)v.y();
         stream << (double)v.z();
         break;
       }
       case WB_SF_ROTATION: {
-        const WbRotation &v = dynamic_cast<WbSFRotation *>(field->value())->value();
+        const WbRotation &v = qobject_cast<WbSFRotation *>(field->value())->value();
         stream << (double)v.x();
         stream << (double)v.y();
         stream << (double)v.z();
@@ -1295,21 +1295,21 @@ void WbSupervisorUtilities::writeAnswer(QDataStream &stream) {
         break;
       }
       case WB_SF_COLOR: {
-        const WbRgb &v = dynamic_cast<WbSFColor *>(field->value())->value();
+        const WbRgb &v = qobject_cast<WbSFColor *>(field->value())->value();
         stream << (double)v.red();
         stream << (double)v.green();
         stream << (double)v.blue();
         break;
       }
       case WB_SF_STRING: {
-        const QString &v = dynamic_cast<WbSFString *>(field->value())->value();
+        const QString &v = qobject_cast<WbSFString *>(field->value())->value();
         QByteArray ba = v.toUtf8();
         stream.writeRawData(ba.constData(), ba.size() + 1);
         break;
       }
       case WB_SF_NODE: {
-        WbNode *const node = dynamic_cast<WbSFNode *>(field->value())->value();
-        const WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+        WbNode *const node = qobject_cast<WbSFNode *>(field->value())->value();
+        const WbBaseNode *const baseNode = qobject_cast<WbBaseNode *>(node);
         if (baseNode)
           writeNode(stream, baseNode, C_SUPERVISOR_FIELD_GET_VALUE);
         else
@@ -1317,42 +1317,42 @@ void WbSupervisorUtilities::writeAnswer(QDataStream &stream) {
         break;
       }
       case WB_MF_BOOL: {
-        const bool v = dynamic_cast<WbMFBool *>(field->value())->item(mFieldGetRequest->index);
+        const bool v = qobject_cast<WbMFBool *>(field->value())->item(mFieldGetRequest->index);
         stream << (unsigned char)v;
         break;
       }
       case WB_MF_INT32: {
-        const int v = dynamic_cast<WbMFInt *>(field->value())->item(mFieldGetRequest->index);
+        const int v = qobject_cast<WbMFInt *>(field->value())->item(mFieldGetRequest->index);
         stream << (int)v;
         break;
       }
       case WB_MF_FLOAT: {
-        const double v = dynamic_cast<WbMFDouble *>(field->value())->item(mFieldGetRequest->index);
+        const double v = qobject_cast<WbMFDouble *>(field->value())->item(mFieldGetRequest->index);
         stream << (double)v;
         break;
       }
       case WB_MF_VEC2F: {
-        const WbVector2 &v = dynamic_cast<WbMFVector2 *>(field->value())->item(mFieldGetRequest->index);
+        const WbVector2 &v = qobject_cast<WbMFVector2 *>(field->value())->item(mFieldGetRequest->index);
         stream << (double)v.x();
         stream << (double)v.y();
         break;
       }
       case WB_MF_VEC3F: {
-        const WbVector3 &v = dynamic_cast<WbMFVector3 *>(field->value())->item(mFieldGetRequest->index);
+        const WbVector3 &v = qobject_cast<WbMFVector3 *>(field->value())->item(mFieldGetRequest->index);
         stream << (double)v.x();
         stream << (double)v.y();
         stream << (double)v.z();
         break;
       }
       case WB_MF_COLOR: {
-        const WbRgb &v = dynamic_cast<WbMFColor *>(field->value())->item(mFieldGetRequest->index);
+        const WbRgb &v = qobject_cast<WbMFColor *>(field->value())->item(mFieldGetRequest->index);
         stream << (double)v.red();
         stream << (double)v.green();
         stream << (double)v.blue();
         break;
       }
       case WB_MF_ROTATION: {
-        const WbRotation &v = dynamic_cast<WbMFRotation *>(field->value())->item(mFieldGetRequest->index);
+        const WbRotation &v = qobject_cast<WbMFRotation *>(field->value())->item(mFieldGetRequest->index);
         stream << (double)v.x();
         stream << (double)v.y();
         stream << (double)v.z();
@@ -1360,15 +1360,15 @@ void WbSupervisorUtilities::writeAnswer(QDataStream &stream) {
         break;
       }
       case WB_MF_STRING: {
-        const QString &v = dynamic_cast<WbMFString *>(field->value())->item(mFieldGetRequest->index);
+        const QString &v = qobject_cast<WbMFString *>(field->value())->item(mFieldGetRequest->index);
         QByteArray ba = v.toUtf8();
         stream.writeRawData(ba.constData(), ba.size() + 1);
         break;
       }
       case WB_MF_NODE: {
-        const WbMFNode::WbNodePtr &v = dynamic_cast<WbMFNode *>(field->value())->item(mFieldGetRequest->index);
-        WbNode *const node = dynamic_cast<WbNode *>(v);
-        const WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+        const WbMFNode::WbNodePtr &v = qobject_cast<WbMFNode *>(field->value())->item(mFieldGetRequest->index);
+        WbNode *const node = qobject_cast<WbNode *>(v);
+        const WbBaseNode *const baseNode = qobject_cast<WbBaseNode *>(node);
         if (baseNode)
           writeNode(stream, baseNode, C_SUPERVISOR_FIELD_GET_VALUE);
         else

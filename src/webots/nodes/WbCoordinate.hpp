@@ -18,9 +18,11 @@
 #include "WbBaseNode.hpp"
 #include "WbMFVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
-class WbCoordinate : public WbBaseNode {
+class WB_LIB_EXPORT WbCoordinate : public WbBaseNode {
   Q_OBJECT
 
 public:

@@ -21,7 +21,9 @@
 
 #include <QtWidgets/QUndoStack>
 
-class WbUndoStack : public QUndoStack {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbUndoStack : public QUndoStack {
   Q_OBJECT
 
 public:

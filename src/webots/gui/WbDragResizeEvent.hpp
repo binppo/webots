@@ -26,6 +26,8 @@
 
 #include <QtCore/QPoint>
 
+#include <core/WbConfig.h>
+
 class WbBox;
 class WbCapsule;
 class WbCone;
@@ -40,7 +42,7 @@ class WbVector3;
 
 // WbDragResizeHandleEvent class (abstract) //
 //////////////////////////////////////////////
-class WbDragResizeHandleEvent : public WbDragView3DEvent {
+class WB_LIB_EXPORT WbDragResizeHandleEvent : public WbDragView3DEvent {
   Q_OBJECT;
 
 public:
@@ -72,7 +74,7 @@ protected:
 };
 
 // WbRegularResizeEvent class (another abstract layer) : resize spheres, boxes, cylinders, capsules and cones
-class WbRegularResizeEvent : public WbDragResizeHandleEvent {
+class WB_LIB_EXPORT WbRegularResizeEvent : public WbDragResizeHandleEvent {
 public:
   WbRegularResizeEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                        WbGeometry *selectedGeometry);
@@ -80,7 +82,7 @@ public:
 };
 
 // Resize Sphere
-class WbResizeSphereEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeSphereEvent : public WbRegularResizeEvent {
 public:
   WbResizeSphereEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                       WbGeometry *selectedGeometry);
@@ -92,7 +94,7 @@ private:
 };
 
 // Resize Cylinder
-class WbResizeCylinderEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeCylinderEvent : public WbRegularResizeEvent {
 public:
   WbResizeCylinderEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                         WbGeometry *selectedGeometry);
@@ -104,7 +106,7 @@ private:
 };
 
 // Resize Capsule
-class WbResizeCapsuleEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeCapsuleEvent : public WbRegularResizeEvent {
 public:
   WbResizeCapsuleEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                        WbGeometry *selectedGeometry);
@@ -116,7 +118,7 @@ protected:
 };
 
 // Resize Box
-class WbResizeBoxEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeBoxEvent : public WbRegularResizeEvent {
 public:
   WbResizeBoxEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber, WbGeometry *selectedGeometry);
   void apply(const QPoint &currentMousePosition) override;
@@ -127,7 +129,7 @@ protected:
 };
 
 // Resize Plane
-class WbResizePlaneEvent : public WbDragResizeHandleEvent {
+class WB_LIB_EXPORT WbResizePlaneEvent : public WbDragResizeHandleEvent {
 public:
   WbResizePlaneEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                      WbGeometry *selectedGeometry);
@@ -139,7 +141,7 @@ protected:
 };
 
 // Resize Cone
-class WbResizeConeEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeConeEvent : public WbRegularResizeEvent {
 public:
   WbResizeConeEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber, WbGeometry *selectedGeometry);
   void apply(const QPoint &currentMousePosition) override;
@@ -150,7 +152,7 @@ private:
 };
 
 // Resize ElevationGrid
-class WbResizeElevationGridEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeElevationGridEvent : public WbRegularResizeEvent {
 public:
   WbResizeElevationGridEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                              WbGeometry *selectedGeometry);
@@ -162,7 +164,7 @@ protected:
 };
 
 // Resize IndexedFaceSet
-class WbResizeIndexedFaceSetEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbResizeIndexedFaceSetEvent : public WbRegularResizeEvent {
 public:
   WbResizeIndexedFaceSetEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                               WbGeometry *selectedGeometry);

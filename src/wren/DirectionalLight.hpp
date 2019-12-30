@@ -22,7 +22,7 @@ namespace wren {
 
   // Represents an infinitely far-away light source.
   // Although it inherits from Node and can be attached to a Transform, the effect of doing so is nil.
-  class DirectionalLight : public LightNode {
+  struct DirectionalLight : public LightNode {
   public:
     // Encapsulate memory management
     static DirectionalLight *createDirectionalLight() { return new DirectionalLight(); }

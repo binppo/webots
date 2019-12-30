@@ -21,12 +21,14 @@
 #include "WbLightRepresentation.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrTransform;
 struct WrStaticMesh;
 struct WrRenderable;
 struct WrMaterial;
 
-class WbSpotLightRepresentation : public WbLightRepresentation {
+class WB_LIB_EXPORT WbSpotLightRepresentation : public WbLightRepresentation {
 public:
   // Constructor and destructor
   WbSpotLightRepresentation(WrTransform *parent, const WbVector3 &position, float radius, float cutOffAngle,

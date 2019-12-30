@@ -15,26 +15,19 @@
 #ifndef WB_WEB_PAGE
 #define WB_WEB_PAGE
 
-#ifdef _WIN32
-#include <QtWebKitWidgets/QWebPage>
-#elif defined(__APPLE__) || defined(__linux__)
 #include <QtWebEngineWidgets/QWebEnginePage>
-#define QWebPage QWebEnginePage
-#endif
 
-class WbWebPage : public QWebPage {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWebPage : public QWebEnginePage {
   Q_OBJECT
 public:
-  explicit WbWebPage(QObject *parent = NULL) : QWebPage(parent) {}
+  explicit WbWebPage(QObject *parent = NULL) : QWebEnginePage(parent) {}
   virtual ~WbWebPage() {}
 
 protected:
-#ifdef _WIN32
-  void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceUrl) override;
-#else
-  void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber,
+  virtual void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber,
                                 const QString &sourceID) override;
-#endif
 };
 
 #endif  // WB_WEB_PAGE

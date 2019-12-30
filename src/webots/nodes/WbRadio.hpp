@@ -17,9 +17,11 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 
-class WbRadio : public WbSolidDevice {
+class WB_LIB_EXPORT WbRadio : public WbSolidDevice {
   Q_OBJECT
 
 public:

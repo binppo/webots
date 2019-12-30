@@ -21,6 +21,8 @@
 #ifndef WBU_SYSTEM_H
 #define WBU_SYSTEM_H
 
+#include <webots/types.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -29,7 +31,7 @@ extern "C" {
 // environment variable.
 // The return value points to a char buffer which may be overwritten by any subsequent
 // call to a wbu_system function.
-const char *wbu_system_getenv(const char *variable);
+CONTROLLER_EXPORT const char *wbu_system_getenv(const char *variable);
 
 // On Linux and macOS, wbu_system_short_path() returns the variable passed as an
 // argument. On Windows, it returns an ASCII string corresponding to the Windows 8.3
@@ -37,11 +39,11 @@ const char *wbu_system_getenv(const char *variable);
 // library that doesn't support UTF-8 multi-byte strings or wide characters for paths.
 // The return value points to a char buffer which may be overwritten by any subsequent
 // call to a wbu_system function.
-const char *wbu_system_short_path(const char *path);
+CONTROLLER_EXPORT const char *wbu_system_short_path(const char *path);
 
 // The following function returns the tmp folder used by Webots. On Linux, it is /tmp/webots-XXX.
 // On macOS is it /var/tmp/webots-XXX. On Windows, it is LOCALAPPDATA/Temp/webots-XXX where XXX is the Webots PID
-const char *wbu_system_webots_tmp_path();
+CONTROLLER_EXPORT const char *wbu_system_webots_tmp_path();
 
 #ifdef __cplusplus
 }

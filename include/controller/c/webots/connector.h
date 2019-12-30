@@ -22,18 +22,18 @@
 #define WB_CONNECTOR_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_connector_enable_presence(WbDeviceTag tag, int sampling_period);
-void wb_connector_disable_presence(WbDeviceTag tag);
-int wb_connector_get_presence_sampling_period(WbDeviceTag tag);
-int wb_connector_get_presence(WbDeviceTag tag);
-void wb_connector_lock(WbDeviceTag tag);
-void wb_connector_unlock(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_connector_enable_presence(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_connector_disable_presence(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_connector_get_presence_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_connector_get_presence(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_connector_lock(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_connector_unlock(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

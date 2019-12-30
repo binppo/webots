@@ -370,7 +370,7 @@ void WbTextEditor::revertFile() {
 }
 
 void WbTextEditor::selectTab() {
-  WbTextBuffer *b = dynamic_cast<WbTextBuffer *>(sender());
+  WbTextBuffer *b = qobject_cast<WbTextBuffer *>(sender());
   if (!b)
     return;
   selectBuffer(b);
@@ -395,7 +395,7 @@ void WbTextEditor::showModifiedTextBuffer() {
     return;
 
   // show text editor and reset selected tab
-  WbTextBuffer *b = dynamic_cast<WbTextBuffer *>(sender());
+  WbTextBuffer *b = qobject_cast<WbTextBuffer *>(sender());
   selectBuffer(b);
   show();
 }
@@ -461,7 +461,7 @@ void WbTextEditor::deleteReplaceDialog() {
 }
 
 void WbTextEditor::highlightSearchText(QRegExp regExp) {
-  WbTextBuffer *buffer = dynamic_cast<WbTextBuffer *>(mTabWidget->currentWidget());
+  WbTextBuffer *buffer = qobject_cast<WbTextBuffer *>(mTabWidget->currentWidget());
   if (buffer)
     buffer->updateSearchTextHighlighting(regExp);
 }

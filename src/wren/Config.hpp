@@ -19,8 +19,8 @@
 
 namespace wren {
 
-  class Camera;
-  class ShaderProgram;
+  struct Camera;
+  struct ShaderProgram;
 
   namespace config {
 

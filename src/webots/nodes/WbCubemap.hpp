@@ -17,10 +17,12 @@
 
 #include "WbBaseNode.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrTextureCubeMap;
 struct WrMaterial;
 
-class WbCubemap : public WbBaseNode {
+class WB_LIB_EXPORT WbCubemap : public WbBaseNode {
   Q_OBJECT
 
 public:

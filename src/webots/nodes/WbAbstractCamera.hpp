@@ -17,6 +17,8 @@
 
 #include "WbRenderingDevice.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrTransform;
 struct WrStaticMesh;
 struct WrRenderable;
@@ -34,7 +36,7 @@ class WbPosixSharedMemory;
 
 class QDataStream;
 
-class WbAbstractCamera : public WbRenderingDevice {
+class WB_LIB_EXPORT WbAbstractCamera : public WbRenderingDevice {
   Q_OBJECT
 
 public:

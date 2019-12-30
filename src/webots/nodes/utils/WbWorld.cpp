@@ -345,7 +345,7 @@ void WbWorld::write(WbVrmlWriter &writer) const {
     // make sure all the meshes data are up-to-date
     // only X3D exporter relies on OpenGL data
     // this is needed for example in minimize and streaming mode because the world is exported before the first main rendering
-    WbWrenOpenGlContext::makeWrenCurrent();
+	WbWrenOpenGlContext::makeWrenCurrent();
     wr_scene_apply_pending_updates(wr_scene_get_instance());
     WbWrenOpenGlContext::doneWren();
   }
@@ -424,7 +424,7 @@ void WbWorld::createX3DMetaFile(const QString &filename) const {
       deviceObject.insert("name", device->deviceName());
       const WbBaseNode *deviceBaseNode = dynamic_cast<const WbBaseNode *>(device);
       const WbJointDevice *jointDevice = dynamic_cast<const WbJointDevice *>(device);
-      const WbMotor *motor = dynamic_cast<const WbMotor *>(jointDevice);
+      const WbMotor *motor = qobject_cast<const WbMotor *>(jointDevice);
 
       if (deviceBaseNode)
         deviceObject.insert("type", deviceBaseNode->nodeModelName());
@@ -450,7 +450,7 @@ void WbWorld::createX3DMetaFile(const QString &filename) const {
         deviceObject.insert("maxPosition", motor->maxPosition());
         deviceObject.insert("initialPosition", 0.0);
       } else {  // case: other WbDevice nodes.
-        const WbBaseNode *parent = jointDevice ? dynamic_cast<const WbBaseNode *>(deviceBaseNode->parent()) : deviceBaseNode;
+        const WbBaseNode *parent = jointDevice ? qobject_cast<const WbBaseNode *>(deviceBaseNode->parent()) : deviceBaseNode;
         // Retrieve closest exported Transform parent, and compute its translation offset.
         WbMatrix4 m;
         while (parent) {
@@ -467,7 +467,7 @@ void WbWorld::createX3DMetaFile(const QString &filename) const {
             if (transform)
               m *= transform->vrmlMatrix();
           }
-          parent = dynamic_cast<const WbBaseNode *>(parent->parent());
+          parent = qobject_cast<const WbBaseNode *>(parent->parent());
         }
         // LED case: export color data.
         const WbLed *led = dynamic_cast<const WbLed *>(device);
@@ -499,7 +499,7 @@ void WbWorld::createX3DMetaFile(const QString &filename) const {
 WbSolid *WbWorld::findSolid(const QString &name) const {
   WbMFNode::Iterator it(mRoot->children());
   while (it.hasNext()) {
-    WbSolid *const solidChild = dynamic_cast<WbSolid *>(it.next());
+    WbSolid *const solidChild = qobject_cast<WbSolid *>(it.next());
     if (solidChild) {
       WbSolid *const found = solidChild->findSolid(name);
       if (found)
@@ -514,7 +514,7 @@ QList<WbSolid *> WbWorld::findSolids(bool visibleNodes) const {
   QList<WbSolid *> allSolids;
 
   foreach (WbNode *const node, allNodes) {
-    WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+    WbSolid *const solid = qobject_cast<WbSolid *>(node);
     if (solid)
       allSolids.append(solid);
   }
@@ -601,7 +601,7 @@ void WbWorld::awake() {
     mLastAwakeningTime = currentSimulationTime;
     WbMFNode::Iterator it(mRoot->children());
     while (it.hasNext()) {
-      WbGroup *const group = dynamic_cast<WbGroup *>(it.next());
+      WbGroup *const group = qobject_cast<WbGroup *>(it.next());
       if (group)
         WbSolid::awakeSolids(group);
     }
@@ -617,7 +617,7 @@ void WbWorld::retrieveNodeNamesWithOptionalRendering(QStringList &centerOfMassNo
   WbSolid *solid = NULL;
   const QList<WbNode *> &allNodes = mRoot->subNodes(true);
   for (int i = 0; i < allNodes.size(); ++i) {
-    solid = dynamic_cast<WbSolid *>(allNodes[i]);
+    solid = qobject_cast<WbSolid *>(allNodes[i]);
     if (solid && (solid->globalCenterOfMassRepresentationEnabled() || solid->centerOfBuoyancyRepresentationEnabled() ||
                   solid->supportPolygonRepresentationEnabled())) {
       const QString name = solid->computeUniqueName();
@@ -637,16 +637,16 @@ QString WbWorld::logWorldMetrics() const {
   int geomCount = 0;
   const QList<WbNode *> &allNodes = mRoot->subNodes(true);
   foreach (WbNode *node, allNodes) {
-    if (dynamic_cast<WbBasicJoint *>(node)) {
+    if (qobject_cast<WbBasicJoint *>(node)) {
       jointCount++;
       continue;
     }
-    WbSolid *solid = dynamic_cast<WbSolid *>(node);
+    WbSolid *solid = qobject_cast<WbSolid *>(node);
     if (solid && (solid->isKinematic() || solid->isSolidMerger())) {
       solidCount++;
       continue;
     }
-    WbGeometry *geometry = dynamic_cast<WbGeometry *>(node);
+    WbGeometry *geometry = qobject_cast<WbGeometry *>(node);
     if (geometry && !geometry->isInBoundingObject())
       geomCount++;
   }

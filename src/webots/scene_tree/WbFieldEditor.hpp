@@ -22,7 +22,9 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
-#include "../../../include/controller/c/webots/supervisor.h"
+#include <webots/supervisor.h>
+
+#include <core/WbConfig.h>
 
 class WbField;
 class WbNode;
@@ -31,7 +33,7 @@ class WbValueEditor;
 class QLabel;
 class QStackedLayout;
 
-class WbFieldEditor : public QWidget {
+class WB_LIB_EXPORT WbFieldEditor : public QWidget {
   Q_OBJECT
 
 public:

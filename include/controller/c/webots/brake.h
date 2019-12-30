@@ -22,7 +22,7 @@
 #define WB_BRAKE_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifndef WB_MATLAB_LOADLIBRARY
 #include <math.h>
@@ -32,10 +32,10 @@
 extern "C" {
 #endif
 
-void wb_brake_set_damping_constant(WbDeviceTag tag, double damping_constant);
-WbJointType wb_brake_get_type(WbDeviceTag tag);
-WbDeviceTag wb_brake_get_motor(WbDeviceTag tag);
-WbDeviceTag wb_brake_get_position_sensor(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_brake_set_damping_constant(WbDeviceTag tag, double damping_constant);
+CONTROLLER_EXPORT WbJointType wb_brake_get_type(WbDeviceTag tag);
+CONTROLLER_EXPORT WbDeviceTag wb_brake_get_motor(WbDeviceTag tag);
+CONTROLLER_EXPORT WbDeviceTag wb_brake_get_position_sensor(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

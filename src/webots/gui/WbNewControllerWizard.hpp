@@ -23,12 +23,14 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QWizard>
 
+#include <core/WbConfig.h>
+
 class WbLanguage;
 class WbLineEdit;
 
 class QLabel;
 
-class WbNewControllerWizard : public QWizard {
+class WB_LIB_EXPORT WbNewControllerWizard : public QWizard {
   Q_OBJECT
 
 public:
@@ -80,7 +82,7 @@ private:
   QWizardPage *createConclusionPage();
 };
 
-class WbLanguageWizardPage : public QWizardPage {
+class WB_LIB_EXPORT WbLanguageWizardPage : public QWizardPage {
   Q_OBJECT
 public:
   explicit WbLanguageWizardPage(QWidget *parent = NULL) : QWizardPage(parent), mButtonGroup(NULL) {}

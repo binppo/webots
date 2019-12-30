@@ -43,7 +43,7 @@ WbSliderJoint::~WbSliderJoint() {
 WbLinearMotor *WbSliderJoint::linearMotor() const {
   WbLinearMotor *motor = NULL;
   for (int i = 0; i < mDevice->size(); ++i) {
-    motor = dynamic_cast<WbLinearMotor *>(mDevice->item(i));
+    motor = qobject_cast<WbLinearMotor *>(mDevice->item(i));
     if (motor)
       return motor;
   }
@@ -135,7 +135,7 @@ void WbSliderJoint::updatePosition(double position) {
 }
 
 void WbSliderJoint::updateMinAndMaxStop(double min, double max) {
-  const WbJointParameters *const p = dynamic_cast<WbJointParameters *>(sender());
+  const WbJointParameters *const p = qobject_cast<WbJointParameters *>(sender());
   WbLinearMotor *const lm = linearMotor();
   if (lm) {
     const double minPos = lm->minPosition();

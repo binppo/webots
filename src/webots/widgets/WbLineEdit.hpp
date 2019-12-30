@@ -21,9 +21,11 @@
 
 #include <QtWidgets/QLineEdit>
 
+#include <core/WbConfig.h>
+
 class WbClipboard;
 
-class WbLineEdit : public QLineEdit {
+class WB_LIB_EXPORT WbLineEdit : public QLineEdit {
   Q_OBJECT
 
 public:

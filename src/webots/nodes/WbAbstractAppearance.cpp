@@ -85,7 +85,7 @@ void WbAbstractAppearance::updateName() {
 }
 
 WbTextureTransform *WbAbstractAppearance::textureTransform() const {
-  return dynamic_cast<WbTextureTransform *>(mTextureTransform->value());
+  return qobject_cast<WbTextureTransform *>(mTextureTransform->value());
 }
 
 WbVector2 WbAbstractAppearance::transformUVCoordinate(const WbVector2 &uv) const {

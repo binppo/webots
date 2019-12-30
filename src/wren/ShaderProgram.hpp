@@ -26,10 +26,10 @@
 
 namespace wren {
 
-  class Texture;
+  struct Texture;
 
   // Defines a GLSL program created by compiling and linking a vertex shader and a fragment shader source.
-  class ShaderProgram : public GlUser {
+  struct ShaderProgram : public GlUser {
   public:
     // Encapsulate memory management
     static ShaderProgram *createShaderProgram() { return new ShaderProgram(); }

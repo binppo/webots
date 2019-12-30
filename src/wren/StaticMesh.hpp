@@ -25,7 +25,7 @@
 namespace wren {
 
   // Mesh class, creates a cache entry on creation if necessary and stores a pointer on the cached data needed for rendering
-  class StaticMesh : public Mesh {
+  struct StaticMesh : public Mesh {
   public:
     // Encapsulate memory management
     static StaticMesh *createStaticMesh() { return new StaticMesh(); }

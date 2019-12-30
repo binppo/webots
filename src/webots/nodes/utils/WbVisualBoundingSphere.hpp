@@ -22,9 +22,11 @@
 
 #include "QtCore/QObject"
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 
-class WbVisualBoundingSphere : public QObject {
+class WB_LIB_EXPORT WbVisualBoundingSphere : public QObject {
   Q_OBJECT
 
 public:

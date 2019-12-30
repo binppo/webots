@@ -22,28 +22,28 @@
 #define WB_RADAR_H
 
 #define WB_USING_C_API
-#include "radar_target.h"
-#include "types.h"
+#include <webots/radar_target.h>
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_radar_enable(WbDeviceTag tag, int sampling_period);
-void wb_radar_disable(WbDeviceTag tag);
-int wb_radar_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radar_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_radar_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_radar_get_sampling_period(WbDeviceTag tag);
 
-int wb_radar_get_number_of_targets(WbDeviceTag tag);
-const WbRadarTarget *wb_radar_get_targets(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_radar_get_number_of_targets(WbDeviceTag tag);
+CONTROLLER_EXPORT const WbRadarTarget *wb_radar_get_targets(WbDeviceTag tag);
 
-double wb_radar_get_min_range(WbDeviceTag tag);
-double wb_radar_get_max_range(WbDeviceTag tag);
-double wb_radar_get_horizontal_fov(WbDeviceTag tag);
-double wb_radar_get_vertical_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_radar_get_min_range(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_radar_get_max_range(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_radar_get_horizontal_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_radar_get_vertical_fov(WbDeviceTag tag);
 
 #ifdef WB_MATLAB_LOADLIBRARY
 // This function should be used only in the Matlab wrapper
-const WbRadarTarget *wb_radar_get_target(WbDeviceTag tag, int index);
+CONTROLLER_EXPORT const WbRadarTarget *wb_radar_get_target(WbDeviceTag tag, int index);
 #endif
 
 #ifdef __cplusplus

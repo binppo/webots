@@ -18,7 +18,9 @@
 #include "WbBaseNode.hpp"
 #include "WbSFVector2.hpp"
 
-class WbLens : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbLens : public WbBaseNode {
   Q_OBJECT
 
 public:

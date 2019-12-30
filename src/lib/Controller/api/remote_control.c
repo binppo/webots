@@ -37,7 +37,8 @@ static void handleMessage(WbRequest *r, WbDeviceTag tag, WbNodeType type);
 static void handleRobotMessage(WbRequest *r, unsigned char c);
 static void handleDisplayMessage(WbRequest *r, WbDeviceTag tag, unsigned char c);
 
-static WbrInterface remoteInterface = {};
+//static WbrInterface remoteInterface = {};
+static WbrInterface remoteInterface;
 static DYNAMIC_LIBRARY_HANDLE library_handle = NULL;
 static bool initialized = false;
 

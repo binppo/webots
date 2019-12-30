@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 struct WrTextureTransform;
-typedef struct WrTextureTransform WrTextureTransform;
+//typedef struct WrTextureTransform WrTextureTransform;
 
 WrTextureTransform *wr_texture_transform_new();
 void wr_texture_transform_delete(WrTextureTransform *transform);

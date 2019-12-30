@@ -29,7 +29,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <webots/types.h>
 #include "../api/scheduler.h"
 
@@ -43,7 +43,7 @@ GPipe *g_pipe_new(const char *name) {  // used by Webots 7
   p->fd[0] = 0;
   p->fd[1] = 0;
   while (1) {
-    p->handle = CreateFile(name, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+    p->handle = CreateFileA(name, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
     if (p->handle != INVALID_HANDLE_VALUE)
       break;
     DWORD dwError = GetLastError();
@@ -52,7 +52,7 @@ GPipe *g_pipe_new(const char *name) {  // used by Webots 7
       free(p);
       return NULL;
     }
-    if (!WaitNamedPipe(name, 5000)) {
+    if (!WaitNamedPipeA(name, 5000)) {
       fprintf(stderr, "Cannot open pipe file: %s after trying for 5 seconds\n", name);
       free(p);
       return NULL;
@@ -107,13 +107,17 @@ void g_pipe_send(GPipe *p, const char *data, int size) {
   assert(p->handle);
   DWORD m = 0;
   if (WriteFile(p->handle, data, size, &m, NULL) == 0)
-    exit(1);
+  {
+    //exit(1);
+  }
 #else
   int fd = p->handle;
   if (!fd)
     fd = p->fd[1];
   if (write(fd, data, size) == -1)
-    exit(1);
+  {
+    //exit(1);
+  }
 #endif
 }
 
@@ -133,7 +137,9 @@ int g_pipe_receive(GPipe *p, char *data, int size) {
     }
   } while (!success);      // repeat loop while ERROR_MORE_DATA
   if (e != ERROR_SUCCESS)  // broken pipe due to the crash of Webots
-    exit(1);
+  {
+    //exit(1);
+  }
   return (int)nb_read;
 #else
   int fd = p->handle;
@@ -148,7 +154,9 @@ int g_pipe_receive(GPipe *p, char *data, int size) {
   if (n == -1 && errno == EINTR)
     n = read(fd, data, size);
   if (n <= 0)
-    exit(1);  // broken pipe because Webots terminated
+  {
+    //exit(1);  // broken pipe because Webots terminated
+  }
   return n;
 #endif
 }

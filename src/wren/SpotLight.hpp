@@ -23,7 +23,7 @@ namespace wren {
   // Represents a light source which radiates with full intensity inside a cone surrounding
   // its direction parameter, and with falling intensity inside a larger cone in the same direction.
   // Currently, the orientation isn't influenced by the orientation of the containing Transform.
-  class SpotLight : public PositionalLight {
+  struct SpotLight : public PositionalLight {
   public:
     // Encapsulate memory management
     static SpotLight *createSpotLight() { return new SpotLight(); }

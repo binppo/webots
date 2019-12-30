@@ -17,9 +17,11 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrPostProcessingEffectPass;
 
-class WbWrenGtao : public WbWrenAbstractPostProcessingEffect {
+class WB_LIB_EXPORT WbWrenGtao : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenGtao();
 

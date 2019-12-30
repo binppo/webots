@@ -18,9 +18,11 @@
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QTcpServer>
 
+#include <core/WbConfig.h>
+
 class QSslSocket;
 
-class WbStreamingTcpServer : public QTcpServer {
+class WB_LIB_EXPORT WbStreamingTcpServer : public QTcpServer {
   Q_OBJECT
 public:
   explicit WbStreamingTcpServer(QObject *parent = NULL) : QTcpServer(parent), mSsl(false){};

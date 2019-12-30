@@ -67,19 +67,19 @@ static int N_MICROSOFT_LANGUAGES = 0;
 
 static void init_microsoft_languages() {
   HKEY hKey;
-  TCHAR ach_key[MAX_KEY_LENGTH], ach_class[MAX_PATH] = "";
+  char ach_key[MAX_KEY_LENGTH], ach_class[MAX_PATH] = "";
   DWORD class_name = MAX_PATH, sub_keys = 0, max_sub_key, max_class, values, max_value, max_value_data, security_descriptor,
         name;
   FILETIME ftLastWriteTime;
   char language_code[6];
-  if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\", 0, KEY_READ, &hKey) != ERROR_SUCCESS)
+  if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\", 0, KEY_READ, &hKey) != ERROR_SUCCESS)
     return;
   // Get the class name and the value count.
-  RegQueryInfoKey(hKey, ach_class, &class_name, NULL, &sub_keys, &max_sub_key, &max_class, &values, &max_value, &max_value_data,
+  RegQueryInfoKeyA(hKey, ach_class, &class_name, NULL, &sub_keys, &max_sub_key, &max_class, &values, &max_value, &max_value_data,
                   &security_descriptor, &ftLastWriteTime);
   for (int i = 0; i < sub_keys; i++) {
     name = MAX_KEY_LENGTH;
-    DWORD success = RegEnumKeyEx(hKey, i, ach_key, &name, NULL, NULL, NULL, &ftLastWriteTime);
+    DWORD success = RegEnumKeyExA(hKey, i, ach_key, &name, NULL, NULL, NULL, &ftLastWriteTime);
     if (success == ERROR_SUCCESS) {
       if (strncmp(ach_key, "TTS_MS_", 7))
         continue;
@@ -109,7 +109,7 @@ static void init_microsoft_languages() {
       microsoft_languages = (char **)realloc(microsoft_languages, N_MICROSOFT_LANGUAGES * sizeof(char *));
       if (microsoft_languages == NULL) {
         fprintf(stderr, "Error in Speaker initialization: not enough memory.\n");
-        exit(EXIT_FAILURE);
+        //exit(EXIT_FAILURE);
       }
       microsoft_languages[N_MICROSOFT_LANGUAGES - 1] = malloc(sizeof(language_code));
       memcpy(microsoft_languages[N_MICROSOFT_LANGUAGES - 1], language_code, sizeof(language_code));

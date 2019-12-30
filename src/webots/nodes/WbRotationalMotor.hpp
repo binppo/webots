@@ -21,7 +21,9 @@
 
 #include "WbMotor.hpp"
 
-class WbRotationalMotor : public WbMotor {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRotationalMotor : public WbMotor {
   Q_OBJECT
 
 public:

@@ -20,6 +20,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class QDataStream;
 
 struct WbDeletedNodeInfo;
@@ -33,7 +35,7 @@ class WbTransform;
 class WbSolid;
 class WbWrenLabelOverlay;
 
-class WbSupervisorUtilities : public QObject {
+class WB_LIB_EXPORT WbSupervisorUtilities : public QObject {
   Q_OBJECT
 
 public:

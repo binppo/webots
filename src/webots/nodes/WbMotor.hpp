@@ -26,10 +26,12 @@
 #include "WbSFDouble.hpp"
 #include "WbSFVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbSoundClip;
 
-class WbMotor : public WbJointDevice {
+class WB_LIB_EXPORT WbMotor : public WbJointDevice {
   Q_OBJECT
 
 public:

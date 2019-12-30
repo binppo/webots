@@ -93,6 +93,7 @@ static void quitApplication(int sig) {
 }
 
 int main(int argc, char *argv[]) {
+  /*
 #ifdef _WIN32
 #ifdef NDEBUG
   const char *MSYSCON = getenv("MSYSCON");
@@ -110,6 +111,7 @@ int main(int argc, char *argv[]) {
   setvbuf(stderr, NULL, _IONBF, 0);
 #endif
 #endif
+  */
   QLocale::setDefault(QLocale::c());
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));  // so that all QTextStream use UTF-8 encoding by default
 
@@ -121,7 +123,8 @@ int main(int argc, char *argv[]) {
   const QString webotsDirPath(QFileInfo(argv[0]).absolutePath() + "/../..");
 #else
   // on Windows, the webots binary is located in $WEBOTS_HOME/msys64/mingw64/bin/webots
-  const QString webotsDirPath(QFileInfo(argv[0]).absolutePath() + "/../../..");
+  //const QString webotsDirPath(QFileInfo(argv[0]).absolutePath() + "/../../..");
+  const QString webotsDirPath(QFileInfo(argv[0]).absolutePath());
 #endif
 
   // load qt warning filters from file

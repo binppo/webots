@@ -97,7 +97,7 @@ void WbSelection::updateMatterSelection(bool selected) {
   if (mSelectedNode == NULL)
     return;
 
-  WbMatter *matter = dynamic_cast<WbMatter *>(mSelectedNode);
+  WbMatter *matter = qobject_cast<WbMatter *>(mSelectedNode);
   if (matter == NULL)
     // show bounding objects of parent WbMatter
     matter = WbNodeUtilities::findUpperMatter(mSelectedNode);

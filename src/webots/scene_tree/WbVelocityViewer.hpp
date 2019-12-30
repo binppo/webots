@@ -21,12 +21,14 @@
 
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 class QVBoxLayout;
 class QComboBox;
 class QLabel;
 class WbSolid;
 
-class WbVelocityViewer : public QWidget {
+class WB_LIB_EXPORT WbVelocityViewer : public QWidget {
   Q_OBJECT
 
 public:

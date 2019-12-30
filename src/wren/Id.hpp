@@ -20,7 +20,7 @@
 namespace wren {
 
   // Uniquely identifies a resource when sorting Renderables by their required state.
-  class Id {
+  struct Id {
   public:
     explicit Id(uint16_t id);
 
@@ -30,7 +30,7 @@ namespace wren {
     uint16_t mId;
   };
 
-  class IdPhongMaterial : public Id {
+  struct IdPhongMaterial : public Id {
   public:
     static void resetCounter() { IdPhongMaterial::cCounter = 1; }
 
@@ -40,7 +40,7 @@ namespace wren {
     static uint16_t cCounter;
   };
 
-  class IdPbrMaterial : public Id {
+  struct IdPbrMaterial : public Id {
   public:
     static void resetCounter() { IdPbrMaterial::cCounter = 1; }
 
@@ -50,7 +50,7 @@ namespace wren {
     static uint16_t cCounter;
   };
 
-  class IdMesh : public Id {
+  struct IdMesh : public Id {
   public:
     static void resetCounter() { IdMesh::cCounter = 1; }
 

@@ -258,13 +258,13 @@ void WbTransform::createOdeGeom(int index) {
 
 void WbTransform::destroyPreviousOdeGeoms() {
   WbNode *const secondChild = child(1);
-  const WbShape *const s = dynamic_cast<WbShape *>(secondChild);
+  const WbShape *const s = qobject_cast<WbShape *>(secondChild);
   WbGeometry *g = NULL;
   if (s) {
     g = s->geometry();
     s->disconnectGeometryField();
   } else
-    g = dynamic_cast<WbGeometry *>(secondChild);
+    g = qobject_cast<WbGeometry *>(secondChild);
   if (g && g->odeGeom()) {
     g->destroyOdeObjects();
     g->deleteWrenRenderable();
@@ -360,7 +360,7 @@ WbShape *WbTransform::shape() const {
   if (childCount() == 0)
     return NULL;
 
-  return dynamic_cast<WbShape *>(child(0));
+  return qobject_cast<WbShape *>(child(0));
 }
 
 ///////////////////////////////////////////////////////
@@ -386,7 +386,7 @@ void WbTransform::exportBoundingObjectToX3D(WbVrmlWriter &writer) const {
   WbMFNode::Iterator it(children());
   while (it.hasNext()) {
     const WbNode *const childNode = static_cast<WbNode *>(it.next());
-    const WbGeometry *const childGeom = dynamic_cast<const WbGeometry *>(childNode);
+    const WbGeometry *const childGeom = qobject_cast<const WbGeometry *>(childNode);
 
     if (childGeom)
       writer << "<Shape>";

@@ -19,10 +19,12 @@
 
 #include "WbJoint.hpp"
 
+#include <core/WbConfig.h>
+
 class WbRotationalMotor;
 class WbHingeJointParameters;
 
-class WbHingeJoint : public WbJoint {
+class WB_LIB_EXPORT WbHingeJoint : public WbJoint {
   Q_OBJECT
 
 public:

@@ -24,20 +24,20 @@
 
 namespace wren {
 
-  class Camera;
-  class DirectionalLight;
-  class LightNode;
-  class PointLight;
-  class Renderable;
-  class SpotLight;
-  class Transform;
-  class Viewport;
-  class ShaderProgram;
-  class ShadowVolumeCaster;
+  struct Camera;
+  struct DirectionalLight;
+  struct LightNode;
+  struct PointLight;
+  struct Renderable;
+  struct SpotLight;
+  struct Transform;
+  struct Viewport;
+  struct ShaderProgram;
+  struct ShadowVolumeCaster;
 
   // Contains all elements making up a Scene.
   // The same Scene may be rendered through different viewports at different points in time.
-  class Scene {
+  struct Scene {
   public:
     // The corresponding enum in scene.h needs to be kept up to date
     enum FogType { FOG_TYPE_NONE, FOG_TYPE_EXPONENTIAL, FOG_TYPE_EXPONENTIAL2, FOG_TYPE_LINEAR };

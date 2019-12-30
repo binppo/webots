@@ -19,11 +19,13 @@
 #include <QtCore/QByteArray>
 #include "WbPlugin.hpp"
 
+#include <core/WbConfig.h>
+
 class WbReceiver;
 class WbSolid;
 class WbNode;
 
-class WbPhysicsPlugin : public WbPlugin {
+class WB_LIB_EXPORT WbPhysicsPlugin : public WbPlugin {
   Q_OBJECT
 
 public:

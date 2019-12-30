@@ -24,16 +24,16 @@
 
 namespace wren {
 
-  class FrameBuffer;
-  class StaticMesh;
-  class ShaderProgram;
-  class TextureRtt;
-  class Viewport;
+  struct FrameBuffer;
+  struct StaticMesh;
+  struct ShaderProgram;
+  struct TextureRtt;
+  struct Viewport;
 
   // Applies post-processing effects in the order defined by its passes
-  class PostProcessingEffect {
+  struct PostProcessingEffect {
   public:
-    class Pass {
+    struct Pass {
     public:
       struct Connection {
         Connection(Pass *from, size_t outputIndex, Pass *to, size_t inputIndex) :

@@ -45,7 +45,7 @@ typedef struct WbMotionStructPrivate {
 extern void wb_motor_set_position_no_mutex(WbDeviceTag, double);
 
 static const int UNDEFINED_TIME = -1;
-static const int MAX_LINE = 4096;
+#define MAX_LINE 4096
 static const double UNDEFINED_POSITION = -9999999.9;
 static WbMotionRef head = NULL;
 static const char *HEADER = "#WEBOTS_MOTION";

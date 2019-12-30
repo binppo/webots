@@ -24,7 +24,9 @@
 
 #include "WbPrecision.hpp"
 
-class WbSFDouble : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFDouble : public WbSingleValue {
   Q_OBJECT
 
 public:

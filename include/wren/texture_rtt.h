@@ -7,7 +7,7 @@ extern "C" {
 
 /* Inheritance diagram: WrTexture <- WrTextureRtt */
 struct WrTextureRtt;
-typedef struct WrTextureRtt WrTextureRtt;
+//typedef struct WrTextureRtt WrTextureRtt;
 
 WrTextureRtt *wr_texture_rtt_new();
 void wr_texture_rtt_enable_initialize_data(WrTextureRtt *texture, bool enable);

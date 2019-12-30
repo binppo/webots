@@ -20,7 +20,9 @@
 #include "WbSFString.hpp"
 #include "WbSFVector3.hpp"
 
-class WbImmersionProperties : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbImmersionProperties : public WbBaseNode {
   Q_OBJECT
 
 public:

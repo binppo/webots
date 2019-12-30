@@ -22,7 +22,9 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-class WbLanguage {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbLanguage {
 public:
   // find language by looking at the filename's suffix
   static WbLanguage *findByFileName(const QString &fileName);

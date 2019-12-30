@@ -53,7 +53,7 @@ void WbWebotsUpdateManager::sendRequest() {
 }
 
 void WbWebotsUpdateManager::downloadReplyFinished() {
-  QNetworkReply *reply = dynamic_cast<QNetworkReply *>(sender());
+  QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
   assert(reply);
   if (!reply)
     return;

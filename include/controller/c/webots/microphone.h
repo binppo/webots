@@ -22,20 +22,20 @@
 #define WB_MICROPHONE_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 // device functions
-void wb_microphone_enable(WbDeviceTag tag, int sampling_period);
-void wb_microphone_disable(WbDeviceTag tag);
-int wb_microphone_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_microphone_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_microphone_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_microphone_get_sampling_period(WbDeviceTag tag);
 
 // data packet functions
-const void *wb_microphone_get_sample_data(WbDeviceTag tag);
-int wb_microphone_get_sample_size(WbDeviceTag tag);
+CONTROLLER_EXPORT const void *wb_microphone_get_sample_data(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_microphone_get_sample_size(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

@@ -93,11 +93,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QStyle>
 
-#ifdef _WIN32
-#include <QtWebKit/QWebSettings>
-#else
 #include <QtWebEngineWidgets/QWebEngineProfile>
-#endif
 
 #include <wren/gl_state.h>
 
@@ -113,6 +109,10 @@ WbMainWindow::WbMainWindow(bool minimizedOnStart, QWidget *parent) :
   mOverlayMenu(NULL),
   mWorldLoadingProgressDialog(NULL),
   mIsFullScreenLocked(false),
+  mEnabledIconPath("icons/dark"),
+  mDisabledIconPath("icons/light"),
+  mCoreIconPath("icons/core"),
+  mToolBarAlign("left"),
   mMaximizedWidget(NULL) {
 #ifdef __APPLE__
   // This flag is required to hide a second and useless title bar.
@@ -125,9 +125,9 @@ WbMainWindow::WbMainWindow(bool minimizedOnStart, QWidget *parent) :
   setStatusBar(statusBar);
 
   style()->polish(this);
-  QDir::addSearchPath("enabledIcons", WbStandardPaths::resourcesPath() + enabledIconPath());
-  QDir::addSearchPath("disabledIcons", WbStandardPaths::resourcesPath() + disabledIconPath());
-  QDir::addSearchPath("coreIcons", WbStandardPaths::resourcesPath() + coreIconPath());
+  QDir::addSearchPath("enabledIcons", ":/resources/" + enabledIconPath());
+  QDir::addSearchPath("disabledIcons", ":/resources/" + disabledIconPath());
+  QDir::addSearchPath("coreIcons", ":/resources/" + coreIconPath());
   style()->polish(this);
 
   QApplication::setWindowIcon(QIcon("coreIcons:webots.png"));
@@ -159,6 +159,9 @@ WbMainWindow::WbMainWindow(bool minimizedOnStart, QWidget *parent) :
           Qt::QueuedConnection);
   connect(WbApplication::instance(), &WbApplication::worldLoadRequested, this, &WbMainWindow::loadDifferentWorld,
           Qt::QueuedConnection);
+  connect(WbApplication::instance(), SIGNAL(videoCaptureStarted(const QString &, int, int, int, int, int, bool)), this,
+          SLOT(startVideoCapture(const QString &, int, int, int, int, int, bool)));
+  connect(WbApplication::instance(), &WbApplication::videoCaptureStopped, this, &WbMainWindow::stopVideoCapture);
 
   createMainTools();
   createMenus();
@@ -711,8 +714,8 @@ void WbMainWindow::enableToolsWidgetItems(bool enabled) {
 
 // we need this function because WbDockWidget and WbSimulationView don't have a common base class
 void WbMainWindow::setWidgetMaximized(QWidget *widget, bool maximized) {
-  WbDockWidget *dock = dynamic_cast<WbDockWidget *>(widget);
-  WbSimulationView *view = dynamic_cast<WbSimulationView *>(widget);
+  WbDockWidget *dock = qobject_cast<WbDockWidget *>(widget);
+  WbSimulationView *view = qobject_cast<WbSimulationView *>(widget);
   if (dock)
     dock->setMaximized(maximized);
   else
@@ -726,7 +729,7 @@ void WbMainWindow::maximizeDock() {
 
   // close every other dock widget
   foreach (QWidget *dock, mDockWidgets) {
-    WbDockWidget *dockWidget = dynamic_cast<WbDockWidget *>(dock);
+    WbDockWidget *dockWidget = qobject_cast<WbDockWidget *>(dock);
     if (dock != mMaximizedWidget && (dockWidget == NULL || !dockWidget->isFloating()))
       dock->close();
   }
@@ -1173,7 +1176,7 @@ void WbMainWindow::savePerspective(bool reloading, bool saveToFile) {
 
   QStringList robotWindowNodeNames;
   foreach (QWidget *dock, mDockWidgets) {
-    WbRobotWindow *w = dynamic_cast<WbRobotWindow *>(dock);
+    WbRobotWindow *w = qobject_cast<WbRobotWindow *>(dock);
     if (!w || !(w->isVisible()))
       continue;
     robotWindowNodeNames << w->robot()->computeUniqueName();
@@ -1304,7 +1307,7 @@ void WbMainWindow::updateBeforeWorldLoading(bool reloading) {
   WbLog::instance()->setPopUpPostponed(true);
   savePerspective(reloading, true);
   foreach (QWidget *dock, mDockWidgets) {
-    WbRobotWindow *w = dynamic_cast<WbRobotWindow *>(dock);
+    WbRobotWindow *w = qobject_cast<WbRobotWindow *>(dock);
     if (!w)
       continue;
     w->close();
@@ -1329,11 +1332,7 @@ void WbMainWindow::updateAfterWorldLoading(bool reloading, bool firstLoad) {
   WbActionManager::instance()->action(WbActionManager::DISABLE_SELECTION)->setChecked(perspective->isSelectionDisabled());
   WbActionManager::instance()->action(WbActionManager::LOCK_VIEWPOINT)->setChecked(perspective->isViewpointLocked());
 
-#ifdef _WIN32
-  QWebSettings::globalSettings()->clearMemoryCaches();
-#else
   QWebEngineProfile::defaultProfile()->clearHttpCache();
-#endif
   WbRenderingDeviceWindowFactory::reset();
   restorePerspective(reloading, firstLoad, false);
 
@@ -1898,7 +1897,7 @@ void WbMainWindow::showRobotWindow() {
 
 void WbMainWindow::showHtmlRobotWindow(WbRobot *robot) {  // shows the HTML robot window
   foreach (QWidget *dock, mDockWidgets) {
-    WbRobotWindow *w = dynamic_cast<WbRobotWindow *>(dock);
+    WbRobotWindow *w = qobject_cast<WbRobotWindow *>(dock);
     if (w && w->robot() == robot) {
       w->show();
       return;
@@ -1913,7 +1912,7 @@ void WbMainWindow::showHtmlRobotWindow(WbRobot *robot) {  // shows the HTML robo
 
 void WbMainWindow::removeHtmlRobotWindow(WbNode *node) {
   for (int i = 0; i < mDockWidgets.size(); ++i) {
-    WbRobotWindow *w = dynamic_cast<WbRobotWindow *>(mDockWidgets[i]);
+    WbRobotWindow *w = qobject_cast<WbRobotWindow *>(mDockWidgets[i]);
     if (w && w->robot() == node) {
       mDockWidgets.removeAt(i);
       delete w;
@@ -1923,7 +1922,7 @@ void WbMainWindow::removeHtmlRobotWindow(WbNode *node) {
 }
 
 static bool isRobotNode(WbBaseNode *node) {
-  return dynamic_cast<WbRobot *>(node);
+  return qobject_cast<WbRobot *>(node);
 }
 
 void WbMainWindow::updateOverlayMenu() {
@@ -2216,12 +2215,12 @@ void WbMainWindow::prepareNodeRegeneration(WbNode *node) {
   WbRenderingDevice *device;
   const QList<WbNode *> nodes = QList<WbNode *>() << const_cast<WbNode *>(node) << node->subNodes(true);
   foreach (WbNode *n, nodes) {
-    device = dynamic_cast<WbRenderingDevice *>(n);
+    device = qobject_cast<WbRenderingDevice *>(n);
     if (device) {
       QStringList perspective = factory->windowPerspective(device);
       if (perspective.isEmpty())
         perspective = device->perspective();
-      const WbRobot *robot = dynamic_cast<const WbRobot *>(WbNodeUtilities::findTopNode(node));
+      const WbRobot *robot = qobject_cast<const WbRobot *>(WbNodeUtilities::findTopNode(node));
       mTemporaryProtoPerspectives.insert(robot->name() + "\n" + device->name(), perspective);
     }
   }
@@ -2236,10 +2235,10 @@ void WbMainWindow::finalizeNodeRegeneration(WbNode *node) {
     const QList<WbNode *> nodes = QList<WbNode *>() << node << node->subNodes(true);
     const WbRenderingDeviceWindowFactory *factory = WbRenderingDeviceWindowFactory::instance();
     foreach (WbNode *n, nodes) {
-      WbRenderingDevice *device = dynamic_cast<WbRenderingDevice *>(n);
+      WbRenderingDevice *device = qobject_cast<WbRenderingDevice *>(n);
       if (device != NULL) {
         factory->listenToRenderingDevice(device);
-        const WbRobot *robot = dynamic_cast<const WbRobot *>(WbNodeUtilities::findTopNode(node));
+        const WbRobot *robot = qobject_cast<const WbRobot *>(WbNodeUtilities::findTopNode(node));
         const QString key = robot->name() + "\n" + device->name();
         QStringList perspective = mTemporaryProtoPerspectives.value(key);
         if (!perspective.isEmpty())
@@ -2248,5 +2247,22 @@ void WbMainWindow::finalizeNodeRegeneration(WbNode *node) {
       }
     }
     mTemporaryProtoPerspectives.clear();
+  }
+}
+
+void WbMainWindow::startVideoCapture(const QString &fileName, int codec, int width, int height, int quality,
+                                         int acceleration, bool showCaption) {
+  if(mSimulationView->startVideoCapture(fileName, codec, width, height, quality, acceleration, showCaption))
+  {
+    if (isMinimized()) {
+      showMaximized();
+    }
+  }
+}
+
+void WbMainWindow::stopVideoCapture(bool canceled) {
+  if(mSimulationView->stopVideoCapture(canceled))
+  {
+    showMinimized();
   }
 }

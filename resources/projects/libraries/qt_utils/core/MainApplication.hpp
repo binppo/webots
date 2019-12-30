@@ -47,10 +47,12 @@ namespace webotsQtUtils {
 
     bool isInitialized() const { return mIsInitialized; }
 
+	/*
 #ifndef _WIN32
   private slots:
     void dataReadyOnPipeIn();
 #endif
+	*/
 
   private:
     bool mIsInitialized;

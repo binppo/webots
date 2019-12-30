@@ -24,9 +24,9 @@
 
 namespace wren {
 
-  class Skeleton;
+  struct Skeleton;
 
-  class SkeletonBone : public Transform {
+  struct SkeletonBone : public Transform {
   public:
     static SkeletonBone *createSkeletonBone(Skeleton *skeleton, const char *name) { return new SkeletonBone(skeleton, name); }
 

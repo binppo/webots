@@ -46,7 +46,15 @@ private:
   WbTextBuffer *textEdit;
 };
 
-WbTextBuffer::WbTextBuffer(QWidget *parent) : QPlainTextEdit(parent) {
+WbTextBuffer::WbTextBuffer(QWidget *parent) : QPlainTextEdit(parent),
+  mApiColor("darkgreen"),
+  mCommentColor("gray"),
+  mKeywordColor("darkred"),
+  mNumberColor("darkcyan"),
+  mPreprocessorColor("darkmagenta"),
+  mQuotationColor("blue"),
+  mGutterBackgroundColor("silver"),
+  mGutterForegroundColor("black") {
   setObjectName("TextBuffer");
 
   // overwrite selection highlight format
@@ -156,8 +164,11 @@ void WbTextBuffer::setLanguage(WbLanguage *lang) {
 
   mSyntaxHighlighter = WbSyntaxHighlighter::createForLanguage(mLanguage, document(), mSyntaxHighlighter);
 
-  delete mCompleter;
-  mCompleter = NULL;
+  if(mCompleter)
+  {
+    delete mCompleter;
+    mCompleter = NULL;
+  }
 
   if (mLanguage) {
     mCompleter = new QCompleter(mLanguage->autoCompletionWords(), this);

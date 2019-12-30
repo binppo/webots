@@ -104,7 +104,7 @@ WbSimulationWorld::WbSimulationWorld(WbProtoList *protos, WbTokenizer *tokenizer
 
   WbSoundEngine::setWorld(this);
 
-  connect(mTimer, &QTimer::timeout, this, &WbSimulationWorld::triggerStepFromTimer);
+  connect(mTimer, SIGNAL(timeout()), this, SLOT(triggerStepFromTimer()));
   const WbSimulationState *const s = WbSimulationState::instance();
   connect(s, &WbSimulationState::rayTracingEnabled, this, &WbSimulationWorld::rayTracingEnabled);
   connect(s, &WbSimulationState::modeChanged, this, &WbSimulationWorld::modeChanged);

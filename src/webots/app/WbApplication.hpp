@@ -23,18 +23,18 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbControlledWorld;
 class QTime;
 
-class WbApplication : public QObject {
+class WB_LIB_EXPORT WbApplication : public QObject {
   Q_OBJECT
 
 public:
-  static WbApplication *instance() { return cInstance; }
+  static WbApplication *instance();
 
-  WbApplication();
   virtual ~WbApplication();
-  void setup();
 
   const QString &worldName() const { return mWorldName; }
 
@@ -104,6 +104,8 @@ signals:
   void worldLoadingWasCanceled();
 
 public slots:
+  void setup();
+
   void setWorldLoadingCanceled();
   void setWorldLoadingProgress(const int progress);
   void setWorldLoadingStatus(const QString &status);
@@ -111,6 +113,8 @@ public slots:
 private:
   static WbApplication *cInstance;
   static QString cWebotsTmpDirName;
+
+  WbApplication();
 
   WbControlledWorld *mWorld;
   QString mWorldName;

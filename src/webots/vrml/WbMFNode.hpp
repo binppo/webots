@@ -25,9 +25,11 @@
 
 #include <cassert>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 
-class WbMFNode : public WbMultipleValue {
+class WB_LIB_EXPORT WbMFNode : public WbMultipleValue {
   Q_OBJECT
 
 public:

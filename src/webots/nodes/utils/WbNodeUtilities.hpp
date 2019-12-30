@@ -24,6 +24,8 @@
 #include <cstddef>
 #include "WbNode.hpp"
 
+#include <core/WbConfig.h>
+
 class WbAbstractTransform;
 class WbBaseNode;
 class WbBoundingSphere;
@@ -46,179 +48,179 @@ namespace WbNodeUtilities {
   //////////////////////////
 
   // find the closest WbTransform ancestor
-  WbTransform *findUpperTransform(const WbNode *node);
+  WB_LIB_EXPORT WbTransform *findUpperTransform(const WbNode *node);
 
   // find the closest template ancestor in which the modified node is contained in template field
   // which requires a template instance regeneration
-  WbNode *findUpperTemplateNeedingRegeneration(WbNode *modifiedNode);
+  WB_LIB_EXPORT WbNode *findUpperTemplateNeedingRegeneration(WbNode *modifiedNode);
 
   // find the closest template ancestor of given field in which the modified field is contained
   // in template field which requires a template instance regeneration
-  WbNode *findUpperTemplateNeedingRegenerationFromField(WbField *modifiedField, WbNode *parentNode);
+  WB_LIB_EXPORT WbNode *findUpperTemplateNeedingRegenerationFromField(WbField *modifiedField, WbNode *parentNode);
 
   // find the closest WbSolid ancestor
-  WbSolid *findUpperSolid(const WbNode *node);
+  WB_LIB_EXPORT WbSolid *findUpperSolid(const WbNode *node);
 
   // find the closest WbMatter ancestor
-  WbMatter *findUpperMatter(const WbNode *node);
+  WB_LIB_EXPORT WbMatter *findUpperMatter(const WbNode *node);
 
   // find the closest ancestor of specified type
   // searchDegree specifies how many ancestor have to be checked, if lower or equal to 0 all the hierarchy is inspected
-  WbNode *findUpperNodeByType(const WbNode *node, int nodeType, int searchDegrees = 0);
+  WB_LIB_EXPORT WbNode *findUpperNodeByType(const WbNode *node, int nodeType, int searchDegrees = 0);
 
   // return if this node contains descendant nodes of the specified types
-  bool hasDescendantNodesOfType(const WbNode *node, QList<int> nodeTypes);
+  WB_LIB_EXPORT bool hasDescendantNodesOfType(const WbNode *node, QList<int> nodeTypes);
 
   // return all the descendant nodes fulfilling the specified type condition
   // typeCondition is a function that checks the type of the node
   // if recursive is set to FALSE children of the descendant node having the specified type are not inspected
-  QList<WbNode *> findDescendantNodesOfType(WbNode *node, bool (&typeCondition)(WbBaseNode *), bool recursive);
+  WB_LIB_EXPORT QList<WbNode *> findDescendantNodesOfType(WbNode *node, bool (&typeCondition)(WbBaseNode *), bool recursive);
 
   // find the uppermost WbTransform ancestor (may be the node itself)
-  WbTransform *findUppermostTransform(const WbNode *node);
+  WB_LIB_EXPORT WbTransform *findUppermostTransform(const WbNode *node);
 
   // find the uppermost WbTransform ancestor (may be the node itself)
-  WbSolid *findUppermostSolid(const WbNode *node);
+  WB_LIB_EXPORT WbSolid *findUppermostSolid(const WbNode *node);
 
   // find the uppermost WbMatter ancestor (may be the node itself)
-  WbMatter *findUppermostMatter(WbNode *node);
+  WB_LIB_EXPORT WbMatter *findUppermostMatter(WbNode *node);
 
   // find the top node and return it if it is a WbSolid, return NULL otherwise
-  WbSolid *findTopSolid(const WbNode *node);
+  WB_LIB_EXPORT WbSolid *findTopSolid(const WbNode *node);
 
   // find a robot ancestor above the node in the scene tree, return NULL if no robot found
-  WbRobot *findRobotAncestor(const WbNode *node);
+  WB_LIB_EXPORT WbRobot *findRobotAncestor(const WbNode *node);
 
   // is this node directly attached to the root node
-  bool isTopNode(const WbNode *node);
+  WB_LIB_EXPORT bool isTopNode(const WbNode *node);
 
   // find the ancestor node directly attached to the root node
-  const WbNode *findTopNode(const WbNode *node);
+  WB_LIB_EXPORT const WbNode *findTopNode(const WbNode *node);
 
   // return direct Solid descendant nodes
   // in case of PROTO nodes only internal nodes are checked
-  QList<WbSolid *> findSolidDescendants(WbNode *node);
+  WB_LIB_EXPORT QList<WbSolid *> findSolidDescendants(WbNode *node);
 
   // is this node located directly or indirectly in the given field
-  bool isFieldDescendant(const WbNode *node, const QString &fieldName);
+  WB_LIB_EXPORT bool isFieldDescendant(const WbNode *node, const QString &fieldName);
 
   // is this node located in the boundingObject field of a Solid
   // use checkNodeUse() to inspect USE nodes and PROTO parameter instances
-  bool isInBoundingObject(const WbNode *node);
+  WB_LIB_EXPORT bool isInBoundingObject(const WbNode *node);
 
   // check if node is used in a boundingObject field and/or in the global structure
-  WbNode::NodeUse checkNodeUse(const WbNode *n);
+  WB_LIB_EXPORT WbNode::NodeUse checkNodeUse(const WbNode *n);
 
   // find the WbMatter ancestor whose boundingObject field contains this node
-  WbMatter *findBoundingObjectAncestor(const WbBaseNode *node);
+  WB_LIB_EXPORT WbMatter *findBoundingObjectAncestor(const WbBaseNode *node);
 
   // is this node a valid USEable node
-  bool isAValidUseableNode(const WbNode *node, QString *warning = NULL);
+  WB_LIB_EXPORT bool isAValidUseableNode(const WbNode *node, QString *warning = NULL);
 
   // find (innermost) enclosing PROTO if any
-  WbProtoModel *findContainingProto(const WbNode *node);
+  WB_LIB_EXPORT WbProtoModel *findContainingProto(const WbNode *node);
 
   // find the field parent of the target field, i.e. the closest upper field in the tree hierarchy
-  WbField *findFieldParent(const WbField *target, bool internal = false);
+  WB_LIB_EXPORT WbField *findFieldParent(const WbField *target, bool internal = false);
 
   // is the target field or node visible in the Scene Tree (possibly as a nested proto parameter)
-  bool isVisible(const WbNode *node);
-  bool isVisible(const WbField *target);
+  WB_LIB_EXPORT bool isVisible(const WbNode *node);
+  WB_LIB_EXPORT bool isVisible(const WbField *target);
 
   // return closest WbMatter ancestor that is visible in the scene tree (given node included)
-  WbMatter *findUpperVisibleMatter(WbNode *node);
+  WB_LIB_EXPORT WbMatter *findUpperVisibleMatter(WbNode *node);
 
   // is the target field or the target parameter field a template regenerator field
-  bool isTemplateRegeneratorField(const WbField *field);
+  WB_LIB_EXPORT bool isTemplateRegeneratorField(const WbField *field);
 
-  WbAbstractTransform *abstractTransformCast(WbBaseNode *node);
+  WB_LIB_EXPORT WbAbstractTransform *abstractTransformCast(WbBaseNode *node);
 
   //////////////////////////////
   // Non-permanent properties //
   //////////////////////////////
 
   // has this node a DEF node ancestor
-  bool hasADefNodeAncestor(const WbNode *node);
+  WB_LIB_EXPORT bool hasADefNodeAncestor(const WbNode *node);
 
   // has this node a USE node ancestor
-  bool hasAUseNodeAncestor(const WbNode *node);
+  WB_LIB_EXPORT bool hasAUseNodeAncestor(const WbNode *node);
 
   // fid all ancestor USE nodes
-  QList<WbNode *> findUseNodeAncestors(WbNode *node);
+  WB_LIB_EXPORT QList<WbNode *> findUseNodeAncestors(WbNode *node);
 
   // has this node a robot ancestor
-  bool hasARobotAncestor(const WbNode *node);
+  WB_LIB_EXPORT bool hasARobotAncestor(const WbNode *node);
 
   // has this node a child of type Solid
-  bool hasSolidChildren(const WbNode *node);
+  WB_LIB_EXPORT bool hasSolidChildren(const WbNode *node);
 
   // has this node a Device node descendant
-  bool hasADeviceDescendant(const WbNode *node);
+  WB_LIB_EXPORT bool hasADeviceDescendant(const WbNode *node);
 
   // has this node a Solid node descendant
-  bool hasASolidDescendant(const WbNode *node);
+  WB_LIB_EXPORT bool hasASolidDescendant(const WbNode *node);
 
   // has this node a Joint node descendant
-  bool hasAJointDescendant(const WbNode *node);
+  WB_LIB_EXPORT bool hasAJointDescendant(const WbNode *node);
 
   // has this DEF node a subsequent USE or DEF node using its new definition
-  bool hasASubsequentUseOrDefNode(const WbNode *defNode, const QString &defName, const QString &previousDefName,
+  WB_LIB_EXPORT bool hasASubsequentUseOrDefNode(const WbNode *defNode, const QString &defName, const QString &previousDefName,
                                   bool &useOverlap, bool &defOverlap);
 
   // is this node selected
-  bool isSelected(const WbNode *node);
+  WB_LIB_EXPORT bool isSelected(const WbNode *node);
 
   // is this node or a WbMatter ancestor of the current node locked
-  bool isNodeOrAncestorLocked(WbNode *node);
+  WB_LIB_EXPORT bool isNodeOrAncestorLocked(WbNode *node);
 
   // tests node types
-  bool isGeometryTypeName(const QString &modelName);
-  bool isCollisionDetectedGeometryTypeName(const QString &modelName);
-  bool isRobotTypeName(const QString &modelName);
-  bool isDeviceTypeName(const QString &modelName);
-  bool isSolidDeviceTypeName(const QString &modelName);
-  bool isSolidTypeName(const QString &modelName);
-  bool isSolidButRobotTypeName(const QString &modelName);
-  bool isMatterTypeName(const QString &modelName);
-  QString slotType(const WbNode *node);
+  WB_LIB_EXPORT bool isGeometryTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isCollisionDetectedGeometryTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isRobotTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isDeviceTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isSolidDeviceTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isSolidTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isSolidButRobotTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isMatterTypeName(const QString &modelName);
+  WB_LIB_EXPORT QString slotType(const WbNode *node);
   // return true for nodes which should have only one occurence in each world, i.e. WorldInfo, Viewpoint, Background
-  bool isSingletonTypeName(const QString &modelName);
+  WB_LIB_EXPORT bool isSingletonTypeName(const QString &modelName);
 
-  bool isTrackAnimatedGeometry(const WbNode *node);
+  WB_LIB_EXPORT bool isTrackAnimatedGeometry(const WbNode *node);
 
   ///////////
   // Other //
   ///////////
 
   // find intersecting Shape
-  const WbShape *findIntersectingShape(const WbRay &ray, double maxDistance, double &distance, double minDistance = 0.0);
+  WB_LIB_EXPORT const WbShape *findIntersectingShape(const WbRay &ray, double maxDistance, double &distance, double minDistance = 0.0);
 
   // validate a new inserted node
   // this functions helps handling properly the validation of a Slot node
   // return false if the Slot structure is invalid and insertion should be aborted
-  bool validateInsertedNode(WbField *field, const WbNode *newNode, const WbNode *parentNode, bool isInBoundingObject);
+  WB_LIB_EXPORT bool validateInsertedNode(WbField *field, const WbNode *newNode, const WbNode *parentNode, bool isInBoundingObject);
 
   // check if a node with node model 'modelName' can be inserted in the field 'field' of parent node 'node'
   // in case of PROTO parent node and parameter field,
   // it first retrieve the base field and model and then check the validity
   // type is checked in case of Slot node
-  bool isAllowedToInsert(const WbField *const field, const QString &nodeName, const WbNode *node, QString &errorMessage,
+  WB_LIB_EXPORT bool isAllowedToInsert(const WbField *const field, const QString &nodeName, const WbNode *node, QString &errorMessage,
                          WbNode::NodeUse nodeUse, const QString &type, const QStringList &restrictionValidNodeNames,
                          bool automaticBoundingObjectCheck = true);
 
   // check existing node structure
-  bool validateExistingChildNode(const WbField *const field, const WbNode *childNode, const WbNode *node,
+  WB_LIB_EXPORT bool validateExistingChildNode(const WbField *const field, const WbNode *childNode, const WbNode *node,
                                  bool isInBoundingObject, QString &errorMessage);
 
   // can srcNode be transformed
   enum Answer { SUITABLE, UNSUITABLE, LOOSING_INFO };
-  Answer isSuitableForTransform(const WbNode *srcNode, const QString &destModelName);
+  WB_LIB_EXPORT Answer isSuitableForTransform(const WbNode *srcNode, const QString &destModelName);
 
   // check if type of two Slot nodes is compatible
-  bool isSlotTypeMatch(const QString &firstType, const QString &secondType, QString &errorMessage);
+  WB_LIB_EXPORT bool isSlotTypeMatch(const QString &firstType, const QString &secondType, QString &errorMessage);
 
   // return a node's bounding sphere ancestor if it exists (can be the node's own)
-  WbBoundingSphere *boundingSphereAncestor(const WbNode *node);
+  WB_LIB_EXPORT WbBoundingSphere *boundingSphereAncestor(const WbNode *node);
 };  // namespace WbNodeUtilities
 
 #endif

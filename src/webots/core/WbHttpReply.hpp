@@ -17,10 +17,12 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 namespace WbHttpReply {
-  QByteArray forge404Reply();
-  QByteArray forgeHTMLReply(const QString &htmlContent);
-  QByteArray forgeImageReply(const QString &imageFileName);
+  WB_LIB_EXPORT QByteArray forge404Reply();
+  WB_LIB_EXPORT QByteArray forgeHTMLReply(const QString &htmlContent);
+  WB_LIB_EXPORT QByteArray forgeImageReply(const QString &imageFileName);
 };  // namespace WbHttpReply
 
 #endif

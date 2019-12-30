@@ -23,6 +23,7 @@
 #ifndef _ODE_UTIL_H_
 #define _ODE_UTIL_H_
 
+#include <malloc.h>
 #include "objects.h"
 
 /* the efficient alignment. most platforms align data structures to some

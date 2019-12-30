@@ -17,18 +17,20 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 class WbMFString;
 class WbVrmlWriter;
 
 namespace WbUrl {
   // return search path ordered by decreasing priority
-  QStringList orderedSearchPaths(const WbNode *node);
-  QString computePath(const WbNode *node, const QString &field, const QString &url, bool displayWarning = true);
-  QString computePath(const WbNode *node, const QString &field, const WbMFString *urlField, int index);
-  QString exportTexture(const WbNode *node, const QString &url, const QString &sourcePath, const QString &relativeTexturesPath,
+  WB_LIB_EXPORT QStringList orderedSearchPaths(const WbNode *node);
+  WB_LIB_EXPORT QString computePath(const WbNode *node, const QString &field, const QString &url, bool displayWarning = true);
+  WB_LIB_EXPORT QString computePath(const WbNode *node, const QString &field, const WbMFString *urlField, int index);
+  WB_LIB_EXPORT QString exportTexture(const WbNode *node, const QString &url, const QString &sourcePath, const QString &relativeTexturesPath,
                         const WbVrmlWriter &writer);
-  QString exportTexture(const WbNode *node, const WbMFString *urlField, int index, const WbVrmlWriter &writer);
+  WB_LIB_EXPORT QString exportTexture(const WbNode *node, const WbMFString *urlField, int index, const WbVrmlWriter &writer);
 };  // namespace WbUrl
 
 #endif

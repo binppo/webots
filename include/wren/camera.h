@@ -7,7 +7,7 @@ extern "C" {
 
 /* Inheritance diagram: WrNode <- WrCamera */
 struct WrCamera;
-typedef struct WrCamera WrCamera;
+//typedef struct WrCamera WrCamera;
 
 typedef enum WrCameraProjectionMode {
   WR_CAMERA_PROJECTION_MODE_PERSPECTIVE,

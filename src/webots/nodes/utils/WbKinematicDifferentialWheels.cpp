@@ -69,10 +69,10 @@ void WbKinematicDifferentialWheels::applyKinematicDisplacement() {
 WbCylinder *WbKinematicDifferentialWheels::getRecursivelyBigestCylinder(WbBaseNode *node) {
   WbCylinder *wheelCylinder = NULL;
   if (node) {
-    WbCylinder *cylinder = dynamic_cast<WbCylinder *>(node);
+    WbCylinder *cylinder = qobject_cast<WbCylinder *>(node);
     if (cylinder)
       return cylinder;
-    WbGroup *group = dynamic_cast<WbGroup *>(node);
+    WbGroup *group = qobject_cast<WbGroup *>(node);
     if (group) {
       for (int i = 0; i < group->childCount(); ++i) {
         cylinder = getRecursivelyBigestCylinder(group->child(i));
@@ -84,9 +84,9 @@ WbCylinder *WbKinematicDifferentialWheels::getRecursivelyBigestCylinder(WbBaseNo
         }
       }
     }
-    WbShape *shape = dynamic_cast<WbShape *>(node);
+    WbShape *shape = qobject_cast<WbShape *>(node);
     if (shape) {
-      cylinder = dynamic_cast<WbCylinder *>(shape->geometry());
+      cylinder = qobject_cast<WbCylinder *>(shape->geometry());
       if (cylinder)
         return cylinder;
     }
@@ -98,7 +98,7 @@ WbKinematicDifferentialWheels *WbKinematicDifferentialWheels::createKinematicDif
   if (robot->isDynamic())
     return NULL;
   // check if this is a WbDifferentialWheels
-  WbDifferentialWheels *differentialWheels = dynamic_cast<WbDifferentialWheels *>(robot);
+  WbDifferentialWheels *differentialWheels = qobject_cast<WbDifferentialWheels *>(robot);
   if (differentialWheels)
     return new WbKinematicDifferentialWheels(robot, differentialWheels->wheelRadius(), differentialWheels->axleLength(), NULL,
                                              NULL, true);
@@ -108,7 +108,7 @@ WbKinematicDifferentialWheels *WbKinematicDifferentialWheels::createKinematicDif
   const QVector<WbBasicJoint *> joints = robot->jointChildren();
   QVector<WbHingeJoint *> motorizedJoints;
   for (int i = 0; i < joints.size(); ++i) {
-    WbHingeJoint *joint = dynamic_cast<WbHingeJoint *>(joints.at(i));
+    WbHingeJoint *joint = qobject_cast<WbHingeJoint *>(joints.at(i));
     if (!joint || !joint->motor() || !joint->solidEndPoint())
       continue;
     motorizedJoints << joint;

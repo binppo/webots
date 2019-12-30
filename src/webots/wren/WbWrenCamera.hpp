@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 struct WrCamera;
 struct WrPostProcessingEffect;
 struct WrFrameBuffer;
@@ -43,7 +45,7 @@ class WbWrenRangeNoise;
 class WbWrenRangeQuantization;
 class WbWrenSmaa;
 
-class WbWrenCamera : public QObject {
+class WB_LIB_EXPORT WbWrenCamera : public QObject {
   Q_OBJECT
 
 public:

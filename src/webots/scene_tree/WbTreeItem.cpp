@@ -48,6 +48,8 @@ WbTreeItem::WbTreeItem(WbNode *node) {
   mType = NODE;
   mParent = NULL;
   mNode = node;
+  mField = node->field(0);
+
   connect(mNode, &QObject::destroyed, this, &WbTreeItem::makeInvalid);
 }
 
@@ -55,13 +57,14 @@ WbTreeItem::WbTreeItem(WbField *field) {
   mType = FIELD;
   mParent = NULL;
   mField = field;
+  mNode = field->parentNode();
 
   connect(mNode, &QObject::destroyed, this, &WbTreeItem::makeInvalid);
 
   WbValue *const value = mField->value();
-  WbSingleValue *const singleValue = dynamic_cast<WbSingleValue *>(value);
+  WbSingleValue *const singleValue = qobject_cast<WbSingleValue *>(value);
   if (singleValue) {
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(value);
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(value);
     if (sfnode) {
       connect(sfnode, &WbSFNode::changed, this, &WbTreeItem::sfnodeChanged);
     } else {
@@ -70,20 +73,20 @@ WbTreeItem::WbTreeItem(WbField *field) {
       // Signal used by translation and rotation fields of Solids and position fields of Joints only
       const QString &fieldName = field->name();
       if (fieldName == "translation") {
-        const WbSFVector3 *const translation = dynamic_cast<WbSFVector3 *>(singleValue);
+        const WbSFVector3 *const translation = qobject_cast<WbSFVector3 *>(singleValue);
         if (translation)
           connect(translation, &WbSFVector3::changedByOde, this, &WbTreeItem::propagateDataChange);
         else {
-          const WbSFVector2 *const translation2 = dynamic_cast<WbSFVector2 *>(singleValue);
+          const WbSFVector2 *const translation2 = qobject_cast<WbSFVector2 *>(singleValue);
           if (translation2)
             connect(translation2, &WbSFVector2::changedByWebots, this, &WbTreeItem::propagateDataChange);
         }
       } else if (fieldName == "rotation") {
-        const WbSFRotation *const rotation = dynamic_cast<WbSFRotation *>(singleValue);
+        const WbSFRotation *const rotation = qobject_cast<WbSFRotation *>(singleValue);
         if (rotation)
           connect(rotation, &WbSFRotation::changedByOde, this, &WbTreeItem::propagateDataChange);
       } else if (fieldName == "position") {
-        const WbSFDouble *const position = dynamic_cast<WbSFDouble *>(singleValue);
+        const WbSFDouble *const position = qobject_cast<WbSFDouble *>(singleValue);
         if (position)
           connect(position, &WbSFDouble::changedByOde, this, &WbTreeItem::propagateDataChange);
       }
@@ -101,6 +104,7 @@ WbTreeItem::WbTreeItem(WbField *field, int index) {
   mType = ITEM;
   mParent = NULL;
   mField = field;
+  mNode = field->parentNode();
 
   connect(mNode, &QObject::destroyed, this, &WbTreeItem::makeInvalid);
 }
@@ -144,7 +148,7 @@ QString WbTreeItem::data() const {
         return mField->name();
     }
     case ITEM: {
-      const WbMultipleValue *const value = dynamic_cast<WbMultipleValue *>(mField->value());
+      const WbMultipleValue *const value = qobject_cast<WbMultipleValue *>(mField->value());
       int r = row();
       if (r >= 0 && r < value->size())
         return value->itemToString(row(), WbPrecision::GUI_LOW);
@@ -193,7 +197,7 @@ const QString &WbTreeItem::info() const {
     case NODE:
       return mNode->info();
     case FIELD: {
-      const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(mField->value());
+      const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(mField->value());
       if (sfnode && sfnode->value())
         return sfnode->value()->info();
     }
@@ -262,7 +266,7 @@ bool WbTreeItem::isNonEmptyFixedRowsMFfield() const {
 
   foreach (const QString name, FIXED_ROWS_MFFIELD) {
     if (f->name() == name)
-      return !dynamic_cast<WbMultipleValue *>(f->value())->isEmpty();
+      return !qobject_cast<WbMultipleValue *>(f->value())->isEmpty();
   }
 
   if (f->internalFields().size() > 0) {
@@ -272,7 +276,7 @@ bool WbTreeItem::isNonEmptyFixedRowsMFfield() const {
 
     foreach (const QString name, FIXED_ROWS_MFFIELD) {
       if (f->name() == name)
-        return !dynamic_cast<WbMultipleValue *>(f->value())->isEmpty();
+        return !qobject_cast<WbMultipleValue *>(f->value())->isEmpty();
     }
   }
 
@@ -282,11 +286,11 @@ bool WbTreeItem::isNonEmptyFixedRowsMFfield() const {
 bool WbTreeItem::canInsert() const {
   switch (mType) {
     case NODE:
-      if (dynamic_cast<WbWorldInfo *>(mNode))
+      if (qobject_cast<WbWorldInfo *>(mNode))
         return false;
       return true;
     case FIELD: {
-      const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(mField->value());
+      const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(mField->value());
       if (sfnode)
         return !sfnode->value();
       else {
@@ -312,13 +316,13 @@ bool WbTreeItem::canInsert() const {
 bool WbTreeItem::canCopy() const {
   switch (mType) {
     case NODE:
-      if (dynamic_cast<WbWorldInfo *>(mNode))
+      if (qobject_cast<WbWorldInfo *>(mNode))
         return false;
-      if (dynamic_cast<WbViewpoint *>(mNode))
+      if (qobject_cast<WbViewpoint *>(mNode))
         return false;
       return true;
     case FIELD: {
-      const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(mField->value());
+      const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(mField->value());
       if (sfnode)
         return sfnode->value() && !sfnode->value()->isUseNode();
       else
@@ -339,13 +343,13 @@ bool WbTreeItem::canCopy() const {
 bool WbTreeItem::canCut() const {
   switch (mType) {
     case NODE:
-      if (dynamic_cast<WbWorldInfo *>(mNode))
+      if (qobject_cast<WbWorldInfo *>(mNode))
         return false;
-      if (dynamic_cast<WbViewpoint *>(mNode))
+      if (qobject_cast<WbViewpoint *>(mNode))
         return false;
       return true;
     case FIELD: {
-      WbSFNode *sfnode = dynamic_cast<WbSFNode *>(mField->value());
+      WbSFNode *sfnode = qobject_cast<WbSFNode *>(mField->value());
       return sfnode && sfnode->value() && !sfnode->value()->isUseNode();
     }
     case ITEM:
@@ -363,14 +367,14 @@ bool WbTreeItem::canCut() const {
 bool WbTreeItem::canDelete() const {
   switch (mType) {
     case NODE: {
-      if (dynamic_cast<WbWorldInfo *>(mNode))
+      if (qobject_cast<WbWorldInfo *>(mNode))
         return false;
-      if (dynamic_cast<WbViewpoint *>(mNode))
+      if (qobject_cast<WbViewpoint *>(mNode))
         return false;
       return true;
     }
     case FIELD: {
-      WbSFNode *sfnode = dynamic_cast<WbSFNode *>(mField->value());
+      WbSFNode *sfnode = qobject_cast<WbSFNode *>(mField->value());
       return sfnode && sfnode->value() != NULL;
     }
     case ITEM: {
@@ -453,14 +457,14 @@ void WbTreeItem::sfnodeChanged() {
 }
 
 bool WbTreeItem::isSFNode() const {
-  return mType == FIELD && (dynamic_cast<WbSFNode *>(mField->value()) != NULL);
+  return mType == FIELD && (qobject_cast<WbSFNode *>(mField->value()) != NULL);
 }
 
 WbNode *WbTreeItem::node() const {
   if (mType == NODE)
     return mNode;
 
-  WbSFNode *sfNode = dynamic_cast<WbSFNode *>(mField->value());
+  WbSFNode *sfNode = qobject_cast<WbSFNode *>(mField->value());
   if (!sfNode)
     return NULL;
 

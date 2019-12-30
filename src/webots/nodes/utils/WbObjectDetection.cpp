@@ -133,7 +133,7 @@ bool WbObjectDetection::computeBounds(const WbVector3 &devicePosition, const WbM
     nodeType = boundingObject->nodeType();
   else if (!rootObject)
     return false;
-  else if (doesChildrenHaveBoundingObject(dynamic_cast<const WbSolid *>(rootObject)))
+  else if (doesChildrenHaveBoundingObject(qobject_cast<const WbSolid *>(rootObject)))
     return false;
   else
     useBoundingSphere = true;
@@ -141,7 +141,7 @@ bool WbObjectDetection::computeBounds(const WbVector3 &devicePosition, const WbM
   const WbBaseNode *referenceObject = boundingObject;
   if (useBoundingSphere)
     referenceObject = rootObject;
-  const WbTransform *transform = dynamic_cast<const WbTransform *>(referenceObject);
+  const WbTransform *transform = qobject_cast<const WbTransform *>(referenceObject);
   if (!transform)
     transform = referenceObject->upperTransform();
   assert(transform);

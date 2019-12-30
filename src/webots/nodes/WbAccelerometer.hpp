@@ -17,10 +17,12 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbLookupTable;
 
-class WbAccelerometer : public WbSolidDevice {
+class WB_LIB_EXPORT WbAccelerometer : public WbSolidDevice {
   Q_OBJECT
 
 public:

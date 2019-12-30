@@ -23,11 +23,13 @@
 
 #include "WbSimulationState.hpp"
 
+#include <core/WbConfig.h>
+
 class WbApplication;
 class WbMainWindow;
 class WbSplashScreen;
 
-class WbGuiApplication : public QApplication {
+class WB_LIB_EXPORT WbGuiApplication : public QApplication {
   Q_OBJECT
 
 public:

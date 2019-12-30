@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenHdr : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenHdr : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenHdr();
 

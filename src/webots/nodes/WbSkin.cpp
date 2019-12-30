@@ -90,11 +90,11 @@ void WbSkin::preFinalize() {
 
   WbMFIterator<WbMFNode, WbNode *> it(mBonesField);
   while (it.hasNext())
-    dynamic_cast<WbSolidReference *>(it.next())->preFinalize();
+    qobject_cast<WbSolidReference *>(it.next())->preFinalize();
 
   it = WbMFIterator<WbMFNode, WbNode *>(mAppearanceField);
   while (it.hasNext()) {
-    WbAbstractAppearance *appearance = dynamic_cast<WbAbstractAppearance *>(it.next());
+    WbAbstractAppearance *appearance = qobject_cast<WbAbstractAppearance *>(it.next());
     assert(appearance);
     appearance->preFinalize();
   }
@@ -107,10 +107,10 @@ void WbSkin::postFinalize() {
 
   WbMFIterator<WbMFNode, WbNode *> it(mBonesField);
   while (it.hasNext())
-    dynamic_cast<WbSolidReference *>(it.next())->postFinalize();
+    qobject_cast<WbSolidReference *>(it.next())->postFinalize();
   it = WbMFIterator<WbMFNode, WbNode *>(mAppearanceField);
   while (it.hasNext()) {
-    WbAbstractAppearance *appearance = dynamic_cast<WbAbstractAppearance *>(it.next());
+    WbAbstractAppearance *appearance = qobject_cast<WbAbstractAppearance *>(it.next());
     assert(appearance);
     appearance->postFinalize();
   }
@@ -192,7 +192,7 @@ void WbSkin::updateAppearance() {
     int index = -1;
     QString appearanceName;
     bool duplicated = false;
-    appearance = dynamic_cast<WbAbstractAppearance *>(it.next());
+    appearance = qobject_cast<WbAbstractAppearance *>(it.next());
     assert(appearance);
     if (appearance) {
       connect(appearance, &WbAbstractAppearance::nameChanged, this, &WbSkin::updateAppearanceName, Qt::UniqueConnection);
@@ -226,7 +226,7 @@ void WbSkin::updateAppearance() {
 }
 
 void WbSkin::updateMaterial() {
-  WbAbstractAppearance *appearance = dynamic_cast<WbAbstractAppearance *>(sender());
+  WbAbstractAppearance *appearance = qobject_cast<WbAbstractAppearance *>(sender());
   assert(appearance);
   if (appearance) {
     const int materialIndex = mMaterialNames.indexOf(appearance->name());
@@ -246,7 +246,7 @@ void WbSkin::updateAppearanceName(const QString &newName, const QString &prevNam
     return;  // nothing to do
 
   // look for other definition of prevName and newName materials
-  WbAbstractAppearance *appearance = dynamic_cast<WbAbstractAppearance *>(sender());
+  WbAbstractAppearance *appearance = qobject_cast<WbAbstractAppearance *>(sender());
   WbAbstractAppearance *other = NULL;
   bool isAfter = false;
   bool newNameExistsBefore = false;
@@ -254,7 +254,7 @@ void WbSkin::updateAppearanceName(const QString &newName, const QString &prevNam
   bool newNameExistsAfter = false;
   WbMFIterator<WbMFNode, WbNode *> it(mAppearanceField);
   while (it.hasNext()) {
-    WbAbstractAppearance *node = dynamic_cast<WbAbstractAppearance *>(it.next());
+    WbAbstractAppearance *node = qobject_cast<WbAbstractAppearance *>(it.next());
     if (node == appearance) {
       isAfter = true;
       continue;
@@ -308,7 +308,7 @@ void WbSkin::updateAppearanceName(const QString &newName, const QString &prevNam
 void WbSkin::updateBones() {
   WbMFIterator<WbMFNode, WbNode *> it(mBonesField);
   while (it.hasNext()) {
-    WbSolidReference *ref = dynamic_cast<WbSolidReference *>(it.next());
+    WbSolidReference *ref = qobject_cast<WbSolidReference *>(it.next());
     assert(ref);
     if (ref) {
       ref->updateName();
@@ -338,7 +338,7 @@ void WbSkin::createWrenObjects() {
 
   WbMFIterator<WbMFNode, WbNode *> it(mAppearanceField);
   while (it.hasNext()) {
-    WbAbstractAppearance *appearance = dynamic_cast<WbAbstractAppearance *>(it.next());
+    WbAbstractAppearance *appearance = qobject_cast<WbAbstractAppearance *>(it.next());
     assert(appearance);
     if (appearance)
       appearance->createWrenObjects();
@@ -572,7 +572,7 @@ bool WbSkin::createSkeletonFromWebotsNodes() {
   QMap<WrTransform *, WbSolid *> boneToSolidMap;
   int validBoneCount = 0;
   for (int i = 0; i < mBonesField->size(); ++i) {
-    WbSolidReference *ref = dynamic_cast<WbSolidReference *>(mBonesField->item(i));
+    WbSolidReference *ref = qobject_cast<WbSolidReference *>(mBonesField->item(i));
     if (ref->solid() == NULL)
       continue;
 

@@ -7,7 +7,7 @@ extern "C" {
 
 /* Inheritance diagram: WrNode <- WrSpotLight */
 struct WrSpotLight;
-typedef struct WrSpotLight WrSpotLight;
+//typedef struct WrSpotLight WrSpotLight;
 
 /* Use wr_node_delete(WR_NODE(light)) to delete an instance */
 WrSpotLight *wr_spot_light_new();

@@ -17,7 +17,9 @@
 
 #include "WbAbstractCamera.hpp"
 
-class WbRangeFinder : public WbAbstractCamera {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRangeFinder : public WbAbstractCamera {
   Q_OBJECT
 
 public:

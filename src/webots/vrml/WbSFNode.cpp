@@ -102,12 +102,12 @@ bool WbSFNode::operator==(const WbSFNode &other) const {
 }
 
 bool WbSFNode::equals(const WbValue *other) const {
-  const WbSFNode *that = dynamic_cast<const WbSFNode *>(other);
+  const WbSFNode *that = qobject_cast<const WbSFNode *>(other);
   return that && *this == *that;
 }
 
 void WbSFNode::copyFrom(const WbValue *other) {
-  const WbSFNode *that = dynamic_cast<const WbSFNode *>(other);
+  const WbSFNode *that = qobject_cast<const WbSFNode *>(other);
   *this = *that;
 }
 

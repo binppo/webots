@@ -90,6 +90,9 @@ void WbWrenGtao::setup(WrViewport *viewport) {
 
   WrFrameBuffer *viewportFramebuffer = wr_viewport_get_frame_buffer(mWrenViewport);
 
+  if(!viewportFramebuffer)
+    return;
+
   WrTexture *depthTexture = WR_TEXTURE(wr_frame_buffer_get_depth_texture(viewportFramebuffer));
   WrTexture *normalTexture = WR_TEXTURE(wr_frame_buffer_get_output_texture(viewportFramebuffer, 1));
 

@@ -22,7 +22,9 @@
 
 #include <QtCore/QString>
 
-class WbMacAddress {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMacAddress {
 public:
   static WbMacAddress *instance();
   WbMacAddress();

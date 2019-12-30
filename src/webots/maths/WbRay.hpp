@@ -22,10 +22,12 @@
 #include <cmath>
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbAffinePlane;
 class WbMatrix4;
 
-class WbRay {
+class WB_LIB_EXPORT WbRay {
 public:
   // construct default ray
   WbRay() : mOrigin(0.0, 0.0, 0.0), mDirection(0.0, 0.0, 0.0) {}

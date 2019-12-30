@@ -121,10 +121,10 @@ void WbJoint::addDevice(int index) {
   if (s) {
     WbRobot *const r = s->robot();
     assert(r);
-    WbBaseNode *decendant = dynamic_cast<WbBaseNode *>(mDevice->item(index));
+    WbBaseNode *decendant = qobject_cast<WbBaseNode *>(mDevice->item(index));
     r->descendantNodeInserted(decendant);
   }
-  WbBrake *brake = dynamic_cast<WbBrake *>(mDevice->item(index));
+  WbBrake *brake = qobject_cast<WbBrake *>(mDevice->item(index));
   if (brake)
     connect(brake, &WbBrake::brakingChanged, this, &WbJoint::updateSpringAndDampingConstants, Qt::UniqueConnection);
 }
@@ -145,12 +145,12 @@ void WbJoint::updateParameters() {
 // Utility functions
 
 WbJointParameters *WbJoint::parameters() const {
-  return dynamic_cast<WbJointParameters *>(mParameters->value());
+  return qobject_cast<WbJointParameters *>(mParameters->value());
 }
 
 WbJointDevice *WbJoint::device(int index) const {
   if (index >= 0 && mDevice->size() > index)
-    return dynamic_cast<WbJointDevice *>(mDevice->item(index));
+    return qobject_cast<WbJointDevice *>(mDevice->item(index));
   else
     return NULL;
 }
@@ -170,7 +170,7 @@ QVector<WbLogicalDevice *> WbJoint::devices() const {
 WbMotor *WbJoint::motor() const {
   WbMotor *motor = NULL;
   for (int i = 0; i < mDevice->size(); ++i) {
-    motor = dynamic_cast<WbMotor *>(mDevice->item(i));
+    motor = qobject_cast<WbMotor *>(mDevice->item(i));
     if (motor)
       return motor;
   }
@@ -181,7 +181,7 @@ WbMotor *WbJoint::motor() const {
 WbPositionSensor *WbJoint::positionSensor() const {
   WbPositionSensor *sensor = NULL;
   for (int i = 0; i < mDevice->size(); ++i) {
-    sensor = dynamic_cast<WbPositionSensor *>(mDevice->item(i));
+    sensor = qobject_cast<WbPositionSensor *>(mDevice->item(i));
     if (sensor)
       return sensor;
   }
@@ -192,7 +192,7 @@ WbPositionSensor *WbJoint::positionSensor() const {
 WbBrake *WbJoint::brake() const {
   WbBrake *brake = NULL;
   for (int i = 0; i < mDevice->size(); ++i) {
-    brake = dynamic_cast<WbBrake *>(mDevice->item(i));
+    brake = qobject_cast<WbBrake *>(mDevice->item(i));
     if (brake)
       return brake;
   }

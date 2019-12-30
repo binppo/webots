@@ -179,12 +179,12 @@ bool WbMFNode::operator==(const WbMFNode &other) const {
 }
 
 bool WbMFNode::equals(const WbValue *other) const {
-  const WbMFNode *that = dynamic_cast<const WbMFNode *>(other);
+  const WbMFNode *that = qobject_cast<const WbMFNode *>(other);
   return that && *this == *that;
 }
 
 void WbMFNode::copyFrom(const WbValue *other) {
-  const WbMFNode *that = dynamic_cast<const WbMFNode *>(other);
+  const WbMFNode *that = qobject_cast<const WbMFNode *>(other);
   *this = *that;
 }
 

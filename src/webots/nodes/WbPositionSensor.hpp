@@ -24,7 +24,9 @@
 #include "WbJointDevice.hpp"
 #include "WbSensor.hpp"
 
-class WbPositionSensor : public WbJointDevice {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPositionSensor : public WbJointDevice {
   Q_OBJECT
 
 public:

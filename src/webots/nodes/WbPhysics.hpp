@@ -18,6 +18,8 @@
 #include "WbBaseNode.hpp"
 #include "WbSFDouble.hpp"
 
+#include <core/WbConfig.h>
+
 // Note: inertia and mass properties must be specified in accordance with one of these two modes:
 // Custom mode: both the center of mass and the inertia matrix, together with a positive mass, are specified.
 // Default mode based on bounding object: the inertia matrix is not specified but the mass or the density has to be positive.
@@ -30,7 +32,7 @@ class WbDamping;
 class WbMFVector3;
 class WbSFNode;
 
-class WbPhysics : public WbBaseNode {
+class WB_LIB_EXPORT WbPhysics : public WbBaseNode {
   Q_OBJECT
 
 public:

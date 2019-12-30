@@ -30,7 +30,11 @@
 #ifdef _WIN32
 #include "WbWindowsRegistry.hpp"
 
-#include <cpuid.h>
+#include <limits.h>
+#include <intrin.h>
+typedef unsigned __int32  uint32_t;
+
+//#include <cpuid.h>
 #include <d3d9.h>
 typedef void(WINAPI *PGNSI)(LPSYSTEM_INFO);
 #else
@@ -43,7 +47,7 @@ typedef void(WINAPI *PGNSI)(LPSYSTEM_INFO);
 #include <sys/sysctl.h>
 #endif
 
-#ifdef __WIN32
+#ifdef _WIN32
 static quint32 gDeviceId = 0;
 static quint32 gVendorId = 0;
 
@@ -361,8 +365,17 @@ bool WbSysInfo::isVirtualMachine() {
   }
 // this is a more reliable way to determine if we are running on a virtual machine
 #ifdef _WIN32
-  unsigned int eax = 0, ebx = 0, ecx = 0, edx = 0;
-  __get_cpuid(0x1, &eax, &ebx, &ecx, &edx);
+  //unsigned int eax = 0, ebx = 0, ecx = 0, edx = 0;
+  //__get_cpuid(0x1, &eax, &ebx, &ecx, &edx);
+
+  uint32_t regs[4];
+  __cpuid((int *)regs, 0);
+
+  unsigned int eax = regs[0];
+  unsigned int ebx = regs[1];
+  unsigned int ecx = regs[2];
+  unsigned int edx = regs[3];
+
   // cppcheck-suppress shiftTooManyBitsSigned
   if (ecx & (1 << 31)) {
     virtualMachine = 1;

@@ -48,7 +48,7 @@ void WbResizeAndTranslateCommand::redo() {
 void WbResizeAndTranslateCommand::resetValue(bool invertedAction) {
   assert(mGeometry);
 
-  WbIndexedFaceSet *indexedFaceSet = dynamic_cast<WbIndexedFaceSet *>(mGeometry);
+  WbIndexedFaceSet *indexedFaceSet = qobject_cast<WbIndexedFaceSet *>(mGeometry);
   if (!indexedFaceSet)
     return;
 

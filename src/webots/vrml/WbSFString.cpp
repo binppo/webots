@@ -42,11 +42,11 @@ WbSFString &WbSFString::operator=(const WbSFString &other) {
 }
 
 bool WbSFString::equals(const WbValue *other) const {
-  const WbSFString *that = dynamic_cast<const WbSFString *>(other);
+  const WbSFString *that = qobject_cast<const WbSFString *>(other);
   return that && *this == *that;
 }
 
 void WbSFString::copyFrom(const WbValue *other) {
-  const WbSFString *that = dynamic_cast<const WbSFString *>(other);
+  const WbSFString *that = qobject_cast<const WbSFString *>(other);
   *this = *that;
 }

@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenDepthOfField : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenDepthOfField : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenDepthOfField();
 

@@ -22,17 +22,17 @@
 #define WB_INERTIAL_UNIT_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_inertial_unit_enable(WbDeviceTag tag, int sampling_period);
-void wb_inertial_unit_disable(WbDeviceTag tag);
-int wb_inertial_unit_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_inertial_unit_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_inertial_unit_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_inertial_unit_get_sampling_period(WbDeviceTag tag);
 
-const double *wb_inertial_unit_get_roll_pitch_yaw(WbDeviceTag tag);
+CONTROLLER_EXPORT const double *wb_inertial_unit_get_roll_pitch_yaw(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

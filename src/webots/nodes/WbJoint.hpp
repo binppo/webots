@@ -19,6 +19,8 @@
 
 #include "WbBasicJoint.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBrake;
 class WbJointDevice;
 class WbJointParameters;
@@ -26,7 +28,7 @@ class WbLogicalDevice;
 class WbMotor;
 class WbPositionSensor;
 
-class WbJoint : public WbBasicJoint {
+class WB_LIB_EXPORT WbJoint : public WbBasicJoint {
   Q_OBJECT
 
 public:

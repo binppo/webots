@@ -17,6 +17,8 @@
 
 #include "WbAbstractCamera.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrTexture;
 
 class WbAffinePlane;
@@ -27,7 +29,7 @@ class WbRecognition;
 class WbRecognizedObject;
 class WbZoom;
 
-class WbCamera : public WbAbstractCamera {
+class WB_LIB_EXPORT WbCamera : public WbAbstractCamera {
   Q_OBJECT
 
 public:

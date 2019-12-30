@@ -17,6 +17,8 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFDouble;
 class WbSFInt;
 class WbSFString;
@@ -34,7 +36,7 @@ struct WrStaticMesh;
 struct WrMaterial;
 struct WrRenderable;
 
-class WbDistanceSensor : public WbSolidDevice {
+class WB_LIB_EXPORT WbDistanceSensor : public WbSolidDevice {
   Q_OBJECT
 
 public:

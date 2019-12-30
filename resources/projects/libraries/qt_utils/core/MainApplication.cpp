@@ -101,7 +101,7 @@ void MainApplicationPrivate::preUpdateGui() {
 #ifdef _WIN32
 bool MainApplicationPrivate::isMainWindowVisible() const {
   foreach (QWidget *widget, QApplication::allWidgets()) {
-    QMainWindow *window = dynamic_cast<QMainWindow *>(widget);
+    QMainWindow *window = qobject_cast<QMainWindow *>(widget);
     if (window)
       return window->isVisible();
   }

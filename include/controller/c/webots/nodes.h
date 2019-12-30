@@ -17,6 +17,9 @@
 #ifndef WB_NODES_H
 #define WB_NODES_H
 
+#define WB_USING_C_API
+#include <webots/types.h>
+
 // IMPORTANT: any modification of this file must also be propagated to:
 //  1. include/controller/cpp/webots/Node.hpp
 //  2. lib/matlab/mgenerate.py
@@ -113,6 +116,14 @@ typedef enum {
   WB_NODE_SKIN
 } WbNodeType;
 
-const char *wb_node_get_name(WbNodeType t);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+CONTROLLER_EXPORT const char *wb_node_get_name(WbNodeType t);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* WB_NODES_H */

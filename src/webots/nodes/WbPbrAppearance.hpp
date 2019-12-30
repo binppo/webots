@@ -18,12 +18,14 @@
 #include "WbAbstractAppearance.hpp"
 #include "WbRgb.hpp"
 
+#include <core/WbConfig.h>
+
 class WbCubemap;
 class WbImageTexture;
 
 struct WrMaterial;
 
-class WbPbrAppearance : public WbAbstractAppearance {
+class WB_LIB_EXPORT WbPbrAppearance : public WbAbstractAppearance {
   Q_OBJECT
 
 public:

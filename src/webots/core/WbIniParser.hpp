@@ -17,7 +17,9 @@
 
 #include <QtCore/QStringList>
 
-class WbIniParser {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbIniParser {
 public:
   explicit WbIniParser(const QString &filename);
 

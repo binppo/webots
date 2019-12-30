@@ -81,7 +81,7 @@ WbBoundingSphere::~WbBoundingSphere() {
 void WbBoundingSphere::setOwner(const WbBaseNode *owner) {
   mOwner = owner;
   mTransformOwner = dynamic_cast<const WbAbstractTransform *>(mOwner);
-  mGeomOwner = dynamic_cast<const WbGeometry *>(mOwner);
+  mGeomOwner = qobject_cast<const WbGeometry *>(mOwner);
 }
 
 double WbBoundingSphere::radius() {
@@ -134,13 +134,13 @@ void WbBoundingSphere::set(const WbVector3 &center, const double radius) {
 }
 
 void WbBoundingSphere::addSubBoundingSphereToParentNode(const WbBaseNode *node) {
-  const WbBaseNode *parent = dynamic_cast<const WbBaseNode *>(node->parent());
+  const WbBaseNode *parent = qobject_cast<const WbBaseNode *>(node->parent());
   while (parent) {
     if (parent->boundingSphere()) {
       parent->boundingSphere()->addSubBoundingSphere(node->boundingSphere());
       return;
     }
-    parent = dynamic_cast<const WbBaseNode *>(parent->parent());
+    parent = qobject_cast<const WbBaseNode *>(parent->parent());
   }
 }
 
@@ -345,7 +345,7 @@ WbBoundingSphere::IntersectingShape WbBoundingSphere::computeIntersection(const 
     if (mGeomOwner != NULL) {
       const double d = mGeomOwner->computeDistance(ray);
       if (d > 0.0) {
-        res.shape = dynamic_cast<WbShape *>(mGeomOwner->parent());
+        res.shape = qobject_cast<WbShape *>(mGeomOwner->parent());
         res.distance = d;
       }
     }

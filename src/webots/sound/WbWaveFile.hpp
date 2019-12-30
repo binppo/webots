@@ -17,7 +17,9 @@
 
 #include <QtCore/QString>
 
-class WbWaveFile {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWaveFile {
 public:
   explicit WbWaveFile(const QString &filename);
   WbWaveFile(qint16 *buffer, int bufferSize, int channelNumber, int bitsPerSample, int rate);

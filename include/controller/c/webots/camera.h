@@ -22,43 +22,43 @@
 #define WB_CAMERA_H
 
 #define WB_USING_C_API
-#include "camera_recognition_object.h"
-#include "types.h"
+#include <webots/camera_recognition_object.h>
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_camera_enable(WbDeviceTag tag, int sampling_period);
-void wb_camera_disable(WbDeviceTag tag);
-int wb_camera_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_camera_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_camera_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_camera_get_sampling_period(WbDeviceTag tag);
 
-const unsigned char *wb_camera_get_image(WbDeviceTag tag);
-int wb_camera_get_width(WbDeviceTag tag);
-int wb_camera_get_height(WbDeviceTag tag);
-double wb_camera_get_fov(WbDeviceTag tag);
-double wb_camera_get_max_fov(WbDeviceTag tag);
-double wb_camera_get_min_fov(WbDeviceTag tag);
-void wb_camera_set_fov(WbDeviceTag tag, double fov);  // fov specified in rad
-double wb_camera_get_focal_length(WbDeviceTag tag);
-double wb_camera_get_focal_distance(WbDeviceTag tag);
-double wb_camera_get_max_focal_distance(WbDeviceTag tag);
-double wb_camera_get_min_focal_distance(WbDeviceTag tag);
-void wb_camera_set_focal_distance(WbDeviceTag tag, double focal_distance);
-double wb_camera_get_near(WbDeviceTag tag);
-int wb_camera_save_image(WbDeviceTag tag, const char *filename, int quality);
+CONTROLLER_EXPORT const unsigned char *wb_camera_get_image(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_camera_get_width(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_camera_get_height(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_camera_get_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_camera_get_max_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_camera_get_min_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_camera_set_fov(WbDeviceTag tag, double fov);  // fov specified in rad
+CONTROLLER_EXPORT double wb_camera_get_focal_length(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_camera_get_focal_distance(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_camera_get_max_focal_distance(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_camera_get_min_focal_distance(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_camera_set_focal_distance(WbDeviceTag tag, double focal_distance);
+CONTROLLER_EXPORT double wb_camera_get_near(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_camera_save_image(WbDeviceTag tag, const char *filename, int quality);
 
 // smart camera
-bool wb_camera_has_recognition(WbDeviceTag tag);
-void wb_camera_recognition_enable(WbDeviceTag tag, int sampling_period);
-void wb_camera_recognition_disable(WbDeviceTag tag);
-int wb_camera_recognition_get_sampling_period(WbDeviceTag tag);
-int wb_camera_recognition_get_number_of_objects(WbDeviceTag tag);
-const WbCameraRecognitionObject *wb_camera_recognition_get_objects(WbDeviceTag tag);
+CONTROLLER_EXPORT bool wb_camera_has_recognition(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_camera_recognition_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_camera_recognition_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_camera_recognition_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_camera_recognition_get_number_of_objects(WbDeviceTag tag);
+CONTROLLER_EXPORT const WbCameraRecognitionObject *wb_camera_recognition_get_objects(WbDeviceTag tag);
 
 #ifdef WB_MATLAB_LOADLIBRARY
 // This function should be used only in the Matlab wrapper
-const WbCameraRecognitionObject *wb_camera_recognition_get_object(WbDeviceTag tag, int index);
+CONTROLLER_EXPORT const WbCameraRecognitionObject *wb_camera_recognition_get_object(WbDeviceTag tag, int index);
 #endif
 
 /* useful macros to get pixel colors from the image data, width and coords *

@@ -138,7 +138,8 @@ WbWrenWindow::~WbWrenWindow() {
   WbWrenOpenGlContext::doneWren();
   WbWrenOpenGlContext::destroy();
 
-  delete[] mSnapshotBuffer;
+  if(mSnapshotBuffer)
+    delete[] mSnapshotBuffer;
 }
 
 // A custom initialization function is used here,
@@ -258,6 +259,9 @@ bool WbWrenWindow::event(QEvent *event) {
 }
 
 void WbWrenWindow::resizeWren(int width, int height) {
+  if(!isVisible())
+    return;
+
   if (!wr_gl_state_is_initialized())
     return;
 
@@ -366,6 +370,9 @@ void WbWrenWindow::processVideoPBO() {
 }
 
 void WbWrenWindow::updateFrameBuffer() {
+  if(!isVisible())
+    return;
+
   WbWrenOpenGlContext::makeWrenCurrent();
 
   if (mWrenMainFrameBuffer)

@@ -22,10 +22,10 @@
 
 namespace wren {
 
-  class Material;
+  struct Material;
   // Base class defining parameters common to all textures, and virtual functions
   // that subclasses need to implement.
-  class Texture : public GlUser {
+  struct Texture : public GlUser {
   public:
     struct UsageParams {
       UsageParams(WrTextureWrapMode wrapS, WrTextureWrapMode wrapT, WrTextureWrapMode wrapR, const glm::vec4 &borderColor,

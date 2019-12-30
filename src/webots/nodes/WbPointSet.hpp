@@ -17,12 +17,14 @@
 
 #include "WbGeometry.hpp"
 
+#include <core/WbConfig.h>
+
 class WbCoordinate;
 class WbColor;
 
 struct WrMaterial;
 
-class WbPointSet : public WbGeometry {
+class WB_LIB_EXPORT WbPointSet : public WbGeometry {
   Q_OBJECT
 
 public:

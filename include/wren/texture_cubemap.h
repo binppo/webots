@@ -9,7 +9,7 @@ extern "C" {
 
 /* Inheritance diagram: WrTexture <- WrTextureCubeMap */
 struct WrTextureCubeMap;
-typedef struct WrTextureCubeMap WrTextureCubeMap;
+//typedef struct WrTextureCubeMap WrTextureCubeMap;
 
 typedef enum WrTextureOrientation {
   WR_TEXTURE_CUBEMAP_RIGHT = 0,

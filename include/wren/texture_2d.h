@@ -7,7 +7,7 @@ extern "C" {
 
 /* Inheritance diagram: WrTexture <- WrTexture2d */
 struct WrTexture2d;
-typedef struct WrTexture2d WrTexture2d;
+//typedef struct WrTexture2d WrTexture2d;
 
 /* Use wr_texture_delete(WR_TEXTURE(texture)) to delete an instance */
 WrTexture2d *wr_texture_2d_new();

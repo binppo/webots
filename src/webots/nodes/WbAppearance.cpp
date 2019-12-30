@@ -105,11 +105,11 @@ void WbAppearance::updateTexture() {
 }
 
 WbMaterial *WbAppearance::material() const {
-  return dynamic_cast<WbMaterial *>(mMaterial->value());
+  return qobject_cast<WbMaterial *>(mMaterial->value());
 }
 
 WbImageTexture *WbAppearance::texture() const {
-  return dynamic_cast<WbImageTexture *>(mTexture->value());
+  return qobject_cast<WbImageTexture *>(mTexture->value());
 }
 
 void WbAppearance::createWrenObjects() {

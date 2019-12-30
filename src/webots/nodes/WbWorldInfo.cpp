@@ -190,7 +190,7 @@ void WbWorldInfo::updateFps() {
 
 void WbWorldInfo::displayOptimalThreadCountWarning() {
   int threadPreferenceNumber = WbPreferences::instance()->value("General/numberOfThreads", 1).toInt();
-  if (mOptimalThreadCount->value() > 1 and threadPreferenceNumber > 1)
+  if (mOptimalThreadCount->value() > 1 && threadPreferenceNumber > 1)
     warn(
       tr("Physics multi-threading is enabled. "
          "This can have a noticeable impact on the simulation speed (negative or positive depending on the simulated world). "
@@ -311,7 +311,7 @@ void WbWorldInfo::updateNorthDirection() {
 }
 
 void WbWorldInfo::updateGpsCoordinateSystem() {
-  if (mGpsCoordinateSystem->value().compare("local") != 0 and mGpsCoordinateSystem->value().compare("WGS84") != 0) {
+  if (mGpsCoordinateSystem->value().compare("local") != 0 && mGpsCoordinateSystem->value().compare("WGS84") != 0) {
     mGpsCoordinateSystem->setValue("local");
     warn(tr("'gpsCoordinateSystem' must either be 'local' or 'WGS84'. Reset to default value 'local'."));
   }

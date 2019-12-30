@@ -22,10 +22,10 @@
 #include <vector>
 
 namespace wren {
-  class Texture2d;
-  class TextureRtt;
-  class TextureCubeMap;
-  class ShaderProgram;
+  struct Texture2d;
+  struct TextureRtt;
+  struct TextureCubeMap;
+  struct ShaderProgram;
   namespace texturecubemapbaker {
     void renderCube();
     void renderQuad();

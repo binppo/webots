@@ -17,9 +17,9 @@
 
 namespace wren {
 
-  class StaticMesh;
-  class DynamicMesh;
-  class Skeleton;
+  struct StaticMesh;
+  struct DynamicMesh;
+  struct Skeleton;
 
   namespace fileImport {
 

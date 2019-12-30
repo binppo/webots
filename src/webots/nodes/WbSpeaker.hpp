@@ -19,9 +19,11 @@
 
 #include <QtCore/QMap>
 
+#include <core/WbConfig.h>
+
 class WbSoundSource;
 
-class WbSpeaker : public WbSolidDevice {
+class WB_LIB_EXPORT WbSpeaker : public WbSolidDevice {
   Q_OBJECT
 
 public:

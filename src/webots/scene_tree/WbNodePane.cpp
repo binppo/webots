@@ -113,8 +113,8 @@ void WbNodePane::edit(bool copyOriginalValue) {
     mNodeEditor->edit(false);
     enableTab(NODE_TAB, mNodeEditor, true);
 
-    WbTransform *t = dynamic_cast<WbTransform *>(node);
-    WbSolid *s = dynamic_cast<WbSolid *>(node);
+    WbTransform *t = qobject_cast<WbTransform *>(node);
+    WbSolid *s = qobject_cast<WbSolid *>(node);
     mPhysicsViewer->show(s);
     mPositionViewer->show(t);
     enableTab(POSITION_TAB, mPositionViewer, t != NULL);

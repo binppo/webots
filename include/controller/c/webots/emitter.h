@@ -22,7 +22,7 @@
 #define WB_EMITTER_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,12 +32,12 @@ extern "C" {
 #define WB_CHANNEL_BROADCAST -1
 #endif
 
-int wb_emitter_send(WbDeviceTag tag, const void *data, int size);
-int wb_emitter_get_buffer_size(WbDeviceTag tag);
-void wb_emitter_set_channel(WbDeviceTag tag, int channel);
-int wb_emitter_get_channel(WbDeviceTag tag);
-double wb_emitter_get_range(WbDeviceTag tag);
-void wb_emitter_set_range(WbDeviceTag tag, double range);
+CONTROLLER_EXPORT int wb_emitter_send(WbDeviceTag tag, const void *data, int size);
+CONTROLLER_EXPORT int wb_emitter_get_buffer_size(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_emitter_set_channel(WbDeviceTag tag, int channel);
+CONTROLLER_EXPORT int wb_emitter_get_channel(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_emitter_get_range(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_emitter_set_range(WbDeviceTag tag, double range);
 
 #ifdef __cplusplus
 }

@@ -6,13 +6,13 @@ extern "C" {
 #endif
 
 struct WrSkeleton;
-typedef struct WrSkeleton WrSkeleton;
+//typedef struct WrSkeleton WrSkeleton;
 
 struct WrStaticMesh;
-typedef struct WrStaticMesh WrStaticMesh;
+//typedef struct WrStaticMesh WrStaticMesh;
 
 struct WrDynamicMesh;
-typedef struct WrDynamicMesh WrDynamicMesh;
+//typedef struct WrDynamicMesh WrDynamicMesh;
 
 // Utility methods to load WREN objects from files.
 // Return false in case of failure.

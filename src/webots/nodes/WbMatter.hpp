@@ -19,6 +19,8 @@
 #include "WbSFString.hpp"
 #include "WbTransform.hpp"
 
+#include <core/WbConfig.h>
+
 class WbGeometry;
 
 struct WrRenderable;
@@ -26,7 +28,7 @@ struct WrTransform;
 struct WrMaterial;
 struct WrStaticMesh;
 
-class WbMatter : public WbTransform {
+class WB_LIB_EXPORT WbMatter : public WbTransform {
   Q_OBJECT
 
 public:

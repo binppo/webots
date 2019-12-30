@@ -24,6 +24,8 @@
 #include <QtCore/QString>
 #include "WbWorldInfo.hpp"
 
+#include <core/WbConfig.h>
+
 class WbGroup;
 class WbNode;
 class WbPerspective;
@@ -36,7 +38,7 @@ class WbProtoList;
 struct dImmersionGeom;
 class WbOdeContact;
 
-class WbWorld : public QObject {
+class WB_LIB_EXPORT WbWorld : public QObject {
   Q_OBJECT;
 
 public:

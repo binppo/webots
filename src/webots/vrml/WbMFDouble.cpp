@@ -123,12 +123,12 @@ WbMFDouble &WbMFDouble::operator=(const WbMFDouble &other) {
 }
 
 bool WbMFDouble::equals(const WbValue *other) const {
-  const WbMFDouble *that = dynamic_cast<const WbMFDouble *>(other);
+  const WbMFDouble *that = qobject_cast<const WbMFDouble *>(other);
   return that && *this == *that;
 }
 
 void WbMFDouble::copyFrom(const WbValue *other) {
-  const WbMFDouble *that = dynamic_cast<const WbMFDouble *>(other);
+  const WbMFDouble *that = qobject_cast<const WbMFDouble *>(other);
   *this = *that;
 }
 

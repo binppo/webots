@@ -25,6 +25,8 @@
 
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 class QComboBox;
 class QGridLayout;
 
@@ -35,7 +37,7 @@ class WbSingleValue;
 class WbMultipleValue;
 class WbVariant;
 
-class WbValueEditor : public QWidget {
+class WB_LIB_EXPORT WbValueEditor : public QWidget {
   Q_OBJECT
 
 public:

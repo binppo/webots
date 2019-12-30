@@ -19,9 +19,11 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 class QTranslator;
 
-class WbTranslator {
+class WB_LIB_EXPORT WbTranslator {
 public:
   static WbTranslator *instance();
 

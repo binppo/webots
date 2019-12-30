@@ -22,7 +22,9 @@
 
 #include <QtCore/QString>
 
-class WbVersion {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbVersion {
 public:
   WbVersion(int major = 0, int minor = 0, int revision = 0);
   WbVersion(const WbVersion &other);

@@ -26,7 +26,9 @@
 
 #include <cassert>
 
-class WbMFString : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFString : public WbMultipleValue {
   Q_OBJECT
 
 public:

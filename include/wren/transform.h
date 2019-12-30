@@ -9,10 +9,10 @@ extern "C" {
 
 /* Inheritance diagram: WrNode <- WrTransform */
 struct WrTransform;
-typedef struct WrTransform WrTransform;
+//typedef struct WrTransform WrTransform;
 
 struct WrNode;
-typedef struct WrNode WrNode;
+//typedef struct WrNode WrNode;
 
 /* Use wr_node_delete(WR_NODE(transform)) to delete an instance */
 WrTransform *wr_transform_new();

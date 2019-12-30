@@ -33,6 +33,8 @@
 #include "WbWorld.hpp"
 #include "WbWrenOpenGlContext.hpp"
 
+#include <resource.h>
+
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -63,15 +65,16 @@ WbGuiApplication::WbGuiApplication(int &argc, char **argv) : QApplication(argc, 
   setOrganizationName("Cyberbotics");
   setOrganizationDomain("cyberbotics.com");
 #ifdef _WIN32
-  QProcess process;
+  /*QProcess process;
   process.start("cygpath", QStringList{QString("-w"), QString("/")});
   process.waitForFinished(-1);
   const QString webotsQtPlugins = process.readAllStandardOutput().trimmed().replace('\\', '/') + "mingw64/share/qt5/plugins";
   QCoreApplication::setLibraryPaths(QStringList(webotsQtPlugins));
+  */
   QApplication::setStyle("windowsvista");
 #endif
 
-  mApplication = new WbApplication();  // creates WbApplication singleton
+  mApplication = WbApplication::instance();  // creates WbApplication singleton
   connect(mApplication, &WbApplication::createWorldLoadingProgressDialog, this, &WbGuiApplication::closeSplashScreenIfNeeded);
   // translation settings is the first thing to do in order
   // to have all the messages in the right language
@@ -80,8 +83,8 @@ WbGuiApplication::WbGuiApplication(int &argc, char **argv) : QApplication(argc, 
   installTranslator(WbTranslator::instance()->basicTranslator());
   installTranslator(WbTranslator::instance()->translator());
 
-  QDir::addSearchPath("icons", WbStandardPaths::resourcesPath() + "nodes/icons");
-  QDir::addSearchPath("images", WbStandardPaths::resourcesPath() + "images");
+  QDir::addSearchPath("icons", ":/resources/nodes/icons");
+  QDir::addSearchPath("images", ":/resources/images");
 
   QFontDatabase::addApplicationFont(WbStandardPaths::fontsPath() + "Raleway-Light.ttf");
 
@@ -400,9 +403,9 @@ bool WbGuiApplication::setup() {
   }
 #endif
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  WbSysInfo::initializeOpenGlInfo();
-  WbWrenOpenGlContext::doneWren();
+  //WbWrenOpenGlContext::makeWrenCurrent();
+  //WbSysInfo::initializeOpenGlInfo();
+  //WbWrenOpenGlContext::doneWren();
 
   if (showGuidedTour)
     mMainWindow->showGuidedTour();
@@ -464,7 +467,7 @@ void WbGuiApplication::loadInitialWorld() {
 
 void WbGuiApplication::udpateStyleSheet() {
   QString themeToLoad = WbPreferences::instance()->value("General/theme", "webots_classic.qss").toString();
-  QFile qssFile(WbStandardPaths::resourcesPath() + themeToLoad);
+  QFile qssFile(":/resources/" + themeToLoad);
   qssFile.open(QFile::ReadOnly);
   QString styleSheet = QString::fromUtf8(qssFile.readAll());
 

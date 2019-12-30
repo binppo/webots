@@ -4,6 +4,11 @@
 # Build directories
 build
 com
+.vs
+x64
+lib
+obj
+GeneratedFiles
 
 # Compiled source
 *.exe

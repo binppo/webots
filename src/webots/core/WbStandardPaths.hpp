@@ -15,47 +15,49 @@
 #ifndef WB_STANDARD_PATHS_HPP
 #define WB_STANDARD_PATHS_HPP
 
+#include <core/WbConfig.h>
+
 class QString;
 
 namespace WbStandardPaths {
   // directories, every path is terminated by a /
-  const QString &webotsDataPath();  // e.g. C:/Users/michel/AppData/Roaming/Cyberbotics/Webots/
-  const QString &webotsHomePath();  // e.g. /usr/local/webots/
-  const QString &webotsLibPath();   // e.g. /usr/local/webots/lib/
+  WB_LIB_EXPORT const QString &webotsDataPath();  // e.g. C:/Users/michel/AppData/Roaming/Cyberbotics/Webots/
+  WB_LIB_EXPORT const QString &webotsHomePath();  // e.g. /usr/local/webots/
+  WB_LIB_EXPORT const QString &webotsLibPath();   // e.g. /usr/local/webots/lib/
 #ifdef _WIN32
-  const QString &webotsMsys64Path();  // e.g. C:/Program Files/Webots/msys64/
+  WB_LIB_EXPORT const QString &webotsMsys64Path();  // e.g. C:/Program Files/Webots/msys64/
 #endif
-  const QString &localDocPath();                      // e.g. /usr/local/webots/docs/
-  const QString &projectsPath();                      // e.g. /usr/local/webots/projects/
-  const QString &resourcesPath();                     // e.g. /usr/local/webots/resources/
-  const QString &translationsPath();                  // e.g. /usr/local/webots/resources/translations/
-  const QString &templatesPath();                     // e.g. /usr/local/webots/resources/templates/
-  const QString &fontsPath();                         // e.g. /usr/local/webots/resources/fonts/
-  const QString &resourcesPicoPath();                 // e.g. /usr/local/webots/resources/pico/lang/
-  const QString &resourcesProjectsPath();             // e.g. /usr/local/webots/resources/projects/
-  const QString &resourcesControllersPath();          // e.g. /usr/local/webots/resources/projects/controllers/
-  const QString &resourcesPhysicsPluginsPath();       // e.g. /usr/local/webots/resources/projects/plugins/physics/
-  const QString &resourcesSoundPluginsPath();         // e.g. /usr/local/webots/resources/projects/plugins/sound/
-  const QString &resourcesRobotWindowsPluginsPath();  // e.g. /usr/local/webots/resources/projects/plugins/robot_windows/
-  const QString &resourcesWebPath();                  // e.g. /usr/local/webots/resources/web/
+  WB_LIB_EXPORT const QString &localDocPath();                      // e.g. /usr/local/webots/docs/
+  WB_LIB_EXPORT const QString &projectsPath();                      // e.g. /usr/local/webots/projects/
+  WB_LIB_EXPORT const QString &resourcesPath();                     // e.g. /usr/local/webots/resources/
+  WB_LIB_EXPORT const QString &translationsPath();                  // e.g. /usr/local/webots/resources/translations/
+  WB_LIB_EXPORT const QString &templatesPath();                     // e.g. /usr/local/webots/resources/templates/
+  WB_LIB_EXPORT const QString &fontsPath();                         // e.g. /usr/local/webots/resources/fonts/
+  WB_LIB_EXPORT const QString &resourcesPicoPath();                 // e.g. /usr/local/webots/resources/pico/lang/
+  WB_LIB_EXPORT const QString &resourcesProjectsPath();             // e.g. /usr/local/webots/resources/projects/
+  WB_LIB_EXPORT const QString &resourcesControllersPath();          // e.g. /usr/local/webots/resources/projects/controllers/
+  WB_LIB_EXPORT const QString &resourcesPhysicsPluginsPath();       // e.g. /usr/local/webots/resources/projects/plugins/physics/
+  WB_LIB_EXPORT const QString &resourcesSoundPluginsPath();         // e.g. /usr/local/webots/resources/projects/plugins/sound/
+  WB_LIB_EXPORT const QString &resourcesRobotWindowsPluginsPath();  // e.g. /usr/local/webots/resources/projects/plugins/robot_windows/
+  WB_LIB_EXPORT const QString &resourcesWebPath();                  // e.g. /usr/local/webots/resources/web/
 
-  const QString &emptyProjectPath();  // equal to resourcesProjectsPath() if WEBOTS_EMPTY_PROJECT_PATH is not set
+  WB_LIB_EXPORT const QString &emptyProjectPath();  // equal to resourcesProjectsPath() if WEBOTS_EMPTY_PROJECT_PATH is not set
 
   // urls
-  const QString &cyberboticsUrl();       // https://cyberbotics.com
-  const QString &githubRepositoryUrl();  // https://github.com/cyberbotics/webots
+  WB_LIB_EXPORT const QString &cyberboticsUrl();       // https://cyberbotics.com
+  WB_LIB_EXPORT const QString &githubRepositoryUrl();  // https://github.com/cyberbotics/webots
 
   // utility function
-  const QString &dynamicLibraryExtension();  // e.g. .so, .dll or .dylib
-  const QString &dynamicLibraryPrefix();     // e.g. lib or ''
-  const QString &executableExtension();      // e.g. .exe or ''
+  WB_LIB_EXPORT const QString &dynamicLibraryExtension();  // e.g. .so, .dll or .dylib
+  WB_LIB_EXPORT const QString &dynamicLibraryPrefix();     // e.g. lib or ''
+  WB_LIB_EXPORT const QString &executableExtension();      // e.g. .exe or ''
 
   // file names
-  const QString &unnamedWorld();     // "unnamed.wbt"
-  const QString &unnamedTextFile();  // "unnamed.txt"
+  WB_LIB_EXPORT const QString &unnamedWorld();     // "unnamed.wbt"
+  WB_LIB_EXPORT const QString &unnamedTextFile();  // "unnamed.txt"
 
   // temporary directory
-  const QString &webotsTmpPath();  // e.g. /var/tmp/webots/ or /var/tmp/webots-<PID>/
+  WB_LIB_EXPORT const QString &webotsTmpPath();  // e.g. /var/tmp/webots/ or /var/tmp/webots-<PID>/
 };                                 // namespace WbStandardPaths
 
 #endif

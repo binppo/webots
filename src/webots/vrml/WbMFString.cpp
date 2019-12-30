@@ -73,11 +73,11 @@ WbMFString &WbMFString::operator=(const WbMFString &other) {
 }
 
 bool WbMFString::equals(const WbValue *other) const {
-  const WbMFString *that = dynamic_cast<const WbMFString *>(other);
+  const WbMFString *that = qobject_cast<const WbMFString *>(other);
   return that && *this == *that;
 }
 
 void WbMFString::copyFrom(const WbValue *other) {
-  const WbMFString *that = dynamic_cast<const WbMFString *>(other);
+  const WbMFString *that = qobject_cast<const WbMFString *>(other);
   *this = *that;
 }

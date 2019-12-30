@@ -22,7 +22,7 @@
 
 namespace wren {
 
-  class Mesh : public GlUser {
+  struct Mesh : public GlUser {
   public:
     struct Triangle {
       Triangle(unsigned int vertex0, unsigned int vertex1, unsigned int vertex2, glm::vec3 normal) :

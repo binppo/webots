@@ -22,13 +22,15 @@
 #include "WbAbstractDragEvent.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 #include <QtCore/QPoint>
 
 class WbViewpoint;
 
 // WbDragViewpointEvent class (abstract) : change camera's position or orientation
 ///////////////////////////////////////////////////////////////////////////////////
-class WbDragViewpointEvent : public WbDragKinematicsEvent {
+class WB_LIB_EXPORT WbDragViewpointEvent : public WbDragKinematicsEvent {
 public:
   virtual ~WbDragViewpointEvent() {}
   void apply(const QPoint &currentMousePosition) override = 0;
@@ -40,7 +42,7 @@ protected:
 // Implemented classes:
 
 // WbTranslateViewpointEvent class
-class WbTranslateViewpointEvent : public WbDragViewpointEvent {
+class WB_LIB_EXPORT WbTranslateViewpointEvent : public WbDragViewpointEvent {
 public:
   WbTranslateViewpointEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, double scale);
   virtual ~WbTranslateViewpointEvent();
@@ -54,7 +56,7 @@ private:
 };
 
 // WbRotateViewpointEvent class
-class WbRotateViewpointEvent : public WbDragViewpointEvent {
+class WB_LIB_EXPORT WbRotateViewpointEvent : public WbDragViewpointEvent {
 public:
   WbRotateViewpointEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, bool objectPicked);
   virtual ~WbRotateViewpointEvent();
@@ -68,7 +70,7 @@ private:
 };
 
 // WbZoomAndRotateViewpointEvent class
-class WbZoomAndRotateViewpointEvent : public WbDragViewpointEvent {
+class WB_LIB_EXPORT WbZoomAndRotateViewpointEvent : public WbDragViewpointEvent {
 public:
   WbZoomAndRotateViewpointEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, const double scale);
   virtual ~WbZoomAndRotateViewpointEvent();

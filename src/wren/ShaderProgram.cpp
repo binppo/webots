@@ -104,7 +104,7 @@ namespace wren {
       int logLength;
       glGetShaderiv(shaderGlName, GL_INFO_LOG_LENGTH, &logLength);
 
-      char log[logLength];
+      char *log = new char[logLength];
       glGetShaderInfoLog(shaderGlName, logLength, nullptr, &log[0]);
 
       DEBUG("ShaderProgram::compileShader: compilation failed!");
@@ -114,6 +114,8 @@ namespace wren {
 
       glDeleteShader(shaderGlName);
       shaderGlName = 0;
+
+	  delete[] log;
     }
 
     return shaderGlName;
@@ -161,7 +163,7 @@ namespace wren {
       int logLength;
       glGetProgramiv(mGlName, GL_INFO_LOG_LENGTH, &logLength);
 
-      char log[logLength];
+      char *log = new char[logLength];
       glGetProgramInfoLog(mGlName, logLength, nullptr, &log[0]);
 
       DEBUG("ShaderProgram::createProgram: linking failed!");
@@ -169,6 +171,8 @@ namespace wren {
 
       glDeleteProgram(mGlName);
       mGlName = 0;
+
+	  delete[] log;
     }
 
     glDeleteShader(vertexShaderGlName);

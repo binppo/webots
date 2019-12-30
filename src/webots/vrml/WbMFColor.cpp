@@ -78,11 +78,11 @@ WbMFColor &WbMFColor::operator=(const WbMFColor &other) {
 }
 
 bool WbMFColor::equals(const WbValue *other) const {
-  const WbMFColor *that = dynamic_cast<const WbMFColor *>(other);
+  const WbMFColor *that = qobject_cast<const WbMFColor *>(other);
   return that && *this == *that;
 }
 
 void WbMFColor::copyFrom(const WbValue *other) {
-  const WbMFColor *that = dynamic_cast<const WbMFColor *>(other);
+  const WbMFColor *that = qobject_cast<const WbMFColor *>(other);
   *this = *that;
 }

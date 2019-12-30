@@ -18,20 +18,22 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 namespace WbMessageBox {
-  QMessageBox::StandardButton warning(const QString &warning, QWidget *parent = NULL,
+  WB_LIB_EXPORT QMessageBox::StandardButton warning(const QString &warning, QWidget *parent = NULL,
                                       const QString &title = QObject::tr("Warning"),
                                       QMessageBox::StandardButton defaultButton = QMessageBox::NoButton,
                                       QMessageBox::StandardButtons buttons = QMessageBox::Ok);
-  void info(const QString &message, QWidget *parent = NULL, const QString &title = QObject::tr("Information"));
-  QMessageBox::StandardButton question(const QString &question, QWidget *parent = NULL,
+  WB_LIB_EXPORT void info(const QString &message, QWidget *parent = NULL, const QString &title = QObject::tr("Information"));
+  WB_LIB_EXPORT QMessageBox::StandardButton question(const QString &question, QWidget *parent = NULL,
                                        const QString &title = QObject::tr("Question"),
                                        QMessageBox::StandardButton defaultButton = QMessageBox::Cancel,
                                        QMessageBox::StandardButtons buttons = QMessageBox::Ok | QMessageBox::Cancel);
-  void critical(const QString &message, QWidget *parent = NULL, const QString &title = QObject::tr("Critical"));
-  void about(const QString &message, QWidget *parent = NULL, const QString &title = QObject::tr("About"));
-  void disable();
-  bool enabled();
+  WB_LIB_EXPORT void critical(const QString &message, QWidget *parent = NULL, const QString &title = QObject::tr("Critical"));
+  WB_LIB_EXPORT void about(const QString &message, QWidget *parent = NULL, const QString &title = QObject::tr("About"));
+  WB_LIB_EXPORT void disable();
+  WB_LIB_EXPORT bool enabled();
 };  // namespace WbMessageBox
 
 #endif

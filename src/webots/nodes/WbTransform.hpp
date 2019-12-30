@@ -25,7 +25,9 @@
 #include "WbGroup.hpp"
 #include "WbShape.hpp"
 
-class WbTransform : public WbGroup, public WbAbstractTransform {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTransform : public WbGroup, public WbAbstractTransform {
   Q_OBJECT
 
 public:

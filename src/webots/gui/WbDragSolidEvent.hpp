@@ -29,6 +29,8 @@
 #include <QtCore/QPointer>
 #include <QtCore/QSize>
 
+#include <core/WbConfig.h>
+
 class WbPhysicsVectorRepresentation;
 class WbWrenLabelOverlay;
 class WbSolid;
@@ -37,7 +39,7 @@ class WbViewpoint;
 
 // Special translation and rotation drag event for Solid nodes that reset the physics
 ///////////////////////////////////////////////////////////////////////////////////////
-class WbDragHorizontalSolidEvent : public WbDragHorizontalEvent {
+class WB_LIB_EXPORT WbDragHorizontalSolidEvent : public WbDragHorizontalEvent {
 public:
   WbDragHorizontalSolidEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbSolid *selectedSolid);
   virtual ~WbDragHorizontalSolidEvent();
@@ -47,7 +49,7 @@ private:
   WbSolid *mSelectedSolid;
 };
 
-class WbDragVerticalSolidEvent : public WbDragVerticalEvent {
+class WB_LIB_EXPORT WbDragVerticalSolidEvent : public WbDragVerticalEvent {
 public:
   WbDragVerticalSolidEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbSolid *selectedSolid);
   virtual ~WbDragVerticalSolidEvent();
@@ -57,7 +59,7 @@ private:
   WbSolid *mSelectedSolid;
 };
 
-class WbDragTranslateAlongAxisSolidEvent : public WbDragTranslateAlongAxisEvent {
+class WB_LIB_EXPORT WbDragTranslateAlongAxisSolidEvent : public WbDragTranslateAlongAxisEvent {
   Q_OBJECT;
 
 public:
@@ -70,7 +72,7 @@ private:
   WbSolid *mSelectedSolid;
 };
 
-class WbDragRotateAroundWorldVerticalAxisSolidEvent : public WbDragRotateAroundWorldVerticalAxisEvent {
+class WB_LIB_EXPORT WbDragRotateAroundWorldVerticalAxisSolidEvent : public WbDragRotateAroundWorldVerticalAxisEvent {
 public:
   WbDragRotateAroundWorldVerticalAxisSolidEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbSolid *selectedSolid);
   virtual ~WbDragRotateAroundWorldVerticalAxisSolidEvent();
@@ -80,7 +82,7 @@ private:
   WbSolid *mSelectedSolid;
 };
 
-class WbDragRotateAroundAxisSolidEvent : public WbDragRotateAroundAxisEvent {
+class WB_LIB_EXPORT WbDragRotateAroundAxisSolidEvent : public WbDragRotateAroundAxisEvent {
   Q_OBJECT;
 
 public:
@@ -98,7 +100,7 @@ private:
 
 // WbDragPhysicsEvent class (abstract)
 ///////////////////////////////////////
-class WbDragPhysicsEvent : public WbDragView3DEvent {
+class WB_LIB_EXPORT WbDragPhysicsEvent : public WbDragView3DEvent {
   Q_OBJECT;
 
 public:
@@ -138,7 +140,7 @@ protected:
 };
 
 // WbDragForceEvent class
-class WbDragForceEvent : public WbDragPhysicsEvent {
+class WB_LIB_EXPORT WbDragForceEvent : public WbDragPhysicsEvent {
   Q_OBJECT;
 
 public:
@@ -155,7 +157,7 @@ private:
 };
 
 // WbDragTorqueEvent class
-class WbDragTorqueEvent : public WbDragPhysicsEvent {
+class WB_LIB_EXPORT WbDragTorqueEvent : public WbDragPhysicsEvent {
   Q_OBJECT;
 
 public:

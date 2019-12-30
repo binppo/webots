@@ -18,10 +18,12 @@
 #include "WbRobot.hpp"
 #include "WbSFDouble.hpp"
 
+#include <core/WbConfig.h>
+
 class QDataStream;
 class WbSensor;
 
-class WbDifferentialWheels : public WbRobot {
+class WB_LIB_EXPORT WbDifferentialWheels : public WbRobot {
   Q_OBJECT
 
 public:

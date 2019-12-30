@@ -8,25 +8,25 @@ extern "C" {
 #include <wren/texture.h>
 
 struct WrPostProcessingEffect;
-typedef struct WrPostProcessingEffect WrPostProcessingEffect;
+//typedef struct WrPostProcessingEffect WrPostProcessingEffect;
 
 struct WrPostProcessingEffectPass;
-typedef struct WrPostProcessingEffectPass WrPostProcessingEffectPass;
+//typedef struct WrPostProcessingEffectPass WrPostProcessingEffectPass;
 
 struct WrFrameBuffer;
-typedef struct WrFrameBuffer WrFrameBuffer;
+//typedef struct WrFrameBuffer WrFrameBuffer;
 
 struct WrMesh;
-typedef struct WrMesh WrMesh;
+//typedef struct WrMesh WrMesh;
 
 struct WrShaderProgram;
-typedef struct WrShaderProgram WrShaderProgram;
+//typedef struct WrShaderProgram WrShaderProgram;
 
 struct WrTextureRtt;
-typedef struct WrTextureRtt WrTextureRtt;
+//typedef struct WrTextureRtt WrTextureRtt;
 
 struct WrViewport;
-typedef struct WrViewport WrViewport;
+//typedef struct WrViewport WrViewport;
 
 WrPostProcessingEffectPass *wr_post_processing_effect_pass_new();
 void wr_post_processing_effect_pass_delete(WrPostProcessingEffectPass *pass);

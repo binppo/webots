@@ -100,7 +100,7 @@ void WbMatter::disconnectFromBoundingObjectUpdates(const WbNode *node) const {
   if (!node)
     return;
 
-  const WbGroup *const group = dynamic_cast<const WbGroup *>(node);
+  const WbGroup *const group = qobject_cast<const WbGroup *>(node);
   // cppcheck-suppress knownConditionTrueFalse
   if (group) {
     for (int i = 0; i < group->childCount(); ++i)
@@ -108,13 +108,13 @@ void WbMatter::disconnectFromBoundingObjectUpdates(const WbNode *node) const {
     return;
   }
 
-  const WbShape *const shape = dynamic_cast<const WbShape *>(node);
+  const WbShape *const shape = qobject_cast<const WbShape *>(node);
   if (shape) {
     disconnectFromBoundingObjectUpdates(shape->geometry());
     return;
   }
 
-  const WbGeometry *const geometry = dynamic_cast<const WbGeometry *>(node);
+  const WbGeometry *const geometry = qobject_cast<const WbGeometry *>(node);
   if (geometry)
     disconnect(geometry, &WbGeometry::boundingGeometryRemoved, this, &WbMatter::removeBoundingGeometry);
 }
@@ -135,7 +135,7 @@ void WbMatter::postFinalize() {
     WbNode *parameter = protoParameterNode();
     while (parameter->protoParameterNode())
       parameter = parameter->protoParameterNode();
-    WbMatter *matter = dynamic_cast<WbMatter *>(parameter);
+    WbMatter *matter = qobject_cast<WbMatter *>(parameter);
     if (matter)
       matter->connectNameUpdates();
   }
@@ -227,7 +227,7 @@ void WbMatter::boundingObjectFinalizationCompleted(WbBaseNode *node) {
 }
 
 dSpaceID WbMatter::groupSpace() const {
-  const WbGroup *const gp = dynamic_cast<WbGroup *>(mBoundingObject->value());
+  const WbGroup *const gp = qobject_cast<WbGroup *>(mBoundingObject->value());
   return gp ? gp->odeSpace() : NULL;
 }
 
@@ -247,19 +247,19 @@ dGeomID WbMatter::odeGeom() const {
 
   WbGeometry *g = NULL;
 
-  const WbTransform *const t = dynamic_cast<WbTransform *>(bo);
+  const WbTransform *const t = qobject_cast<WbTransform *>(bo);
   // cppcheck-suppress knownConditionTrueFalse
   if (t)
     g = t->geometry();
   else {
-    const WbShape *const s = dynamic_cast<WbShape *>(bo);
-    g = s ? s->geometry() : dynamic_cast<WbGeometry *>(bo);
+    const WbShape *const s = qobject_cast<WbShape *>(bo);
+    g = s ? s->geometry() : qobject_cast<WbGeometry *>(bo);
   }
 
   if (g)
     return g->odeGeom();
 
-  const WbGroup *const gp = dynamic_cast<WbGroup *>(bo);
+  const WbGroup *const gp = qobject_cast<WbGroup *>(bo);
   if (gp)
     return (dGeomID)gp->odeSpace();
 
@@ -299,19 +299,19 @@ dGeomID WbMatter::createOdeGeomFromTransform(dSpaceID space, WbTransform *transf
       tr("A Transform node inside a 'boundingObject' can only contain one child. Remaining children are ignored."));
 
   WbBaseNode *const transformChild = transform->child(0);
-  const WbShape *const shape = dynamic_cast<WbShape *>(transformChild);
+  const WbShape *const shape = qobject_cast<WbShape *>(transformChild);
   if (shape) {
-    const WbIndexedFaceSet *const ifs = dynamic_cast<WbIndexedFaceSet *>(shape->geometry());
+    const WbIndexedFaceSet *const ifs = qobject_cast<WbIndexedFaceSet *>(shape->geometry());
     if (ifs)
       connect(ifs, &WbIndexedFaceSet::validIndexedFaceSetInserted, shape, &WbShape::geometryInShapeInserted,
               Qt::UniqueConnection);
-    const WbElevationGrid *const eg = dynamic_cast<WbElevationGrid *>(shape->geometry());
+    const WbElevationGrid *const eg = qobject_cast<WbElevationGrid *>(shape->geometry());
     if (eg)
       connect(eg, &WbElevationGrid::validElevationGridInserted, shape, &WbShape::geometryInShapeInserted, Qt::UniqueConnection);
     connect(shape, &WbShape::geometryInShapeInserted, this, &WbMatter::createOdeGeomFromInsertedShapeItem,
             Qt::UniqueConnection);
     shape->connectGeometryField();
-  } else if (dynamic_cast<WbGeometry *>(transformChild) == NULL) {
+  } else if (qobject_cast<WbGeometry *>(transformChild) == NULL) {
     transform->warn(tr("A Transform node inside a 'boundingObject' can only contain one Shape or one Geometry node. The child "
                        "node is ignored."));
   }
@@ -320,13 +320,13 @@ dGeomID WbMatter::createOdeGeomFromTransform(dSpaceID space, WbTransform *transf
   if (geometry == NULL)
     return NULL;
 
-  const WbIndexedFaceSet *const ifs = dynamic_cast<WbIndexedFaceSet *>(geometry);
+  const WbIndexedFaceSet *const ifs = qobject_cast<WbIndexedFaceSet *>(geometry);
   // cppcheck-suppress knownConditionTrueFalse
   if (ifs)
     connect(ifs, &WbIndexedFaceSet::validIndexedFaceSetInserted, transform, &WbTransform::geometryInTransformInserted,
             Qt::UniqueConnection);
 
-  const WbElevationGrid *const eg = dynamic_cast<WbElevationGrid *>(geometry);
+  const WbElevationGrid *const eg = qobject_cast<WbElevationGrid *>(geometry);
   if (eg)
     connect(eg, &WbElevationGrid::validElevationGridInserted, transform, &WbTransform::geometryInTransformInserted,
             Qt::UniqueConnection);
@@ -344,7 +344,7 @@ dGeomID WbMatter::createOdeGeomFromTransform(dSpaceID space, WbTransform *transf
 }
 
 void WbMatter::createOdeGeomFromInsertedTransformItem() {
-  assert(dynamic_cast<WbTransform *>(sender()));
+  assert(qobject_cast<WbTransform *>(sender()));
   WbTransform *const transform = static_cast<WbTransform *>(sender());
   dGeomID g = createOdeGeomFromTransform(upperSpace(), transform);
   if (g) {
@@ -355,7 +355,7 @@ void WbMatter::createOdeGeomFromInsertedTransformItem() {
 }
 
 void WbMatter::createOdeGeomFromInsertedShapeItem() {
-  assert(dynamic_cast<WbShape *>(sender()));
+  assert(qobject_cast<WbShape *>(sender()));
   WbShape *const shape = static_cast<WbShape *>(sender());
   WbGeometry *const geometry = shape->geometry();
   WbTransform *transform = shape->upperTransform();
@@ -366,12 +366,12 @@ void WbMatter::createOdeGeomFromInsertedShapeItem() {
     if (insertedGeom)
       setGeomMatter(insertedGeom);
   } else {  // no Transform in the boundingObject is a parent of this Shape
-    WbIndexedFaceSet *const ifs = dynamic_cast<WbIndexedFaceSet *>(geometry);
+    WbIndexedFaceSet *const ifs = qobject_cast<WbIndexedFaceSet *>(geometry);
     if (ifs)
       connect(ifs, &WbIndexedFaceSet::validIndexedFaceSetInserted, shape, &WbShape::geometryInShapeInserted,
               Qt::UniqueConnection);
 
-    WbElevationGrid *const eg = dynamic_cast<WbElevationGrid *>(geometry);
+    WbElevationGrid *const eg = qobject_cast<WbElevationGrid *>(geometry);
     if (eg)
       connect(eg, &WbElevationGrid::validElevationGridInserted, shape, &WbShape::geometryInShapeInserted, Qt::UniqueConnection);
 
@@ -406,17 +406,17 @@ dGeomID WbMatter::createOdeGeomFromGroup(dSpaceID space, WbGroup *group) {  // g
   WbMFNode::Iterator it(group->children());
   while (it.hasNext()) {
     WbNode *const node = it.next();
-    WbTransform *const transform = dynamic_cast<WbTransform *>(node);
+    WbTransform *const transform = qobject_cast<WbTransform *>(node);
     if (transform)
       createOdeGeomFromTransform(simpleSpace, transform);
     else {
-      const WbShape *const shape = dynamic_cast<WbShape *>(node);
+      const WbShape *const shape = qobject_cast<WbShape *>(node);
       if (shape) {
-        const WbIndexedFaceSet *const ifs = dynamic_cast<WbIndexedFaceSet *>(shape->geometry());
+        const WbIndexedFaceSet *const ifs = qobject_cast<WbIndexedFaceSet *>(shape->geometry());
         if (ifs)
           connect(ifs, &WbIndexedFaceSet::validIndexedFaceSetInserted, shape, &WbShape::geometryInShapeInserted,
                   Qt::UniqueConnection);
-        const WbElevationGrid *const eg = dynamic_cast<WbElevationGrid *>(shape->geometry());
+        const WbElevationGrid *const eg = qobject_cast<WbElevationGrid *>(shape->geometry());
         if (eg)
           connect(eg, &WbElevationGrid::validElevationGridInserted, shape, &WbShape::geometryInShapeInserted,
                   Qt::UniqueConnection);
@@ -440,7 +440,7 @@ dGeomID WbMatter::createOdeGeomFromBoundingObject(dSpaceID space) {
 }
 
 void WbMatter::insertValidGeometryInBoundingObject() {
-  assert(dynamic_cast<WbIndexedFaceSet *>(sender()) || dynamic_cast<WbElevationGrid *>(sender()));
+  assert(qobject_cast<WbIndexedFaceSet *>(sender()) || dynamic_cast<WbElevationGrid *>(sender()));
   WbGeometry *const geometry = static_cast<WbGeometry *>(sender());
   createOdeGeomFromGeometry(upperSpace(), geometry);
 }
@@ -449,18 +449,18 @@ dGeomID WbMatter::createOdeGeomFromNode(dSpaceID space, WbBaseNode *node) {
   if (!node)
     return NULL;
 
-  WbTransform *const transform = dynamic_cast<WbTransform *>(node);
+  WbTransform *const transform = qobject_cast<WbTransform *>(node);
   // cppcheck-suppress knownConditionTrueFalse
   if (transform)
     return createOdeGeomFromTransform(space, transform);
 
-  WbGroup *const group = dynamic_cast<WbGroup *>(node);
+  WbGroup *const group = qobject_cast<WbGroup *>(node);
   if (group)
     return createOdeGeomFromGroup(space, group);
 
-  const WbShape *const shape = dynamic_cast<WbShape *>(node);
+  const WbShape *const shape = qobject_cast<WbShape *>(node);
   if (shape) {
-    const WbIndexedFaceSet *const ifs = dynamic_cast<WbIndexedFaceSet *>(shape->geometry());
+    const WbIndexedFaceSet *const ifs = qobject_cast<WbIndexedFaceSet *>(shape->geometry());
     if (ifs)
       connect(ifs, &WbIndexedFaceSet::validIndexedFaceSetInserted, shape, &WbShape::geometryInShapeInserted,
               Qt::UniqueConnection);
@@ -473,13 +473,13 @@ dGeomID WbMatter::createOdeGeomFromNode(dSpaceID space, WbBaseNode *node) {
   if (!geometry)
     return NULL;  // the boundingObject is neither a WbGroup, WbShape nor a WbGeometry => ignored (maybe empty Shape)
 
-  const WbIndexedFaceSet *const ifs = dynamic_cast<WbIndexedFaceSet *>(geometry);
+  const WbIndexedFaceSet *const ifs = qobject_cast<WbIndexedFaceSet *>(geometry);
   // cppcheck-suppress knownConditionTrueFalse
   if (ifs)
     connect(ifs, &WbIndexedFaceSet::validIndexedFaceSetInserted, this, &WbMatter::insertValidGeometryInBoundingObject,
             Qt::UniqueConnection);
 
-  const WbElevationGrid *const eg = dynamic_cast<WbElevationGrid *>(geometry);
+  const WbElevationGrid *const eg = qobject_cast<WbElevationGrid *>(geometry);
   if (eg)
     connect(eg, &WbElevationGrid::validElevationGridInserted, this, &WbMatter::insertValidGeometryInBoundingObject,
             Qt::UniqueConnection);
@@ -523,7 +523,7 @@ void WbMatter::updateLineScale() {
 void WbMatter::updateName() {
   QString nameValue = mName->value();
   if (nameValue.isEmpty()) {
-    const QString &defaultName = dynamic_cast<const WbSFString *>(findField("name")->defaultValue())->value();
+    const QString &defaultName = qobject_cast<const WbSFString *>(findField("name")->defaultValue())->value();
     warn(tr("'name' cannot be empty. Default node name '%1' is automatically set.").arg(defaultName));
     mName->blockSignals(true);
     mName->setValue(defaultName);
@@ -592,7 +592,7 @@ void WbMatter::updateOdePlaceableGeomPosition(dGeomID g) {
 void WbMatter::updateOdePlanePosition(dGeomID plane) {
   const WbOdeGeomData *const odeGeomData = static_cast<WbOdeGeomData *>(dGeomGetData(plane));
   assert(odeGeomData);
-  WbPlane *wbplane = dynamic_cast<WbPlane *>(odeGeomData->geometry());
+  WbPlane *wbplane = qobject_cast<WbPlane *>(odeGeomData->geometry());
   assert(wbplane);
   wbplane->updateOdePlanePosition();
 }
@@ -607,7 +607,7 @@ void WbMatter::updateOdeGeomPosition(dGeomID g) {
 
     // We need to store geoms in a temp array, because the list order gets
     // modified by calling setPlaceableGeom() while we iterate
-    dGeomID geoms[n];
+    std::vector<dGeomID> geoms(n);
     for (int i = 0; i < n; ++i)
       geoms[i] = dSpaceGetGeom(spaceGeom, i);
 
@@ -657,14 +657,14 @@ void WbMatter::applyMatterCenterToWren() {
 void WbMatter::propagateScale() {
   // Sets new masses and new CoMs from top to bottom
   WbBaseNode *const bo = boundingObject();
-  const WbGroup *group = dynamic_cast<WbGroup *>(bo);
+  const WbGroup *group = qobject_cast<WbGroup *>(bo);
   WbGeometry *g = NULL;
   if (group == NULL) {
     g = WbSolidUtilities::geometry(bo);
     if (g)
       g->applyToOdeData(false);
   } else {
-    WbTransform *transform = dynamic_cast<WbTransform *>(bo);
+    WbTransform *transform = qobject_cast<WbTransform *>(bo);
     if (transform) {
       g = transform->geometry();
       if (g)
@@ -674,7 +674,7 @@ void WbMatter::propagateScale() {
       WbMFNode::Iterator it(children);
       while (it.hasNext()) {
         WbNode *const node = it.next();
-        transform = dynamic_cast<WbTransform *>(node);
+        transform = qobject_cast<WbTransform *>(node);
         if (transform) {
           g = transform->geometry();
           if (g)
@@ -714,7 +714,7 @@ bool WbMatter::checkBoundingObject() const {
   if (boundingObject() == NULL)
     return false;
 
-  const WbGroup *const group = dynamic_cast<WbGroup *>(boundingObject());
+  const WbGroup *const group = qobject_cast<WbGroup *>(boundingObject());
   if (group) {
     const WbMFNode &children = group->children();
     const int size = children.size();

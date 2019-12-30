@@ -22,17 +22,17 @@
 #define WB_COMPASS_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_compass_enable(WbDeviceTag tag, int sampling_period);
-void wb_compass_disable(WbDeviceTag tag);
-int wb_compass_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_compass_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_compass_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_compass_get_sampling_period(WbDeviceTag tag);
 
-const double *wb_compass_get_values(WbDeviceTag tag);
+CONTROLLER_EXPORT const double *wb_compass_get_values(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

@@ -21,9 +21,11 @@
 
 #include "WbStringEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class QPushButton;
 
-class WbExtendedStringEditor : public WbStringEditor {
+class WB_LIB_EXPORT WbExtendedStringEditor : public WbStringEditor {
   Q_OBJECT
 
 public:

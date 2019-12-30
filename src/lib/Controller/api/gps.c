@@ -184,7 +184,7 @@ const char *wb_gps_convert_to_degrees_minutes_seconds(double decimal_degrees) {
   int minutes = (decimal_degrees - degrees) * 60;
   int seconds = (((decimal_degrees - degrees) * 60) - minutes) * 60;
   char *buffer = (char *)malloc(32 * sizeof(char));
-  sprintf(buffer, "%d° %d′ %d″", degrees, minutes, seconds);
+  sprintf(buffer, "%d' %d' %d''", degrees, minutes, seconds);
   return buffer;
 }
 

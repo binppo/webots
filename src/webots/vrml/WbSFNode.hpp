@@ -21,9 +21,11 @@
 
 #include "WbSingleValue.hpp"
 
+#include <core/WbConfig.h>
+
 class WbNode;
 
-class WbSFNode : public WbSingleValue {
+class WB_LIB_EXPORT WbSFNode : public WbSingleValue {
   Q_OBJECT
 
 public:

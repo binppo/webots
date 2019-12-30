@@ -30,11 +30,13 @@
 #include "WbSFRotation.hpp"
 #include "WbSFVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 class WbScaleManipulator;
 class WbTranslateRotateManipulator;
 
-class WbAbstractTransform {
+class WB_LIB_EXPORT WbAbstractTransform {
 public:
   virtual ~WbAbstractTransform();
 

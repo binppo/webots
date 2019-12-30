@@ -18,12 +18,14 @@
 #include "WbBaseNode.hpp"
 #include "WbSFString.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFNode;
 class WbTextureTransform;
 
 struct WrMaterial;
 
-class WbAbstractAppearance : public WbBaseNode {
+class WB_LIB_EXPORT WbAbstractAppearance : public WbBaseNode {
   Q_OBJECT
 
 public:

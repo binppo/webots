@@ -15,13 +15,15 @@
 #ifndef WB_MOTOR_SOUND_MANAGER_HPP
 #define WB_MOTOR_SOUND_MANAGER_HPP
 
+#include <core/WbConfig.h>
+
 //
 // Description: manage motor sounds
 //
 
 namespace WbMotorSoundManager {
-  void update();
-  void clearAllMotorSoundSources();
+  WB_LIB_EXPORT void update();
+  WB_LIB_EXPORT void clearAllMotorSoundSources();
 };  // namespace WbMotorSoundManager
 
 #endif

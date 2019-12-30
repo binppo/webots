@@ -19,7 +19,9 @@
 
 #include "WbHingeJoint.hpp"
 
-class WbHinge2Joint : public WbHingeJoint {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbHinge2Joint : public WbHingeJoint {
   Q_OBJECT
 
 public:

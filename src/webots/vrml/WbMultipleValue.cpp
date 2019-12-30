@@ -61,6 +61,6 @@ QString WbMultipleValue::itemToString(int index, WbPrecision::Level level) const
 
 bool WbMultipleValue::valueAtIndexEqualsSingleValue(int index, const WbValue *other) const {
   assert(index >= 0 && index < size());
-  const WbSingleValue *that = dynamic_cast<const WbSingleValue *>(other);
+  const WbSingleValue *that = qobject_cast<const WbSingleValue *>(other);
   return that && that->variantValue() == variantValue(index);
 }

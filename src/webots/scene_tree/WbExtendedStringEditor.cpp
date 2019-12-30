@@ -53,7 +53,7 @@ public:
 protected:
   void childEvent(QChildEvent *event) override {
     QAbstractItemView *itemView;
-    if (event->type() != QEvent::ChildRemoved && (itemView = dynamic_cast<QAbstractItemView *>(event->child())))
+    if (event->type() != QEvent::ChildRemoved && (itemView = qobject_cast<QAbstractItemView *>(event->child())))
       connect(itemView, &QAbstractItemView::doubleClicked, this, &QInputDialog::accept, Qt::UniqueConnection);
   }
 };
@@ -520,7 +520,7 @@ bool WbExtendedStringEditor::populateItems(QStringList &items) {
       const WbMFNode &children = root->children();
       const int size = children.size();
       for (int i = 0; i < size; ++i) {
-        const WbFluid *const fluid = dynamic_cast<WbFluid *>(children.item(i));
+        const WbFluid *const fluid = qobject_cast<WbFluid *>(children.item(i));
         if (fluid)
           items << fluid->name();
       }

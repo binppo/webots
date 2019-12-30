@@ -22,10 +22,12 @@
 #include "WbValueEditor.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFieldDoubleSpinBox;
 class QLabel;
 
-class WbVector3Editor : public WbValueEditor {
+class WB_LIB_EXPORT WbVector3Editor : public WbValueEditor {
   Q_OBJECT
 
 public:

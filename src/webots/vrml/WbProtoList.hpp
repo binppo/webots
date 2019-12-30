@@ -25,7 +25,9 @@ class WbTokenizer;
 #include <QtCore/QFileInfoList>
 #include <QtCore/QStringList>
 
-class WbProtoList {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbProtoList {
 public:
   // return the current proto list
   static WbProtoList *current();

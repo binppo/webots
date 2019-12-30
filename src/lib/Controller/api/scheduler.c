@@ -20,7 +20,7 @@
 #endif
 #include <stdio.h>
 #include <string.h>  // strlen, memcpy
-#include <unistd.h>
+//#include <unistd.h>
 #include <webots/types.h>
 #include "../util/g_pipe.h"
 #include "robot_private.h"
@@ -45,7 +45,7 @@ unsigned int scheduler_actual_step = 0;
 char *scheduler_data = NULL;
 GPipe *scheduler_pipe = NULL;
 
-int scheduler_init(const char *pipe) {
+bool scheduler_init(const char *pipe) {
   scheduler_pipe = g_pipe_new(pipe);
   if (scheduler_pipe == NULL) {
     fprintf(stderr, "Cannot connect to Webots on pipe: %s\n", pipe);
@@ -55,7 +55,7 @@ int scheduler_init(const char *pipe) {
   char pipe_buffer[64];
 #ifdef _WIN32
   sprintf(pipe_buffer, "WEBOTS_PIPE_IN=%d", scheduler_get_pipe_handle());
-  putenv(pipe_buffer);
+  _putenv(pipe_buffer);
 #else
   sprintf(pipe_buffer, "%d", scheduler_get_pipe_handle());
   setenv("WEBOTS_PIPE_IN", pipe_buffer, true);
@@ -102,7 +102,7 @@ WbRequest *scheduler_read_data() {
       scheduler_data = realloc(scheduler_data, scheduler_data_size);
       if (scheduler_data == NULL) {
         fprintf(stderr, "Error reading Webots socket messages: not enough memory.\n");
-        exit(EXIT_FAILURE);
+        //exit(EXIT_FAILURE);
       }
     }
     // read all the remaining data from the packet

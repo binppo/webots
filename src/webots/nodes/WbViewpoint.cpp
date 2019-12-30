@@ -589,7 +589,7 @@ void WbViewpoint::updateNear() {
   if (WbFieldChecker::resetDoubleIfNonPositive(this, mNear, 0.05))
     return;
 
-  if (mFar->value() > 0.0 and mFar->value() < mNear->value()) {
+  if (mFar->value() > 0.0 && mFar->value() < mNear->value()) {
     mNear->setValue(mFar->value());
     warn(tr("'near' is greater than 'far'. Setting 'near' to %1.").arg(mNear->value()));
   }
@@ -602,7 +602,7 @@ void WbViewpoint::updateFar() {
   if (WbFieldChecker::resetDoubleIfNegative(this, mFar, 0.0))
     return;
 
-  if (mFar->value() > 0.0 and mFar->value() < mNear->value()) {
+  if (mFar->value() > 0.0 && mFar->value() < mNear->value()) {
     mFar->setValue(mNear->value() + 1.0);
     warn(tr("'far' is less than 'near'. Setting 'far' to %1.").arg(mFar->value()));
     return;

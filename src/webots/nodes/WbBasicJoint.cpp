@@ -88,8 +88,8 @@ void WbBasicJoint::preFinalize() {
   updateParameters();
   updateEndPointZeroTranslationAndRotation();
 
-  WbBaseNode *const p = dynamic_cast<WbBaseNode *>(mParameters->value());
-  WbBaseNode *const e = dynamic_cast<WbBaseNode *>(mEndPoint->value());
+  WbBaseNode *const p = qobject_cast<WbBaseNode *>(mParameters->value());
+  WbBaseNode *const e = qobject_cast<WbBaseNode *>(mEndPoint->value());
   if (p && !p->isPreFinalizedCalled())
     p->preFinalize();
   if (e && !e->isPreFinalizedCalled())
@@ -105,8 +105,8 @@ void WbBasicJoint::setMatrixNeedUpdate() {
 void WbBasicJoint::postFinalize() {
   WbBaseNode::postFinalize();
 
-  WbBaseNode *const p = dynamic_cast<WbBaseNode *>(mParameters->value());
-  WbBaseNode *const e = dynamic_cast<WbBaseNode *>(mEndPoint->value());
+  WbBaseNode *const p = qobject_cast<WbBaseNode *>(mParameters->value());
+  WbBaseNode *const e = qobject_cast<WbBaseNode *>(mEndPoint->value());
   if (p && !p->isPostFinalizedCalled())
     p->postFinalize();
   if (e && !e->isPostFinalizedCalled())
@@ -273,7 +273,7 @@ void WbBasicJoint::setSolidEndPoint(WbSlot *slot) {
 }
 
 WbSolid *WbBasicJoint::solidEndPoint() const {
-  WbSlot *slot = dynamic_cast<WbSlot *>(mEndPoint->value());
+  WbSlot *slot = qobject_cast<WbSlot *>(mEndPoint->value());
   if (slot) {
     WbSlot *childrenSlot = slot->slotEndPoint();
     if (childrenSlot) {
@@ -286,11 +286,11 @@ WbSolid *WbBasicJoint::solidEndPoint() const {
         return solidReference->solid();
     }
   } else {
-    WbSolid *solid = dynamic_cast<WbSolid *>(mEndPoint->value());
+    WbSolid *solid = qobject_cast<WbSolid *>(mEndPoint->value());
     if (solid)
       return solid;
 
-    const WbSolidReference *const solidReference = dynamic_cast<WbSolidReference *>(mEndPoint->value());
+    const WbSolidReference *const solidReference = qobject_cast<WbSolidReference *>(mEndPoint->value());
     if (solidReference)
       return solidReference->solid();
   }
@@ -299,7 +299,7 @@ WbSolid *WbBasicJoint::solidEndPoint() const {
 }
 
 WbSolidReference *WbBasicJoint::solidReference() const {
-  WbSlot *slot = dynamic_cast<WbSlot *>(mEndPoint->value());
+  WbSlot *slot = qobject_cast<WbSlot *>(mEndPoint->value());
   if (slot) {
     WbSlot *childrenSlot = slot->slotEndPoint();
     if (childrenSlot)
@@ -307,11 +307,11 @@ WbSolidReference *WbBasicJoint::solidReference() const {
     else
       return NULL;
   } else
-    return dynamic_cast<WbSolidReference *>(mEndPoint->value());
+    return qobject_cast<WbSolidReference *>(mEndPoint->value());
 }
 
 WbSolid *WbBasicJoint::solidParent() const {
-  return dynamic_cast<WbSolid *>(parent());
+  return qobject_cast<WbSolid *>(parent());
 }
 
 WbVector3 WbBasicJoint::anchor() const {
@@ -353,7 +353,7 @@ void WbBasicJoint::createWrenObjects() {
   if (solidReference())  // don't create twice
     return;
 
-  WbSlot *slot = dynamic_cast<WbSlot *>(mEndPoint->value());
+  WbSlot *slot = qobject_cast<WbSlot *>(mEndPoint->value());
   if (slot) {
     slot->createWrenObjects();
     return;
@@ -433,7 +433,7 @@ void WbBasicJoint::write(WbVrmlWriter &writer) const {
     WbRotation computedRotation;
     const WbBasicJoint *instance = NULL;
     if (isProtoParameterNode())
-      instance = dynamic_cast<WbBasicJoint *>(protoParameterNodeInstances().at(0));
+      instance = qobject_cast<WbBasicJoint *>(protoParameterNodeInstances().at(0));
     if (instance == NULL)
       instance = this;
     instance->computeEndPointSolidPositionFromParameters(computedTranslation, computedRotation);
@@ -451,11 +451,11 @@ void WbBasicJoint::write(WbVrmlWriter &writer) const {
     // we should not export any SolidReference Solid here,
     // otherwise they will appear duplicate in the X3D/VRML file,
     // this is why we don't use the solidEndPoint() method
-    const WbSolid *solid = dynamic_cast<const WbSolid *>(mEndPoint->value());
+    const WbSolid *solid = qobject_cast<const WbSolid *>(mEndPoint->value());
     if (solid)
       solid->write(writer);
     else {
-      const WbSlot *slot = dynamic_cast<const WbSlot *>(mEndPoint->value());
+      const WbSlot *slot = qobject_cast<const WbSlot *>(mEndPoint->value());
       if (slot) {
         WbSlot *childrenSlot = slot->slotEndPoint();
         if (childrenSlot) {

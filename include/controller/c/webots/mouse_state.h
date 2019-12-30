@@ -21,7 +21,7 @@
 #ifndef WB_MOUSE_STATE_H
 #define WB_MOUSE_STATE_H
 
-#include "types.h"
+#include <webots/types.h>
 
 typedef struct {
   // mouse buttons state

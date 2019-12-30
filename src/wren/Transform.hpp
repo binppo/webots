@@ -23,7 +23,7 @@ namespace wren {
 
   // Extends TransformNode by additionally being able to contain a list of child Nodes.
   // During traversal of the scene tree, will update its transform if necessary and propagate changes to its children.
-  class Transform : public TransformNode {
+  struct Transform : public TransformNode {
   public:
     // Encapsulate memory management
     static Transform *createTransform() { return new Transform(); }

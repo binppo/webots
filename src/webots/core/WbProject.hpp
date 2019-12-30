@@ -22,7 +22,9 @@
 #include <QtCore/QDir>
 #include <QtCore/QString>
 
-class WbProject : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbProject : public QObject {
   Q_OBJECT
 
 public:

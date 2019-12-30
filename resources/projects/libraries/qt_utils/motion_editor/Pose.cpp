@@ -180,7 +180,7 @@ void Pose::swapStateWithNext(int index) {
 }
 
 void Pose::propagateStateUpdate() {
-  MotorTargetState *state = dynamic_cast<MotorTargetState *>(sender());
+  MotorTargetState *state = qobject_cast<MotorTargetState *>(sender());
   if (state) {
     int index = computeStateToIndex(state);
     assert(index != -1);

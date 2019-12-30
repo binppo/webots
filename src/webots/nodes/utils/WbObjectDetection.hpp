@@ -20,11 +20,13 @@
 
 #include <ode/ode.h>
 
+#include <core/WbConfig.h>
+
 class WbAffinePlane;
 class WbBaseNode;
 class WbSolid;
 
-class WbObjectDetection {
+class WB_LIB_EXPORT WbObjectDetection {
 public:
   enum FrustumPlane { RIGHT, BOTTOM, LEFT, TOP, PARALLEL, PLANE_NUMBER };
 

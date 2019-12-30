@@ -80,11 +80,11 @@ WbMFVector2 &WbMFVector2::operator=(const WbMFVector2 &other) {
 }
 
 bool WbMFVector2::equals(const WbValue *other) const {
-  const WbMFVector2 *that = dynamic_cast<const WbMFVector2 *>(other);
+  const WbMFVector2 *that = qobject_cast<const WbMFVector2 *>(other);
   return that && *this == *that;
 }
 
 void WbMFVector2::copyFrom(const WbValue *other) {
-  const WbMFVector2 *that = dynamic_cast<const WbMFVector2 *>(other);
+  const WbMFVector2 *that = qobject_cast<const WbMFVector2 *>(other);
   *this = *that;
 }

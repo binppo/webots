@@ -116,7 +116,7 @@ void WbMotor::postFinalize() {
 
   WbMFIterator<WbMFNode, WbNode *> it(mMuscles);
   while (it.hasNext())
-    dynamic_cast<WbMuscle *>(it.next())->postFinalize();
+    qobject_cast<WbMuscle *>(it.next())->postFinalize();
 
   connect(mMaxVelocity, &WbSFDouble::changed, this, &WbMotor::updateMaxVelocity);
   connect(mAcceleration, &WbSFDouble::changed, this, &WbMotor::updateMaxAcceleration);
@@ -134,7 +134,7 @@ void WbMotor::createWrenObjects() {
   WbJointDevice::createWrenObjects();
   WbMFIterator<WbMFNode, WbNode *> it(mMuscles);
   while (it.hasNext())
-    dynamic_cast<WbMuscle *>(it.next())->createWrenObjects();
+    qobject_cast<WbMuscle *>(it.next())->createWrenObjects();
 }
 
 void WbMotor::setupJointFeedback() {
@@ -167,7 +167,7 @@ void WbMotor::updateMinAndMaxPosition() {
     // no limits
     return;
 
-  WbJoint *parentJoint = dynamic_cast<WbJoint *>(parent());
+  WbJoint *parentJoint = qobject_cast<WbJoint *>(parent());
   double p = 0.0;
   if (parentJoint && parentJoint->parameters())
     p = parentJoint->parameters()->position();
@@ -553,7 +553,7 @@ void WbMotor::awake() const {
   }
 
   const WbPropeller *const p = propeller();
-  const WbTrack *const t = dynamic_cast<WbTrack *>(parent());
+  const WbTrack *const t = qobject_cast<WbTrack *>(parent());
   if (p || t) {
     WbSolid *const s = upperSolid();
     assert(s);

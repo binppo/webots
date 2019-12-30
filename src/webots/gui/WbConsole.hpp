@@ -23,13 +23,15 @@
 #include "WbDockWidget.hpp"
 #include "WbLog.hpp"
 
+#include <core/WbConfig.h>
+
 class QAction;
 class QRegExp;
 class WbFindReplaceDialog;
 class WbTextFind;
 class ConsoleEdit;
 
-class WbConsole : public WbDockWidget {
+class WB_LIB_EXPORT WbConsole : public WbDockWidget {
   Q_OBJECT
   // WbLog colors
   Q_PROPERTY(QString errorColor MEMBER mErrorColor READ errorColor WRITE setErrorColor)

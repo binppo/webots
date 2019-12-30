@@ -21,7 +21,9 @@
 #include "WbSFDouble.hpp"
 #include "WbSFInt.hpp"
 
-class WbRecognition : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRecognition : public WbBaseNode {
   Q_OBJECT
 
 public:

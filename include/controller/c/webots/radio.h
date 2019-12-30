@@ -22,7 +22,7 @@
 #define WB_RADIO_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,42 +31,42 @@ extern "C" {
 typedef void *WbRadioMessage;
 typedef void *WbRadioEvent;
 
-WbRadioMessage wb_radio_message_new(int length, const char *body, const char *destination);
-void wb_radio_message_delete(WbRadioMessage);
-const char *wb_radio_message_get_destination(WbRadioMessage);
-int wb_radio_message_get_length(WbRadioMessage);
-const char *wb_radio_message_get_body(WbRadioMessage);
+CONTROLLER_EXPORT WbRadioMessage wb_radio_message_new(int length, const char *body, const char *destination);
+CONTROLLER_EXPORT void wb_radio_message_delete(WbRadioMessage);
+CONTROLLER_EXPORT const char *wb_radio_message_get_destination(WbRadioMessage);
+CONTROLLER_EXPORT int wb_radio_message_get_length(WbRadioMessage);
+CONTROLLER_EXPORT const char *wb_radio_message_get_body(WbRadioMessage);
 
-void wb_radio_enable(WbDeviceTag tag, int sampling_period);
-void wb_radio_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_radio_disable(WbDeviceTag tag);
 
-void wb_radio_set_address(WbDeviceTag tag, const char *address);
-const char *wb_radio_get_address(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_set_address(WbDeviceTag tag, const char *address);
+CONTROLLER_EXPORT const char *wb_radio_get_address(WbDeviceTag tag);
 
-void wb_radio_set_frequency(WbDeviceTag tag, double hz);
-double wb_radio_get_frequency(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_set_frequency(WbDeviceTag tag, double hz);
+CONTROLLER_EXPORT double wb_radio_get_frequency(WbDeviceTag tag);
 
-void wb_radio_set_channel(WbDeviceTag tag, int channel);
-int wb_radio_get_channel(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_set_channel(WbDeviceTag tag, int channel);
+CONTROLLER_EXPORT int wb_radio_get_channel(WbDeviceTag tag);
 
-void wb_radio_set_bitrate(WbDeviceTag tag, int bits_per_second);
-int wb_radio_get_bitrate(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_set_bitrate(WbDeviceTag tag, int bits_per_second);
+CONTROLLER_EXPORT int wb_radio_get_bitrate(WbDeviceTag tag);
 
-void wb_radio_set_rx_sensitivity(WbDeviceTag tag, double dBm);
-double wb_radio_get_rx_sensitivity(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_set_rx_sensitivity(WbDeviceTag tag, double dBm);
+CONTROLLER_EXPORT double wb_radio_get_rx_sensitivity(WbDeviceTag tag);
 
-void wb_radio_set_tx_power(WbDeviceTag tag, double dBm);
-double wb_radio_get_tx_power(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_radio_set_tx_power(WbDeviceTag tag, double dBm);
+CONTROLLER_EXPORT double wb_radio_get_tx_power(WbDeviceTag tag);
 
-void wb_radio_set_callback(WbDeviceTag tag, void (*)(const WbRadioEvent));
+CONTROLLER_EXPORT void wb_radio_set_callback(WbDeviceTag tag, void (*)(const WbRadioEvent));
 
-WbDeviceTag wb_radio_event_get_radio(const WbRadioEvent);
-char *wb_radio_event_get_data(const WbRadioEvent);
-int wb_radio_event_get_data_size(const WbRadioEvent);
-char *wb_radio_event_get_emitter(const WbRadioEvent);
-double wb_radio_event_get_rssi(const WbRadioEvent);
+CONTROLLER_EXPORT WbDeviceTag wb_radio_event_get_radio(const WbRadioEvent);
+CONTROLLER_EXPORT char *wb_radio_event_get_data(const WbRadioEvent);
+CONTROLLER_EXPORT int wb_radio_event_get_data_size(const WbRadioEvent);
+CONTROLLER_EXPORT char *wb_radio_event_get_emitter(const WbRadioEvent);
+CONTROLLER_EXPORT double wb_radio_event_get_rssi(const WbRadioEvent);
 
-void wb_radio_send(WbDeviceTag tag, const WbRadioMessage, double delay);
+CONTROLLER_EXPORT void wb_radio_send(WbDeviceTag tag, const WbRadioMessage, double delay);
 
 #ifdef __cplusplus
 }

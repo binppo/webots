@@ -25,9 +25,11 @@
 #include <QtCore/QVector>
 #include <QtWidgets/QUndoCommand>
 
+#include <core/WbConfig.h>
+
 class WbField;
 
-class WbResetCommand : public QUndoCommand {
+class WB_LIB_EXPORT WbResetCommand : public QUndoCommand {
 public:
   explicit WbResetCommand(WbField *field, QUndoCommand *parent = 0);
   ~WbResetCommand();

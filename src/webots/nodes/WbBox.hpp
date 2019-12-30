@@ -17,9 +17,11 @@
 
 #include "WbGeometry.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFVector3;
 
-class WbBox : public WbGeometry {
+class WB_LIB_EXPORT WbBox : public WbGeometry {
   Q_OBJECT
 
 public:

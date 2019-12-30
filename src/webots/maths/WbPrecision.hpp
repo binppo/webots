@@ -18,6 +18,8 @@
 #include <math.h>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 namespace WbPrecision {
 
   // Defines the minimum tolerance when comparing doubles.
@@ -36,9 +38,9 @@ namespace WbPrecision {
   // - DOUBLE_MAX and FLOAT_MAX case: this function ensures that:
   //     - a string <-> floating point conversion without loosing precision.
   //     - the result is the shortest possible string.
-  QString doubleToString(double value, Level level);
+  WB_LIB_EXPORT QString doubleToString(double value, Level level);
 
-  double roundValue(double value, Level level);
+  WB_LIB_EXPORT double roundValue(double value, Level level);
 
 };  // namespace WbPrecision
 

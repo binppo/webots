@@ -21,9 +21,11 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 // abstract base class for dynamically loaded Libraries (plugins)
 
-class WbPlugin : public QObject {
+class WB_LIB_EXPORT WbPlugin : public QObject {
   Q_OBJECT
 
 public:

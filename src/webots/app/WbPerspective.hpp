@@ -26,9 +26,11 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 class QTextStream;
 
-class WbPerspective {
+class WB_LIB_EXPORT WbPerspective {
 public:
   // create perspective for this world file
   explicit WbPerspective(const QString &worldPath);

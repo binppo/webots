@@ -24,10 +24,12 @@
 #include <stdint.h>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbMatrix4;
 class WbMatrix3;
 
-class WbWrenMeshBuffers {
+class WB_LIB_EXPORT WbWrenMeshBuffers {
 public:
   WbWrenMeshBuffers(int verticesCount, int indicesCount, int texCoordSetsCount, int colorBufferSize);
   WbWrenMeshBuffers();

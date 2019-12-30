@@ -21,6 +21,8 @@
 
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class WbNodeEditor;
 class WbPhysicsViewer;
 class WbPositionViewer;
@@ -29,7 +31,7 @@ class WbVelocityViewer;
 class QHBoxLayout;
 class QTabWidget;
 
-class WbNodePane : public WbValueEditor {
+class WB_LIB_EXPORT WbNodePane : public WbValueEditor {
   Q_OBJECT
 
 public:

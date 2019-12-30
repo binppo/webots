@@ -22,23 +22,23 @@
 #define WB_RANGE_FINDER_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_range_finder_enable(WbDeviceTag tag, int sampling_period);
-void wb_range_finder_disable(WbDeviceTag tag);
-int wb_range_finder_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_range_finder_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_range_finder_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_range_finder_get_sampling_period(WbDeviceTag tag);
 
-const float *wb_range_finder_get_range_image(WbDeviceTag tag);
-int wb_range_finder_get_width(WbDeviceTag tag);
-int wb_range_finder_get_height(WbDeviceTag tag);
-double wb_range_finder_get_fov(WbDeviceTag tag);
-double wb_range_finder_get_min_range(WbDeviceTag tag);
-double wb_range_finder_get_max_range(WbDeviceTag tag);
-int wb_range_finder_save_image(WbDeviceTag tag, const char *filename, int quality);
+CONTROLLER_EXPORT const float *wb_range_finder_get_range_image(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_range_finder_get_width(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_range_finder_get_height(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_range_finder_get_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_range_finder_get_min_range(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_range_finder_get_max_range(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_range_finder_save_image(WbDeviceTag tag, const char *filename, int quality);
 
 // range finder functions
 #define wb_range_finder_image_get_depth(image, width, x, y) (image[(y) * (width) + (x)])

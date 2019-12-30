@@ -51,7 +51,7 @@ using namespace IceMaths;
  *	\param		src		[in] source matrix
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ICEMATHS_API void IceMaths::InvertPRMatrix(Matrix4x4& dest, const Matrix4x4& src)
+void IceMaths::InvertPRMatrix(Matrix4x4& dest, const Matrix4x4& src)
 {
 	dest.m[0][0] = src.m[0][0];
 	dest.m[1][0] = src.m[0][1];

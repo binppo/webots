@@ -22,18 +22,18 @@
 #define WB_ACCELEROMETER_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_accelerometer_enable(WbDeviceTag tag, int sampling_period);
-void wb_accelerometer_disable(WbDeviceTag tag);
-int wb_accelerometer_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_accelerometer_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_accelerometer_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_accelerometer_get_sampling_period(WbDeviceTag tag);
 
 // return a pointer to an array of 3 double for X, Y and Z accelerations
-const double *wb_accelerometer_get_values(WbDeviceTag tag);
+CONTROLLER_EXPORT const double *wb_accelerometer_get_values(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

@@ -24,7 +24,7 @@
 
 namespace wren {
 
-  class Frustum;
+  struct Frustum;
 
   namespace primitive {
 

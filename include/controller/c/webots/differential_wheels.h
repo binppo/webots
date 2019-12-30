@@ -22,24 +22,24 @@
 #define WB_DIFFERENTIAL_WHEELS_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_differential_wheels_set_speed(double left, double right);
-double wb_differential_wheels_get_left_speed();
-double wb_differential_wheels_get_right_speed();
-double wb_differential_wheels_get_max_speed();
-double wb_differential_wheels_get_speed_unit();
+CONTROLLER_EXPORT void wb_differential_wheels_set_speed(double left, double right);
+CONTROLLER_EXPORT double wb_differential_wheels_get_left_speed();
+CONTROLLER_EXPORT double wb_differential_wheels_get_right_speed();
+CONTROLLER_EXPORT double wb_differential_wheels_get_max_speed();
+CONTROLLER_EXPORT double wb_differential_wheels_get_speed_unit();
 
-void wb_differential_wheels_enable_encoders(int sampling_period);
-void wb_differential_wheels_disable_encoders();
-int wb_differential_wheels_get_encoders_sampling_period();
-double wb_differential_wheels_get_left_encoder();
-double wb_differential_wheels_get_right_encoder();
-void wb_differential_wheels_set_encoders(double left, double right);
+CONTROLLER_EXPORT void wb_differential_wheels_enable_encoders(int sampling_period);
+CONTROLLER_EXPORT void wb_differential_wheels_disable_encoders();
+CONTROLLER_EXPORT int wb_differential_wheels_get_encoders_sampling_period();
+CONTROLLER_EXPORT double wb_differential_wheels_get_left_encoder();
+CONTROLLER_EXPORT double wb_differential_wheels_get_right_encoder();
+CONTROLLER_EXPORT void wb_differential_wheels_set_encoders(double left, double right);
 
 #ifdef __cplusplus
 }

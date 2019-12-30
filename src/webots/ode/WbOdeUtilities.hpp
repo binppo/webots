@@ -15,8 +15,10 @@
 #ifndef WB_ODE_UTILITIES_HPP
 #define WB_ODE_UTILITIES_HPP
 
+#include <core/WbConfig.h>
+
 namespace WbOdeUtilities {
-  void convertSpringAndDampingConstants(double spring, double damping, double timeStep, double &cfm, double &erp);
+  WB_LIB_EXPORT void convertSpringAndDampingConstants(double spring, double damping, double timeStep, double &cfm, double &erp);
 };
 
 #endif

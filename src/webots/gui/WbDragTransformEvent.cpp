@@ -37,7 +37,7 @@ WbDragTransformEvent::WbDragTransformEvent(WbViewpoint *viewpoint, WbAbstractTra
 }
 
 WbDragTransformEvent::~WbDragTransformEvent() {
-  if (dynamic_cast<WbTransform *>(mViewpoint->followedSolid()) == mSelectedTransform)
+  if (qobject_cast<WbTransform *>(mViewpoint->followedSolid()) == mSelectedTransform)
     mViewpoint->updateFollowSolidState();
 }
 

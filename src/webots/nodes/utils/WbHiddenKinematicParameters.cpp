@@ -44,7 +44,7 @@ void WbHiddenKinematicParameters::createHiddenKinematicParameter(
   HiddenKinematicParameters *const hkp = map.value(solidIndex, NULL);
   HiddenKinematicParameters *const data = (hkp == NULL) ? new HiddenKinematicParameters() : hkp;
 
-  const WbSFVector3 *const sfvec3f = dynamic_cast<WbSFVector3 *>(field->value());
+  const WbSFVector3 *const sfvec3f = qobject_cast<WbSFVector3 *>(field->value());
   if (sfvec3f) {
     const double x = sfvec3f->x();
     const double y = sfvec3f->y();

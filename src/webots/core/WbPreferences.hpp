@@ -22,9 +22,11 @@
 
 #include <QtCore/QSettings>
 
+#include <core/WbConfig.h>
+
 #include "WbVersion.hpp"
 
-class WbPreferences : public QSettings {
+class WB_LIB_EXPORT WbPreferences : public QSettings {
   Q_OBJECT
 
 public:

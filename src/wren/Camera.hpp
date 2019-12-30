@@ -27,7 +27,7 @@ namespace wren {
 
   // Represents a virtual camera, and is used by the Viewport class for rendering.
   // Inherits from Node and can be attached to a Transform for positioning.
-  class Camera : public TransformNode {
+  struct Camera : public TransformNode {
   public:
     // Encapsulate memory management
     static Camera *createCamera() { return new Camera(); }

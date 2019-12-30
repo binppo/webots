@@ -9,13 +9,13 @@ extern "C" {
 
 /* Inheritance diagram: WrNode <- WrRenderable */
 struct WrRenderable;
-typedef struct WrRenderable WrRenderable;
+//typedef struct WrRenderable WrRenderable;
 
 struct WrMesh;
-typedef struct WrMesh WrMesh;
+//typedef struct WrMesh WrMesh;
 
 struct WrMaterial;
-typedef struct WrMaterial WrMaterial;
+//typedef struct WrMaterial WrMaterial;
 
 typedef enum WrRenderableDrawingMode {
   WR_RENDERABLE_DRAWING_MODE_TRIANGLES = 0x4,     // GL_TRIANGLES

@@ -896,7 +896,7 @@ void WbConnector::solidHasMoved(WbSolid *solid) {
   if (WbSimulationState::instance()->isRunning() || WbSimulationState::instance()->isFast())
     return;
 
-  WbConnector *connector = dynamic_cast<WbConnector *>(solid);
+  WbConnector *connector = qobject_cast<WbConnector *>(solid);
   if (connector)
     connector->hasMoved();
   else {

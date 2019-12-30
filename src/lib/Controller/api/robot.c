@@ -27,12 +27,13 @@
 #include <stdio.h>   // snprintf
 #include <stdlib.h>  // exit
 #include <string.h>  // strlen
-#include <unistd.h>  // sleep, pipe, dup2, STDOUT_FILENO, STDERR_FILENO
+//#include <unistd.h>  // sleep, pipe, dup2, STDOUT_FILENO, STDERR_FILENO
 
 #include <webots/joystick.h>
 #include <webots/keyboard.h>
 #include <webots/mouse.h>
 #include <webots/robot.h>
+#include <webots/robot_wwi.h>
 #include <webots/supervisor.h>
 #include <webots/types.h>
 #include <webots/utils/system.h>
@@ -573,7 +574,7 @@ void robot_abort(const char *format, ...) {
   fprintf(stderr, "abort: %s\n", message);
   robot_send_request(0);
   robot_read_data();
-  exit(EXIT_FAILURE);
+  //exit(EXIT_FAILURE);
 }
 
 WbNodeType robot_get_device_type(WbDeviceTag tag) {
@@ -606,7 +607,7 @@ void robot_console_print(const char *text, int stream) {
   robot.console_stream = stream;
   if (wb_robot_step(0) == -1) {
     robot_quit();
-    exit(EXIT_SUCCESS);
+    //exit(EXIT_SUCCESS);
   }
 }
 
@@ -620,7 +621,7 @@ void wb_robot_task_new(void (*task)(void *), void *param) {  // create a task
   HANDLE thread_handle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)task, param, 0, &thread_id);
   if (!thread_handle) {
     fprintf(stderr, "wb_robot_task_new() failed to create new thread.");
-    exit(EXIT_FAILURE);
+    //exit(EXIT_FAILURE);
   }
 #else
   pthread_t thread;
@@ -818,7 +819,7 @@ int wb_robot_step(int duration) {
   if (robot.webots_exit == WEBOTS_EXIT_NOW) {
     robot_quit();
     robot_mutex_unlock_step();
-    exit(EXIT_SUCCESS);
+    //exit(EXIT_SUCCESS);
   } else if (robot.webots_exit == WEBOTS_EXIT_LATER) {
     robot.webots_exit = WEBOTS_EXIT_NOW;
     robot_mutex_unlock_step();
@@ -880,7 +881,7 @@ WbUserInputEvent wb_robot_wait_for_user_input_event(WbUserInputEvent event_type,
   if (robot.webots_exit == WEBOTS_EXIT_NOW) {
     robot_quit();
     robot_mutex_unlock_step();
-    exit(EXIT_SUCCESS);
+    //exit(EXIT_SUCCESS);
   } else if (robot.webots_exit == WEBOTS_EXIT_LATER) {
     robot.webots_exit = WEBOTS_EXIT_NOW;
     robot_mutex_unlock_step();
@@ -895,17 +896,13 @@ void wb_robot_flush_unlocked() {
   if (robot.webots_exit == WEBOTS_EXIT_NOW) {
     robot_quit();
     robot_mutex_unlock_step();
-    exit(EXIT_SUCCESS);
+    //exit(EXIT_SUCCESS);
   } else if (robot.webots_exit == WEBOTS_EXIT_LATER)
     return;
   robot_send_request(0);
   robot_read_data();
   if (robot.webots_exit == WEBOTS_EXIT_NOW)
     robot.webots_exit = WEBOTS_EXIT_LATER;
-}
-
-int wb_robot_init_msvc() {
-  return wb_robot_init();
 }
 
 static void wb_robot_cleanup_shm() {
@@ -919,7 +916,19 @@ static void wb_robot_cleanup_shm() {
   }
 }
 
-int wb_robot_init() {  // API initialization
+#if !defined(__VISUALC__) && !defined(_MSC_VER)
+int wb_robot_init() { return wb_robot_init_common(); }
+
+/* In the visual studio case, the buffer size of the standard output and
+ * the standard error cannot be modified from a dll
+ */
+#else
+int wb_robot_init() { setvbuf(stdout, NULL, _IONBF, 0); setvbuf(stderr, NULL, _IONBF, 0); return wb_robot_init_common(); }
+#endif
+
+static bool already_done = false;
+
+int wb_robot_init_common() {  // API initialization
 // do not use any buffer for the standard streams
 #ifdef _WIN32  // the line buffered option doesn't to work under Windows, so use unbuffered streams
   setvbuf(stdout, NULL, _IONBF, 0);
@@ -931,7 +940,6 @@ int wb_robot_init() {  // API initialization
   // flush stdout and stderr to display messages printed before the robot initialization in the Webots console
   fflush(stdout);
   fflush(stderr);
-  static bool already_done = false;
   if (already_done)
     return true;
   setlocale(LC_NUMERIC, "C");
@@ -962,44 +970,24 @@ int wb_robot_init() {  // API initialization
   if (WEBOTS_SERVER && WEBOTS_SERVER[0])
     pipe = strdup(WEBOTS_SERVER);
   else {
-    unsigned int trial = 0;
-    while (trial < 10) {
-      trial++;
-      const char *WEBOTS_TMP_PATH = wbu_system_webots_tmp_path();
-      if (!WEBOTS_TMP_PATH) {
-        if (trial <= 10)
-          fprintf(stderr, "Webots doesn't seems to be ready yet: (retrying in %u second%s)\n", trial, trial > 1 ? "s" : "");
-        sleep(trial);
+    const char *WEBOTS_TMP_PATH = wbu_system_webots_tmp_path();
+    char buffer[1024];
+    snprintf(buffer, sizeof(buffer), "%s/WEBOTS_SERVER", WEBOTS_TMP_PATH);
+    FILE *fd = fopen(buffer, "r");
+    if (fd) {
+      if (!fscanf(fd, "%1023s", buffer)) {
+        fprintf(stderr, "Cannot read %s/WEBOTS_SERVER content\n", WEBOTS_TMP_PATH);
+        pipe = NULL;
       } else {
-        char buffer[1024];
-        snprintf(buffer, sizeof(buffer), "%s/WEBOTS_SERVER", WEBOTS_TMP_PATH);
-        FILE *fd = fopen(buffer, "r");
-        if (fd) {
-          if (!fscanf(fd, "%1023s", buffer)) {
-            fprintf(stderr, "Cannot read %s/WEBOTS_SERVER content\n", WEBOTS_TMP_PATH);
-            pipe = NULL;
-          } else {
-            pipe = strdup(buffer);
-            break;
-          }
-          fclose(fd);
-        } else {
-          if (trial <= 10)
-            fprintf(stderr, "Cannot open file: %s (retrying in %u second%s)\n", buffer, trial, trial > 1 ? "s" : "");
-          pipe = NULL;
-        }
-        if (trial > 10)
-          fprintf(stderr, "Impossible to communicate with Webots: aborting\n");
-        else
-          sleep(trial);
+        pipe = strdup(buffer);
       }
+      fclose(fd);
     }
   }
   if (!pipe || !scheduler_init(pipe)) {
     if (!pipe)
       fprintf(stderr, "Cannot connect to Webots: no pipe defined\n");
     free(pipe);
-    exit(EXIT_FAILURE);
   }
   free(pipe);
 
@@ -1031,7 +1019,7 @@ int wb_robot_init() {  // API initialization
   // user reverts before having run the simulation
   if (wb_robot_step(0) == -1) {
     robot_quit();
-    exit(EXIT_SUCCESS);
+    //exit(EXIT_SUCCESS);
   }
 
   init_remote_control_library();
@@ -1051,6 +1039,10 @@ int wb_robot_init() {  // API initialization
 
   html_robot_window_init();
   return true;
+}
+
+bool wb_is_robot_init() {
+  return already_done;
 }
 
 WbRobotMode wb_robot_get_mode() {

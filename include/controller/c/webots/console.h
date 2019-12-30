@@ -18,6 +18,7 @@
 #define WB_CONSOLE_H
 
 #define WB_USING_C_API
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +28,7 @@ extern "C" {
 #define WB_STDERR 1
 
 // this function is for an internal purpose, please use regular stdout/stderr functions instead
-void wb_console_print(const char *text, int stream);
+CONTROLLER_EXPORT void wb_console_print(const char *text, int stream);
 
 #ifdef __cplusplus
 }

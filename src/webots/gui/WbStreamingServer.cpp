@@ -175,7 +175,7 @@ void WbStreamingServer::start(int port) {
 }
 
 void WbStreamingServer::sendToJavascript(const QByteArray &string) {
-  WbRobot *robot = dynamic_cast<WbRobot *>(sender());
+  WbRobot *robot = qobject_cast<WbRobot *>(sender());
   if (robot) {
     QString text = "robot:" + robot->name() + ":" + QString::fromUtf8(string);
     sendToClients(text);
@@ -395,7 +395,7 @@ void WbStreamingServer::processTextMessage(QString message) {
     printf("pause\n");
     fflush(stdout);
     client->sendTextMessage("pause");
-  } else if (message.startsWith("real-time:") or message.startsWith("fast:")) {
+  } else if (message.startsWith("real-time:") || message.startsWith("fast:")) {
     const bool realTime = message.startsWith("real-time:");
     const double timeout = realTime ? message.mid(10).toDouble() : message.mid(5).toDouble();
     if (timeout >= 0)
@@ -713,7 +713,7 @@ void WbStreamingServer::newWorld() {
     if (mControllerEdit) {
       const WbField *controllerField = robot->findField("controller");
       if (controllerField) {
-        const QString &name = dynamic_cast<WbSFString *>(controllerField->value())->value();
+        const QString &name = qobject_cast<WbSFString *>(controllerField->value())->value();
         if (name != "void")
           mEditableControllers.append(name);
       }
@@ -747,13 +747,13 @@ void WbStreamingServer::propagateNodeAddition(WbNode *node) {
   if (baseNode && baseNode->isInBoundingObject())
     return;
 
-  WbRobot *robot = dynamic_cast<WbRobot *>(node);
+  WbRobot *robot = qobject_cast<WbRobot *>(node);
   if (robot) {
     connect(robot, &WbRobot::sendToJavascript, this, &WbStreamingServer::sendToJavascript);
     if (mControllerEdit) {
       const WbField *controllerField = robot->findField("controller");
       if (controllerField) {
-        const QString &name = dynamic_cast<WbSFString *>(controllerField->value())->value();
+        const QString &name = qobject_cast<WbSFString *>(controllerField->value())->value();
         if (name != "void")
           mEditableControllers.append(name);
       }

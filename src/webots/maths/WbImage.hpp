@@ -15,7 +15,9 @@
 #ifndef WB_IMAGE_HPP
 #define WB_IMAGE_HPP
 
-class WbImage {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbImage {
 public:
   WbImage(unsigned char *data, int width, int height) : mData(data), mWidth(width), mHeight(height) {}
   virtual ~WbImage() {}

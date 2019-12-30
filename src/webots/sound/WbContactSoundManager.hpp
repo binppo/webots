@@ -21,11 +21,13 @@
 
 #include <QtCore/QList>
 
+#include <core/WbConfig.h>
+
 class WbOdeContact;
 
 namespace WbContactSoundManager {
-  void update(const QList<WbOdeContact> &odeContacts);
-  void clearAllContactSoundSources();
+  WB_LIB_EXPORT void update(const QList<WbOdeContact> &odeContacts);
+  WB_LIB_EXPORT void clearAllContactSoundSources();
 };  // namespace WbContactSoundManager
 
 #endif

@@ -19,12 +19,14 @@
 
 #include <cassert>
 
+#include <core/WbConfig.h>
+
 //
 // Description: Wrapper for QOpenGLContext to keep the WREN context current
 // An instance of WbWrenOpenGlContext is created during initialization of the main window,
 // and allows modules that don't have access to the GUI module to make the main context current.
 //
-class WbWrenOpenGlContext : public QOpenGLContext {
+class WB_LIB_EXPORT WbWrenOpenGlContext : public QOpenGLContext {
   Q_OBJECT
 public:
   explicit WbWrenOpenGlContext(QObject *parent) : QOpenGLContext(parent) {}

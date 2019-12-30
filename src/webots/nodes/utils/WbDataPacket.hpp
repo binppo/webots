@@ -17,11 +17,13 @@
 
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbEmitter;
 class QString;
 
 // communication packet or datagram
-class WbDataPacket {
+class WB_LIB_EXPORT WbDataPacket {
 public:
   enum { UNKNOWN = 0, RADIO, SERIAL, INFRA_RED };
   static int decodeMediumType(const QString &string);

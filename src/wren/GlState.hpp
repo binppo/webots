@@ -23,7 +23,7 @@
 
 namespace wren {
 
-  class UniformBuffer;
+  struct UniformBuffer;
 
   namespace cache {
     struct PhongMaterialData;

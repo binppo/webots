@@ -22,14 +22,14 @@
 #define WB_PEN_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_pen_write(WbDeviceTag tag, bool write);                         // switch on/off writing
-void wb_pen_set_ink_color(WbDeviceTag tag, int color, double density);  // set ink color
+CONTROLLER_EXPORT void wb_pen_write(WbDeviceTag tag, bool write);                         // switch on/off writing
+CONTROLLER_EXPORT void wb_pen_set_ink_color(WbDeviceTag tag, int color, double density);  // set ink color
 
 #ifdef __cplusplus
 }

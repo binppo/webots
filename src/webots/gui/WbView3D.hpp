@@ -27,6 +27,8 @@
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QPoint>
 
+#include <core/WbConfig.h>
+
 class WbAbstractTransform;
 class WbCamera;
 class WbDragKinematicsEvent;
@@ -49,7 +51,7 @@ class WbWheelEvent;
 class WbWrenPicker;
 class WbWrenFullScreenOverlay;
 
-class WbView3D : public WbWrenWindow {
+class WB_LIB_EXPORT WbView3D : public WbWrenWindow {
   Q_OBJECT;
 
 public:
@@ -57,6 +59,7 @@ public:
   virtual ~WbView3D();
 
   void setParentWidget(QWidget *widget) { mParentWidget = widget; }
+  QWidget *parentWidget() const { return mParentWidget; }
 
   // accessor
   WbWrenRenderingContext *wrenRenderingContext() const { return mWrenRenderingContext; }

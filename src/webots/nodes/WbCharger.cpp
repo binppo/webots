@@ -74,7 +74,7 @@ void WbCharger::postFinalize() {
   WbSolid::postFinalize();
 
   const WbNode *topNode = WbNodeUtilities::findTopNode(this);
-  mParentRobot = dynamic_cast<const WbRobot *>(topNode);
+  mParentRobot = qobject_cast<const WbRobot *>(topNode);
 }
 
 void WbCharger::clearMaterialsAndLights() {
@@ -100,9 +100,9 @@ void WbCharger::updateMaterialsAndLights(double batteryRatio) {
       cg = visualElement->initialGreen;
       cb = visualElement->initialBlue;
     }
-    WbMaterial *material = dynamic_cast<WbMaterial *>(visualElement->node);
-    WbPbrAppearance *appearance = dynamic_cast<WbPbrAppearance *>(visualElement->node);
-    WbLight *light = dynamic_cast<WbLight *>(visualElement->node);
+    WbMaterial *material = qobject_cast<WbMaterial *>(visualElement->node);
+    WbPbrAppearance *appearance = qobject_cast<WbPbrAppearance *>(visualElement->node);
+    WbLight *light = qobject_cast<WbLight *>(visualElement->node);
     if (material)
       material->setEmissiveColor(WbRgb(cr, cg, cb));
     else if (appearance)
@@ -128,9 +128,9 @@ void WbCharger::findMaterialsAndLights(const WbGroup *const g) {
 
   for (int i = 0; i < size; ++i) {
     WbBaseNode *const n = g->child(i);
-    const WbShape *const shape = dynamic_cast<WbShape *>(n);
-    WbLight *const light = dynamic_cast<WbLight *>(n);
-    const WbGroup *const group = dynamic_cast<WbGroup *>(n);
+    const WbShape *const shape = qobject_cast<WbShape *>(n);
+    WbLight *const light = qobject_cast<WbLight *>(n);
+    const WbGroup *const group = qobject_cast<WbGroup *>(n);
     if (shape) {
       const WbAppearance *const appearance = shape->appearance();
       WbPbrAppearance *const pbrAppearance = shape->pbrAppearance();

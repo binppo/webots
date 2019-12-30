@@ -18,9 +18,9 @@
 
 #include <QtCore/QStack>
 
-WbWrenOpenGlContext *WbWrenOpenGlContext::mWrenContext;
-QSurface *WbWrenOpenGlContext::mWrenSurface;
-bool WbWrenOpenGlContext::mIsCurrent;
+WbWrenOpenGlContext *WbWrenOpenGlContext::mWrenContext = nullptr;
+QSurface *WbWrenOpenGlContext::mWrenSurface = nullptr;
+bool WbWrenOpenGlContext::mIsCurrent = false;
 QStack<bool> WbWrenOpenGlContext::mPreviousState;
 
 void WbWrenOpenGlContext::destroy() {

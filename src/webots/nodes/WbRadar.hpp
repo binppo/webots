@@ -17,6 +17,8 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbAffinePlane;
 class WbSensor;
 class WbRadarTarget;
@@ -26,7 +28,7 @@ struct WrRenderable;
 struct WrMaterial;
 struct WrStaticMesh;
 
-class WbRadar : public WbSolidDevice {
+class WB_LIB_EXPORT WbRadar : public WbSolidDevice {
   Q_OBJECT
 
 public:

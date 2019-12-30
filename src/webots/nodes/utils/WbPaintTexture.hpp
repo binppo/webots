@@ -19,6 +19,8 @@
 
 #include "WbVector2.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrDrawableTexture;
 
 class WbRay;
@@ -26,7 +28,7 @@ class WbRgb;
 class WbShape;
 
 // this class is used to simulate texture painting with the Pen device and ink evaporation
-class WbPaintTexture : public QObject {
+class WB_LIB_EXPORT WbPaintTexture : public QObject {
   Q_OBJECT
 
 public:

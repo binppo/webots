@@ -217,6 +217,16 @@ WbConsole::WbConsole(QWidget *parent) :
   mBold(false),
   mIsOverwriteEnabled(false),  // option to overwrite last line
   mFindDialog(NULL),
+  mErrorColor("red"),
+  mInfoColor("blue"),
+  mAnsiBlack("black"),
+  mAnsiRed("red"),
+  mAnsiGreen("olive"),
+  mAnsiYellow("maroon"),
+  mAnsiBlue("blue"),
+  mAnsiMagenta("purple"),
+  mAnsiCyan("aqua"),
+  mAnsiWhite("gray"),
   mTextFind(new WbTextFind(mEditor)) {
   setWindowTitle("Console");
   setTabbedTitle("Console");

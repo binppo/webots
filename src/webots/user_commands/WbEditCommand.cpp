@@ -61,7 +61,7 @@ void WbEditCommand::redo() {
 void WbEditCommand::resetValue(const WbVariant &newValue) {
   switch (mFieldValue->type()) {
     case WB_MF_VEC2F:
-      dynamic_cast<WbMFVector2 *>(mFieldValue)->setItem(mIndex, newValue.toVector2());
+      qobject_cast<WbMFVector2 *>(mFieldValue)->setItem(mIndex, newValue.toVector2());
       break;
     case WB_SF_VEC2F:
       static_cast<WbSFVector2 *>(mFieldValue)->setValue(newValue.toVector2());

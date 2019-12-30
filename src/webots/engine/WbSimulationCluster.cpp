@@ -345,13 +345,13 @@ const WbContactProperties *WbSimulationCluster::fillSurfaceParameters(const WbSo
   contact->surface.soft_erp = soft_erp;
 
   // add tracks surface velocity
-  const WbTrack *t = dynamic_cast<const WbTrack *>(s1);
+  const WbTrack *t = qobject_cast<const WbTrack *>(s1);
   WbVector3 contactNormal(contact->geom.normal);
   dBodyID trackBody;
   if (t)
     trackBody = dGeomGetBody(wg1->odeGeom());
   else {
-    t = dynamic_cast<const WbTrack *>(s2);
+    t = qobject_cast<const WbTrack *>(s2);
     if (t) {
       trackBody = dGeomGetBody(wg2->odeGeom());
       contactNormal *= -1;
@@ -582,11 +582,11 @@ void WbSimulationCluster::odeNearCallback(void *data, dGeomID o1, dGeomID o2) {
   if (n == 0)
     return;
 
-  WbTouchSensor *const ts1 = dynamic_cast<WbTouchSensor *>(s1);
+  WbTouchSensor *const ts1 = qobject_cast<WbTouchSensor *>(s1);
   if (ts1 && !isRayGeom2)
     ts1->setTouching(true);
 
-  WbTouchSensor *const ts2 = dynamic_cast<WbTouchSensor *>(s2);
+  WbTouchSensor *const ts2 = qobject_cast<WbTouchSensor *>(s2);
   if (ts2 && !isRayGeom1)
     ts2->setTouching(true);
 
@@ -595,8 +595,8 @@ void WbSimulationCluster::odeNearCallback(void *data, dGeomID o1, dGeomID o2) {
 
   // kinematic mode
   if (!p1 || !p2) {
-    WbRobot *const robot1 = dynamic_cast<WbRobot *>(s1);
-    WbRobot *const robot2 = dynamic_cast<WbRobot *>(s2);
+    WbRobot *const robot1 = qobject_cast<WbRobot *>(s1);
+    WbRobot *const robot2 = qobject_cast<WbRobot *>(s2);
     if (robot1 && !p1 && !isRayGeom2 && robot1->kinematicDifferentialWheels()) {
       wg1->setColliding();
       cl->mCollisionedRobots.append(robot1->kinematicDifferentialWheels());
@@ -621,7 +621,7 @@ void WbSimulationCluster::odeNearCallback(void *data, dGeomID o1, dGeomID o2) {
 
   // Handles the case of ray geometry against a non-ray geometry, i.e. at least one body is null
   if (isRayGeom1) {
-    WbDistanceSensor *const ds = dynamic_cast<WbDistanceSensor *>(s1);
+    WbDistanceSensor *const ds = qobject_cast<WbDistanceSensor *>(s1);
     if (ds) {
       // Luc : contact[0].geom.g1 and contact[0].geom.g2 may not coincide with o1 and o2 in an oddly defined dCollide call-back
       // function of ODE. Should we be worried?
@@ -630,56 +630,56 @@ void WbSimulationCluster::odeNearCallback(void *data, dGeomID o1, dGeomID o2) {
       return;
     }
 
-    WbCamera *const camera = dynamic_cast<WbCamera *>(s1);
+    WbCamera *const camera = qobject_cast<WbCamera *>(s1);
     if (camera) {
       camera->rayCollisionCallback(o1, s2, contact[0].geom.depth);
       return;
     }
 
-    WbRadar *const radar = dynamic_cast<WbRadar *>(s1);
+    WbRadar *const radar = qobject_cast<WbRadar *>(s1);
     if (radar) {
       radar->rayCollisionCallback(o1, s2, contact[0].geom.depth);
       return;
     }
 
-    WbLightSensor *const ls = dynamic_cast<WbLightSensor *>(s1);
+    WbLightSensor *const ls = qobject_cast<WbLightSensor *>(s1);
     if (ls) {
       ls->rayCollisionCallback(o1);
       return;
     }
 
-    WbReceiver *const r = dynamic_cast<WbReceiver *>(s1);
+    WbReceiver *const r = qobject_cast<WbReceiver *>(s1);
     if (r) {
       r->rayCollisionCallback(o1, s2);
       return;
     }
   } else if (isRayGeom2) {
-    WbDistanceSensor *const ds = dynamic_cast<WbDistanceSensor *>(s2);
+    WbDistanceSensor *const ds = qobject_cast<WbDistanceSensor *>(s2);
     if (ds) {
       assert(o1 == contact[0].geom.g1 && o2 == contact[0].geom.g2);
       ds->rayCollisionCallback(odeGeomData1->geometry(), o2, &contact[0].geom);
       return;
     }
 
-    WbCamera *const camera = dynamic_cast<WbCamera *>(s2);
+    WbCamera *const camera = qobject_cast<WbCamera *>(s2);
     if (camera) {
       camera->rayCollisionCallback(o2, s1, contact[0].geom.depth);
       return;
     }
 
-    WbRadar *const radar = dynamic_cast<WbRadar *>(s2);
+    WbRadar *const radar = qobject_cast<WbRadar *>(s2);
     if (radar) {
       radar->rayCollisionCallback(o2, s1, contact[0].geom.depth);
       return;
     }
 
-    WbLightSensor *const ls = dynamic_cast<WbLightSensor *>(s2);
+    WbLightSensor *const ls = qobject_cast<WbLightSensor *>(s2);
     if (ls) {
       ls->rayCollisionCallback(o2);
       return;
     }
 
-    WbReceiver *const r = dynamic_cast<WbReceiver *>(s2);
+    WbReceiver *const r = qobject_cast<WbReceiver *>(s2);
     if (r) {
       r->rayCollisionCallback(o2, s1);
       return;

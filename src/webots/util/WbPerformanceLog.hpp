@@ -27,11 +27,13 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class QElapsedTimer;
 
 class Measurement;
 
-class WbPerformanceLog {
+class WB_LIB_EXPORT WbPerformanceLog {
 public:
   enum InfoType {
     PRE_PHYSICS_STEP = 0,

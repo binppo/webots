@@ -27,16 +27,16 @@
 
 namespace wren {
 
-  class LightNode;
-  class Material;
-  class Mesh;
-  class ShaderProgram;
-  class ShadowVolumeCaster;
+  struct LightNode;
+  struct Material;
+  struct Mesh;
+  struct ShaderProgram;
+  struct ShadowVolumeCaster;
 
   // Container class consisting of a Material, a Mesh and a drawing mode.
   // Inherits from Node and can be attached to a Transform for positioning.
   // During rendering, the Mesh's vertex coordinates are multiplied by the Transform's matrix.
-  class Renderable : public Node {
+  struct Renderable : public Node {
   public:
     // Encapsulate memory management
     static Renderable *createRenderable() { return new Renderable(); }

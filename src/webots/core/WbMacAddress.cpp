@@ -45,7 +45,7 @@ WbMacAddress::WbMacAddress() {
     mAddress[i] = 0;
   DWORD ni;
   GetNumberOfInterfaces(&ni);
-  IP_ADAPTER_INFO AdapterInfo[ni];
+  IP_ADAPTER_INFO *AdapterInfo = new IP_ADAPTER_INFO[ni];
   DWORD dwBufLen = ni * sizeof(IP_ADAPTER_INFO);
   DWORD dwStatus = GetAdaptersInfo(AdapterInfo, &dwBufLen);
   bool found = false;
@@ -76,6 +76,8 @@ WbMacAddress::WbMacAddress() {
   if (!found)
     mError = QObject::tr("No active network adapter found.") + "\n" +
              QObject::tr("An active network adapter is required to run Webots.");
+
+  delete[] AdapterInfo;
 }
 
 #elif defined(__linux__)

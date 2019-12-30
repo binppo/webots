@@ -82,12 +82,12 @@ bool WbProtoTemplateEngine::generate(const QString &logHeaderName, const QVector
 
 QString WbProtoTemplateEngine::convertFieldValueToLuaStatement(const WbField *field) {
   if (field->isSingle()) {
-    const WbSingleValue *singleValue = dynamic_cast<const WbSingleValue *>(field->value());
+    const WbSingleValue *singleValue = qobject_cast<const WbSingleValue *>(field->value());
     assert(singleValue);
     const WbVariant &variant = singleValue->variantValue();
     return convertVariantToLuaStatement(variant);
   } else if (field->isMultiple()) {
-    const WbMultipleValue *multipleValue = dynamic_cast<const WbMultipleValue *>(field->value());
+    const WbMultipleValue *multipleValue = qobject_cast<const WbMultipleValue *>(field->value());
     assert(multipleValue);
     // multiple values into a lua array
     QString result = "{";
@@ -107,14 +107,14 @@ QString WbProtoTemplateEngine::convertFieldValueToLuaStatement(const WbField *fi
 
 QString WbProtoTemplateEngine::convertFieldDefaultValueToLuaStatement(const WbField *field) {
   if (field->isSingle()) {
-    const WbSingleValue *singleValue = dynamic_cast<const WbSingleValue *>(field->defaultValue());
+    const WbSingleValue *singleValue = qobject_cast<const WbSingleValue *>(field->defaultValue());
     assert(singleValue);
     const WbVariant &variant = singleValue->variantValue();
     return convertVariantToLuaStatement(variant);
   }
 
   else if (field->isMultiple()) {
-    const WbMultipleValue *multipleValue = dynamic_cast<const WbMultipleValue *>(field->defaultValue());
+    const WbMultipleValue *multipleValue = qobject_cast<const WbMultipleValue *>(field->defaultValue());
     assert(multipleValue);
     // multiple values into a lua array
     QString result = "{";

@@ -17,11 +17,13 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbLookupTable;
 struct dJointFeedback;
 
-class WbTouchSensor : public WbSolidDevice {
+class WB_LIB_EXPORT WbTouchSensor : public WbSolidDevice {
   Q_OBJECT
 
 public:

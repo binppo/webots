@@ -64,7 +64,7 @@ void WbVirtualRealityHeadset::setLoadingTexture(WrTexture *texture) {
 WbVirtualRealityHeadset *WbVirtualRealityHeadset::cInstance = NULL;
 
 WbVirtualRealityHeadset *WbVirtualRealityHeadset::instance() {
-  if (!cInstance and WbVirtualRealityHeadset::isSteamVRInstalled() and WbVirtualRealityHeadset::isHeadsetConnected())
+  if (!cInstance && WbVirtualRealityHeadset::isSteamVRInstalled() && WbVirtualRealityHeadset::isHeadsetConnected())
     cInstance = new WbVirtualRealityHeadset();
   return cInstance;
 }

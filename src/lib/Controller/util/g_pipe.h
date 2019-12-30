@@ -22,6 +22,8 @@
 #endif  // _WIN32
 #include <stdlib.h>
 
+#include <webots/types.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,11 +44,11 @@ struct _GPipe {
 
 typedef struct _GPipe GPipe;
 
-GPipe *g_pipe_new(const char *);  // named pipe on Windows, UNIX domain socket on Linux / macOS
-void g_pipe_delete(GPipe *);
-void g_pipe_send(GPipe *, const char *data, int size);
-int g_pipe_receive(GPipe *, char *data, int size);
-size_t g_pipe_get_handle(GPipe *);
+CONTROLLER_EXPORT GPipe *g_pipe_new(const char *);  // named pipe on Windows, UNIX domain socket on Linux / macOS
+CONTROLLER_EXPORT void g_pipe_delete(GPipe *);
+CONTROLLER_EXPORT void g_pipe_send(GPipe *, const char *data, int size);
+CONTROLLER_EXPORT int g_pipe_receive(GPipe *, char *data, int size);
+CONTROLLER_EXPORT size_t g_pipe_get_handle(GPipe *);
 
 #ifdef __cplusplus
 }

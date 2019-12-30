@@ -22,7 +22,9 @@
 #include <QtCore/QVarLengthArray>
 #include "WbVector2.hpp"
 
-class WbPolygon : public QVarLengthArray<WbVector2, 32> {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPolygon : public QVarLengthArray<WbVector2, 32> {
 public:
   WbPolygon();
   virtual ~WbPolygon();

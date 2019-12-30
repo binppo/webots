@@ -17,6 +17,8 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbVector3;
 typedef double dQuaternion[4];
@@ -26,7 +28,7 @@ struct WrMaterial;
 struct WrStaticMesh;
 struct WrTransform;
 
-class WbConnector : public WbSolidDevice {
+class WB_LIB_EXPORT WbConnector : public WbSolidDevice {
   Q_OBJECT
 
 public:

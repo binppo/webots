@@ -22,11 +22,11 @@
 #include <vector>
 
 namespace wren {
-  class DynamicMesh;
-  class SkeletonBone;
-  class TransformNode;
+  struct DynamicMesh;
+  struct SkeletonBone;
+  struct TransformNode;
 
-  class Skeleton : public Node {
+  struct Skeleton : public Node {
   public:
     static Skeleton *createSkeleton() { return new Skeleton(); }
 

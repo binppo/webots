@@ -99,7 +99,7 @@ WbLidar::~WbLidar() {
 void WbLidar::preFinalize() {
   WbAbstractCamera::preFinalize();
 
-  WbBaseNode *const e = dynamic_cast<WbBaseNode *>(mRotatingHead->value());
+  WbBaseNode *const e = qobject_cast<WbBaseNode *>(mRotatingHead->value());
   if (e && !e->isPreFinalizedCalled())
     e->preFinalize();
 
@@ -119,7 +119,7 @@ void WbLidar::preFinalize() {
 void WbLidar::postFinalize() {
   WbAbstractCamera::postFinalize();
 
-  WbBaseNode *const e = dynamic_cast<WbBaseNode *>(mRotatingHead->value());
+  WbBaseNode *const e = qobject_cast<WbBaseNode *>(mRotatingHead->value());
   if (e && !e->isPostFinalizedCalled())
     e->postFinalize();
 
@@ -505,7 +505,7 @@ void WbLidar::applyFrustumToWren() {
 
   const int intermediatePointsNumber = floor(fovH / 0.2);
   const int vertexCount = 4 * actualNumberOfLayers() * (intermediatePointsNumber + 3);
-  float vertices[3 * vertexCount];
+  float *vertices = new float[3 * vertexCount];
 
   for (int layer = 0; layer < actualNumberOfLayers(); ++layer) {
     double vAngle = 0;
@@ -542,6 +542,8 @@ void WbLidar::applyFrustumToWren() {
   mFrustumMesh = wr_static_mesh_line_set_new(vertexCount, vertices, NULL);
   wr_renderable_set_mesh(mFrustumRenderable, WR_MESH(mFrustumMesh));
   wr_node_set_visible(WR_NODE(mFrustumRenderable), true);
+
+  delete[] vertices;
 }
 
 int WbLidar::height() const {
@@ -559,7 +561,7 @@ int WbLidar::width() const {
 }
 
 WbSolid *WbLidar::solidEndPoint() const {
-  WbSolid *solid = dynamic_cast<WbSolid *>(mRotatingHead->value());
+  WbSolid *solid = qobject_cast<WbSolid *>(mRotatingHead->value());
   if (solid)
     return solid;
   return NULL;

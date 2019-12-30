@@ -15,11 +15,13 @@
 #ifndef WB_APPLICATION_INFO_HPP
 #define WB_APPLICATION_INFO_HPP
 
+#include <core/WbConfig.h>
+
 class WbVersion;
 
 namespace WbApplicationInfo {
-  const WbVersion &version();
-  unsigned int releaseDate();  // returns the UNIX time stamp of the compilation date
+  WB_LIB_EXPORT const WbVersion &version();
+  WB_LIB_EXPORT unsigned int releaseDate();  // returns the UNIX time stamp of the compilation date
 }  // namespace WbApplicationInfo
 
 #endif

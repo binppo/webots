@@ -17,9 +17,11 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbPaintTexture;
 
-class WbPen : public WbSolidDevice {
+class WB_LIB_EXPORT WbPen : public WbSolidDevice {
   Q_OBJECT
 
 public:

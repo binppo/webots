@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 struct WrTexture;
-typedef struct WrTexture WrTexture;
+//typedef struct WrTexture WrTexture;
 
 typedef enum WrTextureType {
   WR_TEXTURE_TYPE_2D,

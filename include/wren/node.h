@@ -8,10 +8,10 @@ extern "C" {
 #endif
 
 struct WrNode;
-typedef struct WrNode WrNode;
+//typedef struct WrNode WrNode;
 
 struct WrTransform;
-typedef struct WrTransform WrTransform;
+//typedef struct WrTransform WrTransform;
 
 void wr_node_delete(WrNode *node);
 

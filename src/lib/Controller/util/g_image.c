@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tiffio.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 #include <jpeglib.h>
 #include <png.h>

@@ -129,7 +129,7 @@ void WbPropeller::createOdeObjects() {
 }
 
 WbRotationalMotor *WbPropeller::motor() const {
-  return dynamic_cast<WbRotationalMotor *>(mDevice->value());
+  return qobject_cast<WbRotationalMotor *>(mDevice->value());
 }
 
 WbLogicalDevice *WbPropeller::device() const {

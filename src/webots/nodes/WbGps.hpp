@@ -17,12 +17,14 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFString;
 class WbSFDouble;
 class WbSensor;
 class WbUTMConverter;
 
-class WbGps : public WbSolidDevice {
+class WB_LIB_EXPORT WbGps : public WbSolidDevice {
   Q_OBJECT
 
 public:

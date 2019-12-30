@@ -24,19 +24,19 @@
 
 namespace wren {
 
-  class Camera;
-  class DirectionalLight;
-  class FrameBuffer;
-  class PointLight;
-  class ShaderProgram;
-  class ShadowVolumeCaster;
-  class SpotLight;
-  class TextureRtt;
+  struct Camera;
+  struct DirectionalLight;
+  struct FrameBuffer;
+  struct PointLight;
+  struct ShaderProgram;
+  struct ShadowVolumeCaster;
+  struct SpotLight;
+  struct TextureRtt;
 
   // Base class for all light types.
   // Stores parameters common to all light sources and provides a static method for
   // updating the Lights uniform buffer with information about all active lights.
-  class LightNode : public Node {
+  struct LightNode : public Node {
   public:
     enum Type { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_SPOT, TYPE_COUNT };
 

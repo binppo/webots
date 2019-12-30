@@ -6,10 +6,10 @@ extern "C" {
 #endif
 
 struct WrSkeleton;
-typedef struct WrSkeleton WrSkeleton;
+//typedef struct WrSkeleton WrSkeleton;
 
 struct WrSkeletonBone;
-typedef struct WrSkeletonBone WrSkeletonBone;
+//typedef struct WrSkeletonBone WrSkeletonBone;
 
 const char *wr_skeleton_bone_get_name(WrSkeletonBone *bone);
 

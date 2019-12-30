@@ -45,7 +45,8 @@ const QString &WbStandardPaths::webotsHomePath() {
   const int depth = 2;
 #else
   // on Windows,  the webots binary is located in $WEBOTS_HOME/msys64/mingw64/bin/webots
-  const int depth = 3;
+  //const int depth = 3;
+  const int depth = 0;
 #endif
   if (path.isEmpty()) {
     QDir dir(QCoreApplication::applicationDirPath());
@@ -84,7 +85,7 @@ const QString &WbStandardPaths::resourcesPath() {
 };
 
 const QString &WbStandardPaths::translationsPath() {
-  static QString path(resourcesPath() + "translations/");
+  static QString path(":/resources/translations/");
   return path;
 };
 

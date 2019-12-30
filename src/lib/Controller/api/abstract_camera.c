@@ -46,7 +46,7 @@ static void wb_abstract_camera_cleanup_shm(WbDevice *d) {
 static void wb_abstract_camera_get_shm(WbDevice *d) {
   AbstractCamera *c = d->pdata;
 #ifdef _WIN32
-  c->shm_file = OpenFileMapping(FILE_MAP_WRITE, FALSE, c->shm_key);
+  c->shm_file = OpenFileMappingA(FILE_MAP_WRITE, FALSE, c->shm_key);
   ROBOT_ASSERT(c->shm_file);
   c->image = MapViewOfFile(c->shm_file, FILE_MAP_WRITE, 0, 0, 0);
 #else  // POSIX shared memory segments

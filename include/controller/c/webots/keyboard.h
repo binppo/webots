@@ -22,7 +22,7 @@
 #define WB_KEYBOARD_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,10 +49,10 @@ enum {
   WB_KEYBOARD_ALT = 0x00040000
 };
 
-void wb_keyboard_enable(int sampling_period);
-void wb_keyboard_disable();
-int wb_keyboard_get_sampling_period();
-int wb_keyboard_get_key();
+CONTROLLER_EXPORT void wb_keyboard_enable(int sampling_period);
+CONTROLLER_EXPORT void wb_keyboard_disable();
+CONTROLLER_EXPORT int wb_keyboard_get_sampling_period();
+CONTROLLER_EXPORT int wb_keyboard_get_key();
 
 #ifdef __cplusplus
 }

@@ -21,7 +21,7 @@
 namespace wren {
 
   // Represents a light source which radiates isotropically.
-  class PointLight : public PositionalLight {
+  struct PointLight : public PositionalLight {
   public:
     // Encapsulate memory management
     static PointLight *createPointLight() { return new PointLight(); }

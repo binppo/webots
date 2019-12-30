@@ -21,7 +21,9 @@
 
 #include <QtWidgets/QMessageBox>
 
-class WbSaveWarningDialog : public QMessageBox {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSaveWarningDialog : public QMessageBox {
   Q_OBJECT
 
 public:

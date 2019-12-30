@@ -24,7 +24,9 @@
 
 #include <QtCore/QString>
 
-class WbSingleTaskApplication : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSingleTaskApplication : public QObject {
   Q_OBJECT
 
 public:

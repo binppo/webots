@@ -26,7 +26,9 @@
 
 #include <cassert>
 
-class WbMFBool : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFBool : public WbMultipleValue {
   Q_OBJECT
 
 public:

@@ -24,10 +24,12 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 class WbFieldModel;
 class WbTokenizer;
 
-class WbNodeModel {
+class WB_LIB_EXPORT WbNodeModel {
 public:
   // static functions
   static WbNodeModel *findModel(const QString &modelName);

@@ -44,7 +44,7 @@ namespace WbContextMenuGenerator {
     QStringList suitableModels;
 
     if (selectedNode && !selectedNode->isUseNode() && (selectedNode->useCount() == 0) && !selectedNode->isProtoInstance() &&
-        (dynamic_cast<const WbGroup *>(selectedNode))) {
+        (qobject_cast<const WbGroup *>(selectedNode))) {
       // find all basic nodes
       QStringList basicModels = WbNodeModel::baseModelNames();
 

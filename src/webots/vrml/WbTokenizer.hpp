@@ -25,10 +25,12 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class QTextStream;
 class WbToken;
 
-class WbTokenizer {
+class WB_LIB_EXPORT WbTokenizer {
 public:
   WbTokenizer();
   ~WbTokenizer();

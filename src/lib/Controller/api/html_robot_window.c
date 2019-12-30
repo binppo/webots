@@ -26,7 +26,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+
+//#include <unistd.h>
 
 static void (*wb_robot_window_init)(void) = NULL;
 static void (*wb_robot_window_step)(int) = NULL;
@@ -75,10 +76,10 @@ bool wb_robot_window_load_library(const char *name) {
   html[dot + 5] = '\0';
   // if the corresponding HTML file doesn't exists, it is an old Qt robot window
   // and we don't want to open it here
-  if (access(wbu_system_short_path(html), F_OK) == -1) {
+  /*if (access(wbu_system_short_path(html), F_OK) == -1) {
     free(html);
     return true;
-  }
+  }*/
   free(html);
   library_handle = dynamic_library_init(name);
   if (!library_handle) {

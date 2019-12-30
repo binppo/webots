@@ -19,6 +19,8 @@
 #include "WbSFVector2.hpp"
 #include "WbSFVector3.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrTransform;
 struct WrRenderable;
 struct WrStaticMesh;
@@ -29,7 +31,7 @@ class WbSFNode;
 class WbSolid;
 class WbRotationalMotor;
 
-class WbPropeller : public WbBaseNode {
+class WB_LIB_EXPORT WbPropeller : public WbBaseNode {
   Q_OBJECT
 
 public:

@@ -24,7 +24,7 @@ namespace wren {
   // A TransformNode keeps track of its position/scale/orientation on an absolute scale and
   // in relation to a parent Transform. Additionally, it keeps track of its local coordinate system.
   // Can be translated, rotated and scaled using the canonical axes or its local axes.
-  class TransformNode : public Node {
+  struct TransformNode : public Node {
   public:
     void setPosition(const glm::vec3 &position) {
       mPositionRelative = position;

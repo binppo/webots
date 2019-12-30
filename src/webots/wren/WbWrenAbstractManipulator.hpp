@@ -26,9 +26,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
-class WbWrenAbstractManipulator : public QObject {
+class WB_LIB_EXPORT WbWrenAbstractManipulator : public QObject {
   Q_OBJECT
 
 public:

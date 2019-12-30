@@ -72,7 +72,7 @@ WbTreeItem *WbSceneTreeModel::createItemForField(WbField *field) {
 
   WbTreeItem *const item = new WbTreeItem(field);
 
-  const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
+  const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
   if (sfnode) {
     connect(item, &WbTreeItem::rowsInserted, this, &WbSceneTreeModel::insertItems);
     connect(item, &WbTreeItem::childrenNeedDeletion, this, &WbSceneTreeModel::removeItems);
@@ -95,7 +95,7 @@ WbTreeItem *WbSceneTreeModel::createItemForField(WbField *field) {
   connect(item, &WbTreeItem::rowsInserted, this, &WbSceneTreeModel::insertItems);
   connect(item, &WbTreeItem::childrenNeedDeletion, this, &WbSceneTreeModel::removeItems);
 
-  const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(field->value());
+  const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
   if (mfnode) {
     const int n = mfnode->size();
     for (int i = 0; i < n; ++i)
@@ -103,7 +103,7 @@ WbTreeItem *WbSceneTreeModel::createItemForField(WbField *field) {
     return item;
   }
 
-  const WbMultipleValue *const mvalue = dynamic_cast<WbMultipleValue *>(field->value());
+  const WbMultipleValue *const mvalue = qobject_cast<WbMultipleValue *>(field->value());
   if (mvalue) {
     const int n = mvalue->size();
     for (int i = 0; i < n; ++i)
@@ -300,7 +300,7 @@ bool WbSceneTreeModel::insertRows(int row, int count, const QModelIndex &parent)
 
   WbTreeItem *const parentItem = indexToItem(parent);
 
-  const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(parentItem->field()->value());
+  const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(parentItem->field()->value());
   if (sfnode) {
     WbNode *const node = sfnode->value();
     if (node) {
@@ -321,7 +321,7 @@ bool WbSceneTreeModel::insertRows(int row, int count, const QModelIndex &parent)
     // signal WbTreeView
     emit itemInserted(parent);
   } else {
-    const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(parentItem->field()->value());
+    const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(parentItem->field()->value());
 
     for (int pos = row; pos < count + row; ++pos) {
       WbTreeItem *const childItem = mfnode ? createItemForNode(mfnode->item(pos)) : new WbTreeItem(parentItem->field(), 0);

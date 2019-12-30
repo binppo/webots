@@ -21,9 +21,11 @@
 
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class QCheckBox;
 
-class WbBoolEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbBoolEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

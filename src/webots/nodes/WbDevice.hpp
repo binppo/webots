@@ -19,13 +19,15 @@
 // Description: abstract base classes for all webots devices
 //
 
-#include "../../../include/controller/c/webots/types.h"  // WbDeviceTag definition
+#include <webots/types.h>  // WbDeviceTag definition
+
+#include <core/WbConfig.h>
 
 class QDataStream;
 class QString;
 
 // logical device class
-class WbDevice {
+class WB_LIB_EXPORT WbDevice {
 public:
   // destructor
   virtual ~WbDevice();

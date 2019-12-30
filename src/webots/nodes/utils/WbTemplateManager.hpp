@@ -23,10 +23,12 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 class WbField;
 
-class WbTemplateManager : public QObject {
+class WB_LIB_EXPORT WbTemplateManager : public QObject {
   Q_OBJECT
 
 public:

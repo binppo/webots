@@ -139,13 +139,15 @@ void WbSphere::exportNodeFields(WbVrmlWriter &writer) const {
   writer << "creaseAngle 1\n";
 
   const int indexCount = wr_static_mesh_get_index_count(mWrenMesh);
-  unsigned int indices[indexCount];
+  unsigned int *indices = new unsigned int[indexCount];
   writer.indent();
   writer << "coordIndex [ ";
   wr_static_mesh_read_data(mWrenMesh, NULL, NULL, NULL, indices);
   for (int i = 0; i < indexCount; i += 3)
     writer << indices[i] << " " << indices[i + 1] << " " << indices[i + 2] << " -1 ";
   writer << "]\n";
+
+  delete[] indices;
 }
 
 void WbSphere::exportNodeSubNodes(WbVrmlWriter &writer) const {
@@ -158,9 +160,9 @@ void WbSphere::exportNodeSubNodes(WbVrmlWriter &writer) const {
     return;
 
   const int vertexCount = wr_static_mesh_get_vertex_count(mWrenMesh);
-  float vertices[3 * vertexCount];
-  float normal_data[3 * vertexCount];
-  float tex_coord_data[2 * vertexCount];
+  float *vertices = new float[3 * vertexCount];
+  float *normal_data = new float[3 * vertexCount];
+  float *tex_coord_data = new float[2 * vertexCount];
   wr_static_mesh_read_data(mWrenMesh, vertices, normal_data, tex_coord_data, NULL);
   // Write with limited precision to reduce the size of the VRML file.
   const int precision = 4;
@@ -210,6 +212,10 @@ void WbSphere::exportNodeSubNodes(WbVrmlWriter &writer) const {
   writer.decreaseIndent();
   writer.indent();
   writer << "}\n";
+
+  delete[] vertices;
+  delete[] normal_data;
+  delete[] tex_coord_data;
 }
 
 bool WbSphere::sanitizeFields() {

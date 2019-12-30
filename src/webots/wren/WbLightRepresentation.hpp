@@ -20,6 +20,8 @@
 //
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class QImage;
 
 struct WrTransform;
@@ -28,7 +30,7 @@ struct WrStaticMesh;
 struct WrRenderable;
 struct WrMaterial;
 
-class WbLightRepresentation {
+class WB_LIB_EXPORT WbLightRepresentation {
 public:
   // Called when window in resized
   static void updateScreenScale(int width, int height);

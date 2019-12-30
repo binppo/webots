@@ -15,6 +15,8 @@
 #ifndef WB_SOUND_SOURCE_HPP
 #define WB_SOUND_SOURCE_HPP
 
+#include <core/WbConfig.h>
+
 //
 // Description: manage a sound buffer
 //
@@ -22,7 +24,7 @@
 class WbSoundClip;
 class WbVector3;
 
-class WbSoundSource {
+class WB_LIB_EXPORT WbSoundSource {
 public:
   WbSoundSource();
   virtual ~WbSoundSource();

@@ -24,10 +24,12 @@
 #include <QtCore/QString>
 #include <QtGui/QClipboard>
 
+#include <core/WbConfig.h>
+
 class WbField;
 class QClipboard;
 
-class WbClipboard : public WbVariant {
+class WB_LIB_EXPORT WbClipboard : public WbVariant {
 public:
   static WbClipboard *instance();
   static void deleteInstance();

@@ -23,43 +23,43 @@
 #define WB_REMOTE_CONTROL_H
 
 #define WB_USING_C_API
-#include "camera_recognition_object.h"
-#include "radar_target.h"
-#include "types.h"
+#include <webots/camera_recognition_object.h>
+#include <webots/radar_target.h>
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void *wb_remote_control_custom_function(void *);
+CONTROLLER_EXPORT void *wb_remote_control_custom_function(void *);
 
 // Sensor functions (values read by the controller)
-void wbr_robot_battery_sensor_set_value(double value);
-void wbr_differential_wheels_set_encoders(double left, double right);
+CONTROLLER_EXPORT void wbr_robot_battery_sensor_set_value(double value);
+CONTROLLER_EXPORT void wbr_differential_wheels_set_encoders(double left, double right);
 
-void wbr_accelerometer_set_values(WbDeviceTag tag, const double *values);
-void wbr_camera_recognition_set_object(WbDeviceTag tag, const WbCameraRecognitionObject *objects, int object_number);
-void wbr_compass_set_values(WbDeviceTag tag, const double *values);
-void wbr_distance_sensor_set_value(WbDeviceTag tag, double value);
-void wbr_gps_set_values(WbDeviceTag tag, const double *values);
-void wbr_gps_set_speed(WbDeviceTag tag, const double speed);
-void wbr_gyro_set_values(WbDeviceTag tag, const double *values);
-void wbr_inertial_unit_set_value(WbDeviceTag tag, double value);
-void wbr_light_sensor_set_value(WbDeviceTag tag, double value);
-void wbr_microphone_set_buffer(WbDeviceTag tag, const unsigned char *buffer, int size);
-void wbr_motor_set_position_feedback(WbDeviceTag tag, double value);
-void wbr_motor_set_force_feedback(WbDeviceTag tag, double value);
-void wbr_motor_set_torque_feedback(WbDeviceTag tag, double value);
-void wbr_position_sensor_set_value(WbDeviceTag tag, double value);
-void wbr_radar_set_targets(WbDeviceTag tag, const WbRadarTarget *targets, int target_number);
-void wbr_touch_sensor_set_value(WbDeviceTag tag, double value);
-void wbr_touch_sensor_set_values(WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT void wbr_accelerometer_set_values(WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT void wbr_camera_recognition_set_object(WbDeviceTag tag, const WbCameraRecognitionObject *objects, int object_number);
+CONTROLLER_EXPORT void wbr_compass_set_values(WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT void wbr_distance_sensor_set_value(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_gps_set_values(WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT void wbr_gps_set_speed(WbDeviceTag tag, const double speed);
+CONTROLLER_EXPORT void wbr_gyro_set_values(WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT void wbr_inertial_unit_set_value(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_light_sensor_set_value(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_microphone_set_buffer(WbDeviceTag tag, const unsigned char *buffer, int size);
+CONTROLLER_EXPORT void wbr_motor_set_position_feedback(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_motor_set_force_feedback(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_motor_set_torque_feedback(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_position_sensor_set_value(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_radar_set_targets(WbDeviceTag tag, const WbRadarTarget *targets, int target_number);
+CONTROLLER_EXPORT void wbr_touch_sensor_set_value(WbDeviceTag tag, double value);
+CONTROLLER_EXPORT void wbr_touch_sensor_set_values(WbDeviceTag tag, const double *values);
 
 // TODO doc required
-void wbr_display_save_image(WbDeviceTag tag, int id, int width, int height, unsigned char *image);
+CONTROLLER_EXPORT void wbr_display_save_image(WbDeviceTag tag, int id, int width, int height, unsigned char *image);
 
-void wbr_camera_set_image(WbDeviceTag tag, const unsigned char *image);
-unsigned char *wbr_camera_get_image_buffer(WbDeviceTag tag);
+CONTROLLER_EXPORT void wbr_camera_set_image(WbDeviceTag tag, const unsigned char *image);
+CONTROLLER_EXPORT unsigned char *wbr_camera_get_image_buffer(WbDeviceTag tag);
 
 // Actuator functions (values written by the controller)
 typedef struct WbrInterface {

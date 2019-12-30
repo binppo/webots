@@ -316,7 +316,7 @@ WbRgb WbBackground::skyColor() const {
 }
 
 WbCubemap *WbBackground::cubemap() const {
-  return dynamic_cast<WbCubemap *>(mCubemap->value());
+  return qobject_cast<WbCubemap *>(mCubemap->value());
 }
 
 void WbBackground::exportNodeFields(WbVrmlWriter &writer) const {

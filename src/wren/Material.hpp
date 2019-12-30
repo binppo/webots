@@ -25,13 +25,13 @@
 
 namespace wren {
 
-  class ShaderProgram;
-  class TextureTransform;
-  class TextureCubeMap;
+  struct ShaderProgram;
+  struct TextureTransform;
+  struct TextureCubeMap;
 
   // Abstract Container class that stores the Material parameters, Shader and Texture used by a Renderable.
   // Inherited by: PhongMaterial, PBRMaterial
-  class Material {
+  struct Material {
   public:
     enum MaterialProgram {
       MATERIAL_PROGRAM_DEFAULT,

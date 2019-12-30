@@ -12,6 +12,7 @@
 #include <webots/radar.h>
 
 #include <math.h>
+#include <corecrt_math_defines.h>
 
 using namespace webotsQtUtils;
 

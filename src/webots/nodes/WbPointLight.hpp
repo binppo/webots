@@ -17,12 +17,14 @@
 
 #include "WbLight.hpp"
 
+#include <core/WbConfig.h>
+
 class WbLightRepresentation;
 class WbVector3;
 
 struct WrPointLight;
 
-class WbPointLight : public WbLight {
+class WB_LIB_EXPORT WbPointLight : public WbLight {
   Q_OBJECT
 
 public:

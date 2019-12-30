@@ -15,9 +15,11 @@
 #ifndef WB_LOOKUP_TABLE_HH
 #define WB_LOOKUP_TABLE_HH
 
+#include <core/WbConfig.h>
+
 class WbMFVector3;
 
-class WbLookupTable {
+class WB_LIB_EXPORT WbLookupTable {
 public:
   explicit WbLookupTable(const WbMFVector3 &lookupTable);
   ~WbLookupTable();

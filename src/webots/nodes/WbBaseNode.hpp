@@ -22,8 +22,10 @@
 //   Directly or indirectly by every node class in the 'nodes' subproject
 //
 
-#include "../../../include/controller/c/webots/nodes.h"
+#include <webots/nodes.h>
 #include "WbNode.hpp"
+
+#include <core/WbConfig.h>
 
 class WbTransform;  // TODO: remove this dependency: a class should not have a dependency on its subclass
 class WbSolid;      // TODO: remove this dependency: a class should not have a dependency on its subclass
@@ -31,7 +33,7 @@ class WbBoundingSphere;
 
 struct WrTransform;
 
-class WbBaseNode : public WbNode {
+class WB_LIB_EXPORT WbBaseNode : public WbNode {
   Q_OBJECT
 
 public:

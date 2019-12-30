@@ -17,9 +17,11 @@
 
 #include <QtWidgets/QSplashScreen>
 
+#include <core/WbConfig.h>
+
 class QPainter;
 
-class WbSplashScreen : public QSplashScreen {
+class WB_LIB_EXPORT WbSplashScreen : public QSplashScreen {
   Q_OBJECT
   Q_PROPERTY(QColor backgroundGradientStartColor MEMBER mBackgroundGradientStartColor READ backgroundGradientStartColor WRITE
                setBackgroundGradientStartColor)

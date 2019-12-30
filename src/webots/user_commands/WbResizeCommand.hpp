@@ -24,9 +24,11 @@
 
 #include <QtWidgets/QUndoCommand>
 
+#include <core/WbConfig.h>
+
 class WbGeometry;
 
-class WbResizeCommand : public QUndoCommand {
+class WB_LIB_EXPORT WbResizeCommand : public QUndoCommand {
 public:
   WbResizeCommand(WbGeometry *geometry, const WbVector3 &scale, QUndoCommand *parent = 0);
   ~WbResizeCommand() {}

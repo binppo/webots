@@ -17,12 +17,14 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbMFVector3;
 class WbSFBool;
 class WbLookupTable;
 
-class WbGyro : public WbSolidDevice {
+class WB_LIB_EXPORT WbGyro : public WbSolidDevice {
   Q_OBJECT
 
 public:

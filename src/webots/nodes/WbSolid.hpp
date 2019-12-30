@@ -26,6 +26,8 @@
 #include <QtCore/QPointer>
 #include <QtCore/QSet>
 
+#include <core/WbConfig.h>
+
 class WbBasicJoint;
 class WbPhysics;
 class WbPropeller;
@@ -39,7 +41,7 @@ struct WrMaterial;
 
 struct dImmersionGeom;
 
-class WbSolid : public WbMatter {
+class WB_LIB_EXPORT WbSolid : public WbMatter {
   Q_OBJECT
 
 public:

@@ -21,9 +21,11 @@
 
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFieldLineEdit;
 
-class WbStringEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbStringEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

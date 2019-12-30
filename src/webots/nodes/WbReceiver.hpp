@@ -21,12 +21,14 @@
 
 #include <QtCore/QQueue>
 
+#include <core/WbConfig.h>
+
 class WbDataPacket;
 class WbEmitter;
 class WbSensor;
 class Transmission;
 
-class WbReceiver : public WbSolidDevice {
+class WB_LIB_EXPORT WbReceiver : public WbSolidDevice {
   Q_OBJECT
 
 public:

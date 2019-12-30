@@ -21,9 +21,9 @@
 
 namespace wren {
 
-  class Material;
+  struct Material;
   // Transform matrix that can be applied on texture coordinates.
-  class TextureTransform {
+  struct TextureTransform {
   public:
     static TextureTransform *createTextureTransform() { return new TextureTransform(); }
     static void deleteTextureTransform(TextureTransform *transform) { delete transform; }

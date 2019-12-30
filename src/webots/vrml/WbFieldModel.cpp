@@ -100,11 +100,11 @@ WbFieldModel::WbFieldModel(WbTokenizer *tokenizer, const QString &worldPath) {
     bool defaultValueIsValid = true;
     while (!isValueAccepted(mDefaultValue, &refusedIndex)) {
       defaultValueIsValid = false;
-      WbMultipleValue *multipleValue = dynamic_cast<WbMultipleValue *>(mDefaultValue);
+      WbMultipleValue *multipleValue = qobject_cast<WbMultipleValue *>(mDefaultValue);
       if (multipleValue)
         mAcceptedValues << multipleValue->variantValue(refusedIndex);
       else {
-        WbSingleValue *singleValue = dynamic_cast<WbSingleValue *>(mDefaultValue);
+        WbSingleValue *singleValue = qobject_cast<WbSingleValue *>(mDefaultValue);
         assert(singleValue);
         mAcceptedValues << singleValue->variantValue();
       }
@@ -181,7 +181,7 @@ QList<WbVariant> WbFieldModel::getAcceptedValues(const QString &type, WbTokenize
   while (tokenizer->nextWord() != '}') {
     tokenizer->ungetToken();
     const WbSingleValue *singleValue =
-      dynamic_cast<const WbSingleValue *>(WbFieldModel::createValueForVrmlType(type, tokenizer, worldPath));
+      qobject_cast<const WbSingleValue *>(WbFieldModel::createValueForVrmlType(type, tokenizer, worldPath));
     assert(singleValue);
 
     WbVariant variant(singleValue->variantValue());
@@ -202,8 +202,8 @@ bool WbFieldModel::isValueAccepted(const WbValue *value, int *refusedIndex) cons
   *refusedIndex = -1;
   if (mAcceptedValues.isEmpty())
     return true;
-  const WbMultipleValue *multipleValue = dynamic_cast<const WbMultipleValue *>(value);
-  const WbSingleValue *singleValue = dynamic_cast<const WbSingleValue *>(value);
+  const WbMultipleValue *multipleValue = qobject_cast<const WbMultipleValue *>(value);
+  const WbSingleValue *singleValue = qobject_cast<const WbSingleValue *>(value);
   if (multipleValue) {
     for (int i = 0; i < multipleValue->size(); ++i) {
       bool accepted = false;
@@ -254,11 +254,11 @@ bool WbFieldModel::isValueAccepted(const WbValue *value, int *refusedIndex) cons
 }
 
 bool WbFieldModel::isMultiple() const {
-  return dynamic_cast<WbMultipleValue *>(mDefaultValue);
+  return qobject_cast<WbMultipleValue *>(mDefaultValue);
 }
 
 bool WbFieldModel::isSingle() const {
-  return dynamic_cast<WbSingleValue *>(mDefaultValue);
+  return qobject_cast<WbSingleValue *>(mDefaultValue);
 }
 
 void WbFieldModel::write(WbVrmlWriter &writer) const {

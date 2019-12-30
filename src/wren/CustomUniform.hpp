@@ -21,7 +21,7 @@
 
 namespace wren {
 
-  class CustomUniformBase {
+  struct CustomUniformBase {
   public:
     CustomUniformBase(const std::string &name);
     virtual ~CustomUniformBase() {}
@@ -45,7 +45,7 @@ namespace wren {
     int mLocation;
   };
 
-  template<class T> class CustomUniform : public CustomUniformBase {
+  template<class T> struct CustomUniform : public CustomUniformBase {
   public:
     CustomUniform(const std::string &name, const T &initialValue) : CustomUniformBase(name), mValue(initialValue) {}
     virtual ~CustomUniform() {}

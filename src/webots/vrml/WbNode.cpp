@@ -576,12 +576,12 @@ WbField *WbNode::parentFieldAndIndex(int &index, bool internal) const {
 
   const QVector<WbField *> &fields = internal ? parentNode->fields() : parentNode->fieldsOrParameters();
   foreach (WbField *const field, fields) {
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
     if (sfnode && sfnode->value() == this) {
       index = 0;
       return field;
     } else {
-      const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(field->value());
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
       if (mfnode) {
         index = mfnode->nodeIndex(this);
         if (index != -1)
@@ -602,75 +602,75 @@ WbValue *WbNode::findValue(const QString &fieldName) const {
 }
 
 WbSFString *WbNode::findSFString(const QString &fieldName) const {
-  return dynamic_cast<WbSFString *>(findValue(fieldName));
+  return qobject_cast<WbSFString *>(findValue(fieldName));
 }
 
 WbSFInt *WbNode::findSFInt(const QString &fieldName) const {
-  return dynamic_cast<WbSFInt *>(findValue(fieldName));
+  return qobject_cast<WbSFInt *>(findValue(fieldName));
 }
 
 WbSFDouble *WbNode::findSFDouble(const QString &fieldName) const {
-  return dynamic_cast<WbSFDouble *>(findValue(fieldName));
+  return qobject_cast<WbSFDouble *>(findValue(fieldName));
 }
 
 WbSFVector2 *WbNode::findSFVector2(const QString &fieldName) const {
-  return dynamic_cast<WbSFVector2 *>(findValue(fieldName));
+  return qobject_cast<WbSFVector2 *>(findValue(fieldName));
 }
 
 WbSFVector3 *WbNode::findSFVector3(const QString &fieldName) const {
-  return dynamic_cast<WbSFVector3 *>(findValue(fieldName));
+  return qobject_cast<WbSFVector3 *>(findValue(fieldName));
 }
 
 WbSFColor *WbNode::findSFColor(const QString &fieldName) const {
-  return dynamic_cast<WbSFColor *>(findValue(fieldName));
+  return qobject_cast<WbSFColor *>(findValue(fieldName));
 }
 
 WbSFNode *WbNode::findSFNode(const QString &fieldName) const {
-  return dynamic_cast<WbSFNode *>(findValue(fieldName));
+  return qobject_cast<WbSFNode *>(findValue(fieldName));
 }
 
 WbSFBool *WbNode::findSFBool(const QString &fieldName) const {
-  return dynamic_cast<WbSFBool *>(findValue(fieldName));
+  return qobject_cast<WbSFBool *>(findValue(fieldName));
 }
 
 WbSFRotation *WbNode::findSFRotation(const QString &fieldName) const {
-  return dynamic_cast<WbSFRotation *>(findValue(fieldName));
+  return qobject_cast<WbSFRotation *>(findValue(fieldName));
 }
 
 WbMFString *WbNode::findMFString(const QString &fieldName) const {
-  return dynamic_cast<WbMFString *>(findValue(fieldName));
+  return qobject_cast<WbMFString *>(findValue(fieldName));
 }
 
 WbMFInt *WbNode::findMFInt(const QString &fieldName) const {
-  return dynamic_cast<WbMFInt *>(findValue(fieldName));
+  return qobject_cast<WbMFInt *>(findValue(fieldName));
 }
 
 WbMFDouble *WbNode::findMFDouble(const QString &fieldName) const {
-  return dynamic_cast<WbMFDouble *>(findValue(fieldName));
+  return qobject_cast<WbMFDouble *>(findValue(fieldName));
 }
 
 WbMFVector2 *WbNode::findMFVector2(const QString &fieldName) const {
-  return dynamic_cast<WbMFVector2 *>(findValue(fieldName));
+  return qobject_cast<WbMFVector2 *>(findValue(fieldName));
 }
 
 WbMFVector3 *WbNode::findMFVector3(const QString &fieldName) const {
-  return dynamic_cast<WbMFVector3 *>(findValue(fieldName));
+  return qobject_cast<WbMFVector3 *>(findValue(fieldName));
 }
 
 WbMFBool *WbNode::findMFBool(const QString &fieldName) const {
-  return dynamic_cast<WbMFBool *>(findValue(fieldName));
+  return qobject_cast<WbMFBool *>(findValue(fieldName));
 }
 
 WbMFRotation *WbNode::findMFRotation(const QString &fieldName) const {
-  return dynamic_cast<WbMFRotation *>(findValue(fieldName));
+  return qobject_cast<WbMFRotation *>(findValue(fieldName));
 }
 
 WbMFColor *WbNode::findMFColor(const QString &fieldName) const {
-  return dynamic_cast<WbMFColor *>(findValue(fieldName));
+  return qobject_cast<WbMFColor *>(findValue(fieldName));
 }
 
 WbMFNode *WbNode::findMFNode(const QString &fieldName) const {
-  return dynamic_cast<WbMFNode *>(findValue(fieldName));
+  return qobject_cast<WbMFNode *>(findValue(fieldName));
 }
 
 void WbNode::makeUseNode(WbNode *defNode, bool reading) {
@@ -821,8 +821,8 @@ void WbNode::validate(const WbNode *upperNode, const WbField *upperField, bool i
     fieldsToBeValidated = fields();
 
   foreach (const WbField *field, fieldsToBeValidated) {
-    WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
-    WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(field->value());
+    WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
+    WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
     if (sfnode) {
       if (field->name() == "boundingObject")
         isInBoundingObject = true;
@@ -839,7 +839,7 @@ void WbNode::validate(const WbNode *upperNode, const WbField *upperField, bool i
 
           WbField *parameter = field->parameter();
           if (parameter) {
-            WbSFNode *sfParameter = dynamic_cast<WbSFNode *>(parameter->value());
+            WbSFNode *sfParameter = qobject_cast<WbSFNode *>(parameter->value());
             assert(sfParameter);
             sfParameter->setValue(NULL);
             if (!emptyErrorMessage)
@@ -868,7 +868,7 @@ void WbNode::validate(const WbNode *upperNode, const WbField *upperField, bool i
 
           WbField *parameter = field->parameter();
           if (parameter) {
-            WbMFNode *mfParameter = dynamic_cast<WbMFNode *>(parameter->value());
+            WbMFNode *mfParameter = qobject_cast<WbMFNode *>(parameter->value());
             assert(mfParameter);
             mfParameter->removeItem(i);
             if (!emptyErrorMessage)
@@ -1006,11 +1006,11 @@ QStringList WbNode::listTextureFiles() const {
   const QString currentTexturePath = WbProject::current()->worldsPath();
   foreach (WbField *field, fields())
     if (field->value()->type() == WB_SF_NODE) {
-      WbSFNode *node = dynamic_cast<WbSFNode *>(field->value());
+      WbSFNode *node = qobject_cast<WbSFNode *>(field->value());
       if (node->value())
         list << node->value()->listTextureFiles();
     } else if (field->value()->type() == WB_MF_NODE) {
-      WbMFNode *mfnode = dynamic_cast<WbMFNode *>(field->value());
+      WbMFNode *mfnode = qobject_cast<WbMFNode *>(field->value());
       WbMFNode::Iterator it(*mfnode);
       while (it.hasNext()) {
         const WbNode *n = static_cast<WbNode *>(it.next());
@@ -1024,7 +1024,7 @@ QStringList WbNode::listTextureFiles() const {
         QFileInfo fileInfo(protoModel->fileName());
         protoPath = fileInfo.path() + "/";
       }
-      WbMFString *mfstring = dynamic_cast<WbMFString *>(field->value());
+      WbMFString *mfstring = qobject_cast<WbMFString *>(field->value());
       for (int i = 0; i < mfstring->size(); i++) {
         const QString &textureFile = mfstring->item(i);
         if (proto && QFile::exists(protoPath + textureFile))  // PROTO texture
@@ -1067,7 +1067,7 @@ void WbNode::exportNodeFields(WbVrmlWriter &writer) const {
 void WbNode::exportNodeSubNodes(WbVrmlWriter &writer) const {
   foreach (WbField *field, fields())
     if (!field->isDeprecated() && ((field->isVrml() || writer.isProto()) && field->singleType() == WB_SF_NODE)) {
-      const WbSFNode *const node = dynamic_cast<WbSFNode *>(field->value());
+      const WbSFNode *const node = qobject_cast<WbSFNode *>(field->value());
       if (node == NULL || node->value() == NULL || node->value()->shallExport() || writer.isProto()) {
         if (writer.isX3d())
           field->value()->write(writer);
@@ -1652,8 +1652,8 @@ void WbNode::setupDescendantAndNestedProtoFlags(bool isTopNode, bool isTopParame
 
 void WbNode::setupDescendantAndNestedProtoFlags(QVector<WbField *> fields, bool isTopParameterDescendant) {
   foreach (WbField *field, fields) {
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
-    const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(field->value());
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
+    const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
     if (sfnode) {
       WbNode *n = sfnode->value();
       if (n)
@@ -1681,11 +1681,11 @@ bool WbNode::isProtoParameterChild(const WbNode *node) const {
     return false;
 
   foreach (WbField *const field, parameters()) {
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
     if (sfnode && sfnode->value() == node)
       return true;
     else {
-      const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(field->value());
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
       if (mfnode) {
         int index = mfnode->nodeIndex(node);
         if (index != -1)
@@ -1725,14 +1725,14 @@ QList<WbNode *> WbNode::subNodes(bool recurse, bool searchInFields, bool searchI
   QVector<WbField *>::iterator field;
   for (field = fields.begin(); field != fields.end(); ++field) {
     const WbValue *const value = (*field)->value();
-    const WbSFNode *const sfnode = dynamic_cast<const WbSFNode *>(value);
+    const WbSFNode *const sfnode = qobject_cast<const WbSFNode *>(value);
     if (sfnode && sfnode->value()) {
       WbNode *const node = sfnode->value();
       result.append(node);
       if (recurse)
         result.append(node->subNodes(recurse, searchInFields, searchInParameters));
     } else {
-      const WbMFNode *const mfnode = dynamic_cast<const WbMFNode *>(value);
+      const WbMFNode *const mfnode = qobject_cast<const WbMFNode *>(value);
       if (mfnode) {
         for (int i = 0; i < mfnode->size(); ++i) {
           WbNode *const node = mfnode->item(i);
@@ -1814,7 +1814,7 @@ bool WbNode::hasAreferredDefNodeDescendant(const WbNode *root) const {
 
   foreach (WbField *field, fieldsOrParameters()) {
     WbValue *value = field->value();
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(value);
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(value);
     if (sfnode && sfnode->value()) {
       const WbNode *node = sfnode->value();
       const int nodeCount = node->useCount();
@@ -1827,7 +1827,7 @@ bool WbNode::hasAreferredDefNodeDescendant(const WbNode *root) const {
       if (subtreeHasDef)
         return subtreeHasDef;
     } else {
-      const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(value);
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(value);
       if (mfnode) {
         const int size = mfnode->size();
         for (int i = 0; i < size; ++i) {
@@ -1876,13 +1876,13 @@ int WbNode::subNodeIndex(const WbNode *subNode, const WbNode *root) {
   const QVector<WbField *> &fields = root->fields();
   foreach (WbField *field, fields) {
     WbValue *value = field->value();
-    WbSFNode *sfNode = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *sfNode = qobject_cast<WbSFNode *>(value);
     if (sfNode) {
       WbNode *node = sfNode->value();
       if (node)
         subNodeIndex(node, subNode, result, subNodeFound);
     } else {
-      WbMFNode *mfNode = dynamic_cast<WbMFNode *>(value);
+      WbMFNode *mfNode = qobject_cast<WbMFNode *>(value);
       if (mfNode) {
         const int n = mfNode->size();
         for (int i = 0; !subNodeFound && (i < n); ++i) {
@@ -1910,13 +1910,13 @@ void WbNode::subNodeIndex(const WbNode *currentNode, const WbNode *targetNode, i
   const QVector<WbField *> &fields = currentNode->fields();
   foreach (WbField *field, fields) {
     WbValue *value = field->value();
-    WbSFNode *sfNode = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *sfNode = qobject_cast<WbSFNode *>(value);
     if (sfNode) {
       WbNode *node = sfNode->value();
       if (node)
         subNodeIndex(node, targetNode, index, subNodeFound);
     } else {
-      WbMFNode *mfNode = dynamic_cast<WbMFNode *>(value);
+      WbMFNode *mfNode = qobject_cast<WbMFNode *>(value);
       if (mfNode) {
         const int n = mfNode->size();
         for (int i = 0; !subNodeFound && (i < n); i++) {
@@ -1945,7 +1945,7 @@ WbNode *WbNode::findNodeFromSubNodeIndex(int index, WbNode *root) {
   const QVector<WbField *> &fields = root->fields();
   foreach (WbField *field, fields) {
     WbValue *value = field->value();
-    WbSFNode *sfNode = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *sfNode = qobject_cast<WbSFNode *>(value);
     if (sfNode) {
       WbNode *node = sfNode->value();
       if (node) {
@@ -1954,7 +1954,7 @@ WbNode *WbNode::findNodeFromSubNodeIndex(int index, WbNode *root) {
           return returnNode;
       }
     } else {
-      WbMFNode *mfNode = dynamic_cast<WbMFNode *>(value);
+      WbMFNode *mfNode = qobject_cast<WbMFNode *>(value);
       if (mfNode) {
         const int n = mfNode->size();
         for (int i = 0; (index > 0) && (i < n); i++) {
@@ -1979,7 +1979,7 @@ WbNode *WbNode::findNode(int &index, WbNode *root) {
   const QVector<WbField *> &fields = root->fields();
   foreach (WbField *field, fields) {
     WbValue *value = field->value();
-    WbSFNode *sfNode = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *sfNode = qobject_cast<WbSFNode *>(value);
     if (sfNode) {
       WbNode *node = sfNode->value();
       if (node) {
@@ -1988,7 +1988,7 @@ WbNode *WbNode::findNode(int &index, WbNode *root) {
           return returnNode;
       }
     } else {
-      WbMFNode *mfNode = dynamic_cast<WbMFNode *>(value);
+      WbMFNode *mfNode = qobject_cast<WbMFNode *>(value);
       if (mfNode) {
         const int n = mfNode->size();
         for (int i = 0; (index > 0) && (i < n); i++) {
@@ -2048,11 +2048,11 @@ void WbNode::printDebugNodeFields(int level, bool printParameters) {
                  p->name().toStdString().c_str(), p, p->parameter());
     qDebug() << line;
     if (p->type() == WB_SF_NODE) {
-      WbNode *n = dynamic_cast<WbSFNode *>(p->value())->value();
+      WbNode *n = qobject_cast<WbSFNode *>(p->value())->value();
       if (n)
         n->printDebugNodeStructure(level + 1);
     } else if (p->type() == WB_MF_NODE) {
-      WbMFNode *mfnode = dynamic_cast<WbMFNode *>(p->value());
+      WbMFNode *mfnode = qobject_cast<WbMFNode *>(p->value());
       for (int i = 0; i < mfnode->size(); ++i) {
         WbNode *n = mfnode->item(i);
         if (n)

@@ -108,11 +108,11 @@ WbSFRotation &WbSFRotation::operator=(const WbSFRotation &other) {
 }
 
 bool WbSFRotation::equals(const WbValue *other) const {
-  const WbSFRotation *that = dynamic_cast<const WbSFRotation *>(other);
+  const WbSFRotation *that = qobject_cast<const WbSFRotation *>(other);
   return that && *this == *that;
 }
 
 void WbSFRotation::copyFrom(const WbValue *other) {
-  const WbSFRotation *that = dynamic_cast<const WbSFRotation *>(other);
+  const WbSFRotation *that = qobject_cast<const WbSFRotation *>(other);
   *this = *that;
 }

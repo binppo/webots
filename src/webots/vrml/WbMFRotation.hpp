@@ -27,7 +27,9 @@
 
 #include <cassert>
 
-class WbMFRotation : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFRotation : public WbMultipleValue {
   Q_OBJECT
 
 public:

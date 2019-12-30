@@ -22,6 +22,8 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class WbField;
 class WbNode;
 class QGroupBox;
@@ -32,7 +34,7 @@ class QPushButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class WbAddNodeDialog : public QDialog {
+class WB_LIB_EXPORT WbAddNodeDialog : public QDialog {
   Q_OBJECT
 
 public:

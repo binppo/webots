@@ -17,9 +17,11 @@
 
 #include "WbGeometry.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFDouble;
 
-class WbCone : public WbGeometry {
+class WB_LIB_EXPORT WbCone : public WbGeometry {
   Q_OBJECT
 
 public:

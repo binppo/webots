@@ -43,8 +43,8 @@ WbAnimationCommand::WbAnimationCommand(const WbNode *n, const QStringList &field
       mFields.append(field);
 
       if (saveInitialValue) {
-        const WbSFVector3 *sfVector3 = dynamic_cast<WbSFVector3 *>(field->value());
-        const WbSFRotation *sfRotation = dynamic_cast<WbSFRotation *>(field->value());
+        const WbSFVector3 *sfVector3 = qobject_cast<WbSFVector3 *>(field->value());
+        const WbSFRotation *sfRotation = qobject_cast<WbSFRotation *>(field->value());
         const QString &fieldName = field->name();
         if (!state.isEmpty())
           state += ",";
@@ -86,7 +86,7 @@ void WbAnimationCommand::addArtificialFieldChange(const QString &fieldName, cons
 }
 
 void WbAnimationCommand::updateValue() {
-  const WbField *field = dynamic_cast<WbField *>(sender());
+  const WbField *field = qobject_cast<WbField *>(sender());
   if (field)
     updateFieldValue(field);
 }
@@ -100,8 +100,8 @@ void WbAnimationCommand::updateAllFieldValues() {
 }
 
 void WbAnimationCommand::updateFieldValue(const WbField *field) {
-  const WbSFVector3 *sfVector3 = dynamic_cast<WbSFVector3 *>(field->value());
-  const WbSFRotation *sfRotation = dynamic_cast<WbSFRotation *>(field->value());
+  const WbSFVector3 *sfVector3 = qobject_cast<WbSFVector3 *>(field->value());
+  const WbSFRotation *sfRotation = qobject_cast<WbSFRotation *>(field->value());
   if (sfVector3 && field->name().compare("translation") == 0) {
     // special translation case
     const WbVector3 translationRounded =

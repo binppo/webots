@@ -21,7 +21,9 @@
 
 #include "WbLineEdit.hpp"
 
-class WbFieldLineEdit : public WbLineEdit {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbFieldLineEdit : public WbLineEdit {
   Q_OBJECT
 
 public:

@@ -17,7 +17,9 @@
 
 #include <ode/ode.h>
 
-class WbOdeDebugger {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbOdeDebugger {
 public:
   WbOdeDebugger();
   ~WbOdeDebugger();

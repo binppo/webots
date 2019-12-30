@@ -20,6 +20,8 @@
 
 #include <QtCore/QSet>
 
+#include <core/WbConfig.h>
+
 class WbRgb;
 
 class QImage;
@@ -28,7 +30,7 @@ struct WrMaterial;
 struct WrTexture;
 struct WrTextureTransform;
 
-class WbImageTexture : public WbBaseNode {
+class WB_LIB_EXPORT WbImageTexture : public WbBaseNode {
   Q_OBJECT
 
 public:

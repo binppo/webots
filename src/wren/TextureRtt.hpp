@@ -20,7 +20,7 @@
 namespace wren {
 
   // Texture which can be used to back a framebuffer.
-  class TextureRtt : public Texture {
+  struct TextureRtt : public Texture {
   public:
     // Encapsulate memory management
     static TextureRtt *createTextureRtt() { return new TextureRtt(); }

@@ -227,10 +227,10 @@ void WbRobot::addDevices(WbNode *node) {
   if (!node)
     return;
 
-  if (node != this && dynamic_cast<const WbRobot *>(node))
+  if (node != this && qobject_cast<const WbRobot *>(node))
     return;  // do not recurse through child robots, their devices are hidden
 
-  WbGroup *group = dynamic_cast<WbGroup *>(node);
+  WbGroup *group = qobject_cast<WbGroup *>(node);
   if (group) {
     WbSolidDevice *solidDevice = dynamic_cast<WbSolidDevice *>(node);
     if (solidDevice) {
@@ -238,14 +238,14 @@ void WbRobot::addDevices(WbNode *node) {
       connect(static_cast<WbSolid *>(node), &WbSolid::destroyed, this, &WbRobot::updateDevicesAfterDestruction,
               Qt::UniqueConnection);
 
-      WbRenderingDevice *renderingDevice = dynamic_cast<WbRenderingDevice *>(node);
+      WbRenderingDevice *renderingDevice = qobject_cast<WbRenderingDevice *>(node);
       if (renderingDevice) {
         connect(renderingDevice, &WbBaseNode::isBeingDestroyed, this, &WbRobot::removeRenderingDevice, Qt::UniqueConnection);
         mRenderingDevices.append(renderingDevice);
       }
     }
 
-    WbTrack *const track = dynamic_cast<WbTrack *>(group);
+    WbTrack *const track = qobject_cast<WbTrack *>(group);
     if (track) {
       const QVector<WbLogicalDevice *> trackDevices = track->devices();
       for (int i = 0; i < trackDevices.size(); ++i) {
@@ -261,7 +261,7 @@ void WbRobot::addDevices(WbNode *node) {
     return;
   }
 
-  WbSkin *const skin = dynamic_cast<WbSkin *>(node);
+  WbSkin *const skin = qobject_cast<WbSkin *>(node);
   if (skin) {
     mDevices.append(skin);
     connect(static_cast<WbBaseNode *>(skin), &WbBaseNode::destroyed, this, &WbRobot::updateDevicesAfterDestruction,
@@ -269,15 +269,15 @@ void WbRobot::addDevices(WbNode *node) {
     return;
   }
 
-  WbSlot *const slot = dynamic_cast<WbSlot *>(node);
+  WbSlot *const slot = qobject_cast<WbSlot *>(node);
   if (slot) {
     addDevices(slot->endPoint());
     return;
   }
 
-  WbBasicJoint *const basicJoint = dynamic_cast<WbBasicJoint *>(node);
+  WbBasicJoint *const basicJoint = qobject_cast<WbBasicJoint *>(node);
   if (basicJoint) {
-    WbJoint *const joint = dynamic_cast<WbJoint *>(basicJoint);
+    WbJoint *const joint = qobject_cast<WbJoint *>(basicJoint);
     if (joint) {
       const QVector<WbLogicalDevice *> &jointDevices = joint->devices();
       foreach (WbLogicalDevice *const jointDevice, jointDevices) {
@@ -293,7 +293,7 @@ void WbRobot::addDevices(WbNode *node) {
     return;
   }
 
-  WbPropeller *const propeller = dynamic_cast<WbPropeller *>(node);
+  WbPropeller *const propeller = qobject_cast<WbPropeller *>(node);
   if (propeller) {
     WbLogicalDevice *const propellerDevice = propeller->device();
     if (propellerDevice) {
@@ -305,7 +305,7 @@ void WbRobot::addDevices(WbNode *node) {
   }
 
   // check if there are duplicated names, and print a warning if necessary
-  if (dynamic_cast<const WbRobot *>(node)) {  // top node
+  if (qobject_cast<const WbRobot *>(node)) {  // top node
     QStringList displayedWarnings;
     foreach (WbDevice *deviceA, mDevices) {
       foreach (WbDevice *deviceB, mDevices) {
@@ -492,7 +492,7 @@ void WbRobot::updateControllerDir() {
   if (isPostFinalizedCalled()) {
     emit controllerChanged();
     foreach (WbRenderingDevice *device, mRenderingDevices) {
-      WbAbstractCamera *ac = dynamic_cast<WbAbstractCamera *>(device);
+      WbAbstractCamera *ac = qobject_cast<WbAbstractCamera *>(device);
       if (ac)
         ac->resetSharedMemory();  // shared memory automatically deleted at new controller start
     }
@@ -783,9 +783,12 @@ void WbRobot::handleMessage(QDataStream &stream) {
     case C_ROBOT_SET_DATA: {
       short size;
       stream >> size;
-      char data[size];
+      char *data = new char[size];
       stream.readRawData(data, size);
       mCustomData->setValue(data);
+
+	  delete[] data;
+
       return;
     }
     case C_ROBOT_SET_KEYBOARD_SAMPLING_PERIOD: {
@@ -897,13 +900,16 @@ void WbRobot::handleMessage(QDataStream &stream) {
       stream >> streamChannel;
       unsigned int size;
       stream >> size;
-      char nativeMessage[size];
+      char *nativeMessage = new char[size];
       stream.readRawData(nativeMessage, size);
       QString message(nativeMessage);
       if (!message.endsWith('\n'))
         message += '\n';
       // cppcheck-suppress knownConditionTrueFalse
       emit appendMessageToConsole(message, streamChannel == 0);
+
+	  delete[] nativeMessage;
+
       return;
     }
     case C_ROBOT_WWI_MESSAGE: {

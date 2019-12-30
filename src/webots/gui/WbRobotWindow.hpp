@@ -18,15 +18,14 @@
 #include "WbDockWidget.hpp"
 #include "WbRobot.hpp"
 
-#ifndef _WIN32
-#define QWebView QWebEngineView
+#include <core/WbConfig.h>
+
 class WbRobotWindowTransportLayer;
-#endif
 
 class QWebFrame;
-class QWebView;
+class QWebEngineView;
 
-class WbRobotWindow : public WbDockWidget {
+class WB_LIB_EXPORT WbRobotWindow : public WbDockWidget {
   Q_OBJECT
 
 public:
@@ -37,9 +36,6 @@ public:
   void show();
 
 public slots:
-#ifdef _WIN32
-  void receiveFromJavascript(const QByteArray &);
-#endif
   void sendToJavascript(const QByteArray &);
   void setTitle(const QString &title, const QString &tabbedTitle = NULL);
   void startControllerIfNeeded();
@@ -49,22 +45,16 @@ private:
   QString linkTag(const QString &file);
   QString scriptTag(const QString &file);
   WbRobot *mRobot;
-  QWebView *mWebView;
-#ifdef _WIN32
-  QWebFrame *mFrame;
-#else
+  QWebEngineView *mWebView;
   void runJavaScript(const QString &message);
   QStringList mWaitingSentMessages;
   WbRobotWindowTransportLayer *mTransportLayer;
-#endif
   int mResetCount;
   bool mLoaded;
 
 private slots:
-#if defined(__APPLE__) || defined(__linux__)
   void notifyLoadCompleted();
   void notifyAckReceived();
-#endif
   void setupPage();
 };
 

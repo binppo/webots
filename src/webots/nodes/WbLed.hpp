@@ -18,6 +18,8 @@
 #include "WbMFColor.hpp"
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFBool;
 class WbRgb;
 class WbLight;
@@ -27,7 +29,7 @@ class WbGroup;
 
 class QDataStream;
 
-class WbLed : public WbSolidDevice {
+class WB_LIB_EXPORT WbLed : public WbSolidDevice {
   Q_OBJECT
 
 public:

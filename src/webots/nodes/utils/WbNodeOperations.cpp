@@ -52,7 +52,7 @@ static bool isRegionOccupied(const WbVector3 &pos) {
 
 // simple rule to avoid that inserted or pasted robots occupy exactly the same 3d region
 static void tryToAvoidIntersections(WbNode *node) {
-  WbRobot *const robot = dynamic_cast<WbRobot *>(node);
+  WbRobot *const robot = qobject_cast<WbRobot *>(node);
   if (robot) {
     WbVector3 tr = robot->translation();
     while (isRegionOccupied(tr)) {
@@ -114,9 +114,9 @@ WbNodeOperations::OperationResult WbNodeOperations::importNode(WbNode *parentNod
   if (importedNodesNumber)
     *importedNodesNumber = 0;
   mFromSupervisor = fromSupervisor;
-  WbSFNode *sfnode = dynamic_cast<WbSFNode *>(field->value());
+  WbSFNode *sfnode = qobject_cast<WbSFNode *>(field->value());
 #ifndef NDEBUG
-  WbMFNode *mfnode = dynamic_cast<WbMFNode *>(field->value());
+  WbMFNode *mfnode = qobject_cast<WbMFNode *>(field->value());
   assert(mfnode || sfnode);
   // index value is assumed to be in range [0, mfnode->size()]
   // user input checked in wb_supervisor_field_import_mf_node or WbSceneTree
@@ -163,7 +163,7 @@ WbNodeOperations::OperationResult WbNodeOperations::importNode(WbNode *parentNod
                       "Only the first node will be inserted")
                      .arg(field->name()));
 
-  const WbNode::NodeUse nodeUse = dynamic_cast<WbBaseNode *>(parentNode)->nodeUse();
+  const WbNode::NodeUse nodeUse = qobject_cast<WbBaseNode *>(parentNode)->nodeUse();
   WbBaseNode *childNode = NULL;
   bool isNodeRegenerated = false;
   int nodeIndex = itemIndex;
@@ -272,13 +272,13 @@ WbNodeOperations::OperationResult WbNodeOperations::importVrml(const QString &fi
 
 WbNodeOperations::OperationResult WbNodeOperations::initNewNode(WbNode *newNode, WbNode *parentNode, WbField *field,
                                                                 int newNodeIndex, bool subscribe) {
-  const bool isInBoundingObject = dynamic_cast<WbSolid *>(parentNode) && field->name() == "boundingObject";
+  const bool isInBoundingObject = qobject_cast<WbSolid *>(parentNode) && field->name() == "boundingObject";
   if (!WbNodeUtilities::validateInsertedNode(field, newNode, parentNode, isInBoundingObject)) {
     delete newNode;
     return FAILURE;
   }
 
-  WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(newNode);
+  WbBaseNode *const baseNode = qobject_cast<WbBaseNode *>(newNode);
   // set parent node
   newNode->setParent(parentNode);
   WbNode *upperTemplate = WbNodeUtilities::findUpperTemplateNeedingRegenerationFromField(field, parentNode);
@@ -286,7 +286,7 @@ WbNodeOperations::OperationResult WbNodeOperations::initNewNode(WbNode *newNode,
 
   // insert in parent field
   mNodesAreAboutToBeInserted = true;
-  WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(field->value());
+  WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
   if (mfnode) {
     if (isInsideATemplateRegenerator) {
       mfnode->blockSignals(true);  // otherwise, the node regeneration is called too early
@@ -296,7 +296,7 @@ WbNodeOperations::OperationResult WbNodeOperations::initNewNode(WbNode *newNode,
       mfnode->insertItem(newNodeIndex, newNode);
 
   } else {
-    WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
+    WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
     if (sfnode)
       sfnode->setValue(newNode);
   }
@@ -326,15 +326,15 @@ WbNodeOperations::OperationResult WbNodeOperations::initNewNode(WbNode *newNode,
 
 void WbNodeOperations::resolveSolidNameClashIfNeeded(WbNode *node) const {
   QList<WbSolid *> solidNodes;
-  WbSolid *solidNode = dynamic_cast<WbSolid *>(node);
+  WbSolid *solidNode = qobject_cast<WbSolid *>(node);
   if (solidNode)
     solidNodes << solidNode;
   else
     solidNodes << WbNodeUtilities::findSolidDescendants(node);
   while (!solidNodes.isEmpty()) {
     WbSolid *s = solidNodes.takeFirst();
-    const WbBaseNode *const parentBaseNode = dynamic_cast<WbBaseNode *>(s->parent());
-    const WbSolid *parentSolidNode = dynamic_cast<const WbSolid *>(parentBaseNode);
+    const WbBaseNode *const parentBaseNode = qobject_cast<WbBaseNode *>(s->parent());
+    const WbSolid *parentSolidNode = qobject_cast<const WbSolid *>(parentBaseNode);
     const WbSolid *upperSolid = parentSolidNode ? parentSolidNode : parentBaseNode->upperSolid();
     s->resolveNameClashIfNeeded(true, true,
                                 upperSolid ? upperSolid->solidChildren().toList() : WbWorld::instance()->topSolids(), NULL);
@@ -347,14 +347,14 @@ bool WbNodeOperations::deleteNode(WbNode *node, bool fromSupervisor) {
 
   mFromSupervisor = fromSupervisor;
 
-  if (dynamic_cast<WbSolid *>(node))
+  if (qobject_cast<WbSolid *>(node))
     WbWorld::instance()->awake();
 
   bool dictionaryNeedsUpdate = node->hasAreferredDefNodeDescendant();
   WbField *parentField = node->parentField();
   assert(parentField);
-  WbSFNode *sfnode = dynamic_cast<WbSFNode *>(parentField->value());
-  WbMFNode *mfnode = dynamic_cast<WbMFNode *>(parentField->value());
+  WbSFNode *sfnode = qobject_cast<WbSFNode *>(parentField->value());
+  WbMFNode *mfnode = qobject_cast<WbMFNode *>(parentField->value());
   assert(sfnode || mfnode);
   WbNodeOperations::instance()->notifyNodeDeleted(node);
   bool success;

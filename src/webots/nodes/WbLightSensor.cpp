@@ -268,9 +268,9 @@ void WbLightSensor::computeLightMeasurement(const WbLight *light,
                                             double &attenuation) const {
   double spotFactor = 1.0;
 
-  const WbPointLight *pointLight = dynamic_cast<const WbPointLight *>(light);
-  const WbDirectionalLight *directionalLight = dynamic_cast<const WbDirectionalLight *>(light);
-  const WbSpotLight *spotLight = dynamic_cast<const WbSpotLight *>(light);
+  const WbPointLight *pointLight = qobject_cast<const WbPointLight *>(light);
+  const WbDirectionalLight *directionalLight = qobject_cast<const WbDirectionalLight *>(light);
+  const WbSpotLight *spotLight = qobject_cast<const WbSpotLight *>(light);
 
   if (pointLight) {
     const WbVector3 &lightPos = pointLight->computeAbsoluteLocation();

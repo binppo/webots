@@ -23,7 +23,7 @@ namespace wren {
 
   // Classes which would otherwise apply OpenGL state changes outside of the render loop
   // need to inherit from this class and override its virtual methods.
-  class GlUser {
+  struct GlUser {
   public:
     enum GlAction { GL_ACTION_PREPARE, GL_ACTION_CLEANUP, GL_ACTION_DELETE };
 

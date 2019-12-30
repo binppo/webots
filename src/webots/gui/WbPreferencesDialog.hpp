@@ -22,6 +22,8 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 
 class QCheckBox;
@@ -29,7 +31,7 @@ class QComboBox;
 class QDialogButtonBox;
 class QTabWidget;
 
-class WbPreferencesDialog : public QDialog {
+class WB_LIB_EXPORT WbPreferencesDialog : public QDialog {
   Q_OBJECT
 
 public:

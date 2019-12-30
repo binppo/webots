@@ -23,13 +23,15 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QTreeWidget;
 class QLabel;
 class QPlainTextEdit;
 class QPushButton;
 class QGroupBox;
 
-class WbAddInertiaMatrixDialog : public QDialog {
+class WB_LIB_EXPORT WbAddInertiaMatrixDialog : public QDialog {
   Q_OBJECT
 
 public:

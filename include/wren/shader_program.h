@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 struct WrShaderProgram;
-typedef struct WrShaderProgram WrShaderProgram;
+//typedef struct WrShaderProgram WrShaderProgram;
 
 typedef enum WrShaderProgramUniformType {
   WR_SHADER_PROGRAM_UNIFORM_TYPE_FLOAT,

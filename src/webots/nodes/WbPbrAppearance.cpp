@@ -108,7 +108,7 @@ void WbPbrAppearance::preFinalize() {
   updateEmissiveColorMap();
 
   if (cInstanceCounter == 0) {
-    WbWrenOpenGlContext::makeWrenCurrent();
+	WbWrenOpenGlContext::makeWrenCurrent();
     const int quality = WbPreferences::instance()->value("OpenGL/textureQuality", 2).toInt();
     const int resolution = pow(2, 6 + quality);  // 0: 64, 1: 128, 2: 256
     cBrdfTexture = wr_texture_cubemap_bake_brdf(WbWrenShaders::iblBrdfBakingShader(), resolution);
@@ -299,27 +299,27 @@ WrMaterial *WbPbrAppearance::modifyWrenMaterial(WrMaterial *wrenMaterial) {
 }
 
 WbImageTexture *WbPbrAppearance::baseColorMap() const {
-  return dynamic_cast<WbImageTexture *>(mBaseColorMap->value());
+  return qobject_cast<WbImageTexture *>(mBaseColorMap->value());
 }
 
 WbImageTexture *WbPbrAppearance::roughnessMap() const {
-  return dynamic_cast<WbImageTexture *>(mRoughnessMap->value());
+  return qobject_cast<WbImageTexture *>(mRoughnessMap->value());
 }
 
 WbImageTexture *WbPbrAppearance::metalnessMap() const {
-  return dynamic_cast<WbImageTexture *>(mMetalnessMap->value());
+  return qobject_cast<WbImageTexture *>(mMetalnessMap->value());
 }
 
 WbImageTexture *WbPbrAppearance::normalMap() const {
-  return dynamic_cast<WbImageTexture *>(mNormalMap->value());
+  return qobject_cast<WbImageTexture *>(mNormalMap->value());
 }
 
 WbImageTexture *WbPbrAppearance::occlusionMap() const {
-  return dynamic_cast<WbImageTexture *>(mOcclusionMap->value());
+  return qobject_cast<WbImageTexture *>(mOcclusionMap->value());
 }
 
 WbImageTexture *WbPbrAppearance::emissiveColorMap() const {
-  return dynamic_cast<WbImageTexture *>(mEmissiveColorMap->value());
+  return qobject_cast<WbImageTexture *>(mEmissiveColorMap->value());
 }
 
 bool WbPbrAppearance::isBaseColorTextureLoaded() const {

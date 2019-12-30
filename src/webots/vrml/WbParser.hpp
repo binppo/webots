@@ -22,16 +22,18 @@
 //   Error messages are reported to WbLog
 //
 
-#include "../../../include/controller/c/webots/supervisor.h"  // WbFieldType
+#include <webots/supervisor.h>  // WbFieldType
 
 #include <QtCore/QString>
+
+#include <core/WbConfig.h>
 
 class WbNodeModel;
 class WbProtoModel;
 class WbToken;
 class WbTokenizer;
 
-class WbParser {
+class WB_LIB_EXPORT WbParser {
 public:
   // create a parser for the specified tokenizer
   explicit WbParser(WbTokenizer *tokenizer);

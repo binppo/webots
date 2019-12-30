@@ -18,11 +18,14 @@
 #include <QtCore/QList>
 #include "WbSimulationWorld.hpp"  // TODO: should we rename WbSimulationWorld to WbSimulatedWorld ?
 
+#include <core/WbConfig.h>
+
 class QLocalServer;
 class QLocalSocket;
+class QThread;
 class WbController;
 
-class WbControlledWorld : public WbSimulationWorld {
+class WB_LIB_EXPORT WbControlledWorld : public WbSimulationWorld {
   Q_OBJECT
 
 public:
@@ -53,6 +56,9 @@ signals:
 protected:
   void setUpControllerForNewRobot(WbRobot *robot) override;
 
+private slots:
+  void initialize();
+
 private:
   void startControllerFromSocket(WbRobot *robot, QLocalSocket *socket);
   void updateRobotController(WbRobot *robot);
@@ -67,6 +73,7 @@ private:
   QList<double> mRequests;
   bool mNeedToYield;
   bool mFirstStep;
+  QThread *mWorker;
 
   // wait for controller synchronization in step mode
   bool mRetryEnabled;

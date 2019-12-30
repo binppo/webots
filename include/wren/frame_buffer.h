@@ -6,10 +6,10 @@ extern "C" {
 #endif
 
 struct WrFrameBuffer;
-typedef struct WrFrameBuffer WrFrameBuffer;
+//typedef struct WrFrameBuffer WrFrameBuffer;
 
 struct WrTextureRtt;
-typedef struct WrTextureRtt WrTextureRtt;
+//typedef struct WrTextureRtt WrTextureRtt;
 
 WrFrameBuffer *wr_frame_buffer_new();
 void wr_frame_buffer_delete(WrFrameBuffer *frame_buffer);

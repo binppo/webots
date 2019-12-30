@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenLensDistortion : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenLensDistortion : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenLensDistortion();
 

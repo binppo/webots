@@ -197,7 +197,7 @@ bool WbDictionary::updateDef(WbBaseNode *&node, WbSFNode *sfNode, WbMFNode *mfNo
   const QVector<WbField *> &fields = node->fieldsOrParameters();
   foreach (WbField *const field, fields) {
     WbValue *const value = field->value();
-    WbSFNode *const sf = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *const sf = qobject_cast<WbSFNode *>(value);
     if (sf) {
       WbBaseNode *n = static_cast<WbBaseNode *>(sf->value());
       if (n) {
@@ -220,7 +220,7 @@ bool WbDictionary::updateDef(WbBaseNode *&node, WbSFNode *sfNode, WbMFNode *mfNo
         assert(nestedDictionariesSize == mNestedDictionaries.size());
       }
     } else {
-      WbMFNode *const mf = dynamic_cast<WbMFNode *>(value);
+      WbMFNode *const mf = qobject_cast<WbMFNode *>(value);
       if (mf) {
         const int size = mf->size();
         for (int i = 0; i < size; ++i) {
@@ -331,7 +331,7 @@ void WbDictionary::updateProtosDef(WbBaseNode *&node, WbSFNode *sfNode, WbMFNode
       continue;
 
     WbValue *const value = field->value();
-    WbSFNode *const sf = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *const sf = qobject_cast<WbSFNode *>(value);
     if (sf) {
       WbBaseNode *n = static_cast<WbBaseNode *>(sf->value());
       if (n) {
@@ -362,7 +362,7 @@ void WbDictionary::updateProtosDef(WbBaseNode *&node, WbSFNode *sfNode, WbMFNode
           mNestedUseNodes.removeLast();
       }
     } else {
-      WbMFNode *const mf = dynamic_cast<WbMFNode *>(value);
+      WbMFNode *const mf = qobject_cast<WbMFNode *>(value);
       if (mf) {
         const int size = mf->size();
         for (int i = 0; i < size; ++i) {
@@ -426,7 +426,7 @@ bool WbDictionary::checkBoundingObjectConstraints(const WbBaseNode *defNode, QSt
     const WbNode *const parentNode = subNodes.takeFirst();
     const QVector<WbField *> &fields = parentNode->fields();
     for (int i = 0, size = fields.size(); i < size; ++i) {
-      const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(fields[i]->value());
+      const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(fields[i]->value());
       if (sfnode) {
         const WbNode *const n = sfnode->value();
         if (n) {
@@ -436,7 +436,7 @@ bool WbDictionary::checkBoundingObjectConstraints(const WbBaseNode *defNode, QSt
           subNodes << n;
         }
       } else {
-        const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(fields[i]->value());
+        const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(fields[i]->value());
         if (mfnode) {
           const int size = mfnode->size();
           for (int j = 0; j < size; ++j) {
@@ -462,7 +462,7 @@ bool WbDictionary::checkChargerAndLedConstraints(WbNode *useNodeParent, const Wb
   // In case of Material or Light USE node inserted in first child of Charger or LED nodes:
   // the corresponding DEF node has also to be a descendant of first child
   WbNode *upperLedOrCharger;
-  WbBaseNode *parentBaseNode = dynamic_cast<WbBaseNode *>(useNodeParent);
+  WbBaseNode *parentBaseNode = qobject_cast<WbBaseNode *>(useNodeParent);
   if (parentBaseNode->nodeType() == WB_NODE_LED)
     upperLedOrCharger = useNodeParent;
   else
@@ -485,7 +485,7 @@ bool WbDictionary::checkChargerAndLedConstraints(WbNode *useNodeParent, const Wb
   if (!types.contains(defNode->nodeType()) && !WbNodeUtilities::hasDescendantNodesOfType(defNode, types))
     return true;
 
-  WbNode *firstChild = dynamic_cast<WbGroup *>(upperLedOrCharger)->child(0);
+  WbNode *firstChild = qobject_cast<WbGroup *>(upperLedOrCharger)->child(0);
   QList<WbNode *> firstChildDescendants = firstChild->subNodes(true);
   firstChildDescendants.prepend(firstChild);
   if (isFirstChild)
@@ -505,7 +505,7 @@ bool WbDictionary::isSuitable(const WbNode *defNode, const QString &type) const 
                                           type, QStringList(defNode->nodeModelName()), true))
     return false;
 
-  const WbBaseNode *defBaseNode = dynamic_cast<const WbBaseNode *>(defNode);
+  const WbBaseNode *defBaseNode = qobject_cast<const WbBaseNode *>(defNode);
 
   // recheck validity of DEF node and subnodes if the USE is used in a different context (boundingObject or not)
   if ((mTargetField->name() == "boundingObject" || targetNodeUse != defBaseNode->nodeUse()) &&
@@ -560,13 +560,13 @@ void WbDictionary::updateForInsertion(const WbNode *const node, bool suitableOnl
       return;
     }
 
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(fields[i]->value());
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(fields[i]->value());
     if (sfnode) {
       const WbNode *const n = sfnode->value();
       if (n && !n->isUseNode())
         updateForInsertion(n, suitableOnly, defNodes);
     } else {
-      const WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(fields[i]->value());
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(fields[i]->value());
       if (mfnode) {
         const int size = mfnode->size();
         for (int j = 0; !mStopUpdate && j < size; ++j) {

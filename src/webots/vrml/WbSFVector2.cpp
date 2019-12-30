@@ -86,11 +86,11 @@ WbSFVector2 &WbSFVector2::operator=(const WbSFVector2 &other) {
 }
 
 bool WbSFVector2::equals(const WbValue *other) const {
-  const WbSFVector2 *that = dynamic_cast<const WbSFVector2 *>(other);
+  const WbSFVector2 *that = qobject_cast<const WbSFVector2 *>(other);
   return that && *this == *that;
 }
 
 void WbSFVector2::copyFrom(const WbValue *other) {
-  const WbSFVector2 *that = dynamic_cast<const WbSFVector2 *>(other);
+  const WbSFVector2 *that = qobject_cast<const WbSFVector2 *>(other);
   *this = *that;
 }

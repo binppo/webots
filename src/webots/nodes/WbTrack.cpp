@@ -92,7 +92,7 @@ void WbTrack::preFinalize() {
     device->preFinalize();
   }
 
-  WbBaseNode *node = dynamic_cast<WbBaseNode *>(mGeometryField->value());
+  WbBaseNode *node = qobject_cast<WbBaseNode *>(mGeometryField->value());
   if (node)
     node->preFinalize();
 }
@@ -129,7 +129,7 @@ void WbTrack::postFinalize() {
   connect(mDeviceField, &WbMFNode::itemInserted, this, &WbTrack::addDevice);
 
   if (childCount() > 0) {
-    WbGroup *group = dynamic_cast<WbGroup *>(child(0));
+    WbGroup *group = qobject_cast<WbGroup *>(child(0));
     if (group)
       connect(group, &WbGroup::childrenChanged, this, &WbTrack::updateChildren);
     if (mShape)
@@ -138,7 +138,7 @@ void WbTrack::postFinalize() {
   connect(this, &WbGroup::childrenChanged, this, &WbTrack::updateChildren);
 
   // animated geometries
-  WbBaseNode *geometry = dynamic_cast<WbBaseNode *>(mGeometryField->value());
+  WbBaseNode *geometry = qobject_cast<WbBaseNode *>(mGeometryField->value());
   if (geometry)
     geometry->postFinalize();
   updateAnimatedGeometriesPath();
@@ -163,7 +163,7 @@ void WbTrack::setMatrixNeedUpdate() {
 void WbTrack::addDevice(int index) {
   WbRobot *const r = robot();
   assert(r);
-  WbBaseNode *decendant = dynamic_cast<WbBaseNode *>(mDeviceField->item(index));
+  WbBaseNode *decendant = qobject_cast<WbBaseNode *>(mDeviceField->item(index));
   r->descendantNodeInserted(decendant);
 }
 
@@ -206,17 +206,17 @@ void WbTrack::updateDevices() {
   while (it.hasNext()) {
     WbNode *node = it.next();
     if (!mLinearMotor) {
-      mLinearMotor = dynamic_cast<WbLinearMotor *>(node);
+      mLinearMotor = qobject_cast<WbLinearMotor *>(node);
       if (mLinearMotor)
         continue;
     }
     if (!mBrake)
-      mBrake = dynamic_cast<WbBrake *>(node);
+      mBrake = qobject_cast<WbBrake *>(node);
   }
 }
 
 bool WbTrack::findAndConnectAnimatedGeometries(bool connectSignals, QList<WbShape *> *shapeList) {
-  WbBaseNode *geometry = dynamic_cast<WbBaseNode *>(mGeometryField->value());
+  WbBaseNode *geometry = qobject_cast<WbBaseNode *>(mGeometryField->value());
   if (!geometry)
     return false;
 
@@ -231,7 +231,7 @@ bool WbTrack::findAndConnectAnimatedGeometries(bool connectSignals, QList<WbShap
       return false;
     }
 
-    WbShape *s = dynamic_cast<WbShape *>(node);
+    WbShape *s = qobject_cast<WbShape *>(node);
     if (s) {
       if (connectSignals) {
         // material automatically updated
@@ -245,7 +245,7 @@ bool WbTrack::findAndConnectAnimatedGeometries(bool connectSignals, QList<WbShap
       continue;
     }
 
-    WbGroup *g = dynamic_cast<WbGroup *>(node);
+    WbGroup *g = qobject_cast<WbGroup *>(node);
     if (g) {
       // group or transform nodes
       if (connectSignals) {
@@ -255,7 +255,7 @@ bool WbTrack::findAndConnectAnimatedGeometries(bool connectSignals, QList<WbShap
       for (int j = 0; j < g->childCount(); ++j)
         geometryNodes.append(g->child(j));
 
-      WbTransform *t = dynamic_cast<WbTransform *>(g);
+      WbTransform *t = qobject_cast<WbTransform *>(g);
       if (t) {
         t->enablePoseChangedSignal();
         connect(t, &WbTransform::poseChanged, this, &WbTrack::updateAnimatedGeometries, Qt::UniqueConnection);
@@ -264,11 +264,11 @@ bool WbTrack::findAndConnectAnimatedGeometries(bool connectSignals, QList<WbShap
       continue;
     }
 
-    WbSlot *slot = dynamic_cast<WbSlot *>(node);
+    WbSlot *slot = qobject_cast<WbSlot *>(node);
     if (slot) {
       WbSlot *slot2 = slot->slotEndPoint();
       if (slot2) {
-        WbBaseNode *endPoint = dynamic_cast<WbBaseNode *>(slot2->endPoint());
+        WbBaseNode *endPoint = qobject_cast<WbBaseNode *>(slot2->endPoint());
         if (endPoint)
           geometryNodes.append(endPoint);
         connect(slot2->endPointField(), &WbSFNode::changed, this, &WbTrack::updateAnimatedGeometries, Qt::UniqueConnection);
@@ -300,11 +300,11 @@ void WbTrack::updateShapeNode() {
   mShape = NULL;
 
   WbBaseNode *firstChild = child(0);
-  mShape = dynamic_cast<WbShape *>(firstChild);
+  mShape = qobject_cast<WbShape *>(firstChild);
   if (!mShape) {
-    WbGroup *group = dynamic_cast<WbGroup *>(firstChild);
+    WbGroup *group = qobject_cast<WbGroup *>(firstChild);
     if (group && group->children().size() > 0)
-      mShape = dynamic_cast<WbShape *>(group->child(0));
+      mShape = qobject_cast<WbShape *>(group->child(0));
   }
   updateTextureTransform();
 }
@@ -352,7 +352,7 @@ void WbTrack::updateWheelsList() {
   WbMFNode::Iterator it(*childrenField());
   WbTrackWheel *wheel = NULL;
   while (it.hasNext()) {
-    wheel = dynamic_cast<WbTrackWheel *>(it.next());
+    wheel = qobject_cast<WbTrackWheel *>(it.next());
     if (wheel) {
       mWheelsList.append(wheel);
       if (isPostFinalizedCalled())
@@ -393,7 +393,7 @@ WbPositionSensor *WbTrack::positionSensor() const {
   WbPositionSensor *sensor = NULL;
   WbMFNode::Iterator it(*mDeviceField);
   while (it.hasNext()) {
-    sensor = dynamic_cast<WbPositionSensor *>(it.next());
+    sensor = qobject_cast<WbPositionSensor *>(it.next());
     if (sensor)
       return sensor;
   }
@@ -406,7 +406,7 @@ WbLinearMotor *WbTrack::motor() const {
 
   WbMFNode::Iterator it(*mDeviceField);
   while (it.hasNext()) {
-    WbLinearMotor *motor = dynamic_cast<WbLinearMotor *>(it.next());
+    WbLinearMotor *motor = qobject_cast<WbLinearMotor *>(it.next());
     if (motor)
       return motor;
   }
@@ -419,7 +419,7 @@ WbBrake *WbTrack::brake() const {
 
   WbMFNode::Iterator it(*mDeviceField);
   while (it.hasNext()) {
-    WbBrake *brake = dynamic_cast<WbBrake *>(it.next());
+    WbBrake *brake = qobject_cast<WbBrake *>(it.next());
     if (brake)
       return brake;
   }
@@ -464,7 +464,7 @@ void WbTrack::updateAnimatedGeometries() {
   clearAnimatedGeometries();
 
   int numGeometries = mGeometriesCountField->value();
-  WbBaseNode *geometry = dynamic_cast<WbBaseNode *>(mGeometryField->value());
+  WbBaseNode *geometry = qobject_cast<WbBaseNode *>(mGeometryField->value());
   if (numGeometries <= 0 || !geometry)
     return;
 
@@ -478,7 +478,7 @@ void WbTrack::updateAnimatedGeometries() {
     if (geom == NULL)
       continue;
 
-    WbIndexedFaceSet *ifs = dynamic_cast<WbIndexedFaceSet *>(geom);
+    WbIndexedFaceSet *ifs = qobject_cast<WbIndexedFaceSet *>(geom);
     // cppcheck-suppress knownConditionTrueFalse
     if (ifs)
       ifs->updateTriangleMesh();
@@ -965,7 +965,7 @@ void WbTrack::exportNodeSubNodes(WbVrmlWriter &writer) const {
 
   foreach (WbField *field, fields()) {
     if (!field->isDeprecated() && (field->isVrml() && field->singleType() == WB_SF_NODE)) {
-      const WbSFNode *const node = dynamic_cast<WbSFNode *>(field->value());
+      const WbSFNode *const node = qobject_cast<WbSFNode *>(field->value());
       if (node == NULL || node->value() == NULL || node->value()->shallExport()) {
         if (field->name() == "children")
           // export it manually in order to include animated geometries

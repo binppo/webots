@@ -24,6 +24,8 @@
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 class WbAbstractTransform;
 class WbBaseNode;
 class WbClipboard;
@@ -42,7 +44,7 @@ class QSplitter;
 struct TreeItemState;
 
 // cppcheck-suppress noConstructor
-class WbSceneTree : public QWidget {
+class WB_LIB_EXPORT WbSceneTree : public QWidget {
   Q_OBJECT
   Q_PROPERTY(int handleWidth MEMBER mHandleWidth READ handleWidth WRITE setHandleWidth)
 

@@ -22,9 +22,11 @@
 
 #include "WbResizeCommand.hpp"
 
+#include <core/WbConfig.h>
+
 class WbGeometry;
 
-class WbResizeAndTranslateCommand : public WbResizeCommand {
+class WB_LIB_EXPORT WbResizeAndTranslateCommand : public WbResizeCommand {
 public:
   WbResizeAndTranslateCommand(WbGeometry *geometry, const WbVector3 &scale, QUndoCommand *parent = 0);
   WbResizeAndTranslateCommand(WbGeometry *geometry, const WbVector3 &scale, const WbVector3 &translation,

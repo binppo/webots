@@ -26,7 +26,7 @@
 #include "dynamic_library.h"
 
 #ifdef _WIN32
-#define DYNAMIC_LIBRARY_LOAD(a) LoadLibraryEx(wbu_system_short_path(a), NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
+#define DYNAMIC_LIBRARY_LOAD(a) LoadLibraryExA(wbu_system_short_path(a), NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
 #define DYNAMIC_LIBRARY_GETSYM(a, b) GetProcAddress(a, b)
 #define DYNAMIC_LIBRARY_UNLOAD(a) FreeLibrary(a)
 

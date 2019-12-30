@@ -19,11 +19,13 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 struct WrOverlay;
 struct WrTexture;
 struct WrTexture2d;
 
-class WbWrenTextureOverlay : public QObject {
+class WB_LIB_EXPORT WbWrenTextureOverlay : public QObject {
   Q_OBJECT
 
 public:

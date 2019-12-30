@@ -135,7 +135,7 @@ void WbFluid::handleJerk() {
 
 void WbFluid::updateBoundingObject() {
   if (mBoundingObject->value() != NULL) {
-    WbBaseNode *node = dynamic_cast<WbBaseNode *>(mBoundingObject->value());
+    WbBaseNode *node = qobject_cast<WbBaseNode *>(mBoundingObject->value());
     assert(node);
     if (!isBoundingObjectFinalizationCompleted(node))
       // postpone bounding object update after finalization

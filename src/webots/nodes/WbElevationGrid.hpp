@@ -21,11 +21,13 @@
 #include "WbSFInt.hpp"
 #include "WbSFNode.hpp"
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
 typedef struct dxHeightfieldData *dHeightfieldDataID;
 
-class WbElevationGrid : public WbGeometry {
+class WB_LIB_EXPORT WbElevationGrid : public WbGeometry {
   Q_OBJECT
 
 public:

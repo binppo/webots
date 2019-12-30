@@ -61,21 +61,21 @@ void WbJointDevice::postFinalize() {
 }
 
 WbJoint *WbJointDevice::joint() const {
-  return dynamic_cast<WbJoint *>(parent());
+  return qobject_cast<WbJoint *>(parent());
 }
 
 WbPropeller *WbJointDevice::propeller() const {
-  return dynamic_cast<WbPropeller *>(parent());
+  return qobject_cast<WbPropeller *>(parent());
 }
 
 WbTrack *WbJointDevice::track() const {
-  return dynamic_cast<WbTrack *>(parent());
+  return qobject_cast<WbTrack *>(parent());
 }
 
 WbLogicalDevice *WbJointDevice::getSiblingDeviceByType(int nodeType) const {
   WbJoint *j = joint();
   if (j) {
-    WbHinge2Joint *hinge2 = dynamic_cast<WbHinge2Joint *>(j);
+    WbHinge2Joint *hinge2 = qobject_cast<WbHinge2Joint *>(j);
     if (hinge2) {
       // special case for nodes in devices2 field
       bool isDevice2 = false;

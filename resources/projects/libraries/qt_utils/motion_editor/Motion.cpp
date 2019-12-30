@@ -277,7 +277,7 @@ int Motion::computePoseToIndex(Pose *p) const {
 }
 
 void Motion::propagatePoseUpdate() {
-  Pose *pose = dynamic_cast<Pose *>(sender());
+  Pose *pose = qobject_cast<Pose *>(sender());
   if (pose) {
     int index = computePoseToIndex(pose);
     assert(index != -1);
@@ -286,7 +286,7 @@ void Motion::propagatePoseUpdate() {
 }
 
 void Motion::propagateSelection() {
-  Pose *pose = dynamic_cast<Pose *>(sender());
+  Pose *pose = qobject_cast<Pose *>(sender());
   if (pose) {
     int index = computePoseToIndex(pose);
     if (index != -1)

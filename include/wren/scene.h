@@ -6,19 +6,19 @@ extern "C" {
 #endif
 
 struct WrScene;
-typedef struct WrScene WrScene;
+//typedef struct WrScene WrScene;
 
 struct WrTransform;
-typedef struct WrTransform WrTransform;
+//typedef struct WrTransform WrTransform;
 
 struct WrViewport;
-typedef struct WrViewport WrViewport;
+//typedef struct WrViewport WrViewport;
 
 struct WrRenderable;
-typedef struct WrRenderable WrRenderable;
+//typedef struct WrRenderable WrRenderable;
 
 struct WrShaderProgram;
-typedef struct WrShaderProgram WrShaderProgram;
+//typedef struct WrShaderProgram WrShaderProgram;
 
 typedef enum WrSceneFogType {
   WR_SCENE_FOG_TYPE_NONE,

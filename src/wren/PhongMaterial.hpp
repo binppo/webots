@@ -23,7 +23,7 @@
 namespace wren {
 
   // Class to represent a Blinn-Phong material
-  class PhongMaterial : public Material {
+  struct PhongMaterial : public Material {
   public:
     WrMaterialType type() const override { return WR_MATERIAL_PHONG; }
 

@@ -23,11 +23,13 @@
 
 #include <windows.h>
 
+#include <core/WbConfig.h>
+
 //
 // Description: query the Windows registry
 //
 
-class WbWindowsRegistry {
+class WB_LIB_EXPORT WbWindowsRegistry {
 public:
   explicit WbWindowsRegistry(const QString &key);  // e.g. key = "\\HKEY_CURRENT_USER\\Software\\Cyberbotics"
   ~WbWindowsRegistry();

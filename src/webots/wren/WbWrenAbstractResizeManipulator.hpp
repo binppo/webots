@@ -24,7 +24,9 @@
 
 #include <vector>
 
-class WbWrenAbstractResizeManipulator : public WbWrenAbstractManipulator {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenAbstractResizeManipulator : public WbWrenAbstractManipulator {
   Q_OBJECT
 
 public:

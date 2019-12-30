@@ -20,10 +20,10 @@
 
 namespace wren {
 
-  class Transform;
+  struct Transform;
 
   // Base class for objects in the scene tree. Can be attached to a Transform.
-  class Node {
+  struct Node {
   public:
     // Encapsulate memory management
     static void deleteNode(Node *node);

@@ -79,4 +79,12 @@ typedef enum { WB_ROTATIONAL = 0, WB_LINEAR } WbJointType;
 #endif
 #endif
 
+
+#if defined(CONTROLLER_IMPLEMENTATION)
+#define CONTROLLER_EXPORT __declspec(dllexport)
+#else
+#define CONTROLLER_EXPORT __declspec(dllimport)
+#endif  // defined(CONTROLLER_IMPLEMENTATION)
+
+
 #endif /* WB_TYPES_H */

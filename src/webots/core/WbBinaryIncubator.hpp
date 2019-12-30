@@ -21,7 +21,9 @@
 
 #include <QtCore/QObject>
 
-class WbBinaryIncubator : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBinaryIncubator : public QObject {
 public:
   enum Error {
     NONE = 0,

@@ -17,6 +17,8 @@
 #ifndef WB_ROBOT_WWI_H
 #define WB_ROBOT_WWI_H
 
+#include <webots/types.h>
+
 #ifdef __cplusplus
 #include <cstring>
 extern "C" {
@@ -24,8 +26,8 @@ extern "C" {
 #include <string.h>
 #endif
 
-void wb_robot_wwi_send(const char *data, int size);
-const char *wb_robot_wwi_receive(int *size);
+CONTROLLER_EXPORT void wb_robot_wwi_send(const char *data, int size);
+CONTROLLER_EXPORT const char *wb_robot_wwi_receive(int *size);
 #define wb_robot_wwi_send_text(t) wb_robot_wwi_send(t, strlen(t) + 1)
 #define wb_robot_wwi_receive_text() wb_robot_wwi_receive(NULL)
 

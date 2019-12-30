@@ -27,11 +27,13 @@
 
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbMFInt;
 class WbMFVector2;
 class WbMFVector3;
 
-class WbTriangleMesh {
+class WB_LIB_EXPORT WbTriangleMesh {
 public:
   WbTriangleMesh();
   virtual ~WbTriangleMesh();

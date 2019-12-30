@@ -72,7 +72,7 @@ public:
   void addColor(WbRgb colors) { mColors.append(colors); }
 
 protected:
-  double distance() override { return fabs(mObjectRelativePosition.z()); }
+  virtual double distance() override { return fabs(mObjectRelativePosition.z()); }
 
   int mId;
   QString mModel;
@@ -189,19 +189,19 @@ void WbCamera::postFinalize() {
 }
 
 WbFocus *WbCamera::focus() const {
-  return dynamic_cast<WbFocus *>(mFocus->value());
+  return qobject_cast<WbFocus *>(mFocus->value());
 }
 
 WbZoom *WbCamera::zoom() const {
-  return dynamic_cast<WbZoom *>(mZoom->value());
+  return qobject_cast<WbZoom *>(mZoom->value());
 }
 
 WbRecognition *WbCamera::recognition() const {
-  return dynamic_cast<WbRecognition *>(mRecognition->value());
+  return qobject_cast<WbRecognition *>(mRecognition->value());
 }
 
 WbLensFlare *WbCamera::lensFlare() const {
-  return dynamic_cast<WbLensFlare *>(mLensFlare->value());
+  return qobject_cast<WbLensFlare *>(mLensFlare->value());
 }
 
 void WbCamera::initializeSharedMemory() {
@@ -284,7 +284,7 @@ void WbCamera::updateRecognizedObjectsOverlay(double screenX, double screenY, do
           .arg(WbPrecision::doubleToString(mRecognizedObjects.at(objectIndex)->colors().at(i).blue(), WbPrecision::GUI_LOW));
     if (mLabelOverlay == NULL) {
       mLabelOverlay = WbWrenLabelOverlay::createOrRetrieve(WbWrenLabelOverlay::cameraCaptionOverlayId(),
-                                                           WbStandardPaths::fontsPath() + "Arial.ttf");
+														  WbStandardPaths::fontsPath() + "Arial.ttf");
       mLabelOverlay->setText(text);
       mLabelOverlay->setPosition(screenX, screenY);
       mLabelOverlay->setSize(0.06);
@@ -335,7 +335,7 @@ void WbCamera::displayRecognizedObjectsInOverlay() {
       clearData[i] = 0;
     }
 
-    WbWrenOpenGlContext::makeWrenCurrent();
+	WbWrenOpenGlContext::makeWrenCurrent();
 
     // Clear texture
     wr_texture_change_data(mRecognizedObjectsTexture, clearData, 0, 0, w, h);
@@ -820,7 +820,7 @@ void WbCamera::updateNear() {
 
   mNeedToConfigure = true;
 
-  if (mFar->value() > 0.0 and mFar->value() < mNear->value()) {
+  if (mFar->value() > 0.0 && mFar->value() < mNear->value()) {
     mNear->setValue(mFar->value());
     warn(tr("'near' is greater than 'far'. Setting 'near' to %1.").arg(mNear->value()));
   }
@@ -839,7 +839,7 @@ void WbCamera::updateFar() {
   if (WbFieldChecker::resetDoubleIfNegative(this, mFar, 0.0))
     return;
 
-  if (mFar->value() > 0.0 and mFar->value() < mNear->value()) {
+  if (mFar->value() > 0.0 && mFar->value() < mNear->value()) {
     mFar->setValue(mNear->value() + 1.0);
     warn(tr("'far' is less than 'near'. Setting 'far' to %1.").arg(mFar->value()));
     return;

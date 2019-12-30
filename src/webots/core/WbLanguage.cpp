@@ -667,7 +667,10 @@ static WbLanguage **gLanguages = NULL;
 
 void WbLanguage::cleanup() {
   for (int i = 0; i < MAX; i++)
+  {
     delete gLanguages[i];
+	gLanguages[i] = nullptr;
+  }
 }
 
 WbLanguage::WbLanguage(int code, const QString &name, const QString &defaultFileSuffix, const QString &commentPrefix,

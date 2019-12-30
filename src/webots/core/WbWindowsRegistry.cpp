@@ -42,7 +42,7 @@ WbWindowsRegistry::WbWindowsRegistry(const QString &key) {
 #ifndef NDEBUG
   LONG successCode =
 #endif
-    RegOpenKeyEx(baseKey, keys.join("\\").toStdString().c_str(), 0, KEY_READ, &mCurrentKey);
+    RegOpenKeyExA(baseKey, keys.join("\\").toStdString().c_str(), 0, KEY_READ, &mCurrentKey);
   assert(successCode == ERROR_SUCCESS);
 }
 
@@ -53,13 +53,16 @@ WbWindowsRegistry::~WbWindowsRegistry() {
 QString WbWindowsRegistry::stringValue(const QString &name) const {
   WCHAR szBuffer[512];
   DWORD dwBufferSize = sizeof(szBuffer);
-  wchar_t buffer[name.length() + 1];
+  wchar_t *buffer = new wchar_t[name.length() + 1];
   name.toWCharArray(buffer);
   buffer[name.length()] = 0;
   ULONG nError = RegQueryValueExW(mCurrentKey, buffer, 0, NULL, (LPBYTE)szBuffer, &dwBufferSize);
   QString result;
   if (ERROR_SUCCESS == nError)
     result = QString::fromWCharArray(szBuffer);
+
+  delete[] buffer;
+
   return result;
 }
 
@@ -67,7 +70,7 @@ QStringList WbWindowsRegistry::subKeys() const {
   QStringList keys;
 
   DWORD name;                            // size of name string
-  TCHAR className[MAX_PATH] = TEXT("");  // buffer for class name
+  char className[MAX_PATH] = {0,};  // buffer for class name
   DWORD nClassName = MAX_PATH;           // size of class string
   DWORD nSubKeys = 0;                    // number of subkeys
   DWORD maxSubKey;                       // longest subkey size
@@ -79,7 +82,7 @@ QStringList WbWindowsRegistry::subKeys() const {
   FILETIME lastWriteTime;                // last write time
 
   // Get the class name and the value count.
-  RegQueryInfoKey(mCurrentKey,          // key handle
+  RegQueryInfoKeyA(mCurrentKey,          // key handle
                   className,            // buffer for class name
                   &nClassName,          // size of class string
                   NULL,                 // reserved
@@ -98,8 +101,8 @@ QStringList WbWindowsRegistry::subKeys() const {
     DWORD i;
     for (i = 0; i < nSubKeys; i++) {
       name = MAX_KEY_LENGTH;
-      TCHAR subKeyName[MAX_KEY_LENGTH];
-      DWORD retCode = RegEnumKeyEx(mCurrentKey, i, subKeyName, &name, NULL, NULL, NULL, &lastWriteTime);
+      char subKeyName[MAX_KEY_LENGTH];
+      DWORD retCode = RegEnumKeyExA(mCurrentKey, i, subKeyName, &name, NULL, NULL, NULL, &lastWriteTime);
       if (retCode == ERROR_SUCCESS)
         keys << QString(subKeyName);
     }

@@ -21,9 +21,11 @@
 
 #include <QtCore/QTextStream>
 
+#include <core/WbConfig.h>
+
 class QIODevice;
 
-class WbVrmlWriter : public QTextStream {
+class WB_LIB_EXPORT WbVrmlWriter : public QTextStream {
 public:
   WbVrmlWriter(QIODevice *device, const QString &fileName);
   WbVrmlWriter(QString *target, const QString &fileName);

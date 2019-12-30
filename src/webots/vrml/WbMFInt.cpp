@@ -86,12 +86,12 @@ WbMFInt &WbMFInt::operator=(const WbMFInt &other) {
 }
 
 bool WbMFInt::equals(const WbValue *other) const {
-  const WbMFInt *that = dynamic_cast<const WbMFInt *>(other);
+  const WbMFInt *that = qobject_cast<const WbMFInt *>(other);
   return that && *this == *that;
 }
 
 void WbMFInt::copyFrom(const WbValue *other) {
-  const WbMFInt *that = dynamic_cast<const WbMFInt *>(other);
+  const WbMFInt *that = qobject_cast<const WbMFInt *>(other);
   *this = *that;
 }
 

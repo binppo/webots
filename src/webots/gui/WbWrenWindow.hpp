@@ -23,10 +23,12 @@
 #include <QtGui/QOpenGLFunctions_3_3_Core>
 #include <QtGui/QWindow>
 
+#include <core/WbConfig.h>
+
 struct WrTextureRtt;
 struct WrFrameBuffer;
 
-class WbWrenWindow : public QWindow {
+class WB_LIB_EXPORT WbWrenWindow : public QWindow {
   Q_OBJECT;
 
 public:

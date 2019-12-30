@@ -422,6 +422,8 @@ void WbProjectRelocationDialog::selectDirectory() {
 bool WbProjectRelocationDialog::validateLocation(QWidget *parent, QString &filename, bool isImportingVrml) {
   mExternalProjectPath.clear();
 
+  return true;
+
   // if file is not in installation directory: it's ok
   if (!WbFileUtil::isLocatedInInstallationDirectory(filename))
     return true;

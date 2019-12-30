@@ -20,12 +20,14 @@
 #include "WbBaseNode.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbWrenLensFlare;
 class WbSFDouble;
 
 struct WrViewport;
 
-class WbLensFlare : public WbBaseNode {
+class WB_LIB_EXPORT WbLensFlare : public WbBaseNode {
   Q_OBJECT
 
 public:

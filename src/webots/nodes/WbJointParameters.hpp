@@ -19,7 +19,9 @@
 #include "WbSFDouble.hpp"
 #include "WbSFVector3.hpp"
 
-class WbJointParameters : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbJointParameters : public WbBaseNode {
   Q_OBJECT
 
 public:

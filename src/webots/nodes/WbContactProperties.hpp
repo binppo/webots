@@ -21,9 +21,11 @@
 #include "WbSFString.hpp"
 #include "WbSFVector2.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSoundClip;
 
-class WbContactProperties : public WbBaseNode {
+class WB_LIB_EXPORT WbContactProperties : public WbBaseNode {
   Q_OBJECT
 
 public:

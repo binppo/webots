@@ -21,13 +21,15 @@
 
 #include <QtWidgets/QWizard>
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 class WbProject;
 
 class QLabel;
 class QCheckBox;
 
-class WbNewProjectWizard : public QWizard {
+class WB_LIB_EXPORT WbNewProjectWizard : public QWizard {
   Q_OBJECT
 
 public:

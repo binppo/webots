@@ -69,7 +69,7 @@ void WbBaseNode::finalize() {
     QVector<WbNode *> nodeInstances = protoParameterNodeInstances();
     WbBaseNode *baseNodeInstance = NULL;
     foreach (WbNode *nodeInstance, nodeInstances) {
-      baseNodeInstance = dynamic_cast<WbBaseNode *>(nodeInstance);
+      baseNodeInstance = qobject_cast<WbBaseNode *>(nodeInstance);
       // recursive call to finalize nested parameter instances
       baseNodeInstance->finalize();
     }
@@ -119,7 +119,7 @@ void WbBaseNode::validateProtoNodes() {
 
   foreach (WbNode *node, nodes) {
     if (node->isProtoInstance())
-      dynamic_cast<WbBaseNode *>(node)->validateProtoNode();
+      qobject_cast<WbBaseNode *>(node)->validateProtoNode();
   }
 }
 
@@ -215,7 +215,7 @@ WbBaseNode *WbBaseNode::getSingleFinalizedProtoInstance() {
   WbBaseNode *finalizedInstance = NULL;
   QVector<WbNode *> nodeInstances = protoParameterNodeInstances();
   foreach (WbNode *node, nodeInstances) {
-    WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(node);
+    WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(node);
     if (baseNode && baseNode->isPostFinalizedCalled()) {
       if (finalizedInstance)
         // multiple finilized instances found

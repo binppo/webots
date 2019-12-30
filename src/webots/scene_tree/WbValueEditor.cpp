@@ -53,8 +53,8 @@ void WbValueEditor::edit(WbNode *node, WbField *field, int index) {
   mNode = node;
   mField = field;
   mValue = field->value();
-  mSingleValue = dynamic_cast<WbSingleValue *>(mValue);
-  mMultipleValue = dynamic_cast<WbMultipleValue *>(mValue);
+  mSingleValue = qobject_cast<WbSingleValue *>(mValue);
+  mMultipleValue = qobject_cast<WbMultipleValue *>(mValue);
   mIndex = index;
 
   disconnect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(apply()));

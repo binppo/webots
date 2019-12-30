@@ -23,10 +23,10 @@
 
 namespace wren {
 
-  class Transform;
+  struct Transform;
 
   // Basic 2d texture which takes its data in BGRA format.
-  class Texture2d : public Texture {
+  struct Texture2d : public Texture {
   public:
     // Encapsulate memory management
     static Texture2d *createTexture2d() { return new Texture2d(); }

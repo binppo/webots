@@ -23,12 +23,14 @@
 
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class QComboBox;
 class QHBoxLayout;
 class QLabel;
 class WbSolid;
 
-class WbPhysicsViewer : public QWidget {
+class WB_LIB_EXPORT WbPhysicsViewer : public QWidget {
   Q_OBJECT
 
 public:

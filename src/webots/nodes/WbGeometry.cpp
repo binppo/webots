@@ -356,7 +356,7 @@ void WbGeometry::setWrenMaterial(WrMaterial *material, bool castShadows) {
 
 void WbGeometry::destroyWrenObjects() {
   if (areWrenObjectsInitialized()) {
-    WbWrenOpenGlContext::makeWrenCurrent();
+	WbWrenOpenGlContext::makeWrenCurrent();
     deleteWrenRenderable();
     WbWrenOpenGlContext::doneWren();
   }
@@ -427,11 +427,11 @@ void WbGeometry::setOdeData(dGeomID geom, WbMatter *matterAncestor) {
     createOdeObjects();
 
   mOdeGeom = geom;
-  WbSolid *s = dynamic_cast<WbSolid *>(matterAncestor);
+  WbSolid *s = qobject_cast<WbSolid *>(matterAncestor);
   if (s)
     dGeomSetData(geom, new WbOdeGeomData(s, this));
   else
-    dGeomSetData(geom, new WbOdeGeomData(dynamic_cast<WbFluid *>(matterAncestor), this));
+    dGeomSetData(geom, new WbOdeGeomData(qobject_cast<WbFluid *>(matterAncestor), this));
 }
 
 // Utility functions
@@ -558,8 +558,8 @@ void WbGeometry::exportBoundingObjectToX3D(WbVrmlWriter &writer) const {
 
   const int vertexCount = wr_static_mesh_get_vertex_count(mWrenMesh);
   const int indexCount = wr_static_mesh_get_index_count(mWrenMesh);
-  float vertices[3 * vertexCount];
-  unsigned int indices[indexCount];
+  float *vertices = new float[3 * vertexCount];
+  unsigned int *indices = new unsigned int[indexCount];
   wr_static_mesh_read_data(mWrenMesh, vertices, NULL, NULL, indices);
 
   writer << "<Appearance sortType='transparent'><Material emissiveColor='1 1 1'></Material></Appearance>";
@@ -589,4 +589,7 @@ void WbGeometry::exportBoundingObjectToX3D(WbVrmlWriter &writer) const {
   writer << "'></Coordinate>";
 
   writer << "</IndexedLineSet>";
+
+  delete[] vertices;
+  delete[] indices;
 }

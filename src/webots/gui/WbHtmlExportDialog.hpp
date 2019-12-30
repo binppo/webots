@@ -22,6 +22,8 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QCheckBox;
 class QDialogButtonBox;
 class QDoubleSpinBox;
@@ -30,7 +32,7 @@ class QLineEdit;
 class QSlider;
 class QSpinBox;
 
-class WbHtmlExportDialog : public QDialog {
+class WB_LIB_EXPORT WbHtmlExportDialog : public QDialog {
   Q_OBJECT
 
 public:

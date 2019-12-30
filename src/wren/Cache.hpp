@@ -23,8 +23,8 @@
 
 namespace wren {
 
-  class StaticMesh;
-  class Texture2d;
+  struct StaticMesh;
+  struct Texture2d;
 
   namespace cache {
 

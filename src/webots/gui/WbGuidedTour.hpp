@@ -21,6 +21,8 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QLabel;
 class QPlainTextEdit;
 class QCheckBox;
@@ -29,7 +31,7 @@ class QTimer;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class WbGuidedTour : public QDialog {
+class WB_LIB_EXPORT WbGuidedTour : public QDialog {
   Q_OBJECT
 
 public:

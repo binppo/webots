@@ -100,7 +100,7 @@ WbRenderingDeviceWindow::WbRenderingDeviceWindow(WbRenderingDevice *device) :
   surfaceFormat.setMinorVersion(3);
   setFormat(surfaceFormat);
 
-  mAbstractCamera = dynamic_cast<WbAbstractCamera *>(mDevice);
+  mAbstractCamera = qobject_cast<WbAbstractCamera *>(mDevice);
   connect(mDevice, &WbRenderingDevice::textureUpdated, this, &WbRenderingDeviceWindow::requestUpdate);
   connect(mDevice, &WbRenderingDevice::textureIdUpdated, this, &WbRenderingDeviceWindow::updateTextureGLId);
   connect(mDevice, &WbRenderingDevice::backgroundTextureIdUpdated, this, &WbRenderingDeviceWindow::updateBackgroundTextureGLId);
@@ -128,7 +128,7 @@ WbRenderingDeviceWindow::WbRenderingDeviceWindow(WbRenderingDevice *device) :
     windowHeight = textureHeight * newPixelSize;
   }
 
-  const WbRobot *const robotNode = dynamic_cast<const WbRobot *const>(WbNodeUtilities::findTopNode(mDevice));
+  const WbRobot *const robotNode = qobject_cast<const WbRobot *const>(WbNodeUtilities::findTopNode(mDevice));
   assert(robotNode);
   setTitle(robotNode->name() + ": " + mDevice->name());
   resize(windowWidth, windowHeight);

@@ -48,11 +48,11 @@ WbSFBool &WbSFBool::operator=(const WbSFBool &other) {
 }
 
 bool WbSFBool::equals(const WbValue *other) const {
-  const WbSFBool *that = dynamic_cast<const WbSFBool *>(other);
+  const WbSFBool *that = qobject_cast<const WbSFBool *>(other);
   return that && *this == *that;
 }
 
 void WbSFBool::copyFrom(const WbValue *other) {
-  const WbSFBool *that = dynamic_cast<const WbSFBool *>(other);
+  const WbSFBool *that = qobject_cast<const WbSFBool *>(other);
   *this = *that;
 }

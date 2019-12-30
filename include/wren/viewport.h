@@ -6,19 +6,19 @@ extern "C" {
 #endif
 
 struct WrViewport;
-typedef struct WrViewport WrViewport;
+//typedef struct WrViewport WrViewport;
 
 struct WrCamera;
-typedef struct WrCamera WrCamera;
+//typedef struct WrCamera WrCamera;
 
 struct WrFrameBuffer;
-typedef struct WrFrameBuffer WrFrameBuffer;
+//typedef struct WrFrameBuffer WrFrameBuffer;
 
 struct WrOverlay;
-typedef struct WrOverlay WrOverlay;
+//typedef struct WrOverlay WrOverlay;
 
 struct WrPostProcessingEffect;
-typedef struct WrPostProcessingEffect WrPostProcessingEffect;
+//typedef struct WrPostProcessingEffect WrPostProcessingEffect;
 
 typedef enum WrViewportPolygonMode {
   WR_VIEWPORT_POLYGON_MODE_POINT = 0x1B00,  // GL_POINT

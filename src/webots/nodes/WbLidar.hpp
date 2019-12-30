@@ -18,14 +18,16 @@
 #include "WbAbstractCamera.hpp"
 #include "WbSFInt.hpp"
 
-#include "../../../include/controller/c/webots/lidar_point.h"
+#include <webots/lidar_point.h>
+
+#include <core/WbConfig.h>
 
 struct WrRenderable;
 struct WrDynamicMesh;
 struct WrStaticMesh;
 struct WrMaterial;
 
-class WbLidar : public WbAbstractCamera {
+class WB_LIB_EXPORT WbLidar : public WbAbstractCamera {
   Q_OBJECT
 
 public:

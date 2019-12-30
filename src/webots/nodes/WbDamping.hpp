@@ -18,7 +18,9 @@
 #include "WbBaseNode.hpp"
 #include "WbSFDouble.hpp"
 
-class WbDamping : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbDamping : public WbBaseNode {
   Q_OBJECT
 
 public:

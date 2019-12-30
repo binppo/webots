@@ -56,10 +56,10 @@ void WbSlot::preFinalize() {
   WbBaseNode::preFinalize();
 
   connect(mEndPoint, &WbSFString::changed, this, &WbSlot::endPointChanged);
-  WbGroup *pg = dynamic_cast<WbGroup *>(parent());
+  WbGroup *pg = qobject_cast<WbGroup *>(parent());
   if (pg)  // parent is a group
     connect(this, &WbSlot::endPointInserted, pg, &WbGroup::insertChildFromSlot);
-  WbSlot *ps = dynamic_cast<WbSlot *>(parent());
+  WbSlot *ps = qobject_cast<WbSlot *>(parent());
   if (ps)  // parent is another slot
     connect(this, &WbSlot::endPointInserted, ps, &WbSlot::endPointInserted);
 
@@ -80,7 +80,7 @@ void WbSlot::postFinalize() {
 
 void WbSlot::updateType() {
   QString connectedType;
-  const WbSlot *const parentSlot = dynamic_cast<WbSlot *>(parent());
+  const WbSlot *const parentSlot = qobject_cast<WbSlot *>(parent());
   const WbSlot *const childSlot = slotEndPoint();
   if (parentSlot)
     connectedType = parentSlot->slotType();
@@ -95,19 +95,19 @@ void WbSlot::updateType() {
 }
 
 WbSolid *WbSlot::solidEndPoint() const {
-  return dynamic_cast<WbSolid *>(mEndPoint->value());
+  return qobject_cast<WbSolid *>(mEndPoint->value());
 }
 
 WbSolidReference *WbSlot::solidReferenceEndPoint() const {
-  return dynamic_cast<WbSolidReference *>(mEndPoint->value());
+  return qobject_cast<WbSolidReference *>(mEndPoint->value());
 }
 
 WbSlot *WbSlot::slotEndPoint() const {
-  return dynamic_cast<WbSlot *>(mEndPoint->value());
+  return qobject_cast<WbSlot *>(mEndPoint->value());
 }
 
 WbGroup *WbSlot::groupEndPoint() const {
-  return dynamic_cast<WbGroup *>(mEndPoint->value());
+  return qobject_cast<WbGroup *>(mEndPoint->value());
 }
 
 void WbSlot::setEndPoint(WbNode *node) {

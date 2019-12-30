@@ -97,7 +97,7 @@ void WbNodeEditor::edit(bool copyOriginalValue) {
     if (multipleValue())
       mNode = static_cast<WbMFNode *>(multipleValue())->item(index());
 
-    WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(mNode);
+    WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(mNode);
     if (baseNode) {
       bool handlesAvailable = baseNode->hasResizeManipulator();
 

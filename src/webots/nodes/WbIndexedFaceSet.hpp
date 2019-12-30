@@ -20,6 +20,8 @@
 
 #include <unordered_map>
 
+#include <core/WbConfig.h>
+
 class WbCoordinate;
 class WbNormal;
 class WbTextureCoordinate;
@@ -32,7 +34,7 @@ typedef std::unordered_map<WbTriangleMeshCache::IndexedFaceSetKey, WbTriangleMes
                            WbTriangleMeshCache::IndexedFaceSetKeyHasher>
   WbTriangleMeshMap;
 
-class WbIndexedFaceSet : public WbGeometry {
+class WB_LIB_EXPORT WbIndexedFaceSet : public WbGeometry {
   Q_OBJECT
 
 public:

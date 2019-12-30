@@ -20,15 +20,15 @@
 #include <QtCore/QVector>
 #include <QtXml/QDomDocument>
 
-#include <picoapi.h>
-#include <picoapid.h>
-#include <picoos.h>
+//#include <picoapi.h>
+//#include <picoapid.h>
+//#include <picoos.h>
 #include <cassert>
 
 // adaptation layer defines
 #define PICO_MEM_SIZE 25000000
 
-// supported voices, Pico does not seperately specify the voice and locale
+/*// supported voices, Pico does not seperately specify the voice and locale
 static const char *gLanguages[] = {"en-US", "en-UK", "de-DE", "es-ES", "fr-FR", "it-IT"};
 static const char *gPicoTaLingwares[] = {"en-US_ta.bin", "en-GB_ta.bin", "de-DE_ta.bin",
                                          "es-ES_ta.bin", "fr-FR_ta.bin", "it-IT_ta.bin"};
@@ -301,17 +301,19 @@ static QString toSsml(const QString &text) {
   }
   return result;
 }
+*/
 
 WbPicoTextToSpeech::WbPicoTextToSpeech() {
-  init();
+  //init();
 }
 
 WbPicoTextToSpeech::~WbPicoTextToSpeech() {
-  cleanup();
+  //cleanup();
 }
 
 qint16 *WbPicoTextToSpeech::generateBufferFromText(const QString &text, int *size, const QString &language) {
-  if (!gInitializationSuccess)
+  return NULL;
+  /*if (!gInitializationSuccess)
     return NULL;
   updateEngineIfRequired(language.toStdString().c_str());
   // Flush engine-internal buffers (e.g. reset voice effects, but preserve language).
@@ -329,9 +331,9 @@ qint16 *WbPicoTextToSpeech::generateBufferFromText(const QString &text, int *siz
   pico_Int16 bytesSent, bytesReceived, outDataType, remainingText = textUtf8.size() + 1;
   pico_Retstring outMessage;
 
-  /* synthesis loop   */
+  // synthesis loop
   while (remainingText) {
-    /* Feed the text into the engine.   */
+    // Feed the text into the engine.
     int ret;
     if ((ret = pico_putTextUtf8(gPicoEngine, remainingTextToSent, remainingText, &bytesSent))) {
       pico_getSystemStatusMessage(gPicoSystem, ret, outMessage);
@@ -344,7 +346,7 @@ qint16 *WbPicoTextToSpeech::generateBufferFromText(const QString &text, int *siz
     remainingTextToSent += bytesSent;
 
     do {
-      /* Retrieve the samples and add them to the buffer. */
+      // Retrieve the samples and add them to the buffer.
       while (bufferIndex + PICO_BLOCK_SIZE > bufferSize) {
         bufferSize += 1024 * 1024;  // 1 MB
         qint16 *previousBuffer = buffer;
@@ -368,8 +370,10 @@ qint16 *WbPicoTextToSpeech::generateBufferFromText(const QString &text, int *siz
   *size = bufferIndex / sizeof(qint16);
   buffer = (qint16 *)realloc(buffer, bufferIndex);  // reduce the size of the buffer to the minimum
   return buffer;
+  */
 }
 
 const QString WbPicoTextToSpeech::error() {
-  return gError;
+  //return gError;
+  return "";
 }

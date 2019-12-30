@@ -17,13 +17,15 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class QOpenGLContext;
 
 class WbPerspective;
 class WbRenderingDevice;
 class WbRenderingDeviceWindow;
 
-class WbRenderingDeviceWindowFactory : public QObject {
+class WB_LIB_EXPORT WbRenderingDeviceWindowFactory : public QObject {
   Q_OBJECT
 
 public:

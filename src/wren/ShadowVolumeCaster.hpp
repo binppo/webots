@@ -23,12 +23,12 @@
 
 namespace wren {
 
-  class DirectionalLight;
-  class PointLight;
-  class Renderable;
-  class ShaderProgram;
+  struct DirectionalLight;
+  struct PointLight;
+  struct Renderable;
+  struct ShaderProgram;
 
-  class ShadowVolumeCaster {
+  struct ShadowVolumeCaster {
   public:
     struct ShadowVolume {
       ShadowVolume() :

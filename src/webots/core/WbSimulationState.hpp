@@ -21,7 +21,9 @@
 
 #include <QtCore/QObject>
 
-class WbSimulationState : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSimulationState : public QObject {
   Q_OBJECT
 
 public:

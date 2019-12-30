@@ -60,7 +60,7 @@ void WbGroup::preFinalize() {
   while (it.hasNext()) {
     WbBaseNode *const n = static_cast<WbBaseNode *>(it.next());
     if (!mHasNoSolidAncestor) {
-      WbGroup *group = dynamic_cast<WbGroup *>(n);
+      WbGroup *group = qobject_cast<WbGroup *>(n);
       if (group)
         group->mHasNoSolidAncestor = false;
     }
@@ -85,11 +85,11 @@ void WbGroup::postFinalize() {
   connect(mChildren, &WbMFNode::changed, this, &WbGroup::childrenChanged);
   connect(mChildren, &WbMFNode::itemInserted, this, &WbGroup::insertChildPrivate);
   // if parent is a slot, it needs to be notified when a new node is inserted
-  WbSlot *ps = dynamic_cast<WbSlot *>(parent());
+  WbSlot *ps = qobject_cast<WbSlot *>(parent());
   if (ps)
     connect(this, &WbGroup::notifyParentSlot, ps, &WbSlot::endPointInserted);
 
-  const WbGroup *const parentNode = dynamic_cast<const WbGroup *const>(parent());
+  const WbGroup *const parentNode = qobject_cast<const WbGroup *const>(parent());
   if (parentNode && parentNode->mHasNoSolidAncestor) {
     connect(mChildren, &WbMFNode::changed, this, &WbGroup::topLevelListsUpdateRequested);
     connect(this, &WbGroup::topLevelListsUpdateRequested, parentNode, &WbGroup::topLevelListsUpdateRequested);
@@ -228,8 +228,8 @@ bool WbGroup::isAValidBoundingObject(bool checkOde, bool warning) const {
 
 void WbGroup::descendantNodeInserted(WbBaseNode *decendant) {
   if (parent()) {
-    WbGroup *pg = dynamic_cast<WbGroup *>(parent());
-    WbSlot *ps = dynamic_cast<WbSlot *>(parent());
+    WbGroup *pg = qobject_cast<WbGroup *>(parent());
+    WbSlot *ps = qobject_cast<WbSlot *>(parent());
     if (pg)
       pg->descendantNodeInserted(decendant);
     if (ps)
@@ -281,7 +281,7 @@ void WbGroup::save() {
 void WbGroup::forwardJerk() {
   WbMFNode::Iterator it(*mChildren);
   while (it.hasNext()) {
-    WbGroup *const child = dynamic_cast<WbGroup *>(it.next());
+    WbGroup *const child = qobject_cast<WbGroup *>(it.next());
     if (child)
       child->forwardJerk();
   }
@@ -294,7 +294,7 @@ void WbGroup::forwardJerk() {
 bool WbGroup::restoreHiddenKinematicParameters(const HiddenKinematicParametersMap &map, int &counter) {
   WbMFNode::Iterator it(*mChildren);
   while (it.hasNext()) {
-    WbGroup *const g = dynamic_cast<WbGroup *>(it.next());
+    WbGroup *const g = qobject_cast<WbGroup *>(it.next());
     if (!g)
       continue;
 
@@ -308,7 +308,7 @@ bool WbGroup::restoreHiddenKinematicParameters(const HiddenKinematicParametersMa
 bool WbGroup::resetHiddenKinematicParameters() {
   WbMFNode::Iterator it(*mChildren);
   while (it.hasNext()) {
-    WbGroup *const g = dynamic_cast<WbGroup *>(it.next());
+    WbGroup *const g = qobject_cast<WbGroup *>(it.next());
     if (!g)
       continue;
     if (!g->resetHiddenKinematicParameters())
@@ -321,7 +321,7 @@ bool WbGroup::resetHiddenKinematicParameters() {
 void WbGroup::collectHiddenKinematicParameters(HiddenKinematicParametersMap &map, int &counter) const {
   WbMFNode::Iterator it(*mChildren);
   while (it.hasNext()) {
-    WbGroup *const g = dynamic_cast<WbGroup *>(it.next());
+    WbGroup *const g = qobject_cast<WbGroup *>(it.next());
     if (g)
       g->collectHiddenKinematicParameters(map, counter);
   }
@@ -407,7 +407,7 @@ void WbGroup::exportBoundingObjectToX3D(WbVrmlWriter &writer) const {
   WbMFNode::Iterator it(*mChildren);
   while (it.hasNext()) {
     const WbNode *const childNode = static_cast<WbNode *>(it.next());
-    const WbGeometry *const childGeom = dynamic_cast<const WbGeometry *>(childNode);
+    const WbGeometry *const childGeom = qobject_cast<const WbGeometry *>(childNode);
 
     if (childGeom)
       writer << "<Shape>";

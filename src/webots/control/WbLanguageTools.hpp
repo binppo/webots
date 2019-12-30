@@ -17,7 +17,9 @@
 
 #include <QtCore/QString>
 
-class WbLanguageTools {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbLanguageTools {
 public:
   // get platform dependent commands
   static QString pythonCommand(QString &shortVersion, const QString &command);

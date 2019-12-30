@@ -23,7 +23,9 @@
 #include "WbVector2.hpp"
 #include "WbVrmlWriter.hpp"
 
-class WbSFVector2 : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFVector2 : public WbSingleValue {
   Q_OBJECT
 
 public:

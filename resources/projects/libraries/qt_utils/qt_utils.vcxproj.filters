@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{56ff804d-d82a-4ae7-8e14-6fce83e85f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="devices">
+      <UniqueIdentifier>{f6faf95c-1e02-443f-874c-7fd83dc4e899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graph2d">
+      <UniqueIdentifier>{5d65a962-e3fe-4296-85cd-b2cde22241cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{f2bfd416-feb6-4f59-a044-9673df2c3681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="motion_editor">
+      <UniqueIdentifier>{2a4b9f52-bf6a-4d61-b982-8fff930c4790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widgets">
+      <UniqueIdentifier>{8cef7106-4ca1-4cbf-a4d1-a9eda62d613d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\GeneratedFiles">
+      <UniqueIdentifier>{c6a4c7bf-c348-42da-992a-dcbcdf69fc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui\GeneratedFiles">
+      <UniqueIdentifier>{b6554ba4-2a24-4935-b03f-a7665b747996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="motion_editor\GeneratedFiles">
+      <UniqueIdentifier>{34799a3e-3638-4688-8547-4bd9a6218c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widgets\GeneratedFiles">
+      <UniqueIdentifier>{d52e1a9b-85f3-4f89-9c85-a0e422ee1cd9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\MainApplication.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\StandardPaths.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="devices\Device.cpp">
+      <Filter>devices</Filter>
+    </ClCompile>
+    <ClCompile Include="devices\Motor.cpp">
+      <Filter>devices</Filter>
+    </ClCompile>
+    <ClCompile Include="graph2d\Graph2D.cpp">
+      <Filter>graph2d</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GenericWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\MainWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\AddStateDialog.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\ListWidget.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\Motion.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\MotionEditor.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\MotionGlobalSettings.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\MotionPlayer.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\MotionWidget.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\MotorTargetState.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\MotorTargetStateWidget.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\Pose.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\PoseEditor.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\PoseWidget.cpp">
+      <Filter>motion_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\AccelerometerWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\CameraWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\CategoryWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\CompassWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\DeviceWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\DeviceWidgetFactory.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\DifferentialWheelsWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\DistanceSensorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GPSWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GyroWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\InertialUnitWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\LidarWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\LightSensorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\MotorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\PositionSensorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\RadarWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\RangeFinderWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\ScalarSensorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\SensorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\TouchSensorScalarWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\TouchSensorVectorialWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\VectorialSensorWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_DifferentialWheelsWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_TouchSensorVectorialWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_LidarWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_TouchSensorScalarWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_VectorialSensorWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_MotorWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_DistanceSensorWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_PositionSensorWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_AccelerometerWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_InertialUnitWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_LightSensorWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_RangeFinderWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_CompassWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_CameraWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_SensorWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_GyroWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_RadarWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_GPSWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_Pose.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_Motion.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_MotionWidget.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_MotorTargetState.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_MotionEditor.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_PoseWidget.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_MotorTargetStateWidget.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_MotionPlayer.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_ListWidget.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_AddStateDialog.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_editor\GeneratedFiles\moc_PoseEditor.cpp">
+      <Filter>motion_editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_GenericWindow.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_MainApplication.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\StandardPaths.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="devices\Device.hpp">
+      <Filter>devices</Filter>
+    </ClInclude>
+    <ClInclude Include="devices\Motor.hpp">
+      <Filter>devices</Filter>
+    </ClInclude>
+    <ClInclude Include="graph2d\Graph2D.hpp">
+      <Filter>graph2d</Filter>
+    </ClInclude>
+    <ClInclude Include="graph2d\Line2D.hpp">
+      <Filter>graph2d</Filter>
+    </ClInclude>
+    <ClInclude Include="graph2d\Point2D.hpp">
+      <Filter>graph2d</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\MainWindow.hpp">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="motion_editor\MotionGlobalSettings.hpp">
+      <Filter>motion_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="widgets\CategoryWidget.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="widgets\CommonProperties.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="widgets\DeviceWidget.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="widgets\DeviceWidgetFactory.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="widgets\ScalarSensorWidget.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="core\MainApplication.hpp" />
+    <CustomBuild Include="gui\GenericWindow.hpp" />
+    <CustomBuild Include="motion_editor\AddStateDialog.hpp" />
+    <CustomBuild Include="motion_editor\ListWidget.hpp" />
+    <CustomBuild Include="motion_editor\Motion.hpp" />
+    <CustomBuild Include="motion_editor\MotionEditor.hpp" />
+    <CustomBuild Include="motion_editor\MotionPlayer.hpp" />
+    <CustomBuild Include="motion_editor\MotionWidget.hpp" />
+    <CustomBuild Include="motion_editor\MotorTargetState.hpp" />
+    <CustomBuild Include="motion_editor\MotorTargetStateWidget.hpp" />
+    <CustomBuild Include="motion_editor\Pose.hpp" />
+    <CustomBuild Include="motion_editor\PoseEditor.hpp" />
+    <CustomBuild Include="motion_editor\PoseWidget.hpp" />
+    <CustomBuild Include="widgets\AccelerometerWidget.hpp" />
+    <CustomBuild Include="widgets\CameraWidget.hpp" />
+    <CustomBuild Include="widgets\CompassWidget.hpp" />
+    <CustomBuild Include="widgets\DifferentialWheelsWidget.hpp" />
+    <CustomBuild Include="widgets\DistanceSensorWidget.hpp" />
+    <CustomBuild Include="widgets\GPSWidget.hpp" />
+    <CustomBuild Include="widgets\GyroWidget.hpp" />
+    <CustomBuild Include="widgets\InertialUnitWidget.hpp" />
+    <CustomBuild Include="widgets\LidarWidget.hpp" />
+    <CustomBuild Include="widgets\LightSensorWidget.hpp" />
+    <CustomBuild Include="widgets\MotorWidget.hpp" />
+    <CustomBuild Include="widgets\PositionSensorWidget.hpp" />
+    <CustomBuild Include="widgets\RadarWidget.hpp" />
+    <CustomBuild Include="widgets\RangeFinderWidget.hpp" />
+    <CustomBuild Include="widgets\SensorWidget.hpp" />
+    <CustomBuild Include="widgets\TouchSensorScalarWidget.hpp" />
+    <CustomBuild Include="widgets\TouchSensorVectorialWidget.hpp" />
+    <CustomBuild Include="widgets\VectorialSensorWidget.hpp" />
+  </ItemGroup>
+</Project>

@@ -21,10 +21,12 @@
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 
+#include <core/WbConfig.h>
+
 // The WbMultimediaStreamer class allows to send a stream of raw images to a
 // multimedia server, such as Janus for WebRTC broadcasting.
 
-class WbMultimediaStreamer : public QObject {
+class WB_LIB_EXPORT WbMultimediaStreamer : public QObject {
   Q_OBJECT
 public:
   static WbMultimediaStreamer *instance();

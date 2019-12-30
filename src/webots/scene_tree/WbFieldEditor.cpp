@@ -161,7 +161,7 @@ void WbFieldEditor::updateTitle() {
   else if (mField->type() == WB_SF_NODE)
     title = mField->name() + " " + nodeAsTitle(static_cast<WbSFNode *>(value)->value());
   else {
-    WbMultipleValue *multipleValue = dynamic_cast<WbMultipleValue *>(value);
+    WbMultipleValue *multipleValue = qobject_cast<WbMultipleValue *>(value);
     if (multipleValue) {
       if (mItem == -1) {
         int size = multipleValue->size();
@@ -221,7 +221,7 @@ void WbFieldEditor::editField(WbNode *node, WbField *field, int item) {
 
   // check if the selected item is a Solid node
   const QList<WbValueEditor *> &v = mEditors.values(field->value()->singleType());
-  const bool editingSolid = dynamic_cast<WbSolid *>(mNodeItem) != NULL;
+  const bool editingSolid = qobject_cast<WbSolid *>(mNodeItem) != NULL;
   if (v.size() == 1)
     editor = v.at(0);
   else
@@ -246,7 +246,7 @@ void WbFieldEditor::resetFocus() {
 }
 
 void WbFieldEditor::updateResetButton() {
-  const WbMultipleValue *const multipleValue = dynamic_cast<WbMultipleValue *>(mField->value());
+  const WbMultipleValue *const multipleValue = qobject_cast<WbMultipleValue *>(mField->value());
   bool enabled = !((multipleValue && (mItem >= 0) && (mItem < multipleValue->size())) || mField->isDefault());
   WbActionManager::instance()->action(WbActionManager::RESET_VALUE)->setEnabled(enabled);
 }
@@ -270,19 +270,19 @@ void WbFieldEditor::computeFieldInformation() {
 
   // check and store field type information
   WbValue *const value = mField->value();
-  WbMultipleValue *const multipleValue = dynamic_cast<WbMultipleValue *>(value);
+  WbMultipleValue *const multipleValue = qobject_cast<WbMultipleValue *>(value);
   WbMFNode *mfNode = NULL;
 
   if (multipleValue) {
     mIsValidItemIndex = (mItem >= 0) && (mItem < multipleValue->size());
 
     if (mIsValidItemIndex) {
-      mfNode = dynamic_cast<WbMFNode *>(multipleValue);
+      mfNode = qobject_cast<WbMFNode *>(multipleValue);
       if (mfNode)
         mNodeItem = mfNode->item(mItem);
     }
   } else {
-    WbSFNode *const sfNode = dynamic_cast<WbSFNode *>(value);
+    WbSFNode *const sfNode = qobject_cast<WbSFNode *>(value);
     if (sfNode)
       mNodeItem = sfNode->value();
   }

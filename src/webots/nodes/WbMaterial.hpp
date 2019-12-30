@@ -18,9 +18,11 @@
 #include "WbBaseNode.hpp"
 #include "WbRgb.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrMaterial;
 
-class WbMaterial : public WbBaseNode {
+class WB_LIB_EXPORT WbMaterial : public WbBaseNode {
   Q_OBJECT
 
 public:

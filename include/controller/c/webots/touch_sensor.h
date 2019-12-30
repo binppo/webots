@@ -23,22 +23,22 @@
 
 #define WB_USING_C_API
 
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_touch_sensor_enable(WbDeviceTag tag, int sampling_period);
-void wb_touch_sensor_disable(WbDeviceTag tag);
-int wb_touch_sensor_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_touch_sensor_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_touch_sensor_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_touch_sensor_get_sampling_period(WbDeviceTag tag);
 
-double wb_touch_sensor_get_value(WbDeviceTag tag);
-const double *wb_touch_sensor_get_values(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_touch_sensor_get_value(WbDeviceTag tag);
+CONTROLLER_EXPORT const double *wb_touch_sensor_get_values(WbDeviceTag tag);
 
 typedef enum { WB_TOUCH_SENSOR_BUMPER = 0, WB_TOUCH_SENSOR_FORCE, WB_TOUCH_SENSOR_FORCE3D } WbTouchSensorType;
 
-WbTouchSensorType wb_touch_sensor_get_type(WbDeviceTag tag);
+CONTROLLER_EXPORT WbTouchSensorType wb_touch_sensor_get_type(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

@@ -44,13 +44,13 @@ WbHingeJoint::~WbHingeJoint() {
 }
 
 WbHingeJointParameters *WbHingeJoint::hingeJointParameters() const {
-  return dynamic_cast<WbHingeJointParameters *>(mParameters->value());
+  return qobject_cast<WbHingeJointParameters *>(mParameters->value());
 }
 
 WbRotationalMotor *WbHingeJoint::rotationalMotor() const {
   WbRotationalMotor *motor = NULL;
   for (int i = 0; i < mDevice->size(); ++i) {
-    motor = dynamic_cast<WbRotationalMotor *>(mDevice->item(i));
+    motor = qobject_cast<WbRotationalMotor *>(mDevice->item(i));
     if (motor)
       return motor;
   }
@@ -388,7 +388,7 @@ void WbHingeJoint::updateSuspension() {
 }
 
 void WbHingeJoint::updateMinAndMaxStop(double min, double max) {
-  const WbJointParameters *const p = dynamic_cast<WbJointParameters *>(sender());
+  const WbJointParameters *const p = qobject_cast<WbJointParameters *>(sender());
   if (min <= -M_PI)
     p->warn(tr("HingeJoint 'minStop' must be greater than -pi to be effective."));
 

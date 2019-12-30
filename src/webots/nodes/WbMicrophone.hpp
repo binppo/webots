@@ -18,9 +18,11 @@
 #include "WbSFDouble.hpp"
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 
-class WbMicrophone : public WbSolidDevice {
+class WB_LIB_EXPORT WbMicrophone : public WbSolidDevice {
   Q_OBJECT
 
 public:

@@ -15,63 +15,65 @@
 #ifndef WB_WREN_SHADERS_HPP
 #define WB_WREN_SHADERS_HPP
 
+#include <core/WbConfig.h>
+
 struct WrShaderProgram;
 
 namespace WbWrenShaders {
-  WrShaderProgram *blendLensFlareShader();
-  WrShaderProgram *bloomBlendShader();
-  WrShaderProgram *brightPassShader();
-  WrShaderProgram *boundingVolumeShader();
-  WrShaderProgram *colorNoiseShader();
-  WrShaderProgram *coordinateSystemShader();
-  WrShaderProgram *defaultShader();
-  WrShaderProgram *depthOfFieldShader();
-  WrShaderProgram *depthOnlyShader();
-  WrShaderProgram *depthResolutionShader();
-  WrShaderProgram *encodeDepthShader();
-  WrShaderProgram *fogShader();
-  WrShaderProgram *gaussianBlurShader();
-  WrShaderProgram *gaussianBlur5TapShader();
-  WrShaderProgram *gaussianBlur9TapShader();
-  WrShaderProgram *gaussianBlur13TapShader();
-  WrShaderProgram *gtaoShader();
-  WrShaderProgram *gtaoSpatialDenoiseShader();
-  WrShaderProgram *gtaoTemporalDenoiseShader();
-  WrShaderProgram *gtaoCombineShader();
-  WrShaderProgram *handlesShader();
-  WrShaderProgram *handlesPickingShader();
-  WrShaderProgram *hdrClearShader();
-  WrShaderProgram *hdrResolveShader();
-  WrShaderProgram *iblDiffuseIrradianceBakingShader();
-  WrShaderProgram *iblSpecularIrradianceBakingShader();
-  WrShaderProgram *iblBrdfBakingShader();
-  WrShaderProgram *iblEquirectangularShader();
-  WrShaderProgram *lensDistortionShader();
-  WrShaderProgram *lensFlareShader();
-  WrShaderProgram *lightRepresentationShader();
-  WrShaderProgram *lineSetShader();
-  WrShaderProgram *mergeSphericalShader();
-  WrShaderProgram *motionBlurShader();
-  WrShaderProgram *noiseMaskShader();
-  WrShaderProgram *overlayShader();
-  WrShaderProgram *passThroughShader();
-  WrShaderProgram *pbrShader();
-  WrShaderProgram *pbrStencilAmbientEmissiveShader();
-  WrShaderProgram *pbrStencilDiffuseSpecularShader();
-  WrShaderProgram *phongShader();
-  WrShaderProgram *phongStencilAmbientEmissiveShader();
-  WrShaderProgram *phongStencilDiffuseSpecularShader();
-  WrShaderProgram *pickingShader();
-  WrShaderProgram *pointSetShader();
-  WrShaderProgram *rangeNoiseShader();
-  WrShaderProgram *shadowVolumeShader();
-  WrShaderProgram *simpleShader();
-  WrShaderProgram *skyboxShader();
-  WrShaderProgram *smaaEdgeDetectionShader();
-  WrShaderProgram *smaaBlendingWeightCalculationShader();
-  WrShaderProgram *smaaFinalBlendShader();
+  WB_LIB_EXPORT WrShaderProgram *blendLensFlareShader();
+  WB_LIB_EXPORT WrShaderProgram *bloomBlendShader();
+  WB_LIB_EXPORT WrShaderProgram *brightPassShader();
+  WB_LIB_EXPORT WrShaderProgram *boundingVolumeShader();
+  WB_LIB_EXPORT WrShaderProgram *colorNoiseShader();
+  WB_LIB_EXPORT WrShaderProgram *coordinateSystemShader();
+  WB_LIB_EXPORT WrShaderProgram *defaultShader();
+  WB_LIB_EXPORT WrShaderProgram *depthOfFieldShader();
+  WB_LIB_EXPORT WrShaderProgram *depthOnlyShader();
+  WB_LIB_EXPORT WrShaderProgram *depthResolutionShader();
+  WB_LIB_EXPORT WrShaderProgram *encodeDepthShader();
+  WB_LIB_EXPORT WrShaderProgram *fogShader();
+  WB_LIB_EXPORT WrShaderProgram *gaussianBlurShader();
+  WB_LIB_EXPORT WrShaderProgram *gaussianBlur5TapShader();
+  WB_LIB_EXPORT WrShaderProgram *gaussianBlur9TapShader();
+  WB_LIB_EXPORT WrShaderProgram *gaussianBlur13TapShader();
+  WB_LIB_EXPORT WrShaderProgram *gtaoShader();
+  WB_LIB_EXPORT WrShaderProgram *gtaoSpatialDenoiseShader();
+  WB_LIB_EXPORT WrShaderProgram *gtaoTemporalDenoiseShader();
+  WB_LIB_EXPORT WrShaderProgram *gtaoCombineShader();
+  WB_LIB_EXPORT WrShaderProgram *handlesShader();
+  WB_LIB_EXPORT WrShaderProgram *handlesPickingShader();
+  WB_LIB_EXPORT WrShaderProgram *hdrClearShader();
+  WB_LIB_EXPORT WrShaderProgram *hdrResolveShader();
+  WB_LIB_EXPORT WrShaderProgram *iblDiffuseIrradianceBakingShader();
+  WB_LIB_EXPORT WrShaderProgram *iblSpecularIrradianceBakingShader();
+  WB_LIB_EXPORT WrShaderProgram *iblBrdfBakingShader();
+  WB_LIB_EXPORT WrShaderProgram *iblEquirectangularShader();
+  WB_LIB_EXPORT WrShaderProgram *lensDistortionShader();
+  WB_LIB_EXPORT WrShaderProgram *lensFlareShader();
+  WB_LIB_EXPORT WrShaderProgram *lightRepresentationShader();
+  WB_LIB_EXPORT WrShaderProgram *lineSetShader();
+  WB_LIB_EXPORT WrShaderProgram *mergeSphericalShader();
+  WB_LIB_EXPORT WrShaderProgram *motionBlurShader();
+  WB_LIB_EXPORT WrShaderProgram *noiseMaskShader();
+  WB_LIB_EXPORT WrShaderProgram *overlayShader();
+  WB_LIB_EXPORT WrShaderProgram *passThroughShader();
+  WB_LIB_EXPORT WrShaderProgram *pbrShader();
+  WB_LIB_EXPORT WrShaderProgram *pbrStencilAmbientEmissiveShader();
+  WB_LIB_EXPORT WrShaderProgram *pbrStencilDiffuseSpecularShader();
+  WB_LIB_EXPORT WrShaderProgram *phongShader();
+  WB_LIB_EXPORT WrShaderProgram *phongStencilAmbientEmissiveShader();
+  WB_LIB_EXPORT WrShaderProgram *phongStencilDiffuseSpecularShader();
+  WB_LIB_EXPORT WrShaderProgram *pickingShader();
+  WB_LIB_EXPORT WrShaderProgram *pointSetShader();
+  WB_LIB_EXPORT WrShaderProgram *rangeNoiseShader();
+  WB_LIB_EXPORT WrShaderProgram *shadowVolumeShader();
+  WB_LIB_EXPORT WrShaderProgram *simpleShader();
+  WB_LIB_EXPORT WrShaderProgram *skyboxShader();
+  WB_LIB_EXPORT WrShaderProgram *smaaEdgeDetectionShader();
+  WB_LIB_EXPORT WrShaderProgram *smaaBlendingWeightCalculationShader();
+  WB_LIB_EXPORT WrShaderProgram *smaaFinalBlendShader();
 
-  void deleteShaders();
+  WB_LIB_EXPORT void deleteShaders();
 };  // namespace WbWrenShaders
 
 #endif

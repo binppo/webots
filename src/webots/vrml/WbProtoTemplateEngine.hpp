@@ -24,10 +24,12 @@
 
 #include "WbTemplateEngine.hpp"
 
+#include <core/WbConfig.h>
+
 class WbField;
 class WbVariant;
 
-class WbProtoTemplateEngine : public WbTemplateEngine {
+class WB_LIB_EXPORT WbProtoTemplateEngine : public WbTemplateEngine {
   Q_OBJECT
 
 public:

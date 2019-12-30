@@ -14,16 +14,16 @@ struct WrMaterial {
   void *data;
 };
 
-typedef struct WrMaterial WrMaterial;
+//typedef struct WrMaterial WrMaterial;
 
 struct WrShaderProgram;
-typedef struct WrShaderProgram WrShaderProgram;
+//typedef struct WrShaderProgram WrShaderProgram;
 
 struct WrTextureTransform;
-typedef struct WrTextureTransform WrTextureTransform;
+//typedef struct WrTextureTransform WrTextureTransform;
 
 struct WrTextureCubeMap;
-typedef struct WrTextureCubeMap WrTextureCubeMap;
+//typedef struct WrTextureCubeMap WrTextureCubeMap;
 
 void wr_material_delete(WrMaterial *material);
 

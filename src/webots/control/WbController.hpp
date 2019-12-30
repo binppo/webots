@@ -21,9 +21,11 @@
 #include "WbFileUtil.hpp"
 #include "WbRobot.hpp"
 
+#include <core/WbConfig.h>
+
 class QLocalSocket;
 
-class WbController : public QObject {
+class WB_LIB_EXPORT WbController : public QObject {
   Q_OBJECT
 
 public:

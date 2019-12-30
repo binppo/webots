@@ -15,9 +15,11 @@
 #ifndef WB_NETWORK_HPP
 #define WB_NETWORK_HPP
 
+#include <core/WbConfig.h>
+
 class QNetworkAccessManager;
 
-class WbNetwork {
+class WB_LIB_EXPORT WbNetwork {
 public:
   static WbNetwork *instance();
   QNetworkAccessManager *networkAccessManager();

@@ -21,6 +21,8 @@
 
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFieldLineEdit;
 class WbNode;
 
@@ -28,7 +30,7 @@ class QCheckBox;
 class QLabel;
 class QStackedWidget;
 
-class WbNodeEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbNodeEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

@@ -23,7 +23,7 @@ namespace wren {
 
   // Base class for light sources which have a position.
   // Inherits from Node and can be attached to a Transform for positioning.
-  class PositionalLight : public LightNode {
+  struct PositionalLight : public LightNode {
   public:
     const glm::vec3 &position() const {
       update();

@@ -22,25 +22,26 @@
 #define WB_MOUSE_H
 
 #define WB_USING_C_API
-#include "mouse_state.h"
+#include <webots/mouse_state.h>
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_mouse_enable(int sampling_period);
-void wb_mouse_disable();
-int wb_mouse_get_sampling_period();
+CONTROLLER_EXPORT void wb_mouse_enable(int sampling_period);
+CONTROLLER_EXPORT void wb_mouse_disable();
+CONTROLLER_EXPORT int wb_mouse_get_sampling_period();
 
-void wb_mouse_enable_3d_position();
-void wb_mouse_disable_3d_position();
-bool wb_mouse_is_3d_position_enabled();
+CONTROLLER_EXPORT void wb_mouse_enable_3d_position();
+CONTROLLER_EXPORT void wb_mouse_disable_3d_position();
+CONTROLLER_EXPORT bool wb_mouse_is_3d_position_enabled();
 
 #ifndef WB_MATLAB_LOADLIBRARY
-WbMouseState wb_mouse_get_state();
+CONTROLLER_EXPORT WbMouseState wb_mouse_get_state();
 #else
 // This function should be used only in the Matlab wrapper
-WbMouseState *wb_mouse_get_state_pointer();
+CONTROLLER_EXPORT WbMouseState *wb_mouse_get_state_pointer();
 #endif
 
 #ifdef __cplusplus

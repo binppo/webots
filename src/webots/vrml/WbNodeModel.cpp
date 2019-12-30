@@ -69,7 +69,7 @@ WbNodeModel *WbNodeModel::readModel(const QString &fileName) {
 }
 
 void WbNodeModel::readAllModels() {
-  QString path = WbStandardPaths::resourcesPath() + "nodes/";
+  QString path = ":/resources/nodes/";
   QStringList list = QDir(path, "*.wrl").entryList();
   foreach (QString name, list) {
     WbNodeModel *model = readModel(path + name);
@@ -120,7 +120,7 @@ WbFieldModel *WbNodeModel::findFieldModel(const QString &fieldName) const {
 }
 
 bool WbNodeModel::fuzzyParseNode(const QString &fileName, QString &nodeInfo) {
-  QFile input(WbStandardPaths::resourcesPath() + "nodes/" + fileName + ".wrl");
+  QFile input(":/resources/nodes/" + fileName + ".wrl");
   if (!input.open(QIODevice::ReadOnly)) {
     WbLog::warning(fileName + ": could not open file");
     return false;

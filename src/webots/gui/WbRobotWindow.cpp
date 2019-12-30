@@ -27,13 +27,8 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
 
-#ifdef _WIN32
-#include <QtWebKitWidgets/QWebFrame>
-#include <QtWebKitWidgets/QWebView>
-#else
 #include <QtWebChannel/QWebChannel>
 #include <QtWebEngineWidgets/QWebEngineView>
-#endif
 
 // Debug code: uncomment to show a web inspector for QtWebKit.
 // #include <QtWebKitWidgets/QWebInspector>
@@ -57,34 +52,22 @@ WbRobotWindow::WbRobotWindow(WbRobot *robot, QWidget *parent) :
     return;
   }
 
-  mWebView = new QWebView(this);
+  mWebView = new QWebEngineView(this);
   setWidget(mWebView);
   setupPage();
 
-#ifndef _WIN32
-  connect(mWebView, &QWebView::loadFinished, this, &WbRobotWindow::notifyLoadCompleted);
-#endif
+  connect(mWebView, &QWebEngineView::loadFinished, this, &WbRobotWindow::notifyLoadCompleted);
   connect(robot, &WbRobot::sendToJavascript, this, &WbRobotWindow::sendToJavascript);
   connect(robot, &WbRobot::controllerChanged, this, &WbRobotWindow::setupPage);
 }
 
 WbRobotWindow::~WbRobotWindow() {
-#ifdef _WIN32
-  // With QWebEngine, deleting WebView is sufficient.
-  if (mWebView)
-    delete mWebView->page();
-#endif
   delete mWebView;
 }
 
 void WbRobotWindow::setupPage() {
   assert(mWebView);
   mLoaded = false;
-
-#ifdef _WIN32
-  if (mWebView->page())
-    delete mWebView->page();
-#endif
 
   mWebView->setPage(new WbWebPage());
 
@@ -143,10 +126,6 @@ void WbRobotWindow::setupPage() {
   } else
     WbLog::warning(tr("Unable to load %1.").arg(htmlFile.fileName()));
 
-#ifdef _WIN32
-  mFrame = mWebView->page()->mainFrame();
-  mFrame->addToJavaScriptWindowObject("_webots", this);
-#else
   QWebChannel *channel = new QWebChannel(mWebView->page());
   mWebView->page()->setWebChannel(channel);
   mTransportLayer = new WbRobotWindowTransportLayer(mWebView->page());
@@ -154,7 +133,6 @@ void WbRobotWindow::setupPage() {
   connect(mTransportLayer, &WbRobotWindowTransportLayer::ackReceived, this, &WbRobotWindow::notifyAckReceived);
   connect(mTransportLayer, &WbRobotWindowTransportLayer::javascriptReceived, mRobot, &WbRobot::receiveFromJavascript);
   connect(mTransportLayer, &WbRobotWindowTransportLayer::titleSet, this, &WbRobotWindow::setTitle);
-#endif
 }
 
 void WbRobotWindow::startControllerIfNeeded() {
@@ -199,7 +177,6 @@ QString WbRobotWindow::scriptTag(const QString &file) {
   return "<script src='" + src + "'></script>";
 }
 
-#ifndef _WIN32
 void WbRobotWindow::notifyLoadCompleted() {
   mLoaded = true;
   if (!mWaitingSentMessages.isEmpty()) {
@@ -217,26 +194,15 @@ void WbRobotWindow::runJavaScript(const QString &message) {
   mTransportLayer->requestAck();
   mWebView->page()->runJavaScript("webots.Window.receive('" + message + "', '" + robot()->name() + "')");
 }
-#endif
 
 void WbRobotWindow::sendToJavascript(const QByteArray &string) {
-#ifdef _WIN32
-  mFrame->evaluateJavaScript("webots.Window.receive('" + string + "', '" + robot()->name() + "')");
-#else
   mRobot->setWaitingForWindow(true);
   if (mLoaded)
     runJavaScript(string);
   else
     // message will be sent once the robot window loading is completed
     mWaitingSentMessages << string;
-#endif
 }
-
-#ifdef _WIN32
-void WbRobotWindow::receiveFromJavascript(const QByteArray &message) {
-  mRobot->receiveFromJavascript(message);
-}
-#endif
 
 void WbRobotWindow::setTitle(const QString &title, const QString &tabbedTitle) {
   setWindowTitle(title);

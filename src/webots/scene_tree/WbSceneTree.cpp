@@ -76,7 +76,8 @@ WbSceneTree::WbSceneTree(QWidget *parent) :
   QWidget(parent),
   mSplitter(new QSplitter(Qt::Vertical, this)),
   mActionManager(WbActionManager::instance()),
-  mClipboard(WbClipboard::instance()) {
+  mClipboard(WbClipboard::instance()),
+  mHandleWidth(6) {
   mModel = NULL;
   mTreeView = NULL;
   mSelectedItem = NULL;
@@ -295,8 +296,8 @@ void WbSceneTree::copy() {
     row = mSelectedItem->row();
   }
 
-  WbSingleValue *singleValue = dynamic_cast<WbSingleValue *>(value);
-  WbMultipleValue *multipleValue = dynamic_cast<WbMultipleValue *>(value);
+  WbSingleValue *singleValue = qobject_cast<WbSingleValue *>(value);
+  WbMultipleValue *multipleValue = qobject_cast<WbMultipleValue *>(value);
   if (mSelectedItem->isNode() || mSelectedItem->isSFNode())
     mClipboard->setNode(mSelectedItem->node());
   else if (singleValue)
@@ -343,7 +344,7 @@ void WbSceneTree::pasteInSFValue() {
 
   } else {
     // item
-    WbSingleValue *singleValue = dynamic_cast<WbSingleValue *>(item);
+    WbSingleValue *singleValue = qobject_cast<WbSingleValue *>(item);
     WbUndoStack::instance()->push(new WbEditCommand(singleValue, singleValue->variantValue(), *mClipboard));
   }
 
@@ -488,8 +489,8 @@ void WbSceneTree::reset() {
 
     // check if referred DEF node is going to be deleted
     bool containsReferredNode = false;
-    WbSFNode *sfnode = dynamic_cast<WbSFNode *>(field->value());
-    WbMFNode *mfnode = dynamic_cast<WbMFNode *>(field->value());
+    WbSFNode *sfnode = qobject_cast<WbSFNode *>(field->value());
+    WbMFNode *mfnode = qobject_cast<WbMFNode *>(field->value());
     if (sfnode) {
       mRowsAreAboutToBeRemoved = sfnode->value();
       containsReferredNode = sfnode->value() && sfnode->value()->hasAreferredDefNodeDescendant();
@@ -523,8 +524,8 @@ void WbSceneTree::reset() {
     // template regeneration so that the field pointer is valid when applying the
     // default value
     bool blockTemplateRegeneration =
-      field->isTemplateRegenerator() && ((sfnode && dynamic_cast<const WbSFNode *>(defaultValue)->value() != NULL) ||
-                                         (mfnode && dynamic_cast<const WbMFNode *>(defaultValue)->size() > 0));
+      field->isTemplateRegenerator() && ((sfnode && qobject_cast<const WbSFNode *>(defaultValue)->value() != NULL) ||
+                                         (mfnode && qobject_cast<const WbMFNode *>(defaultValue)->size() > 0));
 
     // notify node deletion (needed for example to propagate it during the streaming)
     if (sfnode && sfnode->value() != NULL)
@@ -541,7 +542,7 @@ void WbSceneTree::reset() {
 
     // create and finalize new node instances
     if (sfnode) {
-      WbNode *defaultNode = dynamic_cast<const WbSFNode *>(defaultValue)->value();
+      WbNode *defaultNode = qobject_cast<const WbSFNode *>(defaultValue)->value();
       if (defaultNode) {
         WbNode::setGlobalParent(parentNode);
         WbNode *newNode = WbConcreteNodeFactory::instance()->createCopy(*defaultNode);
@@ -556,7 +557,7 @@ void WbSceneTree::reset() {
       }
 
     } else if (mfnode) {
-      const WbMFNode *defaultMFNode = dynamic_cast<const WbMFNode *>(defaultValue);
+      const WbMFNode *defaultMFNode = qobject_cast<const WbMFNode *>(defaultValue);
       WbMFIterator<const WbMFNode, WbNode *> it(defaultMFNode);
       int i = 0;
       while (it.hasNext()) {
@@ -595,7 +596,7 @@ void WbSceneTree::reset() {
 
 void WbSceneTree::transform(const QString &modelName) {
   WbNode *const currentNode = mSelectedItem->node();
-  assert(dynamic_cast<WbGroup *>(currentNode));
+  assert(qobject_cast<WbGroup *>(currentNode));
 
   // check if loosing information
   if (WbNodeUtilities::isSuitableForTransform(currentNode, modelName) == WbNodeUtilities::LOOSING_INFO) {
@@ -641,7 +642,7 @@ void WbSceneTree::transform(const QString &modelName) {
   WbNode *upperTemplate = WbNodeUtilities::findUpperTemplateNeedingRegenerationFromField(parentField, currentNode->parent());
   bool isInsideATemplateRegenerator = upperTemplate && upperTemplate != currentNode;
   if (mSelectedItem->isSFNode()) {
-    WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(mSelectedItem->field()->value());
+    WbSFNode *const sfnode = qobject_cast<WbSFNode *>(mSelectedItem->field()->value());
     assert(sfnode);
     WbNodeOperations::instance()->notifyNodeDeleted(currentNode);
     WbTemplateManager::instance()->blockRegeneration(true);
@@ -651,7 +652,7 @@ void WbSceneTree::transform(const QString &modelName) {
     WbTemplateManager::instance()->blockRegeneration(false);
   } else {
     assert(mSelectedItem->parent()->isField());
-    WbMFNode *mfnode = dynamic_cast<WbMFNode *>(parentField->value());
+    WbMFNode *mfnode = qobject_cast<WbMFNode *>(parentField->value());
     assert(mfnode);
     int nodeIndex = mfnode->nodeIndex(currentNode);
     WbNodeOperations::instance()->notifyNodeDeleted(currentNode);
@@ -688,7 +689,7 @@ void WbSceneTree::transform(const QString &modelName) {
 void WbSceneTree::convertProtoToBaseNode() {
   WbNode *const currentNode = mSelectedItem->node();
   if (currentNode->isProtoInstance()) {
-    const WbSolid *const solid = dynamic_cast<WbSolid *>(currentNode);
+    const WbSolid *const solid = qobject_cast<WbSolid *>(currentNode);
     WbViewpoint *viewpoint = WbWorld::instance()->viewpoint();
     const bool isFollowedNode = (solid && viewpoint->followedSolid() == solid);
     int index;
@@ -705,7 +706,7 @@ void WbSceneTree::convertProtoToBaseNode() {
       else if (parentField->type() == WB_MF_NODE)
         node = static_cast<WbMFNode *>(parentField->value())->item(index);
       if (isFollowedNode)
-        viewpoint->startFollowUp(dynamic_cast<WbSolid *>(node), true);
+        viewpoint->startFollowUp(qobject_cast<WbSolid *>(node), true);
     }
     WbWorld::instance()->setModifiedFromSceneTree();
   }
@@ -724,7 +725,7 @@ void WbSceneTree::moveViewpointToObject() {
   while (true) {
     if (itemToMoveTo->isNode() || itemToMoveTo->isSFNode()) {
       WbNode *node = itemToMoveTo->node();
-      WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(node);
+      WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(node);
       if (baseNode && WbWorld::instance()->viewpoint()->moveViewpointToObject(baseNode))
         break;
       if (node->isTopLevel())
@@ -762,9 +763,9 @@ bool WbSceneTree::insertInertiaMatrix(const WbField *selectedField) {
     if (m <= 1) {
       if (m == 1) {
         ip = p->internalFields().at(0);
-        internalPhysics = dynamic_cast<WbPhysics *>(dynamic_cast<WbSFNode *>(ip->value())->value());
+        internalPhysics = qobject_cast<WbPhysics *>(qobject_cast<WbSFNode *>(ip->value())->value());
       }
-      physics = dynamic_cast<WbPhysics *>(dynamic_cast<WbSFNode *>(p->value())->value());
+      physics = qobject_cast<WbPhysics *>(qobject_cast<WbSFNode *>(p->value())->value());
       assert(physics);
       solid = internalPhysics ? internalPhysics->upperSolid() : physics->upperSolid();
       assert(solid);
@@ -777,7 +778,7 @@ bool WbSceneTree::insertInertiaMatrix(const WbField *selectedField) {
   if (dialog.exec() == QDialog::Rejected)
     return true;
 
-  WbMFVector3 *const mfvector3 = dynamic_cast<WbMFVector3 *>(selectedField->value());
+  WbMFVector3 *const mfvector3 = qobject_cast<WbMFVector3 *>(selectedField->value());
   assert(mfvector3->size() == 0);
 
   if (dialog.inertiaMatrixType() == WbAddInertiaMatrixDialog::IDENTITY_MATRIX) {
@@ -829,8 +830,8 @@ void WbSceneTree::addNew() {
 
     // if multiple item field
     // directly add item without opening the dialog
-    WbMultipleValue *const mvalue = dynamic_cast<WbMultipleValue *>(selectedField->value());
-    WbMFNode *const mfnode = dynamic_cast<WbMFNode *>(selectedField->value());
+    WbMultipleValue *const mvalue = qobject_cast<WbMultipleValue *>(selectedField->value());
+    WbMFNode *const mfnode = qobject_cast<WbMFNode *>(selectedField->value());
     if (mvalue && !mfnode) {
       if (insertInertiaMatrix(selectedField))
         return;
@@ -865,7 +866,7 @@ void WbSceneTree::addNew() {
   // import node
   bool isNodeRegenerated = false;
   if (dialog.action() == WbAddNodeDialog::IMPORT) {
-    WbBaseNode *const parentBaseNode = dynamic_cast<WbBaseNode *>(selectedNodeParent);
+    WbBaseNode *const parentBaseNode = qobject_cast<WbBaseNode *>(selectedNodeParent);
     WbNodeOperations::instance()->importNode(parentBaseNode, selectedField, newNodeIndex, dialog.fileName());
 
   } else {  // CREATE
@@ -1051,7 +1052,7 @@ void WbSceneTree::updateSelection() {
 
   WbField *const field = mSelectedItem->field();
   if (mSelectedItem->isField()) {
-    const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(field->value());
+    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
     isNonNullNode = sfnode && sfnode->value();
     WbNode *const node = mSelectedItem->parent()->node();
     mFieldEditor->editField(node, field, -1);
@@ -1078,7 +1079,7 @@ void WbSceneTree::updateSelection() {
   // emit a message in order to inform WbSelection about the selected node
   const WbTreeItem *const item = isNonNullNode ? mSelectedItem : mModel->findUpperNodeItem(mSelectedItem);
   if (item) {
-    WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(item->node());
+    WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(item->node());
     if (baseNode == NULL)
       return;
 
@@ -1299,7 +1300,7 @@ void WbSceneTree::applyNodeRegeneration(WbNode *node) {
 
   // TODO: this shouldn't be done in the scene tree
   // The best way to fix this would be to move WbDictionary in another module (vrml?)
-  WbNodeOperations::instance()->updateDictionary(false, dynamic_cast<WbBaseNode *>(node));
+  WbNodeOperations::instance()->updateDictionary(false, qobject_cast<WbBaseNode *>(node));
 
   if (mFocusWidgetBeforeNodeRegeneration) {
     mFocusWidgetBeforeNodeRegeneration->setFocus();
@@ -1336,7 +1337,7 @@ void WbSceneTree::restoreTreeItemState(WbTreeItem *treeItem, TreeItemState *tree
   QModelIndex index = mModel->itemToIndex(treeItem);
 
   // Keep the bottommost node in the selection tree, in order to be able to restore its selection later.
-  WbBaseNode *newLastNode = (treeItem->isNode()) ? dynamic_cast<WbBaseNode *>(treeItem->node()) : lastNode;
+  WbBaseNode *newLastNode = (treeItem->isNode()) ? qobject_cast<WbBaseNode *>(treeItem->node()) : lastNode;
 
   // Restore the expansion status.
   if (treeItemState->expanded)
@@ -1389,8 +1390,13 @@ void WbSceneTree::handleDoubleClickOrEnterPress() {
   // we can't use isDefault() on the SFNode field because PROTOs can have
   // non-NULL default SFNode values, so cast to SFNode and get the real value
   // stored in the field
-  if ((mSelectedItem->isSFNode() && !reinterpret_cast<WbSFNode *>(mSelectedItem->field()->value())->value()) ||
-      (mSelectedItem->field()->isMultiple() && reinterpret_cast<WbMultipleValue *>(mSelectedItem->field()->value())->isEmpty()))
+  if(!mSelectedItem->field())
+    return;
+
+  WbSFNode* sfNode = qobject_cast<WbSFNode *>(mSelectedItem->field()->value());
+  WbMultipleValue *mtValue = qobject_cast<WbMultipleValue *>(mSelectedItem->field()->value());
+  if ((mSelectedItem->isSFNode() && sfNode && !sfNode->value()) ||
+      (mSelectedItem->field()->isMultiple() && mtValue && mtValue->isEmpty()))
     addNew();
   // set focus on first edit box of the current value editor for immediate keyboard editing
   else if ((mSelectedItem->field()->isMultiple() && mSelectedItem->isItem() && !mSelectedItem->isNode()) ||

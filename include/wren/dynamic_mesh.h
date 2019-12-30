@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 struct WrDynamicMesh;
-typedef struct WrDynamicMesh WrDynamicMesh;
+//typedef struct WrDynamicMesh WrDynamicMesh;
 
 WrDynamicMesh *wr_dynamic_mesh_new(bool normals, bool texture_coordinates, bool color_per_vertex);
 void wr_dynamic_mesh_delete(WrDynamicMesh *mesh);

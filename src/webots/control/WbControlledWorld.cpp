@@ -25,6 +25,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDataStream>
 #include <QtCore/QThread>
+#include <QtCore/QTimer>
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 
@@ -43,13 +44,53 @@ WbControlledWorld::WbControlledWorld(WbProtoList *protos, WbTokenizer *tokenizer
   mHasWaitingStep(false) {
   if (mWorldLoadingCanceled)
     return;
+
+  mWorker = new QThread;
+  moveToThread(mWorker);
+
+  mWorker->start();
+
+  QTimer::singleShot(0, this, SLOT(initialize()));
+}
+
+WbControlledWorld::~WbControlledWorld() {
+  if(mWorker)
+  {
+    mWorker->quit();
+	mWorker->wait();
+
+	delete mWorker;
+	mWorker = nullptr;
+  }
+
+  WbController *controller = NULL;
+  mRobotsWaitingExternController.clear();
+
+  while (!mNewControllers.isEmpty()) {
+    controller = mNewControllers.takeFirst();
+    delete controller;
+  }
+  while (!mWaitingControllers.isEmpty()) {
+    controller = mWaitingControllers.takeFirst();
+    delete controller;
+  }
+  while (!mControllers.isEmpty()) {
+    controller = mControllers.takeFirst();
+    delete controller;
+  }
+  while (!mTerminatingControllers.isEmpty()) {
+    controller = mTerminatingControllers.takeFirst();
+    delete controller;
+  }
+  delete mServer;
+}
+
+void WbControlledWorld::initialize()
+{
   // create a unique name for this Webots instance and store it in the environment for the controller child process
   // Note: the random factor was added after having detected an occasional error (~1/20 times) in jenkins at
   // during the mServer->listen() call ("Address in use")
-  const unsigned int seed = WbRandom::getSeed();
-  WbRandom::setSeed(QDateTime::currentMSecsSinceEpoch());
-  static QString serverName = QString("webots_%1_%2").arg(QCoreApplication::applicationPid()).arg(WbRandom::nextUInt());
-  WbRandom::setSeed(seed);
+  QString serverName = "cviz_server";
 
   // recover from a crash, when the previous server instance has not been cleaned up
   bool success = QLocalServer::removeServer(serverName);
@@ -78,28 +119,6 @@ WbControlledWorld::WbControlledWorld(WbProtoList *protos, WbTokenizer *tokenizer
     connect(robot, &WbRobot::startControllerRequest, this, &WbControlledWorld::startController);
     connect(robot, &WbRobot::isBeingDestroyed, this, &WbControlledWorld::handleRobotRemoval);
   }
-}
-
-WbControlledWorld::~WbControlledWorld() {
-  WbController *controller = NULL;
-  mRobotsWaitingExternController.clear();
-  while (!mNewControllers.isEmpty()) {
-    controller = mNewControllers.takeFirst();
-    delete controller;
-  }
-  while (!mWaitingControllers.isEmpty()) {
-    controller = mWaitingControllers.takeFirst();
-    delete controller;
-  }
-  while (!mControllers.isEmpty()) {
-    controller = mControllers.takeFirst();
-    delete controller;
-  }
-  while (!mTerminatingControllers.isEmpty()) {
-    controller = mTerminatingControllers.takeFirst();
-    delete controller;
-  }
-  delete mServer;
 }
 
 void WbControlledWorld::setUpControllerForNewRobot(WbRobot *robot) {
@@ -367,7 +386,7 @@ void WbControlledWorld::writePendingImmediateAnswer() {
 }
 
 void WbControlledWorld::updateCurrentRobotController() {
-  WbRobot *const robot = dynamic_cast<WbRobot *>(sender());
+  WbRobot *const robot = qobject_cast<WbRobot *>(sender());
   if (robot)
     updateRobotController(robot);
 }

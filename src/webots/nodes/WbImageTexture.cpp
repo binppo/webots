@@ -161,7 +161,7 @@ void WbImageTexture::updateWrenTexture() {
         }
       }
 
-      WbWrenOpenGlContext::makeWrenCurrent();
+	  WbWrenOpenGlContext::makeWrenCurrent();
 
       texture = wr_texture_2d_new();
       wr_texture_set_size(WR_TEXTURE(texture), mImage->width(), mImage->height());

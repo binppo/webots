@@ -27,10 +27,12 @@
 
 #include <cassert>
 
+#include <core/WbConfig.h>
+
 class WbQuaternion;
 class WbMatrix3;
 
-class WbRotation {
+class WB_LIB_EXPORT WbRotation {
 public:
   // construct as identity rotation
   WbRotation() : mX(0.0), mY(1.0), mZ(0.0), mAngle(0.0) {}

@@ -21,7 +21,7 @@
 
 namespace wren {
 
-  class CpuTimeLogger {
+  struct CpuTimeLogger {
   public:
     CpuTimeLogger(int samplesPerMeasurement, int measurementsPerOutput, const std::string &name, const std::string &filename,
                   int maxPartialSamples = 0);

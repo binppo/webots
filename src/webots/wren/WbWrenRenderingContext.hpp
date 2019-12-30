@@ -23,7 +23,9 @@
 #include <QtCore/QHash>
 #include <QtCore/QObject>
 
-class WbWrenRenderingContext : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenRenderingContext : public QObject {
   Q_OBJECT
 
 public:

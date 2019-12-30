@@ -22,6 +22,8 @@
 
 #include "WbLog.hpp"
 
+#include <core/WbConfig.h>
+
 class QSslSocket;
 class QWebSocket;
 class QWebSocketServer;

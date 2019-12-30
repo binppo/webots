@@ -22,7 +22,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-class WbTemplateEngine : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTemplateEngine : public QObject {
   Q_OBJECT
 
 public:

@@ -25,7 +25,7 @@
 
 namespace wren {
 
-  class Font {
+  struct Font {
   public:
     static Font *createFont() { return new Font(); }
     static void deleteFont(Font *font) { delete font; }

@@ -25,18 +25,7 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtWidgets/QMenu>
 
-#ifdef _WIN32
-#include <QtWebKitWidgets/QWebView>
-#else
 #include <QtWebEngineWidgets/QWebEngineView>
-#define QWebView QWebEngineView
-#define QWebPage QWebEnginePage
-#ifdef __APPLE__
-// For the chromium bug on macOS below.
-#include <QtWebEngineWidgets/QWebEngineScript>
-#include <QtWebEngineWidgets/QWebEngineScriptCollection>
-#endif
-#endif
 
 /*
 // Debug code: uncomment to show a web inspector for QtWebKit.
@@ -45,15 +34,15 @@
 #include <QtWidgets/QVBoxLayout>
 */
 
-class DocumentationWebView : public QWebView {
+class DocumentationWebView : public QWebEngineView {
 public:
-  explicit DocumentationWebView(QWidget *parent = NULL) : QWebView(parent) { setObjectName("DocumentationWebView"); }
+  explicit DocumentationWebView(QWidget *parent = NULL) : QWebEngineView(parent) { setObjectName("DocumentationWebView"); }
 
 protected:
 #ifdef _WIN32
   // QWebEngineView::focusInEvent is not working: https://bugreports.qt.io/browse/QTBUG-67852
   // Meanwhile, QWebEnginePage::Copy action is used.
-  void focusInEvent(QFocusEvent *event) override {
+  virtual void focusInEvent(QFocusEvent *event) override {
     // update application actions
     WbActionManager *actionManager = WbActionManager::instance();
     actionManager->enableTextEditActions(false);
@@ -70,30 +59,24 @@ protected:
   }
 #endif
 
-  void contextMenuEvent(QContextMenuEvent *event) override {
+  virtual void contextMenuEvent(QContextMenuEvent *event) override {
     QMenu menu(this);
-    menu.addAction(pageAction(QWebPage::Back));
-    menu.addAction(pageAction(QWebPage::Forward));
+    menu.addAction(pageAction(QWebEnginePage::Back));
+    menu.addAction(pageAction(QWebEnginePage::Forward));
     menu.addSeparator();
-#ifdef _WIN32
-    menu.addAction(WbActionManager::instance()->action(WbActionManager::COPY));
-#else
     menu.addAction(pageAction(QWebEnginePage::Copy));
-#endif
     menu.exec(event->globalPos());
   }
 
-#ifndef _WIN32
   // Open the external links (for example `<a href="https://www.w3schools.com" target="_blank">`) in the system browser.
-  QWebEngineView *createWindow(QWebEnginePage::WebWindowType type) override {
+  virtual QWebEngineView *createWindow(QWebEnginePage::WebWindowType type) override {
     // create a dummy view until the url is actually set, and remove it later.
     QWebEngineView *view = new QWebEngineView(this);
-    connect(view->page(), &QWebEnginePage::urlChanged, dynamic_cast<WbDocumentation *>(parent()),
+    connect(view->page(), &QWebEnginePage::urlChanged, qobject_cast<WbDocumentation *>(parent()),
             &WbDocumentation::openUrlInSystemBrowser);
     connect(view->page(), &QWebEnginePage::urlChanged, view, &QObject::deleteLater);
     return view;
   }
-#endif
 };
 
 static const QStringList cBooks = QStringList() << "guide"
@@ -115,12 +98,6 @@ WbDocumentation::WbDocumentation(QWidget *parent) : WbDockWidget(parent), mWebVi
 
   mWebView = new DocumentationWebView(this);
   setWidget(mWebView);
-
-#ifdef _WIN32
-  connect(mWebView, &DocumentationWebView::selectionChanged, this, &WbDocumentation::updateCopyAction);
-  connect(WbActionManager::instance(), &WbActionManager::userDocumentationEditCommandReceived, this,
-          &WbDocumentation::handleUserCommand);
-#endif
 }
 
 WbDocumentation::~WbDocumentation() {
@@ -158,25 +135,6 @@ void WbDocumentation::open(const QString &book, const QString &page, bool visibl
     show();
   else
     hide();
-
-#ifdef _WIN32
-  // QtWebKit: Open external links in system browser.
-  mWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
-  connect(mWebView->page(), &QWebPage::linkClicked, this, &WbDocumentation::openUrlInSystemBrowser, Qt::UniqueConnection);
-#elif defined(__APPLE__)
-  // Chromium bug on macOS:
-  // - warnings like the following one are displayed in the console: "2018-05-08 11:17:37.496 QtWebEngineProcess[70885:9694859]
-  // Couldn't set selectedTextBackgroundColor from default ()"
-  // - reference: https://bugs.chromium.org/p/chromium/issues/detail?id=641509
-  QWebEngineScript script;
-  script.setSourceCode("(function() {"
-                       "    css = document.createElement('style');"
-                       "    css.type = 'text/css';"
-                       "    document.head.appendChild(css);"
-                       "    css.innerText = '::selection { background: #b2d7fe; }';"
-                       "})()");
-  mWebView->page()->scripts().insert(script);
-#endif
 }
 
 const QString WbDocumentation::book() const {

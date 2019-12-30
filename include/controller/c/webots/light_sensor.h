@@ -22,17 +22,17 @@
 #define WB_LIGHT_SENSOR_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_light_sensor_enable(WbDeviceTag tag, int sampling_period);
-void wb_light_sensor_disable(WbDeviceTag tag);
-int wb_light_sensor_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_light_sensor_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_light_sensor_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_light_sensor_get_sampling_period(WbDeviceTag tag);
 
-double wb_light_sensor_get_value(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_light_sensor_get_value(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

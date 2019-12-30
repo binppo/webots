@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 struct WrShaderProgram;
-typedef struct WrShaderProgram WrShaderProgram;
+//typedef struct WrShaderProgram WrShaderProgram;
 
 void wr_config_enable_shadows(bool enable);
 void wr_config_set_line_scale(float line_scale);

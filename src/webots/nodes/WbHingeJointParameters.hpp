@@ -18,7 +18,9 @@
 #include "WbJointParameters.hpp"
 #include "WbSFVector3.hpp"
 
-class WbHingeJointParameters : public WbJointParameters {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbHingeJointParameters : public WbJointParameters {
   Q_OBJECT
 
 public:

@@ -22,24 +22,24 @@
 #define WB_GPS_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_gps_enable(WbDeviceTag tag, int sampling_period);
-void wb_gps_disable(WbDeviceTag tag);
-int wb_gps_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_gps_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_gps_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_gps_get_sampling_period(WbDeviceTag tag);
 
-const double wb_gps_get_speed(WbDeviceTag tag);
-const double *wb_gps_get_values(WbDeviceTag tag);
+CONTROLLER_EXPORT const double wb_gps_get_speed(WbDeviceTag tag);
+CONTROLLER_EXPORT const double *wb_gps_get_values(WbDeviceTag tag);
 
-const char *wb_gps_convert_to_degrees_minutes_seconds(double decimal_degrees);
+CONTROLLER_EXPORT const char *wb_gps_convert_to_degrees_minutes_seconds(double decimal_degrees);
 
 typedef enum { WB_GPS_LOCAL_COORDINATE = 0, WB_GPS_WGS84_COORDINATE } WbGpsCoordinateSystem;
 
-WbGpsCoordinateSystem wb_gps_get_coordinate_system(WbDeviceTag tag);
+CONTROLLER_EXPORT WbGpsCoordinateSystem wb_gps_get_coordinate_system(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

@@ -21,6 +21,8 @@
 
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 class WbDockTitleBar;
 class WbRobot;
 class WbSceneTree;
@@ -39,7 +41,7 @@ class QTimer;
 class QToolBar;
 class QToolButton;
 
-class WbSimulationView : public QWidget {
+class WB_LIB_EXPORT WbSimulationView : public QWidget {
   Q_OBJECT
   Q_PROPERTY(int handleWidth MEMBER mHandleWidth READ handleWidth WRITE setHandleWidth)
 
@@ -67,6 +69,7 @@ public:
   void setMaximized(bool maximized);
 
   void setDecorationVisible(bool visible);
+  void setSceneTreeVisible(bool visible);
 
   int &handleWidth() { return mHandleWidth; }
   void setHandleWidth(const int &handleWidth) { mHandleWidth = handleWidth; }
@@ -80,17 +83,25 @@ public:
   void disableView3DFixedSize();
   void repaintView3D();
 
+  void resizeView3D(int width, int height);
+
   void cleanup();
   void applyChanges();
   QSize mLastSize;
 
   void internalScreenChangedCallback();
 
+  bool startVideoCapture(const QString &fileName, int codec, int width, int height, int quality, int acceleration,
+                         bool showCaption);
+  bool stopVideoCapture(bool canceled = false);
+
 signals:
   // signals called when the corresponding toolbar buttons are pushed
   void needsMaximize();
   void needsMinimize();
   void requestOpenUrl(const QString &fileName, const QString &message, const QString &title);
+  void requestSavePerspective(bool reloading, bool saveToFile);
+  void requestRestorePerspective(bool reloading, bool firstLoad, bool loadingFromMemory);
 
 protected slots:
   void keyReleaseEvent(QKeyEvent *event) override;
@@ -103,9 +114,6 @@ private slots:
   void makeMovie();
   void stopMovie();
   void toggleRecordingIcon();
-  void startVideoCapture(const QString &fileName, int codec, int width, int height, int quality, int acceleration,
-                         bool showCaption);
-  void stopVideoCapture(bool canceled = false);
   void takeScreenshotAndSaveAs(const QString &fileName, int quality = -1);
   void takeScreenshot();
   void pause();

@@ -25,6 +25,8 @@
 #include <QtCore/QVarLengthArray>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbDevice;
 class WbJoystickInterface;
 class WbKinematicDifferentialWheels;
@@ -38,7 +40,7 @@ class QByteArray;
 class QDataStream;
 class QTimer;
 
-class WbRobot : public WbSolid {
+class WB_LIB_EXPORT WbRobot : public WbSolid {
   Q_OBJECT
 
 public:

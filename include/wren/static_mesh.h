@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 struct WrStaticMesh;
-typedef struct WrStaticMesh WrStaticMesh;
+//typedef struct WrStaticMesh WrStaticMesh;
 
 /* Creates an axis-aligned box mesh with edge length 1.0f, centered on the origin. */
 WrStaticMesh *wr_static_mesh_unit_box_new(bool outline);

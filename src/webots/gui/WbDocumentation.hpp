@@ -18,9 +18,11 @@
 #include "WbActionManager.hpp"
 #include "WbDockWidget.hpp"
 
+#include <core/WbConfig.h>
+
 class DocumentationWebView;
 
-class WbDocumentation : public WbDockWidget {
+class WB_LIB_EXPORT WbDocumentation : public WbDockWidget {
   Q_OBJECT
 
 public:

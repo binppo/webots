@@ -17,12 +17,14 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 struct WrOverlay;
 struct WrViewport;
 struct WrTexture;
 struct WrDrawableTexture;
 
-class WbWrenFullScreenOverlay : public QObject {
+class WB_LIB_EXPORT WbWrenFullScreenOverlay : public QObject {
   Q_OBJECT
 
 public:

@@ -51,7 +51,10 @@ private:
   QColor mDefaultColor, mModifiedColor;
 };
 
-WbTreeView::WbTreeView(QWidget *parent) : QTreeView(parent) {
+WbTreeView::WbTreeView(QWidget *parent)
+: QTreeView(parent),
+  mDefaultColor("black"),
+  mModifiedColor("darkcyan") {
   setObjectName("TreeView");
 
   mIsScrollActive = false;

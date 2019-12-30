@@ -22,33 +22,33 @@
 #define WB_JOYSTICK_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_joystick_enable(int sampling_period);
-void wb_joystick_disable();
-int wb_joystick_get_sampling_period();
+CONTROLLER_EXPORT void wb_joystick_enable(int sampling_period);
+CONTROLLER_EXPORT void wb_joystick_disable();
+CONTROLLER_EXPORT int wb_joystick_get_sampling_period();
 
-bool wb_joystick_is_connected();
-const char *wb_joystick_get_model();
+CONTROLLER_EXPORT bool wb_joystick_is_connected();
+CONTROLLER_EXPORT const char *wb_joystick_get_model();
 
-int wb_joystick_get_number_of_axes();
-int wb_joystick_get_axis_value(int axis);
+CONTROLLER_EXPORT int wb_joystick_get_number_of_axes();
+CONTROLLER_EXPORT int wb_joystick_get_axis_value(int axis);
 
-int wb_joystick_get_number_of_povs();
-int wb_joystick_get_pov_value(int pov);
+CONTROLLER_EXPORT int wb_joystick_get_number_of_povs();
+CONTROLLER_EXPORT int wb_joystick_get_pov_value(int pov);
 
-int wb_joystick_get_pressed_button();
+CONTROLLER_EXPORT int wb_joystick_get_pressed_button();
 
 // force-feedback
-void wb_joystick_set_constant_force(int level);
-void wb_joystick_set_constant_force_duration(double duration);
-void wb_joystick_set_auto_centering_gain(double gain);
-void wb_joystick_set_resistance_gain(double gain);
-void wb_joystick_set_force_axis(int axis);
+CONTROLLER_EXPORT void wb_joystick_set_constant_force(int level);
+CONTROLLER_EXPORT void wb_joystick_set_constant_force_duration(double duration);
+CONTROLLER_EXPORT void wb_joystick_set_auto_centering_gain(double gain);
+CONTROLLER_EXPORT void wb_joystick_set_resistance_gain(double gain);
+CONTROLLER_EXPORT void wb_joystick_set_force_axis(int axis);
 
 #ifdef __cplusplus
 }

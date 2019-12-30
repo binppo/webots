@@ -18,6 +18,8 @@
 #include <QtCore/QList>
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbLight;
 class WbLookupTable;
 class WbSensor;
@@ -28,7 +30,7 @@ struct WrMaterial;
 struct WrStaticMesh;
 struct WrRenderable;
 
-class WbLightSensor : public WbSolidDevice {
+class WB_LIB_EXPORT WbLightSensor : public WbSolidDevice {
   Q_OBJECT
 
 public:

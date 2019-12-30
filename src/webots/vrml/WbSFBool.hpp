@@ -22,7 +22,9 @@
 #include "WbSingleValue.hpp"
 #include "WbVrmlWriter.hpp"
 
-class WbSFBool : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFBool : public WbSingleValue {
   Q_OBJECT
 
 public:

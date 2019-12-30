@@ -21,9 +21,9 @@
 
 namespace wren {
 
-  class Transform;
+  struct Transform;
 
-  class DrawableTexture : public Texture {
+  struct DrawableTexture : public Texture {
   public:
     static DrawableTexture *createDrawableTexture() { return new DrawableTexture(); }
 

@@ -140,7 +140,7 @@ void WbNewVersionDialog::updatePreview() {
   for (int i = 0; i < NUMBER_OF_THEMES; ++i) {
     if (mRadioButtons[i]->isChecked()) {
       mPreviewLabel->setPixmap(
-        QPixmap(WbStandardPaths::resourcesPath() + "images/themes/" + mRadioButtons[i]->objectName() + ".png"));
+        QPixmap(":/resources/images/themes/" + mRadioButtons[i]->objectName() + ".png"));
       break;
     }
   }

@@ -23,9 +23,11 @@
 
 #include "WbJoint.hpp"
 
+#include <core/WbConfig.h>
+
 class WbLinearMotor;
 
-class WbSliderJoint : public WbJoint {
+class WB_LIB_EXPORT WbSliderJoint : public WbJoint {
   Q_OBJECT
 
 public:

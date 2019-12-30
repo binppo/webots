@@ -83,7 +83,7 @@
 	#define FUNCTION				extern "C"
 
 	// Cosmetic stuff [mainly useful with multiple inheritance]
-	#define	override(base_class)	virtual
+	#define	_override(base_class)	virtual
 
 	// Our own inline keyword, so that:
 	// - we can switch to __forceinline to check it's really better or not
@@ -126,7 +126,7 @@
 		inline_ bool __False__(){ return false; }
 		#define for if(__False__()){}	else for
 	#else
-		#define for if(0){}	else for
+		//#define for if(0){}	else for
 	#endif
 
 #endif // __ICEPREPROCESSOR_H__

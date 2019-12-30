@@ -17,6 +17,8 @@
 
 #include "WbRenderingDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbCamera;
 class WbDisplayFont;
 class WbDisplayImage;
@@ -24,7 +26,7 @@ class WbImageTexture;
 
 class QDataStream;
 
-class WbDisplay : public WbRenderingDevice {
+class WB_LIB_EXPORT WbDisplay : public WbRenderingDevice {
   Q_OBJECT
 public:
   enum ImageFormat {  // should match with the macros of display.h

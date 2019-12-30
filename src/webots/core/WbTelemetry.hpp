@@ -21,7 +21,9 @@
 
 #include <QtCore/QObject>
 
-class WbTelemetry : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTelemetry : public QObject {
   Q_OBJECT
 
 public:

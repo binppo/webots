@@ -86,11 +86,11 @@ WbSFDouble &WbSFDouble::operator=(const WbSFDouble &other) {
 }
 
 bool WbSFDouble::equals(const WbValue *other) const {
-  const WbSFDouble *that = dynamic_cast<const WbSFDouble *>(other);
+  const WbSFDouble *that = qobject_cast<const WbSFDouble *>(other);
   return that && *this == *that;
 }
 
 void WbSFDouble::copyFrom(const WbValue *other) {
-  const WbSFDouble *that = dynamic_cast<const WbSFDouble *>(other);
+  const WbSFDouble *that = qobject_cast<const WbSFDouble *>(other);
   *this = *that;
 }

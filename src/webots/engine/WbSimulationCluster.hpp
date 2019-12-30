@@ -23,6 +23,8 @@
 #include <ode/ode.h>
 #include <QtCore/QList>
 
+#include <core/WbConfig.h>
+
 class WbContactProperties;
 class WbImmersionProperties;
 class WbOdeContext;
@@ -31,7 +33,7 @@ class WbSolid;
 class WbGeometry;
 class QMutex;
 
-class WbSimulationCluster {
+class WB_LIB_EXPORT WbSimulationCluster {
 public:
   // create/destroy cluster thread and ODE objects
   explicit WbSimulationCluster(WbOdeContext *context);

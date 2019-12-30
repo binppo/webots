@@ -31,6 +31,7 @@
 #include "WbTelemetry.hpp"
 #include "WbTokenizer.hpp"
 #include "WbWorld.hpp"
+#include "WbWrenOpenGlContext.hpp"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
@@ -41,9 +42,14 @@
 WbApplication *WbApplication::cInstance = NULL;
 static QString gProjectLibsInPath;
 
+WbApplication *WbApplication::instance() {
+  if(!cInstance)
+	  cInstance = new WbApplication;
+
+  return cInstance;
+}
+
 WbApplication::WbApplication() {
-  assert(cInstance == NULL);
-  cInstance = this;
 
   mWorld = NULL;
   mWorldLoadingCanceled = false;
@@ -104,7 +110,6 @@ WbApplication::~WbApplication() {
   delete mWorld;
   WbPreferences::cleanup();
   WbNodeOperations::cleanup();
-  cInstance = NULL;
 
   // remove links to project dynamic libraries
   removeOldLibraries();
@@ -124,6 +129,10 @@ void WbApplication::setup() {
   connect(this, &WbApplication::animationCaptureStarted, recorder, &WbAnimationRecorder::start);
   connect(this, &WbApplication::animationCaptureStopped, recorder, &WbAnimationRecorder::stop);
   connect(nodeOperations, &WbNodeOperations::nodeAdded, recorder, &WbAnimationRecorder::propagateNodeAddition);
+
+  WbWrenOpenGlContext::makeWrenCurrent();
+  WbSysInfo::initializeOpenGlInfo();
+  WbWrenOpenGlContext::doneWren();
 }
 
 void WbApplication::removeOldLibraries() {

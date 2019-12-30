@@ -206,11 +206,11 @@ void WbDifferentialWheels::findWheels() {
 
   WbMFNode::Iterator it(children());
   while (it.hasNext()) {
-    WbBaseNode *const node = dynamic_cast<WbBaseNode *>(it.next());
+    WbBaseNode *const node = qobject_cast<WbBaseNode *>(it.next());
     if (node && node->nodeType() != WB_NODE_SOLID)
       continue;
 
-    WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+    WbSolid *const solid = qobject_cast<WbSolid *>(node);
     if (solid) {
       if (solid->name().compare("right wheel", Qt::CaseInsensitive) == 0)
         mRightWheel = solid;

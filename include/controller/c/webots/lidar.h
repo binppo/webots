@@ -22,41 +22,41 @@
 #define WB_LIDAR_H
 
 #define WB_USING_C_API
-#include "lidar_point.h"
-#include "types.h"
+#include <webots/lidar_point.h>
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_lidar_enable(WbDeviceTag tag, int sampling_period);
-void wb_lidar_enable_point_cloud(WbDeviceTag tag);
-void wb_lidar_disable(WbDeviceTag tag);
-void wb_lidar_disable_point_cloud(WbDeviceTag tag);
-int wb_lidar_get_sampling_period(WbDeviceTag tag);
-bool wb_lidar_is_point_cloud_enabled(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_lidar_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_lidar_enable_point_cloud(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_lidar_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_lidar_disable_point_cloud(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_lidar_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT bool wb_lidar_is_point_cloud_enabled(WbDeviceTag tag);
 
-const float *wb_lidar_get_range_image(WbDeviceTag tag);
-const float *wb_lidar_get_layer_range_image(WbDeviceTag tag, int layer);
+CONTROLLER_EXPORT const float *wb_lidar_get_range_image(WbDeviceTag tag);
+CONTROLLER_EXPORT const float *wb_lidar_get_layer_range_image(WbDeviceTag tag, int layer);
 
-const WbLidarPoint *wb_lidar_get_point_cloud(WbDeviceTag tag);
-const WbLidarPoint *wb_lidar_get_layer_point_cloud(WbDeviceTag tag, int layer);
-int wb_lidar_get_number_of_points(WbDeviceTag tag);
+CONTROLLER_EXPORT const WbLidarPoint *wb_lidar_get_point_cloud(WbDeviceTag tag);
+CONTROLLER_EXPORT const WbLidarPoint *wb_lidar_get_layer_point_cloud(WbDeviceTag tag, int layer);
+CONTROLLER_EXPORT int wb_lidar_get_number_of_points(WbDeviceTag tag);
 
-int wb_lidar_get_horizontal_resolution(WbDeviceTag tag);
-int wb_lidar_get_number_of_layers(WbDeviceTag tag);
-double wb_lidar_get_min_frequency(WbDeviceTag tag);
-double wb_lidar_get_max_frequency(WbDeviceTag tag);
-double wb_lidar_get_frequency(WbDeviceTag tag);
-void wb_lidar_set_frequency(WbDeviceTag tag, double frequency);
-double wb_lidar_get_fov(WbDeviceTag tag);
-double wb_lidar_get_vertical_fov(WbDeviceTag tag);
-double wb_lidar_get_min_range(WbDeviceTag tag);
-double wb_lidar_get_max_range(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_lidar_get_horizontal_resolution(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_lidar_get_number_of_layers(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_lidar_get_min_frequency(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_lidar_get_max_frequency(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_lidar_get_frequency(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_lidar_set_frequency(WbDeviceTag tag, double frequency);
+CONTROLLER_EXPORT double wb_lidar_get_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_lidar_get_vertical_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_lidar_get_min_range(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_lidar_get_max_range(WbDeviceTag tag);
 
 #ifdef WB_MATLAB_LOADLIBRARY
 // This function should be used only in the Matlab wrapper
-const WbLidarPoint *wb_lidar_get_point(WbDeviceTag tag, int index);
+CONTROLLER_EXPORT const WbLidarPoint *wb_lidar_get_point(WbDeviceTag tag, int index);
 #endif
 
 #ifdef __cplusplus

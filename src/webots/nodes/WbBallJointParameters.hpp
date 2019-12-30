@@ -24,7 +24,9 @@
 #include "WbJointParameters.hpp"
 #include "WbSFDouble.hpp"
 
-class WbBallJointParameters : public WbJointParameters {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBallJointParameters : public WbJointParameters {
   Q_OBJECT
 
 public:

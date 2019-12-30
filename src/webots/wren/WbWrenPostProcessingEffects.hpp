@@ -19,28 +19,30 @@ struct WrPostProcessingEffect;
 
 #include <wren/texture.h>
 
+#include <core/WbConfig.h>
+
 namespace WbWrenPostProcessingEffects {
-  void loadResources();
-  void clearResources();
-  WrPostProcessingEffect *lensFlare(float width, float height, int blurIterations);
-  WrPostProcessingEffect *sphericalCameraMerge(float width, float height, int cameraCount,
+  WB_LIB_EXPORT void loadResources();
+  WB_LIB_EXPORT void clearResources();
+  WB_LIB_EXPORT WrPostProcessingEffect *lensFlare(float width, float height, int blurIterations);
+  WB_LIB_EXPORT WrPostProcessingEffect *sphericalCameraMerge(float width, float height, int cameraCount,
                                                WrTextureInternalFormat textureFormat);
 
-  WrPostProcessingEffect *lensDistortion(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *depthOfField(float width, float height, float depthOfFieldTextureWidth,
+  WB_LIB_EXPORT WrPostProcessingEffect *lensDistortion(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *depthOfField(float width, float height, float depthOfFieldTextureWidth,
                                        float depthOfFieldTextureHeight, WrTextureInternalFormat textureFormat,
                                        WrTexture *colorTexture, WrTexture *depthTexture);
-  WrPostProcessingEffect *motionBlur(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *colorNoise(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *rangeNoise(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *depthResolution(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *noiseMask(float width, float height, WrTextureInternalFormat textureFormat,
+  WB_LIB_EXPORT WrPostProcessingEffect *motionBlur(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *colorNoise(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *rangeNoise(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *depthResolution(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *noiseMask(float width, float height, WrTextureInternalFormat textureFormat,
                                     WrTexture *noiseMaskTexture);
-  WrPostProcessingEffect *smaa(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *gtao(float width, float height, WrTextureInternalFormat textureFormat, WrTexture *depthTexture,
+  WB_LIB_EXPORT WrPostProcessingEffect *smaa(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *gtao(float width, float height, WrTextureInternalFormat textureFormat, WrTexture *depthTexture,
                                WrTexture *normalTexture, bool halfRes);
-  WrPostProcessingEffect *bloom(float width, float height, WrTextureInternalFormat textureFormat);
-  WrPostProcessingEffect *hdrResolve(float width, float height);
+  WB_LIB_EXPORT WrPostProcessingEffect *bloom(float width, float height, WrTextureInternalFormat textureFormat);
+  WB_LIB_EXPORT WrPostProcessingEffect *hdrResolve(float width, float height);
 
 };  // namespace WbWrenPostProcessingEffects
 

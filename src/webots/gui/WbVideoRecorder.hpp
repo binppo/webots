@@ -24,10 +24,12 @@
 #include <QtCore/QProcess>
 #include <QtCore/QSize>
 
+#include <core/WbConfig.h>
+
 class WbSimulationView;
 class WbMainWindow;
 
-class WbVideoRecorder : public QObject {
+class WB_LIB_EXPORT WbVideoRecorder : public QObject {
   Q_OBJECT
 public:
   // singleton: avoid multiple simultaneous recordings

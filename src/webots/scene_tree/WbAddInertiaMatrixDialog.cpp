@@ -116,6 +116,7 @@ void WbAddInertiaMatrixDialog::updateItemInfo() {
   mGroupBox->setTitle(selectedInertiaMatrixText);
   switch (selectedItem->type()) {
     case IDENTITY_MATRIX:
+	{
       static const QString strIdentity = QString(tr("Insert the identity matrix \n [ 1 1 1, 0 0 0]"));
       static const QString strZero =
         QString(tr("If no center of mass is currently specified, a zero 3D vector will be inserted."));
@@ -124,7 +125,9 @@ void WbAddInertiaMatrixDialog::updateItemInfo() {
       static const QString textId = strIdentity + "\n\n" + strZero + "\n\n" + strOne;
       mInfoText->setPlainText(textId);
       break;
+	}
     case BOUNDING_OBJECT_BASED:
+	{
       static const QString strInertia =
         QString(tr("The inertia matrix is computed using the solid bounding object and the frame obtained by translating "
                    "solid's frame to bounding object's center of mass."));
@@ -134,10 +137,13 @@ void WbAddInertiaMatrixDialog::updateItemInfo() {
       static const QString textBo = strInertia + "\n\n" + strCoM + "\n\n" + strMass;
       mInfoText->setPlainText(textBo);
       break;
+	}
     default:
+	{
       // no information
       mInfoText->setPlainText(tr("No info available."));
       break;
+	}
   }
 
   mAddButton->setEnabled(!selectedItem->icon(0).isNull());

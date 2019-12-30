@@ -6,13 +6,13 @@ extern "C" {
 #endif
 
 struct WrDynamicMesh;
-typedef struct WrDynamicMesh WrDynamicMesh;
+//typedef struct WrDynamicMesh WrDynamicMesh;
 
 struct WrSkeleton;
-typedef struct WrSkeleton WrSkeleton;
+//typedef struct WrSkeleton WrSkeleton;
 
 struct WrSkeletonBone;
-typedef struct WrSkeletonBone WrSkeletonBone;
+//typedef struct WrSkeletonBone WrSkeletonBone;
 
 WrSkeleton *wr_skeleton_new();
 

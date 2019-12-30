@@ -20,13 +20,15 @@
 
 #include <QtCore/QMap>
 
+#include <core/WbConfig.h>
+
 class WbField;
 
 namespace WbHiddenKinematicParameters {
 
   typedef QMap<int, WbVector3 *> PositionMap;
 
-  class HiddenKinematicParameters {
+  class WB_LIB_EXPORT HiddenKinematicParameters {
   public:
     HiddenKinematicParameters() :
       mTranslation(NULL),

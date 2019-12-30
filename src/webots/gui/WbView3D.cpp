@@ -843,9 +843,9 @@ void WbView3D::updateMousesPosition(bool fromMouseClick, bool fromMouseMove) {
     if (!mouse->isTracked()) {
       // In the non-tracked case, update the buttons in any cases to avoid loosing a press event
       // in case the press and release events happen in the same step
-      mouse->setLeft(mouse->left() | (mLastButtonState & Qt::LeftButton));
-      mouse->setMiddle(mouse->middle() | (mLastButtonState & Qt::MiddleButton));
-      mouse->setRight(mouse->right() | (mLastButtonState & Qt::RightButton));
+      mouse->setLeft(mouse->left() || (mLastButtonState & Qt::LeftButton));
+      mouse->setMiddle(mouse->middle() || (mLastButtonState & Qt::MiddleButton));
+      mouse->setRight(mouse->right() || (mLastButtonState & Qt::RightButton));
     }
   }
 
@@ -1365,7 +1365,7 @@ void WbView3D::renderNow(bool culling) {
 #ifdef _WIN32
     if (WbVirtualRealityHeadset::isInUse()) {
       WbVirtualRealityHeadset::instance()->updateOrientationAndPosition();
-      WbWrenOpenGlContext::makeWrenCurrent();
+	  WbWrenOpenGlContext::makeWrenCurrent();
       if (mVirtualRealityHeadsetOverlay) {
         // on quit it might be possible that 'cleanupFullScreenOverlay' is called before the world actual destruction
         mVirtualRealityHeadsetOverlay->render();
@@ -1590,7 +1590,7 @@ void WbView3D::mousePressEvent(QMouseEvent *event) {
     return;
 
   // Handle bumpers
-  WbTouchSensor *const touchSensor = dynamic_cast<WbTouchSensor *>(mPickedMatter);
+  WbTouchSensor *const touchSensor = qobject_cast<WbTouchSensor *>(mPickedMatter);
   if (touchSensor && touchSensor->deviceType() == WbTouchSensor::BUMPER) {
     touchSensor->setGuiTouch(true);
     mTouchSensor = touchSensor;
@@ -1630,7 +1630,7 @@ void WbView3D::mouseMoveEvent(QMouseEvent *event) {
       renderingDevice->overlay()->convertMousePositionToIndex(position.x(), position.y(), u, v, resizeArea);
       if (WbSimulationState::instance()->isPaused()) {
         WbLog::status(renderingDevice->name() + ": " + renderingDevice->pixelInfo(u, v));
-        WbCamera *camera = dynamic_cast<WbCamera *>(renderingDevice);
+        WbCamera *camera = qobject_cast<WbCamera *>(renderingDevice);
         if (camera) {
           if (mCameraUsingRecognizedObjectsOverlay != camera)
             cleanupCameraRecognizedObjectsOverlayIfNeeded();
@@ -1744,7 +1744,7 @@ void WbView3D::mouseMoveEvent(QMouseEvent *event) {
     cleanupPhysicsDrags();
 
     WbBaseNode *pickedNode = WbSelection::instance()->selectedNode();
-    WbGeometry *const pickedGeometry = dynamic_cast<WbGeometry *>(pickedNode);
+    WbGeometry *const pickedGeometry = qobject_cast<WbGeometry *>(pickedNode);
 
     assert(pickedGeometry);
     if (!pickedGeometry)
@@ -1806,7 +1806,7 @@ void WbView3D::mouseMoveEvent(QMouseEvent *event) {
     WbBaseNode *pickedNode = WbSelection::instance()->selectedNode();
     WbAbstractTransform *pickedTransform = WbNodeUtilities::abstractTransformCast(pickedNode);
     assert(pickedTransform);
-    if (dynamic_cast<WbSolid *>(pickedNode))
+    if (qobject_cast<WbSolid *>(pickedNode))
       selective = 0;
     const int handleNumber = scaleHandle - 1;
 
@@ -1823,7 +1823,7 @@ void WbView3D::mouseMoveEvent(QMouseEvent *event) {
     cleanupPhysicsDrags();
     int handleNumber = translateHandle - 1;
     WbBaseNode *pickedNode = WbSelection::instance()->selectedNode();
-    WbSolid *const pickedSolid = dynamic_cast<WbSolid *>(pickedNode);
+    WbSolid *const pickedSolid = qobject_cast<WbSolid *>(pickedNode);
     if (pickedSolid)
       mDragTranslate = new WbDragTranslateAlongAxisSolidEvent(position, size(), viewpoint, handleNumber, pickedSolid);
     else {
@@ -1836,7 +1836,7 @@ void WbView3D::mouseMoveEvent(QMouseEvent *event) {
     cleanupPhysicsDrags();
     const int handleNumber = rotateHandle - 1;
     WbBaseNode *pickedNode = WbSelection::instance()->selectedNode();
-    WbSolid *const pickedSolid = dynamic_cast<WbSolid *>(pickedNode);
+    WbSolid *const pickedSolid = qobject_cast<WbSolid *>(pickedNode);
     if (pickedSolid)
       mDragRotate = new WbDragRotateAroundAxisSolidEvent(position, size(), viewpoint, handleNumber, pickedSolid);
     else {
@@ -1878,7 +1878,7 @@ void WbView3D::mouseMoveEvent(QMouseEvent *event) {
         mDragVerticalAxisRotate = new WbDragRotateAroundWorldVerticalAxisEvent(position, viewpoint, uppermostTransform);
     }
   } else if (alt) {  // Case 2: ALT and CLICK -> add a force / torque to the selected solid
-    WbSolid *const selectedSolid = dynamic_cast<WbSolid *>(mPickedMatter);
+    WbSolid *const selectedSolid = qobject_cast<WbSolid *>(mPickedMatter);
     if (!selectedSolid || selectedSolid->bodyMerger() == NULL)
       return;
     Qt::MouseButtons buttons = event->buttons();
@@ -1970,7 +1970,7 @@ void WbView3D::mouseDoubleClick(QMouseEvent *event) {
     emit mouseDoubleClicked(event);
 
     WbNode *node = WbNode::findNode(id);
-    WbRobot *pickedRobot = dynamic_cast<WbRobot *>(node);
+    WbRobot *pickedRobot = qobject_cast<WbRobot *>(node);
     if (pickedRobot == NULL && node != NULL)
       pickedRobot = WbNodeUtilities::findRobotAncestor(node);
     if (pickedRobot) {
@@ -2394,11 +2394,11 @@ void WbView3D::updateVirtualRealityHeadsetOverlay() {
   if (WbVirtualRealityHeadset::isInUse()) {
     mVirtualRealityHeadsetOverlay->setVisible(true);
     mVirtualRealityHeadsetOverlay->setExternalTexture(WbVirtualRealityHeadset::instance()->visibleTexture());
-    mParentWidget->setEnabled(false);
+	mParentWidget->setEnabled(false);
   } else {
 #endif
     mVirtualRealityHeadsetOverlay->setVisible(false);
-    mParentWidget->setEnabled(true);
+	mParentWidget->setEnabled(true);
 #ifdef _WIN32
   }
 #endif

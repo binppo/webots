@@ -22,25 +22,25 @@
 #define WB_SPEAKER_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wb_speaker_play_sound(WbDeviceTag left, WbDeviceTag right, const char *sound, double volume, double pitch, double balance,
+CONTROLLER_EXPORT void wb_speaker_play_sound(WbDeviceTag left, WbDeviceTag right, const char *sound, double volume, double pitch, double balance,
                            bool loop);
-void wb_speaker_stop(WbDeviceTag tag, const char *sound);
-bool wb_speaker_is_sound_playing(WbDeviceTag tag, const char *sound);
+CONTROLLER_EXPORT void wb_speaker_stop(WbDeviceTag tag, const char *sound);
+CONTROLLER_EXPORT bool wb_speaker_is_sound_playing(WbDeviceTag tag, const char *sound);
 
 // "pico" or "microsoft" (Windows only)
-bool wb_speaker_set_engine(WbDeviceTag tag, const char *engine);
+CONTROLLER_EXPORT bool wb_speaker_set_engine(WbDeviceTag tag, const char *engine);
 // "en-US", "en-UK", "de-DE", "es-ES", "fr-FR", "it-IT", etc.
-bool wb_speaker_set_language(WbDeviceTag tag, const char *language);
-const char *wb_speaker_get_engine(WbDeviceTag tag);
-const char *wb_speaker_get_language(WbDeviceTag tag);
-void wb_speaker_speak(WbDeviceTag tag, const char *text, double volume);
-bool wb_speaker_is_speaking(WbDeviceTag tag);
+CONTROLLER_EXPORT bool wb_speaker_set_language(WbDeviceTag tag, const char *language);
+CONTROLLER_EXPORT const char *wb_speaker_get_engine(WbDeviceTag tag);
+CONTROLLER_EXPORT const char *wb_speaker_get_language(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_speaker_speak(WbDeviceTag tag, const char *text, double volume);
+CONTROLLER_EXPORT bool wb_speaker_is_speaking(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

@@ -17,7 +17,9 @@
 
 #include "WbMatter.hpp"
 
-class WbFluid : public WbMatter {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbFluid : public WbMatter {
   Q_OBJECT
 
 public:

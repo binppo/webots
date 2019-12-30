@@ -23,9 +23,11 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
-class WbTesselator {
+class WB_LIB_EXPORT WbTesselator {
 public:
   static QString tesselate(const QList<QVector<int>> &indexes, const QList<WbVector3> &vertices, QList<QVector<int>> &results);
 

@@ -389,7 +389,7 @@ bool WbSolid::applyHiddenKinematicParameters(const HiddenKinematicParameters *hk
       if (!p)
         return false;
       const int jointIndex = i.key();
-      WbJoint *const joint = dynamic_cast<WbJoint *>(mJointChildren.at(jointIndex));
+      WbJoint *const joint = qobject_cast<WbJoint *>(mJointChildren.at(jointIndex));
       if (!joint)
         return false;
 
@@ -1044,7 +1044,7 @@ void WbSolid::removeBoundingGeometry() {
   if (isBeingDeleted())
     return;
 
-  const WbGeometry *const geometry = dynamic_cast<WbGeometry *>(sender());
+  const WbGeometry *const geometry = qobject_cast<WbGeometry *>(sender());
   const dMass *const dmass = geometry->odeMass();
 
   if (isDynamic() && dmass->mass > 0.0) {
@@ -1057,7 +1057,7 @@ void WbSolid::removeBoundingGeometry() {
 // this method is overridden in the WbTouchSensor class
 dJointID WbSolid::createJoint(dBodyID body, dBodyID parentBody, dWorldID world) const {
   dJointID joint;
-  const WbDifferentialWheels *const dw = dynamic_cast<WbDifferentialWheels *>(parent());
+  const WbDifferentialWheels *const dw = qobject_cast<WbDifferentialWheels *>(parent());
   if (dw && (this == dw->leftWheel() || this == dw->rightWheel())) {
     // special case: the (Solid) wheels of a DifferentialWheels robot
     // must be attached using hinge joints in order to allow rotation
@@ -1073,7 +1073,7 @@ dJointID WbSolid::createJoint(dBodyID body, dBodyID parentBody, dWorldID world) 
 }
 
 void WbSolid::setJoint(dJointID joint, dBodyID body, dBodyID parentBody) const {
-  const WbDifferentialWheels *const dw = dynamic_cast<WbDifferentialWheels *>(parent());
+  const WbDifferentialWheels *const dw = qobject_cast<WbDifferentialWheels *>(parent());
   if (dw && (this == dw->leftWheel() || this == dw->rightWheel())) {
     // special case: the (Solid) wheels of a DifferentialWheels robot
     // must be attached using hinge joints in order to allow them to rotate
@@ -1194,7 +1194,7 @@ void WbSolid::removeJointParent(WbBasicJoint *joint) {
 }
 
 bool WbSolid::needJointToUpperSolid(const WbSolid *upperSolid) const {
-  const WbDifferentialWheels *const dw = dynamic_cast<const WbDifferentialWheels *const>(upperSolid);
+  const WbDifferentialWheels *const dw = qobject_cast<const WbDifferentialWheels *const>(upperSolid);
   if (dw && (this == dw->leftWheel() || this == dw->rightWheel()))
     return true;
 
@@ -1474,7 +1474,7 @@ void WbSolid::updateOdeDamping() {
 
 void WbSolid::updateBoundingObject() {
   if (mBoundingObject->value() != NULL) {
-    WbBaseNode *node = dynamic_cast<WbBaseNode *>(mBoundingObject->value());
+    WbBaseNode *node = qobject_cast<WbBaseNode *>(mBoundingObject->value());
     assert(node);
     if (!isBoundingObjectFinalizationCompleted(node))
       // postpone bounding object update after finalization
@@ -1508,13 +1508,13 @@ void WbSolid::collectSolidChildren(const WbGroup *group, bool connectSignals, QV
   while (it.hasNext()) {
     WbNode *const n = it.next();
 
-    WbSolid *const solid = dynamic_cast<WbSolid *>(n);
+    WbSolid *const solid = qobject_cast<WbSolid *>(n);
     if (solid) {
       solidChildren.append(solid);
       continue;
     }
 
-    WbBasicJoint *joint = dynamic_cast<WbBasicJoint *>(n);
+    WbBasicJoint *joint = qobject_cast<WbBasicJoint *>(n);
     if (joint) {
       jointChildren.append(joint);
       WbSolid *const ep = joint->solidEndPoint();
@@ -1524,17 +1524,17 @@ void WbSolid::collectSolidChildren(const WbGroup *group, bool connectSignals, QV
       }
     }
 
-    WbPropeller *propeller = dynamic_cast<WbPropeller *>(n);
+    WbPropeller *propeller = qobject_cast<WbPropeller *>(n);
     if (propeller) {
       propellerChildren.append(propeller);
       continue;
     }
 
-    const WbGroup *const groupChild = dynamic_cast<WbGroup *>(n);
+    const WbGroup *const groupChild = qobject_cast<WbGroup *>(n);
     if (groupChild)
       collectSolidChildren(groupChild, connectSignals, solidChildren, jointChildren, propellerChildren);
 
-    const WbSlot *slot = dynamic_cast<WbSlot *>(n);
+    const WbSlot *slot = qobject_cast<WbSlot *>(n);
     if (slot) {
       if (slot->hasEndpoint()) {
         WbSlot *sep = slot->slotEndPoint();
@@ -1547,7 +1547,7 @@ void WbSolid::collectSolidChildren(const WbGroup *group, bool connectSignals, QV
         else if (slot->groupEndPoint())
           collectSolidChildren(slot->groupEndPoint(), connectSignals, solidChildren, jointChildren, propellerChildren);
         else {
-          joint = dynamic_cast<WbBasicJoint *>(slot->endPoint());
+          joint = qobject_cast<WbBasicJoint *>(slot->endPoint());
           if (joint) {
             jointChildren.append(joint);
             WbSolid *const ep = joint->solidEndPoint();
@@ -1557,7 +1557,7 @@ void WbSolid::collectSolidChildren(const WbGroup *group, bool connectSignals, QV
             }
           }
 
-          propeller = dynamic_cast<WbPropeller *>(slot->endPoint());
+          propeller = qobject_cast<WbPropeller *>(slot->endPoint());
           if (propeller) {
             propellerChildren.append(propeller);
             continue;
@@ -1944,7 +1944,7 @@ void WbSolid::updateTransformAfterPhysicsStep() {
   WbSolid *s = NULL;
   WbNode *p = parent();
   while (p != NULL && !p->isWorldRoot()) {
-    s = dynamic_cast<WbSolid *>(p);
+    s = qobject_cast<WbSolid *>(p);
     if (s != NULL) {
       s->applyPhysicsTransform();
       s->mUpdatedAfterStep = true;
@@ -2083,13 +2083,13 @@ void WbSolid::prePhysicsStep(double ms) {
 // Accessors to relatives
 
 WbBasicJoint *WbSolid::jointParent() const {
-  WbSlot *parentSlot = dynamic_cast<WbSlot *>(parent());
+  WbSlot *parentSlot = qobject_cast<WbSlot *>(parent());
   if (parentSlot) {
-    WbSlot *granParentSlot = dynamic_cast<WbSlot *>(parentSlot->parent());
+    WbSlot *granParentSlot = qobject_cast<WbSlot *>(parentSlot->parent());
     if (granParentSlot)
-      return dynamic_cast<WbBasicJoint *>(granParentSlot->parent());
+      return qobject_cast<WbBasicJoint *>(granParentSlot->parent());
   }
-  return dynamic_cast<WbBasicJoint *>(parent());
+  return qobject_cast<WbBasicJoint *>(parent());
 }
 
 dBodyID WbSolid::upperSolidBody() const {
@@ -2157,7 +2157,7 @@ void WbSolid::addTorque(const WbVector3 &torque) {
 // Selection management
 void WbSolid::propagateSelection(bool selected) {
   if (wrenNode() && mIsPermanentlyKinematic) {
-    const WbPropeller *const propeller = dynamic_cast<WbPropeller *>(parent());
+    const WbPropeller *const propeller = qobject_cast<WbPropeller *>(parent());
     if (propeller) {
       const bool active = propeller->helix() == this;
       wr_node_set_visible(WR_NODE(wrenNode()), selected || active);
@@ -2182,7 +2182,7 @@ void WbSolid::propagateSelection(bool selected) {
 
 void WbSolid::setMatrixNeedUpdate() {
   WbNode *bo = boundingObject();
-  WbGroup *g = dynamic_cast<WbGroup *>(bo);
+  WbGroup *g = qobject_cast<WbGroup *>(bo);
   if (g)
     g->setMatrixNeedUpdate();
 
@@ -2220,7 +2220,7 @@ void WbSolid::reset() {
   if (isSolidMerger()) {
     dBodyID b = body();
     int jointNumber = dBodyGetNumJoints(b);
-    dJointID joints[jointNumber];
+    std::vector<dJointID> joints(jointNumber);
     for (int i = 0; i < jointNumber; ++i)
       joints[i] = dBodyGetJoint(b, i);
     for (int i = 0; i < jointNumber; ++i) {
@@ -2279,7 +2279,7 @@ void WbSolid::jerk(bool resetVelocities, bool rootJerk) {
 void WbSolid::notifyChildJerk(WbTransform *childNode) {
   WbNode *node = childNode->parent();
   while (node != this && node != NULL) {
-    if (mMovedChildren.contains(dynamic_cast<WbTransform *>(node)))
+    if (mMovedChildren.contains(qobject_cast<WbTransform *>(node)))
       return;
     node = node->parent();
   }
@@ -2314,7 +2314,7 @@ void WbSolid::awake() {
 void WbSolid::awakeSolids(WbGroup *group) {
   assert(group);
 
-  WbSolid *const solid = dynamic_cast<WbSolid *>(group);
+  WbSolid *const solid = qobject_cast<WbSolid *>(group);
   if (solid) {
     dBodyID b = solid->body();
 
@@ -2331,7 +2331,7 @@ void WbSolid::awakeSolids(WbGroup *group) {
   } else {  // Handles the case of non-Solid (possibly nested) Groups which are children of the root
     WbMFNode::Iterator it(group->children());
     while (it.hasNext()) {
-      WbGroup *const g = dynamic_cast<WbGroup *>(it.next());
+      WbGroup *const g = qobject_cast<WbGroup *>(it.next());
       if (g)
         awakeSolids(g);
     }
@@ -2355,8 +2355,8 @@ void WbSolid::resetSingleSolidPhysics() {
   // check for joints and disable all motors
   const int size = mJointChildren.size();
   for (int i = 0; i < size; ++i) {
-    const WbJoint *const j = dynamic_cast<WbJoint *>(mJointChildren[i]);
-    const WbHinge2Joint *const hinge2Joint = dynamic_cast<WbHinge2Joint *>(mJointChildren[i]);
+    const WbJoint *const j = qobject_cast<WbJoint *>(mJointChildren[i]);
+    const WbHinge2Joint *const hinge2Joint = qobject_cast<WbHinge2Joint *>(mJointChildren[i]);
     if (j && j->motor())
       j->motor()->resetPhysics();
     if (hinge2Joint && hinge2Joint->motor2())
@@ -2890,7 +2890,7 @@ void WbSolid::collectHiddenKinematicParameters(HiddenKinematicParametersMap &map
   PositionMap positions;
   const int size = mJointChildren.size();
   for (int i = 0; i < size; ++i) {
-    const WbJoint *const j = dynamic_cast<WbJoint *>(mJointChildren[i]);
+    const WbJoint *const j = qobject_cast<WbJoint *>(mJointChildren[i]);
     if (j) {
       WbVector3 v(NAN, NAN, NAN);
 
@@ -2982,7 +2982,7 @@ void WbSolid::exportNodeFields(WbVrmlWriter &writer) const {
 void WbSolid::exportNodeFooter(WbVrmlWriter &writer) const {
   if (writer.isX3d() && boundingObject()) {
     writer << "<Switch whichChoice='-1' class='selector'>";
-    const WbGeometry *geom = dynamic_cast<const WbGeometry *>(boundingObject());
+    const WbGeometry *geom = qobject_cast<const WbGeometry *>(boundingObject());
     if (geom)
       writer << "<Shape>";
 

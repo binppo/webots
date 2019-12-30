@@ -140,7 +140,7 @@ void WbRenderingDeviceWindowFactory::setWindowsEnabled(bool enabled) {
 }
 
 void WbRenderingDeviceWindowFactory::deleteWindow() {
-  WbBaseNode *node = dynamic_cast<WbBaseNode *>(sender());
+  WbBaseNode *node = qobject_cast<WbBaseNode *>(sender());
   assert(node);
   for (int i = 0; i < mWindowsList.size(); ++i) {
     if (mWindowsList[i]->deviceId() == node->uniqueId()) {

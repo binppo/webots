@@ -25,7 +25,9 @@
 
 #include <QtCore/QTextStream>
 
-class WbSFVector3 : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFVector3 : public WbSingleValue {
   Q_OBJECT
 
 public:

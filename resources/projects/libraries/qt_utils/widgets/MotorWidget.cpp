@@ -11,6 +11,8 @@
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 
+#include <corecrt_math_defines.h>
+
 using namespace webotsQtUtils;
 
 MotorWidget::MotorWidget(Device *device, QWidget *parent) :

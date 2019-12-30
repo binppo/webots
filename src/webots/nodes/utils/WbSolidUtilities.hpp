@@ -15,6 +15,8 @@
 #ifndef WB_SOLID_UTILITIES_HPP
 #define WB_SOLID_UTILITIES_HPP
 
+#include <core/WbConfig.h>
+
 class WbGeometry;
 class WbNode;
 
@@ -23,14 +25,14 @@ typedef struct dxGeom *dGeomID;
 typedef struct dxSpace *dSpaceID;
 
 namespace WbSolidUtilities {
-  void addMass(dMass *const mass, WbNode *const node, double density, bool warning = true);
-  void subtractInertiaMatrix(double *I, const double *J);
-  dSpaceID dynamicCastInSpaceID(dGeomID g);
-  bool checkBoundingObject(WbNode *const node);  // debug method for testing the validity of a boundingObject
+  WB_LIB_EXPORT void addMass(dMass *const mass, WbNode *const node, double density, bool warning = true);
+  WB_LIB_EXPORT void subtractInertiaMatrix(double *I, const double *J);
+  WB_LIB_EXPORT dSpaceID dynamicCastInSpaceID(dGeomID g);
+  WB_LIB_EXPORT bool checkBoundingObject(WbNode *const node);  // debug method for testing the validity of a boundingObject
   // extracts the WbGeometry placed into a simple bounding object, i.e. a WbGeometry of a WbShape
-  WbGeometry *geometry(WbNode *const node);
-  bool isPermanentlyKinematic(const WbNode *node);  // depends on node parent, hence can't be called in node's destructor
-  void setDefaultMass(dMass *m);
+  WB_LIB_EXPORT WbGeometry *geometry(WbNode *const node);
+  WB_LIB_EXPORT bool isPermanentlyKinematic(const WbNode *node);  // depends on node parent, hence can't be called in node's destructor
+  WB_LIB_EXPORT void setDefaultMass(dMass *m);
 };  // namespace WbSolidUtilities
 
 #endif  // WB_SOLID_UTILITIES_HPP

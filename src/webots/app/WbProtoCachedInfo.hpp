@@ -23,7 +23,9 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-class WbProtoCachedInfo {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbProtoCachedInfo {
 public:
   // create cached information for this PROTO file name
   explicit WbProtoCachedInfo(const QString &protoFileName);

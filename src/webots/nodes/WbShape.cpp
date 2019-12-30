@@ -64,7 +64,7 @@ void WbShape::preFinalize() {
   WbBaseNode::preFinalize();
 
   // handle both kinds of appearance nodes
-  WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(mAppearance->value());
+  WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(mAppearance->value());
   if (baseNode)
     baseNode->preFinalize();
 
@@ -79,7 +79,7 @@ void WbShape::postFinalize() {
   WbBaseNode::postFinalize();
 
   // handle both kinds of appearance nodes
-  WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(mAppearance->value());
+  WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(mAppearance->value());
   if (baseNode)
     baseNode->postFinalize();
 
@@ -104,7 +104,7 @@ void WbShape::reset() {
   WbBaseNode::reset();
 
   // handle both kinds of appearance nodes
-  WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(mAppearance->value());
+  WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(mAppearance->value());
   if (baseNode)
     baseNode->reset();
 
@@ -114,15 +114,15 @@ void WbShape::reset() {
 }
 
 WbAppearance *WbShape::appearance() const {
-  return dynamic_cast<WbAppearance *>(mAppearance->value());
+  return qobject_cast<WbAppearance *>(mAppearance->value());
 }
 
 WbPbrAppearance *WbShape::pbrAppearance() const {
-  return dynamic_cast<WbPbrAppearance *>(mAppearance->value());
+  return qobject_cast<WbPbrAppearance *>(mAppearance->value());
 }
 
 WbAbstractAppearance *WbShape::abstractAppearance() const {
-  return dynamic_cast<WbAbstractAppearance *>(mAppearance->value());
+  return qobject_cast<WbAbstractAppearance *>(mAppearance->value());
 }
 
 void WbShape::propagateSelection(bool selected) {
@@ -237,7 +237,7 @@ void WbShape::createWrenObjects() {
   WbBaseNode::createWrenObjects();
 
   // handle both kinds of appearance nodes
-  WbBaseNode *baseNode = dynamic_cast<WbBaseNode *>(mAppearance->value());
+  WbBaseNode *baseNode = qobject_cast<WbBaseNode *>(mAppearance->value());
   if (baseNode)
     baseNode->createWrenObjects();
 

@@ -137,11 +137,14 @@ void WbRadio::handleMessage(QDataStream &stream) {
     case C_RADIO_SET_ADDRESS: {
       int adressSize = 0;
       stream >> adressSize;
-      char address[adressSize];
+      char *address = new char[adressSize];
       stream.readRawData(address, adressSize);
       mAddress->setValue(address);
       if (plugin)
         plugin->setAddress(mID, address);
+
+	  delete[] address;
+
       return;
     }
 
@@ -188,16 +191,20 @@ void WbRadio::handleMessage(QDataStream &stream) {
     case C_RADIO_SEND: {
       int destSize = 0;
       stream >> destSize;
-      char dest[destSize];
+      char *dest = new char[destSize];
       stream.readRawData(dest, destSize);
       int dataSize = 0;
       stream >> dataSize;
-      char data[dataSize];  // 'void *' previously
+      char *data = new char[dataSize];  // 'void *' previously
       stream.readRawData(data, dataSize);
       double delay;
       stream >> delay;
       if (plugin)
         plugin->send(mID, dest, data, dataSize, delay);
+
+	  delete[] dest;
+	  delete[] data;
+
       return;
     }
 

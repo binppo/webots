@@ -17,7 +17,7 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include <unistd.h>
+//#include <unistd.h>
 #include <webots/types.h>  // for bool
 
 const char *wb_file_get_extension(const char *filename);  // returns NULL in case of issues

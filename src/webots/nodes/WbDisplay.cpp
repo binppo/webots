@@ -159,7 +159,7 @@ void WbDisplay::findImageTextures() {
     return;
 
   WbNode *firstChild = children().item(0);
-  WbShape *shape = dynamic_cast<WbShape *>(firstChild);
+  WbShape *shape = qobject_cast<WbShape *>(firstChild);
   if (shape) {
     WbAppearance *appearance = shape->appearance();
     WbPbrAppearance *pbrAppearance = shape->pbrAppearance();
@@ -176,7 +176,7 @@ void WbDisplay::findImageTextures() {
         mImageTextures.push_back(theTexture);
     }
   } else {
-    WbGroup *group = dynamic_cast<WbGroup *>(firstChild);
+    WbGroup *group = qobject_cast<WbGroup *>(firstChild);
     if (group)
       findImageTextures(group);
   }
@@ -195,7 +195,7 @@ void WbDisplay::findImageTextures(WbGroup *group) {
   WbMFNode::Iterator i(group->children());
   while (i.hasNext()) {
     WbNode *node = i.next();
-    WbShape *shape = dynamic_cast<WbShape *>(node);
+    WbShape *shape = qobject_cast<WbShape *>(node);
     if (shape) {
       WbAppearance *appearance = shape->appearance();
       WbPbrAppearance *pbrAppearance = shape->pbrAppearance();
@@ -212,7 +212,7 @@ void WbDisplay::findImageTextures(WbGroup *group) {
           mImageTextures.push_back(theTexture);
       }
     } else {
-      WbGroup *g = dynamic_cast<WbGroup *>(node);
+      WbGroup *g = qobject_cast<WbGroup *>(node);
       if (g)
         findImageTextures(g);
     }
@@ -264,9 +264,12 @@ void WbDisplay::handleMessage(QDataStream &stream) {
       // cppcheck-suppress knownConditionTrueFalse
       mAntiAliasing = antiAliasing == 1;
       stream >> size;
-      char font[size];
+      char *font = new char[size];
       stream.readRawData(font, size);
       setFont(font, fontSize);
+
+	  delete[] font;
+
       break;
     }
     case C_DISPLAY_DRAW_PIXEL:
@@ -809,8 +812,10 @@ void WbDisplay::drawPolygon(const int *px, const int *py, int size, bool fill) {
   if (minX >= width() || minY >= height() || maxX < 0 || maxY < 0)
     return;  // out of bounds
 
-  int nodeX[size], pixelY, swap;
-  int horizontalEdgesCounter = 0, horizontalEdges[3 * size];
+  std::vector<int> nodeX(size);
+  int pixelY, swap;
+  int horizontalEdgesCounter = 0;
+  std::vector<int> horizontalEdges(3 * size);
 
   // Loop through visible rows of the polygon
   for (pixelY = qMax(0, minY); pixelY <= qMin(height() - 1, maxY); pixelY++) {

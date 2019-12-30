@@ -17,7 +17,9 @@
 
 #include "WbGeometry.hpp"
 
-class WbPlane : public WbGeometry {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPlane : public WbGeometry {
   Q_OBJECT
 
 public:

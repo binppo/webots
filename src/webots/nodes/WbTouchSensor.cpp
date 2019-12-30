@@ -209,17 +209,17 @@ void WbTouchSensor::computeValue() {
 }
 
 void WbTouchSensor::setODEDynamicFlag(WbBaseNode *_node) {
-  WbGeometry *geom = dynamic_cast<WbGeometry *>(_node);
+  WbGeometry *geom = qobject_cast<WbGeometry *>(_node);
 
   if (!geom) {
-    WbShape *shape = dynamic_cast<WbShape *>(_node);
+    WbShape *shape = qobject_cast<WbShape *>(_node);
     if (shape)
       geom = shape->geometry();
   }
   if (geom)
     dGeomSetDynamicFlag(geom->odeGeom());
   else {
-    WbGroup *group = dynamic_cast<WbGroup *>(_node);
+    WbGroup *group = qobject_cast<WbGroup *>(_node);
     if (group) {
       for (int i = 0; i < group->childCount(); i++)
         setODEDynamicFlag(group->child(i));

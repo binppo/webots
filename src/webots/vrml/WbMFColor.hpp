@@ -27,7 +27,9 @@
 
 #include <cassert>
 
-class WbMFColor : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFColor : public WbMultipleValue {
   Q_OBJECT
 
 public:

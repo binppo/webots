@@ -23,7 +23,7 @@
 namespace wren {
 
   // Class to represent a PBR material
-  class PbrMaterial : public Material {
+  struct PbrMaterial : public Material {
   public:
     WrMaterialType type() const override { return WR_MATERIAL_PBR; }
 

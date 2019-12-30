@@ -17,9 +17,11 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrPostProcessingEffectPass;
 
-class WbWrenLensFlare : public WbWrenAbstractPostProcessingEffect {
+class WB_LIB_EXPORT WbWrenLensFlare : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenLensFlare();
 

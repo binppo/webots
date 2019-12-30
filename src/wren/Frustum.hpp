@@ -22,9 +22,9 @@
 
 namespace wren {
 
-  class Camera;
+  struct Camera;
 
-  class Frustum {
+  struct Frustum {
   public:
     enum FrustumPlane {
       FRUSTUM_PLANE_LEFT,

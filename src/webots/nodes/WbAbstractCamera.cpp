@@ -151,7 +151,7 @@ void WbAbstractCamera::updateOptionalRendering(int option) {
 
 WbLens *WbAbstractCamera::lens() const {
   if (mLens)
-    return dynamic_cast<WbLens *>(mLens->value());
+    return qobject_cast<WbLens *>(mLens->value());
   else
     return NULL;
 }

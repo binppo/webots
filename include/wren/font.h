@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 struct WrFont;
-typedef struct WrFont WrFont;
+//typedef struct WrFont WrFont;
 
 typedef enum WrFontError {
   WR_FONT_ERROR_NONE,

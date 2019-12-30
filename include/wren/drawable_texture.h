@@ -7,10 +7,10 @@ extern "C" {
 
 /* Inheritance diagram: WrTexture2d <- WrDrawableTexture */
 struct WrDrawableTexture;
-typedef struct WrDrawableTexture WrDrawableTexture;
+//typedef struct WrDrawableTexture WrDrawableTexture;
 
 struct WrFont;
-typedef struct WrFont WrFont;
+//typedef struct WrFont WrFont;
 
 WrDrawableTexture *wr_drawable_texture_new();
 

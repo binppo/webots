@@ -99,7 +99,7 @@ void WbSyntaxHighlighter::highlightSearchText(const QString &text, int offset) {
 WbLanguageHighlighter::WbLanguageHighlighter(const WbLanguage *language, QTextDocument *parentWidget) :
   WbSyntaxHighlighter(parentWidget) {
   // define styles
-  WbTextBuffer *buffer = dynamic_cast<WbTextBuffer *>(parent()->parent()->parent());
+  WbTextBuffer *buffer = qobject_cast<WbTextBuffer *>(parent()->parent()->parent());
   buffer->style()->polish(buffer);
   mApiFormat.setForeground(buffer->apiColor());
   mCommentFormat.setForeground(buffer->commentColor());

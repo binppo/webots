@@ -127,6 +127,8 @@ namespace wren {
     DEBUG("Viewport::bind, this=" << this);
 
     assert(mFrameBuffer);
+	if(!mFrameBuffer)
+      return;
 
     mFrameBuffer->bind();
 

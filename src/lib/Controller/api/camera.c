@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <corecrt_math_defines.h>
 #include <webots/camera.h>
 #include <webots/robot.h>
 #include "abstract_camera.h"

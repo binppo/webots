@@ -17,11 +17,13 @@
 #ifndef WB_ROBOT_WINDOW_H
 #define WB_ROBOT_WINDOW_H
 
+#include <webots/types.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void *wb_robot_window_custom_function(void *);
+CONTROLLER_EXPORT void *wb_robot_window_custom_function(void *);
 
 #ifdef __cplusplus
 }

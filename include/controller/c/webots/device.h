@@ -22,19 +22,19 @@
 #define WB_DEVICE_H
 
 #define WB_USING_C_API
-#include "nodes.h"
-#include "types.h"
+#include <webots/nodes.h>
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-const char *wb_device_get_name(WbDeviceTag dt);
-const char *wb_device_get_model(WbDeviceTag dt);
-WbNodeType wb_device_get_node_type(WbDeviceTag dt);
+CONTROLLER_EXPORT const char *wb_device_get_name(WbDeviceTag dt);
+CONTROLLER_EXPORT const char *wb_device_get_model(WbDeviceTag dt);
+CONTROLLER_EXPORT WbNodeType wb_device_get_node_type(WbDeviceTag dt);
 
 // deprecated since Webots 8.0.0, please use wb_device_get_node_type() instead
-WbNodeType wb_device_get_type(WbDeviceTag dt) WB_DEPRECATED;
+CONTROLLER_EXPORT WbNodeType wb_device_get_type(WbDeviceTag dt) WB_DEPRECATED;
 
 #ifdef __cplusplus
 }

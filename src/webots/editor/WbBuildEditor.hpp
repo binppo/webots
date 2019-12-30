@@ -24,9 +24,11 @@
 #include <QtCore/QProcess>
 #include "WbTextEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class QAction;
 
-class WbBuildEditor : public WbTextEditor {
+class WB_LIB_EXPORT WbBuildEditor : public WbTextEditor {
   Q_OBJECT
 
 public:

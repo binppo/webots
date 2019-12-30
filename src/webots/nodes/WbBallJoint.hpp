@@ -23,7 +23,9 @@ class WbVector3;
 #include <cassert>
 #include "WbHinge2Joint.hpp"
 
-class WbBallJoint : public WbHinge2Joint {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBallJoint : public WbHinge2Joint {
   Q_OBJECT
 
 public:

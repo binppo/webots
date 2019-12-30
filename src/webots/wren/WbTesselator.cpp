@@ -19,6 +19,7 @@
 #include <cassert>
 #include <cstdlib>
 
+#include <Windows.h>
 #include <GL/glu.h>
 
 #ifdef _WIN32

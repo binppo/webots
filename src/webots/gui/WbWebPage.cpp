@@ -16,15 +16,9 @@
 
 #include "WbLog.hpp"
 
-#ifdef _WIN32
-void WbWebPage::javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceUrl) {
-  WbLog::javascriptLogToConsole(message, lineNumber, sourceUrl);
-}
-#else
 void WbWebPage::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber,
                                          const QString &sourceID) {
   if (sourceID.endsWith("qwebchannel.js"))
     return;  // Do not display qwebchannel.js logs because it contains pointless logs, and issues in this files are bugs.
   WbLog::javascriptLogToConsole(message, lineNumber, sourceID);
 }
-#endif

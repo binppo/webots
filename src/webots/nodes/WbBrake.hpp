@@ -19,7 +19,9 @@
 
 #include "WbJointDevice.hpp"
 
-class WbBrake : public WbJointDevice {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBrake : public WbJointDevice {
   Q_OBJECT
 
 public:

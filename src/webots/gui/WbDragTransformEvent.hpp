@@ -28,6 +28,8 @@
 #include "WbVector2.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 #include <QtCore/QSize>
 
 class WbAbstractTransform;
@@ -36,7 +38,7 @@ class WbTranslateRotateManipulator;
 class WbViewpoint;
 
 // WbDragTransformEvent class (abstract) : change the position or the orientation of a transform node
-class WbDragTransformEvent : public WbDragKinematicsEvent {
+class WB_LIB_EXPORT WbDragTransformEvent : public WbDragKinematicsEvent {
 public:
   WbDragTransformEvent(WbViewpoint *viewpoint, WbAbstractTransform *selectedTransform);
   virtual ~WbDragTransformEvent();
@@ -47,7 +49,7 @@ protected:
 };
 
 // another abstract layer:
-class WbTranslateEvent : public WbDragTransformEvent {
+class WB_LIB_EXPORT WbTranslateEvent : public WbDragTransformEvent {
 public:
   WbTranslateEvent(WbViewpoint *viewpoint, WbAbstractTransform *selectedTransform);
   virtual ~WbTranslateEvent();
@@ -65,7 +67,7 @@ protected:
 // Implemented classes:
 
 // WbDragHorizontalEvent class
-class WbDragHorizontalEvent : public WbTranslateEvent {
+class WB_LIB_EXPORT WbDragHorizontalEvent : public WbTranslateEvent {
 public:
   WbDragHorizontalEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbAbstractTransform *selectedTransform);
   virtual ~WbDragHorizontalEvent();
@@ -76,7 +78,7 @@ private:
 };
 
 // WbDragVerticalEvent class
-class WbDragVerticalEvent : public WbTranslateEvent {
+class WB_LIB_EXPORT WbDragVerticalEvent : public WbTranslateEvent {
 public:
   WbDragVerticalEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbAbstractTransform *selectedTransform);
   virtual ~WbDragVerticalEvent();
@@ -88,7 +90,7 @@ private:
 };
 
 // WbDragTranslateAlongAxisEvent class
-class WbDragTranslateAlongAxisEvent : public WbDragTransformEvent {
+class WB_LIB_EXPORT WbDragTranslateAlongAxisEvent : public WbDragTransformEvent {
   Q_OBJECT;
 
 public:
@@ -113,7 +115,7 @@ protected:
   WbVector2 mDirectionOnScreen;
 };
 
-class WbDragRotateAroundWorldVerticalAxisEvent : public WbDragTransformEvent {
+class WB_LIB_EXPORT WbDragRotateAroundWorldVerticalAxisEvent : public WbDragTransformEvent {
   Q_OBJECT;
 
 public:
@@ -130,7 +132,7 @@ protected:
 };
 
 // WbDragRotateAroundAxisEvent class
-class WbDragRotateAroundAxisEvent : public WbDragTransformEvent {
+class WB_LIB_EXPORT WbDragRotateAroundAxisEvent : public WbDragTransformEvent {
   Q_OBJECT;
 
 public:

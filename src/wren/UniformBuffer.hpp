@@ -19,7 +19,7 @@
 
 namespace wren {
 
-  class UniformBuffer : public GlUser {
+  struct UniformBuffer : public GlUser {
   public:
     UniformBuffer(unsigned int binding, int size);
     ~UniformBuffer();

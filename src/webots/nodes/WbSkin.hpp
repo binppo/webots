@@ -20,6 +20,8 @@
 #include "WbDevice.hpp"
 #include "WbSFString.hpp"
 
+#include <core/WbConfig.h>
+
 class WbMFNode;
 
 struct WrDynamicMesh;
@@ -28,7 +30,7 @@ struct WrRenderable;
 struct WrSkeleton;
 struct WrStaticMesh;
 
-class WbSkin : public WbBaseNode, public WbAbstractTransform, public WbDevice {
+class WB_LIB_EXPORT WbSkin : public WbBaseNode, public WbAbstractTransform, public WbDevice {
   Q_OBJECT
 
 public:

@@ -22,14 +22,14 @@
 
 namespace wren {
 
-  class FrameBuffer;
-  class Overlay;
-  class TextureRtt;
-  class PostProcessingEffect;
+  struct FrameBuffer;
+  struct Overlay;
+  struct TextureRtt;
+  struct PostProcessingEffect;
 
   // A Viewport is defined by its width and height, the Camera it uses for rendering and
   // the FrameBuffer it renders into. If no FrameBuffer is set, it renders to the main window.
-  class Viewport {
+  struct Viewport {
   public:
     // Encapsulate memory management
     static Viewport *createViewport() { return new Viewport(); }

@@ -69,17 +69,17 @@ WbBallJoint::~WbBallJoint() {
 }
 
 WbBallJointParameters *WbBallJoint::ballJointParameters() const {
-  return dynamic_cast<WbBallJointParameters *>(mParameters->value());
+  return qobject_cast<WbBallJointParameters *>(mParameters->value());
 }
 
 WbJointParameters *WbBallJoint::parameters3() const {
-  return dynamic_cast<WbJointParameters *>(mParameters3->value());
+  return qobject_cast<WbJointParameters *>(mParameters3->value());
 }
 
 WbMotor *WbBallJoint::motor3() const {
   WbMotor *motor = NULL;
   for (int i = 0; i < mDevice3->size(); ++i) {
-    motor = dynamic_cast<WbMotor *>(mDevice3->item(i));
+    motor = qobject_cast<WbMotor *>(mDevice3->item(i));
     if (motor)
       return motor;
   }
@@ -89,7 +89,7 @@ WbMotor *WbBallJoint::motor3() const {
 WbPositionSensor *WbBallJoint::positionSensor3() const {
   WbPositionSensor *sensor = NULL;
   for (int i = 0; i < mDevice3->size(); ++i) {
-    sensor = dynamic_cast<WbPositionSensor *>(mDevice3->item(i));
+    sensor = qobject_cast<WbPositionSensor *>(mDevice3->item(i));
     if (sensor)
       return sensor;
   }
@@ -99,7 +99,7 @@ WbPositionSensor *WbBallJoint::positionSensor3() const {
 WbBrake *WbBallJoint::brake3() const {
   WbBrake *brake = NULL;
   for (int i = 0; i < mDevice3->size(); ++i) {
-    brake = dynamic_cast<WbBrake *>(mDevice3->item(i));
+    brake = qobject_cast<WbBrake *>(mDevice3->item(i));
     if (brake)
       return brake;
   }
@@ -109,7 +109,7 @@ WbBrake *WbBallJoint::brake3() const {
 WbRotationalMotor *WbBallJoint::rotationalMotor3() const {
   WbRotationalMotor *motor = NULL;
   for (int i = 0; i < mDevice3->size(); ++i) {
-    motor = dynamic_cast<WbRotationalMotor *>(mDevice3->item(i));
+    motor = qobject_cast<WbRotationalMotor *>(mDevice3->item(i));
     if (motor)
       return motor;
   }
@@ -118,7 +118,7 @@ WbRotationalMotor *WbBallJoint::rotationalMotor3() const {
 
 WbJointDevice *WbBallJoint::device3(int index) const {
   if (index >= 0 && mDevice3->size() > index)
-    return dynamic_cast<WbJointDevice *>(mDevice3->item(index));
+    return qobject_cast<WbJointDevice *>(mDevice3->item(index));
   return NULL;
 }
 
@@ -282,7 +282,7 @@ void WbBallJoint::checkMotorLimit() {
 
 void WbBallJoint::addDevice2(int index) {
   WbHinge2Joint::addDevice2(index);
-  const WbMotor *const motor = dynamic_cast<WbMotor *>(mDevice2->item(index));
+  const WbMotor *const motor = qobject_cast<WbMotor *>(mDevice2->item(index));
   if (motor) {
     checkMotorLimit();
     connect(motor, &WbMotor::minPositionChanged, this, &WbBallJoint::checkMotorLimit, Qt::UniqueConnection);
@@ -295,10 +295,10 @@ void WbBallJoint::addDevice3(int index) {
   if (s) {
     WbRobot *const r = s->robot();
     assert(r);
-    WbBaseNode *decendant = dynamic_cast<WbBaseNode *>(mDevice3->item(index));
+    WbBaseNode *decendant = qobject_cast<WbBaseNode *>(mDevice3->item(index));
     r->descendantNodeInserted(decendant);
   }
-  const WbBrake *const brake = dynamic_cast<WbBrake *>(mDevice3->item(index));
+  const WbBrake *const brake = qobject_cast<WbBrake *>(mDevice3->item(index));
   if (brake)
     connect(brake, &WbBrake::brakingChanged, this, &WbBallJoint::updateSpringAndDampingConstants, Qt::UniqueConnection);
 }
@@ -409,7 +409,7 @@ void WbBallJoint::preFinalize() {
       device3(i)->preFinalize();
   }
 
-  WbBaseNode *const p3 = dynamic_cast<WbBaseNode *>(mParameters3->value());
+  WbBaseNode *const p3 = qobject_cast<WbBaseNode *>(mParameters3->value());
   if (p3 && !p3->isPreFinalizedCalled())
     p3->preFinalize();
 
@@ -431,7 +431,7 @@ void WbBallJoint::postFinalize() {
       device3(i)->postFinalize();
   }
 
-  WbBaseNode *const p3 = dynamic_cast<WbBaseNode *>(mParameters3->value());
+  WbBaseNode *const p3 = qobject_cast<WbBaseNode *>(mParameters3->value());
   if (p3 && !p3->isPostFinalizedCalled())
     p3->postFinalize();
 

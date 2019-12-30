@@ -21,9 +21,11 @@
 
 #include "WbIntSpinBox.hpp"
 
+#include <core/WbConfig.h>
+
 class QKeyEvent;
 
-class WbFieldIntSpinBox : public WbIntSpinBox {
+class WB_LIB_EXPORT WbFieldIntSpinBox : public WbIntSpinBox {
   Q_OBJECT
 
 public:

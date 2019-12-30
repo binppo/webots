@@ -17,6 +17,8 @@
 
 #include "WbBaseNode.hpp"
 
+#include <core/WbConfig.h>
+
 class WbRgb;
 class WbCubemap;
 
@@ -25,7 +27,7 @@ struct WrRenderable;
 struct WrMaterial;
 struct WrStaticMesh;
 
-class WbBackground : public WbBaseNode {
+class WB_LIB_EXPORT WbBackground : public WbBaseNode {
   Q_OBJECT
 
 public:

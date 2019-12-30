@@ -21,9 +21,9 @@
 
 namespace wren {
 
-  class Transform;
+  struct Transform;
 
-  class TextureCubeMap : public Texture {
+  struct TextureCubeMap : public Texture {
   public:
     // Encapsulate memory management
     static TextureCubeMap *createTextureCubeMap() { return new TextureCubeMap(); }

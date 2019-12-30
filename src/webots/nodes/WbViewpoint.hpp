@@ -21,6 +21,8 @@
 #include "WbRotation.hpp"
 #include "WbSFBool.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrCamera;
 struct WrTexture;
 struct WrViewport;
@@ -38,7 +40,7 @@ class WbWrenHdr;
 
 class QVariantAnimation;
 
-class WbViewpoint : public WbBaseNode {
+class WB_LIB_EXPORT WbViewpoint : public WbBaseNode {
   Q_OBJECT
 
 public:

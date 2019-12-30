@@ -21,13 +21,15 @@
 #include <windows.h>
 #endif
 
+#include <core/WbConfig.h>
+
 class QOpenGLContext;
 class QOpenGLShaderProgram;
 
 class WbRenderingDevice;
 class WbAbstractCamera;
 
-class WbRenderingDeviceWindow : public QWindow {
+class WB_LIB_EXPORT WbRenderingDeviceWindow : public QWindow {
   Q_OBJECT
 
 public:

@@ -22,7 +22,7 @@
 #define WB_RECEIVER_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,18 +33,18 @@ extern "C" {
 #endif
 
 // device functions
-void wb_receiver_enable(WbDeviceTag tag, int sampling_period);
-void wb_receiver_disable(WbDeviceTag tag);
-int wb_receiver_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_receiver_enable(WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT void wb_receiver_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_receiver_get_sampling_period(WbDeviceTag tag);
 
-void wb_receiver_set_channel(WbDeviceTag tag, int channel);
-int wb_receiver_get_channel(WbDeviceTag tag);
-int wb_receiver_get_queue_length(WbDeviceTag tag);
-void wb_receiver_next_packet(WbDeviceTag tag);
-int wb_receiver_get_data_size(WbDeviceTag tag);
-const void *wb_receiver_get_data(WbDeviceTag tag);
-double wb_receiver_get_signal_strength(WbDeviceTag tag);
-const double *wb_receiver_get_emitter_direction(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_receiver_set_channel(WbDeviceTag tag, int channel);
+CONTROLLER_EXPORT int wb_receiver_get_channel(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_receiver_get_queue_length(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_receiver_next_packet(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_receiver_get_data_size(WbDeviceTag tag);
+CONTROLLER_EXPORT const void *wb_receiver_get_data(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_receiver_get_signal_strength(WbDeviceTag tag);
+CONTROLLER_EXPORT const double *wb_receiver_get_emitter_direction(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }

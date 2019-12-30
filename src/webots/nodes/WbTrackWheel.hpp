@@ -29,7 +29,9 @@
 #include "WbSFVector2.hpp"
 #include "WbTransform.hpp"
 
-class WbTrackWheel : public WbTransform {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTrackWheel : public WbTransform {
   Q_OBJECT
 public:
   explicit WbTrackWheel(WbTokenizer *tokenizer = NULL);

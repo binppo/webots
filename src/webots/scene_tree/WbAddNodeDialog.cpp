@@ -439,7 +439,7 @@ void WbAddNodeDialog::buildTree() {
 
       QStringList strl(QStringList() << currentFullDefName << nodeFilePath);
 
-      if (boInfo && !(dynamic_cast<const WbBaseNode *const>(defNode))->isSuitableForInsertionInBoundingObject())
+      if (boInfo && !(qobject_cast<const WbBaseNode *const>(defNode))->isSuitableForInsertionInBoundingObject())
         strl << INVALID_FOR_INSERTION_IN_BOUNDING_OBJECT;
 
       QTreeWidgetItem *const child = new QTreeWidgetItem(mUsesItem, strl);

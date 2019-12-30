@@ -33,7 +33,7 @@
 
 namespace wren {
 
-  class DynamicMesh : public Mesh {
+  struct DynamicMesh : public Mesh {
   public:
     static DynamicMesh *createDynamicMesh(bool hasNormals, bool hasTextureCoordinates, bool hasColorPerVertex) {
       return new DynamicMesh(hasNormals, hasTextureCoordinates, hasColorPerVertex);

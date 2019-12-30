@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenRangeNoise : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenRangeNoise : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenRangeNoise();
 

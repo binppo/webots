@@ -22,7 +22,7 @@
 #define WB_POSITION_SENSOR_H
 
 #define WB_USING_C_API
-#include "types.h"
+#include <webots/types.h>
 
 #ifndef WB_MATLAB_LOADLIBRARY
 #include <math.h>
@@ -32,13 +32,13 @@
 extern "C" {
 #endif
 
-void wb_position_sensor_enable(WbDeviceTag tag, int sampling_period);  // milliseconds
-void wb_position_sensor_disable(WbDeviceTag tag);
-int wb_position_sensor_get_sampling_period(WbDeviceTag tag);
-double wb_position_sensor_get_value(WbDeviceTag tag);  // rad or meters
-WbJointType wb_position_sensor_get_type(WbDeviceTag tag);
-WbDeviceTag wb_position_sensor_get_motor(WbDeviceTag tag);
-WbDeviceTag wb_position_sensor_get_brake(WbDeviceTag tag);
+CONTROLLER_EXPORT void wb_position_sensor_enable(WbDeviceTag tag, int sampling_period);  // milliseconds
+CONTROLLER_EXPORT void wb_position_sensor_disable(WbDeviceTag tag);
+CONTROLLER_EXPORT int wb_position_sensor_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT double wb_position_sensor_get_value(WbDeviceTag tag);  // rad or meters
+CONTROLLER_EXPORT WbJointType wb_position_sensor_get_type(WbDeviceTag tag);
+CONTROLLER_EXPORT WbDeviceTag wb_position_sensor_get_motor(WbDeviceTag tag);
+CONTROLLER_EXPORT WbDeviceTag wb_position_sensor_get_brake(WbDeviceTag tag);
 
 #ifdef __cplusplus
 }
