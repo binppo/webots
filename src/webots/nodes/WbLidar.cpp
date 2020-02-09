@@ -91,7 +91,7 @@ WbLidar::WbLidar(const WbNode &other) : WbAbstractCamera(other) {
 }
 
 WbLidar::~WbLidar() {
-  delete mTemporaryImage;
+  delete [] mTemporaryImage;
   if (areWrenObjectsInitialized())
     deleteWren();
 }
