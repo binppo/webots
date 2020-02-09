@@ -39,6 +39,8 @@ class WbShape;
 class WbSolid;
 class WbTransform;
 
+class ccDBRoot;
+
 class QString;
 
 namespace WbNodeUtilities {
@@ -221,6 +223,9 @@ namespace WbNodeUtilities {
 
   // return a node's bounding sphere ancestor if it exists (can be the node's own)
   WB_LIB_EXPORT WbBoundingSphere *boundingSphereAncestor(const WbNode *node);
+
+  WB_LIB_EXPORT void setImageDB(ccDBRoot *db);
+  WB_LIB_EXPORT ccDBRoot *getImageDB();
 };  // namespace WbNodeUtilities
 
 #endif

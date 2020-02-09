@@ -1753,3 +1753,12 @@ WbBoundingSphere *WbNodeUtilities::boundingSphereAncestor(const WbNode *node) {
   }
   return nullptr;
 }
+
+static ccDBRoot *mImageDB = nullptr;
+void WbNodeUtilities::setImageDB(ccDBRoot *db) {
+  mImageDB = db;
+}
+
+ccDBRoot *WbNodeUtilities::getImageDB() {
+  return mImageDB;
+}
