@@ -118,6 +118,7 @@ signals:
   void showRobotWindowRequest();
   void applicationActionsUpdateRequested();
   void contextMenuRequested(const QPoint &pos);
+  void keyPressed(int key);
 
 private:
   QWidget *mParentWidget;

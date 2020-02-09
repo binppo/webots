@@ -102,6 +102,7 @@ signals:
   void requestOpenUrl(const QString &fileName, const QString &message, const QString &title);
   void requestSavePerspective(bool reloading, bool saveToFile);
   void requestRestorePerspective(bool reloading, bool firstLoad, bool loadingFromMemory);
+  void keyPressed(int key);
 
 protected slots:
   void keyReleaseEvent(QKeyEvent *event) override;

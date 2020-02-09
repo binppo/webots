@@ -77,6 +77,7 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   mView3D->setParentWidget(mView3DContainer);
   mView3DContainer->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(mView3D, &WbView3D::contextMenuRequested, this, &WbSimulationView::showMenu);
+  connect(mView3D, &WbView3D::keyPressed, this, &WbSimulationView::keyPressed);
 
   // it is preferable to resize the mView3DContainer instead of the mView3D
   // when creating a video so that the black window always has exactly the

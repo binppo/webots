@@ -2092,6 +2092,9 @@ void WbView3D::keyPressEvent(QKeyEvent *event) {
     return;
   }
 
+  if (event->key()>=Qt::Key_F1 && event->key()<=Qt::Key_F35)
+	  emit keyPressed(event->key());
+
   // pass key event to robots if appropriate
   const int modifiers = (((event->modifiers() & Qt::SHIFT) == 0) ? 0 : WbRobot::mapSpecialKey(Qt::SHIFT)) +
                         (((event->modifiers() & Qt::CTRL) == 0) ? 0 : WbRobot::mapSpecialKey(Qt::CTRL)) +
