@@ -475,6 +475,71 @@ void WbSceneTree::del(WbNode *nodeToDel) {
   updateToolbar();
 }
 
+void WbSceneTree::del(const QString &name) {
+  if(name.isEmpty())
+    return;
+
+  QModelIndex id = mModel->findModelIndexFromName(name);
+  if(!id.isValid())
+    return;
+
+  WbTreeItem *deletedItem = mModel->indexToItem(id);
+  if (!deletedItem)
+    return;
+
+  WbNode *node = deletedItem->node();
+
+  bool dictionaryUpdated = false;
+  if (node) {
+    dictionaryUpdated = node->hasAreferredDefNodeDescendant();
+
+    bool previousRowsAboutToBeRemoved = mRowsAreAboutToBeRemoved;
+    mFieldEditor->editField(NULL, NULL);  // reset field editor
+    if (!(node->isUseNode() && deletedItem->isSFNode()))
+      mRowsAreAboutToBeRemoved = true;
+    // else no rows will be deleted
+
+    if (!WbNodeOperations::instance()->deleteNode(node)) {
+      mRowsAreAboutToBeRemoved = previousRowsAboutToBeRemoved;
+      return;
+    }
+
+    WbUndoStack::instance()->clear();  // clear undo stack if no available UNDO/REDO implementation of del action
+  } else {
+    // item
+    mRowsAreAboutToBeRemoved = true;
+    WbMultipleValue *mvalue = static_cast<WbMultipleValue *>(mSelectedItem->parent()->field()->value());
+    WbUndoStack::instance()->push(new WbRemoveItemCommand(mvalue, mSelectedItem->row()));
+  }
+
+  mRowsAreAboutToBeRemoved = false;
+
+  if (dictionaryUpdated) {
+    mModel->emitLayoutChanged();  // makes the 'expandable' triangle visible for USE nodes turned into DEF nodes
+    if (!WbNodeOperations::instance()->isFromSupervisor())
+      // selection already removed in handleRowRemoval function but it is changed when updating the dictionay
+      clearSelection();
+  }
+
+  WbWorld::instance()->setModifiedFromSceneTree();
+
+  refreshTreeView();
+  updateValue();
+  updateToolbar();
+}
+
+WbNode *WbSceneTree::find(const QString &name) {
+  QModelIndex id = mModel->findModelIndexFromName(name);
+  if(!id.isValid())
+    return nullptr;
+
+  WbTreeItem *item = mModel->indexToItem(id);
+  if (!item)
+    return nullptr;
+
+  return item->node();
+}
+
 void WbSceneTree::reset() {
   WbField *field = mSelectedItem->field();
   assert(field);
@@ -912,6 +977,50 @@ void WbSceneTree::addNew() {
     QModelIndex newItemModelIndex = mModel->itemToIndex(mSelectedItem->child(newNodeIndex));
     mTreeView->setCurrentIndex(newItemModelIndex);
   }
+
+  mTreeView->scrollToModelIndex(mModel->itemToIndex(mSelectedItem));
+
+  WbWorld::instance()->setModifiedFromSceneTree();
+
+  updateValue();
+  updateToolbar();
+}
+
+void WbSceneTree::addToScene(const QString &phrase) {
+  mSelectedItem = mModel->rootItem()->lastChild();
+  assert(mSelectedItem);
+
+  // set selected WbField and WbNode
+  WbTreeItem *selectedFieldItem = NULL;
+  WbField *selectedField = NULL;
+  WbNode *selectedNodeParent = NULL;
+  int newNodeIndex = 0;
+
+  if (!mSelectedItem->isNode()) {
+    // field or item
+    if (mSelectedItem->isField()) {  // field
+      selectedFieldItem = mSelectedItem;
+      selectedField = selectedFieldItem->field();
+    } else {  // item
+      newNodeIndex = mSelectedItem->row() + 1;
+      selectedFieldItem = mSelectedItem->parent();
+      selectedField = selectedFieldItem->field();
+    }
+
+    selectedNodeParent = mSelectedItem->parent()->node();
+
+  } else {  // node
+    newNodeIndex = mSelectedItem->row() + 1;
+    selectedFieldItem = mSelectedItem->parent();
+    selectedField = selectedFieldItem->field();
+    selectedNodeParent = mSelectedItem->node()->parent();
+  }
+
+  // import node
+  WbBaseNode *const parentBaseNode = qobject_cast<WbBaseNode *>(selectedNodeParent);
+  WbNodeOperations::instance()->importNode(parentBaseNode, selectedField, newNodeIndex, "", phrase);
+
+  //updateSelection();
 
   mTreeView->scrollToModelIndex(mModel->itemToIndex(mSelectedItem));
 

@@ -55,6 +55,8 @@ public:
   void setWorld(WbWorld *world);
   WbSourceFileEditor *sourceFileEditor() const;
 
+  WbSceneTreeModel *model() const { return mModel; }
+
   void cleanup();
 
   void prepareWorldLoading();
@@ -68,11 +70,15 @@ public:
   int &handleWidth() { return mHandleWidth; }
   void setHandleWidth(const int &handleWidth) { mHandleWidth = handleWidth; }
 
+  void del(const QString &name);
+  WbNode *find(const QString &name);
+
 public slots:
   void selectTransform(WbAbstractTransform *t);
   void updateValue();
   void updateApplicationActions();
   void updateSelection();
+  void addToScene(const QString&);
 
 signals:
   void valueChangedFromGui();

@@ -405,6 +405,23 @@ QModelIndex WbSceneTreeModel::findModelIndexFromField(WbField *field, WbTreeItem
   return QModelIndex();
 }
 
+QModelIndex WbSceneTreeModel::findModelIndexFromName(const QString &name, WbTreeItem *current) const {
+  if (name.isEmpty() || !current)
+    return QModelIndex();
+
+  if (0==current->data().compare(name, Qt::CaseInsensitive))
+    return itemToIndex(current);
+
+  const int nChild = mRootItem->childCount();
+  for (int i = 0; i < nChild; ++i) {
+    QModelIndex index = findModelIndexFromName(name, current->child(i));
+    if (index.isValid())
+      return index;
+  }
+
+  return QModelIndex();
+}
+
 /////////////////////////////////////////////
 // Utility functions related to item index //
 /////////////////////////////////////////////

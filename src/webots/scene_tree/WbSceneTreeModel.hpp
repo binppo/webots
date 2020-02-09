@@ -68,6 +68,9 @@ public:
   QModelIndex findModelIndexFromField(WbField *field, WbTreeItem *current) const;
   QModelIndex findModelIndexFromField(WbField *field) const { return findModelIndexFromField(field, mRootItem); }
 
+  QModelIndex findModelIndexFromName(const QString &name, WbTreeItem *current) const;
+  QModelIndex findModelIndexFromName(const QString &name) const { return findModelIndexFromName(name, mRootItem); }
+
   void createChildrenItemForNode(WbNode *node);
 
   void emitLayoutChanged();
