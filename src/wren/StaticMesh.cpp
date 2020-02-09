@@ -1563,6 +1563,47 @@ namespace wren {
     return mesh;
   }
 
+  StaticMesh *StaticMesh::preCreatePointSet(int coordCount, const float *coordData, const float *colorData, float *&coordPtr, float *&colorPtr) {
+    uint64_t hash = cache::sipHash13c(reinterpret_cast<const char *>(reinterpret_cast<const void *>(coordData)), 4);
+    if (colorData) {
+      // cppcheck-suppress uninitvar
+      hash ^= cache::sipHash13c("colorData", 9);
+      hash ^= cache::sipHash13c(reinterpret_cast<const char *>(reinterpret_cast<const void *>(colorData)), 4);
+    }
+
+    const cache::Key key(hash);
+
+    StaticMesh *mesh;
+    if (StaticMesh::createOrRetrieveFromCache(&mesh, key))
+      return mesh;
+
+    std::vector<glm::vec3> &coords = mesh->coords();
+    coords.resize(coordCount);
+
+	coordPtr = reinterpret_cast<float *>(coords.data());
+
+    mesh->estimateIndexCount(coordCount);
+    for (int i = 0; i < coordCount; ++i)
+      mesh->addIndex(i);
+
+    // (Optional) Color per vertex
+    if (colorData) {
+      std::vector<glm::vec3> &colors = mesh->colors();
+      colors.resize(coordCount);
+	  colorPtr = reinterpret_cast<float *>(colors.data());
+    }
+
+    return mesh;
+  }
+
+  void StaticMesh::postCreatePointSet(StaticMesh *mesh) {
+    // bounding volumes
+    mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+
+    mesh->setup();
+  }
+
   StaticMesh *StaticMesh::createTriangleMesh(int coordCount, int indexCount, const float *coordData, const float *normalData,
                                              const float *texCoordData, const float *unwrappedTexCoordData,
                                              const unsigned int *indexData, bool outline) {
@@ -2040,6 +2081,14 @@ WrStaticMesh *wr_static_mesh_capsule_new(int subdivision, float radius, float he
 
 WrStaticMesh *wr_static_mesh_line_set_new(int coord_count, const float *coord_data, const float *color_data) {
   return reinterpret_cast<WrStaticMesh *>(wren::StaticMesh::createLineSet(coord_count, coord_data, color_data));
+}
+
+WrStaticMesh *wr_static_mesh_point_pre_set_new(int coord_count, const float *coord_data, const float *color_data, float *&coordPtr, float *&colorPtr) {
+  return reinterpret_cast<WrStaticMesh *>(wren::StaticMesh::preCreatePointSet(coord_count, coord_data, color_data, coordPtr, colorPtr));
+}
+
+void wr_static_mesh_point_post_set_new(WrStaticMesh *mesh) {
+  wren::StaticMesh::postCreatePointSet(reinterpret_cast<wren::StaticMesh*>(mesh));
 }
 
 WrStaticMesh *wr_static_mesh_point_set_new(int coord_count, const float *coord_data, const float *color_data) {

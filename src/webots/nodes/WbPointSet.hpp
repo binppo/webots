@@ -17,10 +17,14 @@
 
 #include "WbGeometry.hpp"
 
+#include <QtCore/QScopedPointer>
+
 #include <core/WbConfig.h>
 
 class WbCoordinate;
 class WbColor;
+class WbNormal;
+class ccPointCloud;
 
 struct WrMaterial;
 
@@ -56,6 +60,23 @@ public:
   // friction (PointSet never used in a boundingObject)
   WbVector3 computeFrictionDirection(const WbVector3 &normal) const override { return WbVector3(0, 0, 0); }
 
+  bool loadData(const QString &id);
+
+  struct WbPointCloud {
+    float *coordData = nullptr;
+    float *colorData = nullptr;
+	int count = 0;
+
+	WbPointCloud() {}
+	~WbPointCloud() {}
+
+	void reset() {
+      coordData = nullptr;
+      colorData = nullptr;
+	  count = 0;
+	}
+  };
+
 protected:
   // reimplemented protected functions
   bool isShadedGeometryPickable() override { return false; }
@@ -64,6 +85,8 @@ private:
   // user accessible fields
   WbSFNode *mCoord;
   WbSFNode *mColor;
+  WbSFString *mFilePath;
+  WbPointCloud mPointCloud;
 
   bool sanitizeFields();
 
@@ -73,11 +96,17 @@ private:
 
   // WREN
   void buildWrenMesh();
+  void prebuildWrenMesh(int count, bool reserveRGBTable);
+  void postbuildWrenMesh();
   int computeCoordsAndColorData(float *coordsData, float *colorData);
+  bool loadFromFile(const QString &fileName);
+  bool loadFromCC(const ccPointCloud *pc);
 
 private slots:
   void updateCoord();
   void updateColor();
+  void updateFilePath();
+  void updateData();
 };
 
 #endif

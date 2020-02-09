@@ -112,6 +112,9 @@
     <Filter Include="nodes\utils\GeneratedFiles">
       <UniqueIdentifier>{26ac5610-c26b-4767-ab2a-f855cb0329ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="external\rply">
+      <UniqueIdentifier>{5ed77ef3-cb23-4b41-8250-35d16fb0b5cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wren\WbCoordinateSystem.cpp">
@@ -1866,6 +1869,9 @@
     <ClCompile Include="gui\GeneratedFiles\moc_WbRobotWindowTransportLayer.cpp">
       <Filter>gui\GeneratedFiles</Filter>
     </ClCompile>
+    <ClCompile Include="external\rply\rply.c">
+      <Filter>external\rply</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wren\WbLightRepresentation.hpp">
@@ -2203,6 +2209,9 @@
     </ClInclude>
     <ClInclude Include="..\..\resource.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="external\rply\rply.h">
+      <Filter>external\rply</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

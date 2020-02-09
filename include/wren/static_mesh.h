@@ -32,6 +32,8 @@ WrStaticMesh *wr_static_mesh_capsule_new(int subdivision, float radius, float he
 WrStaticMesh *wr_static_mesh_line_set_new(int coord_count, const float *coord_data, const float *color_data);
 /* Creates a point set. Each coordinate defines a point. */
 WrStaticMesh *wr_static_mesh_point_set_new(int coord_count, const float *coord_data, const float *color_data);
+WrStaticMesh *wr_static_mesh_point_pre_set_new(int coord_count, const float *coord_data, const float *color_data, float *&coord_ptr, float *&color_ptr);
+void wr_static_mesh_point_post_set_new(WrStaticMesh *mesh);
 /* Creates a triangle mesh using the provided vertex and index data. */
 WrStaticMesh *wr_static_mesh_new(int vertex_count, int index_count, const float *coord_data, const float *normal_data,
                                  const float *tex_coord_data, const float *unwrapped_tex_coord_data,
