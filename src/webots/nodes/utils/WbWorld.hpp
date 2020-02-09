@@ -137,17 +137,20 @@ public:
   const QList<dImmersionGeom> &immersionGeoms() const { return mImmersionGeoms; }
   void appendOdeContact(const WbOdeContact &odeContact);
   void appendOdeImmersionGeom(const dImmersionGeom &immersionGeom);
+  void lockOdeContact();
+  void unlockOdeContact();
 
   void retrieveNodeNamesWithOptionalRendering(QStringList &centerOfMassNodeNames, QStringList &centerOfBuoyancyNodeNames,
                                               QStringList &supportPolygonNodeNames) const;
 
   virtual void reset() {}
-
+  
 signals:
   void modificationChanged(bool modified);
   void worldLoadingStatusHasChanged(QString status);
   void viewpointChanged();
   void robotAdded(WbRobot *robot);
+  void collisionDetected(bool);
 
 public slots:
   void awake();

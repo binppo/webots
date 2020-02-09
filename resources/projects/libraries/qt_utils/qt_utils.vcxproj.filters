@@ -249,6 +249,9 @@
     <ClCompile Include="core\GeneratedFiles\moc_MainApplication.cpp">
       <Filter>core\GeneratedFiles</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\DepthCameraWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\StandardPaths.hpp">
@@ -290,38 +293,103 @@
     <ClInclude Include="widgets\ScalarSensorWidget.hpp">
       <Filter>widgets</Filter>
     </ClInclude>
+    <ClInclude Include="widgets\DepthCameraWidget.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="core\MainApplication.hpp" />
-    <CustomBuild Include="gui\GenericWindow.hpp" />
-    <CustomBuild Include="motion_editor\AddStateDialog.hpp" />
-    <CustomBuild Include="motion_editor\ListWidget.hpp" />
-    <CustomBuild Include="motion_editor\Motion.hpp" />
-    <CustomBuild Include="motion_editor\MotionEditor.hpp" />
-    <CustomBuild Include="motion_editor\MotionPlayer.hpp" />
-    <CustomBuild Include="motion_editor\MotionWidget.hpp" />
-    <CustomBuild Include="motion_editor\MotorTargetState.hpp" />
-    <CustomBuild Include="motion_editor\MotorTargetStateWidget.hpp" />
-    <CustomBuild Include="motion_editor\Pose.hpp" />
-    <CustomBuild Include="motion_editor\PoseEditor.hpp" />
-    <CustomBuild Include="motion_editor\PoseWidget.hpp" />
-    <CustomBuild Include="widgets\AccelerometerWidget.hpp" />
-    <CustomBuild Include="widgets\CameraWidget.hpp" />
-    <CustomBuild Include="widgets\CompassWidget.hpp" />
-    <CustomBuild Include="widgets\DifferentialWheelsWidget.hpp" />
-    <CustomBuild Include="widgets\DistanceSensorWidget.hpp" />
-    <CustomBuild Include="widgets\GPSWidget.hpp" />
-    <CustomBuild Include="widgets\GyroWidget.hpp" />
-    <CustomBuild Include="widgets\InertialUnitWidget.hpp" />
-    <CustomBuild Include="widgets\LidarWidget.hpp" />
-    <CustomBuild Include="widgets\LightSensorWidget.hpp" />
-    <CustomBuild Include="widgets\MotorWidget.hpp" />
-    <CustomBuild Include="widgets\PositionSensorWidget.hpp" />
-    <CustomBuild Include="widgets\RadarWidget.hpp" />
-    <CustomBuild Include="widgets\RangeFinderWidget.hpp" />
-    <CustomBuild Include="widgets\SensorWidget.hpp" />
-    <CustomBuild Include="widgets\TouchSensorScalarWidget.hpp" />
-    <CustomBuild Include="widgets\TouchSensorVectorialWidget.hpp" />
-    <CustomBuild Include="widgets\VectorialSensorWidget.hpp" />
+    <CustomBuild Include="widgets\AccelerometerWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\CameraWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\CompassWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\DifferentialWheelsWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\DistanceSensorWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\GPSWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\GyroWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\InertialUnitWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\LidarWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\LightSensorWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\PositionSensorWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\MotorWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\RadarWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\RangeFinderWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\SensorWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\TouchSensorScalarWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\TouchSensorVectorialWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\VectorialSensorWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\ListWidget.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\Pose.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\PoseEditor.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\PoseWidget.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\MotorTargetStateWidget.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\MotorTargetState.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\MotionWidget.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\MotionEditor.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\MotionPlayer.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\Motion.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\MainApplication.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\GenericWindow.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="motion_editor\AddStateDialog.hpp">
+      <Filter>motion_editor</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

@@ -53,6 +53,7 @@
 #include "WbWorldInfo.hpp"
 #include "WbWrenOpenGlContext.hpp"
 #include "WbWrenRenderingContext.hpp"
+#include "WbContactProperties.hpp"
 
 #include <wren/scene.h>
 
@@ -62,6 +63,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QStringListIterator>
 #include <QtCore/QTextStream>
+#include <QtGui/QVector3D>
 
 #include <ode/fluid_dynamics/ode_fluid_dynamics.h>
 
@@ -592,6 +594,14 @@ void WbWorld::appendOdeContact(const WbOdeContact &odeContact) {
 void WbWorld::appendOdeImmersionGeom(const dImmersionGeom &immersionGeom) {
   mOdeContactsMutex.lock();  // TODO: check if this mutex is necessary and if it needs to be renamed
   mImmersionGeoms.append(immersionGeom);
+  mOdeContactsMutex.unlock();
+}
+
+void WbWorld::lockOdeContact() {
+  mOdeContactsMutex.lock();
+}
+
+void WbWorld::unlockOdeContact() {
   mOdeContactsMutex.unlock();
 }
 

@@ -746,6 +746,11 @@ void WbSimulationCluster::odeNearCallback(void *data, dGeomID o1, dGeomID o2) {
     const WbOdeContact odeContact(contact[i].geom, contactProperties);
     world->appendOdeContact(odeContact);
   }
+
+  if(n>0 && (r1 || r2))
+  {
+    emit WbWorld::instance()->collisionDetected(true);
+  }
 }
 
 void WbSimulationCluster::odeSensorRaysUpdate(int threadID) {
