@@ -207,6 +207,21 @@ public:
     return true;
   }
 
+  static bool isOnEdgeBetweenVertices(const WbVector3 &testPoint, const WbVector3 &lineStart, const WbVector3 &lineEnd, const double tolerance = 0.000001) {
+    const WbVector3 lineSegment = lineEnd - lineStart;
+    const WbVector3 toPoint = WbVector3(testPoint[0], testPoint[1], testPoint[2]) - lineStart;
+
+    // the points aren't aligned
+    if (!lineSegment.cross(toPoint).almostEquals(WbVector3(), tolerance))
+      return false;
+
+    // the point isn't on the segment
+    if (lineSegment.dot(toPoint) < 0 || lineSegment.dot(toPoint) > lineSegment.length2())
+      return false;
+
+    return true;
+  }
+
   // text conversion
   QString toString(WbPrecision::Level level) const {
     return QString("%1 %2 %3")

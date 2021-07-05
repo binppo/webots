@@ -25,7 +25,7 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #ifndef WB_CHANNEL_BROADCAST
@@ -33,21 +33,21 @@ extern "C" {
 #endif
 
 // device functions
-CONTROLLER_EXPORT void wb_receiver_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_receiver_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_receiver_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_receiver_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_receiver_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_receiver_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT void wb_receiver_set_channel(WbDeviceTag tag, int channel);
-CONTROLLER_EXPORT int wb_receiver_get_channel(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_receiver_get_queue_length(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_receiver_next_packet(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_receiver_get_data_size(WbDeviceTag tag);
-CONTROLLER_EXPORT const void *wb_receiver_get_data(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_receiver_get_signal_strength(WbDeviceTag tag);
-CONTROLLER_EXPORT const double *wb_receiver_get_emitter_direction(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_receiver_set_channel(WbRobotContext *context, WbDeviceTag tag, int channel);
+CONTROLLER_EXPORT extern int wb_receiver_get_channel(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_receiver_get_queue_length(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_receiver_next_packet(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_receiver_get_data_size(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const void *wb_receiver_get_data(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_receiver_get_signal_strength(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const double *wb_receiver_get_emitter_direction(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_RECEIVER_H */

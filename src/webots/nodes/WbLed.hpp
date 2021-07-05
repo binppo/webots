@@ -57,6 +57,9 @@ public:
   void powerOn(bool) override;
   void handleMessage(QDataStream &) override;
 
+public slots:
+  void LED_SET(int v);
+
 protected slots:
   void updateChildren() override;
   virtual void updateIfNeeded(WbField *);

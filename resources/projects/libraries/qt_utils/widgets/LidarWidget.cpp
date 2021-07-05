@@ -13,7 +13,7 @@ using namespace webotsQtUtils;
 
 LidarWidget::LidarWidget(Device *device, QWidget *parent) : SensorWidget(device, parent) {
   mVBox = new QVBoxLayout(mMainWidget);
-  mNumberOfLayers = wb_lidar_get_number_of_layers(mDevice->tag());
+  mNumberOfLayers = wb_lidar_get_number_of_layers(mDevice->context(), mDevice->tag());
   if (mNumberOfLayers <= MAX_LABEL) {  // one label per layer
     mLabel = new QLabel *[mNumberOfLayers];
     for (int i = 0; i < mNumberOfLayers; ++i) {
@@ -31,7 +31,7 @@ LidarWidget::LidarWidget(Device *device, QWidget *parent) : SensorWidget(device,
   mPointCloudCheckBox = new QCheckBox(mTitleWidget);
   mPointCloudCheckBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
   mPointCloudCheckBox->setToolTip(tr("Enable point cloud mode"));
-  if (wb_lidar_is_point_cloud_enabled(mDevice->tag()))
+  if (wb_lidar_is_point_cloud_enabled(mDevice->context(), mDevice->tag()))
     enablePointCloud(true);
   else
     enablePointCloud(false);
@@ -46,20 +46,20 @@ void LidarWidget::readSensors() {
   SensorWidget::readSensors();
 
   WbDeviceTag tag = mDevice->tag();
-  if (wb_lidar_is_point_cloud_enabled(tag))
+  if (wb_lidar_is_point_cloud_enabled(mDevice->context(), tag))
     enablePointCloud(true);
   else
     enablePointCloud(false);
 
-  if (wb_lidar_get_sampling_period(tag) > 0) {
-    int lidarResolution = wb_lidar_get_horizontal_resolution(tag);
+  if (wb_lidar_get_sampling_period(mDevice->context(), tag) > 0) {
+    int lidarResolution = wb_lidar_get_horizontal_resolution(mDevice->context(), tag);
     double lidarRatio = (double)lidarResolution;
     unsigned char *buffer;
 
     if (mNumberOfLayers <= MAX_LABEL) {  // one label per layer
       buffer = new unsigned char[lidarResolution * 4];
       for (int i = 0; i < mNumberOfLayers; ++i) {
-        const float *raw = wb_lidar_get_layer_range_image(tag, i);
+        const float *raw = wb_lidar_get_layer_range_image(mDevice->context(), tag, i);
         if (!raw || lidarResolution < 1)
           continue;
         int labelWidth = mLabel[i]->width();
@@ -68,7 +68,7 @@ void LidarWidget::readSensors() {
 
         QImage *image;
         int k = 0, r = 0;
-        float _255OverMax = 255.0f / wb_lidar_get_max_range(tag);
+        float _255OverMax = 255.0f / wb_lidar_get_max_range(mDevice->context(), tag);
         while (r < lidarResolution) {
           buffer[k++] = raw[r] * _255OverMax;
           buffer[k++] = raw[r] * _255OverMax;
@@ -91,7 +91,7 @@ void LidarWidget::readSensors() {
       int size = lidarResolution * mNumberOfLayers;
       buffer = new unsigned char[size * 4];
       lidarRatio /= mNumberOfLayers;
-      const float *raw = wb_lidar_get_range_image(tag);
+      const float *raw = wb_lidar_get_range_image(mDevice->context(), tag);
       if (raw || lidarResolution > 1) {
         int labelWidth = mLabel[0]->width();
         int labelHeight = mLabel[0]->height();
@@ -99,7 +99,7 @@ void LidarWidget::readSensors() {
 
         QImage *image;
         int k = 0, r = 0;
-        float _255OverMax = 255.0f / wb_lidar_get_max_range(tag);
+        float _255OverMax = 255.0f / wb_lidar_get_max_range(mDevice->context(), tag);
         while (r < size) {
           buffer[k++] = raw[r] * _255OverMax;
           buffer[k++] = raw[r] * _255OverMax;
@@ -122,24 +122,24 @@ void LidarWidget::readSensors() {
 void LidarWidget::enable(bool enable) {
   WbDeviceTag tag = mDevice->tag();
   if (enable)
-    wb_lidar_enable(tag, static_cast<int>(wb_robot_get_basic_time_step()));
+    wb_lidar_enable(mDevice->context(), tag, static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
   else
-    wb_lidar_disable(tag);
+    wb_lidar_disable(mDevice->context(), tag);
 }
 
 void LidarWidget::enablePointCloud(bool enable) {
   if (enable) {
     mPointCloudCheckBox->setChecked(true);
-    wb_lidar_enable_point_cloud(mDevice->tag());
+    wb_lidar_enable_point_cloud(mDevice->context(), mDevice->tag());
     mPointCloudCheckBox->setText("Point cloud: enabled");
   } else {
     mPointCloudCheckBox->setChecked(false);
-    wb_lidar_disable_point_cloud(mDevice->tag());
+    wb_lidar_disable_point_cloud(mDevice->context(), mDevice->tag());
     mPointCloudCheckBox->setText("Point cloud: disabled");
   }
 }
 
 bool LidarWidget::isEnabled() const {
   WbDeviceTag tag = mDevice->tag();
-  return wb_lidar_get_sampling_period(tag) > 0;
+  return wb_lidar_get_sampling_period(mDevice->context(), tag) > 0;
 }

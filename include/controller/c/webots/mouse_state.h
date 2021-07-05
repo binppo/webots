@@ -23,7 +23,7 @@
 
 #include <webots/types.h>
 
-typedef struct {
+struct WbMouseState {
   // mouse buttons state
   bool left;
   bool middle;
@@ -35,6 +35,6 @@ typedef struct {
   double x;
   double y;
   double z;
-} WbMouseState;
+};
 
 #endif /* WB_MOUSE_STATE_H */

@@ -25,10 +25,10 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-struct _GPipe {
+struct GPipe {
   int fd[2];
 #ifdef _WIN32
   HANDLE handle;
@@ -42,16 +42,14 @@ struct _GPipe {
 #endif
 };
 
-typedef struct _GPipe GPipe;
-
-CONTROLLER_EXPORT GPipe *g_pipe_new(const char *);  // named pipe on Windows, UNIX domain socket on Linux / macOS
-CONTROLLER_EXPORT void g_pipe_delete(GPipe *);
-CONTROLLER_EXPORT void g_pipe_send(GPipe *, const char *data, int size);
-CONTROLLER_EXPORT int g_pipe_receive(GPipe *, char *data, int size);
-CONTROLLER_EXPORT size_t g_pipe_get_handle(GPipe *);
+CONTROLLER_EXPORT extern GPipe *g_pipe_new(const char *name, int robot_id);  // named pipe on Windows, UNIX domain socket on Linux / macOS
+CONTROLLER_EXPORT extern void g_pipe_delete(GPipe *);
+CONTROLLER_EXPORT extern void g_pipe_send(GPipe *, const char *data, int size);
+CONTROLLER_EXPORT extern int g_pipe_receive(GPipe *, char *data, int size);
+CONTROLLER_EXPORT extern size_t g_pipe_get_handle(GPipe *);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif  // G_PIPE_H

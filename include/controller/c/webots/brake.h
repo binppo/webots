@@ -29,16 +29,16 @@
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_brake_set_damping_constant(WbDeviceTag tag, double damping_constant);
-CONTROLLER_EXPORT WbJointType wb_brake_get_type(WbDeviceTag tag);
-CONTROLLER_EXPORT WbDeviceTag wb_brake_get_motor(WbDeviceTag tag);
-CONTROLLER_EXPORT WbDeviceTag wb_brake_get_position_sensor(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_brake_set_damping_constant(WbRobotContext *context, WbDeviceTag tag, double damping_constant);
+CONTROLLER_EXPORT extern WbJointType wb_brake_get_type(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbDeviceTag wb_brake_get_motor(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbDeviceTag wb_brake_get_position_sensor(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_BRAKE_H */

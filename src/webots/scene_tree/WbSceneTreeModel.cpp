@@ -154,7 +154,7 @@ QModelIndex WbSceneTreeModel::parent(const QModelIndex &index) const {
     return QModelIndex();
 
   WbTreeItem *const childItem = indexToItem(index);
-  WbTreeItem *const parentItem = childItem->parent();
+  WbTreeItem *const parentItem = childItem->parentItem();
   if (parentItem == mRootItem)
     return QModelIndex();
 
@@ -207,7 +207,7 @@ QModelIndex WbSceneTreeModel::itemToIndex(const WbTreeItem *item) const {
   const WbTreeItem *parent = item;
   while (parent) {
     ancestors.prepend(parent);
-    parent = parent->parent();
+    parent = parent->parentItem();
   }
 
   // traverse the model from the root index, using the above path
@@ -384,7 +384,7 @@ WbTreeItem *WbSceneTreeModel::findTreeItemFromNode(WbNode *node, WbTreeItem *cur
 WbTreeItem *WbSceneTreeModel::findUpperNodeItem(const WbTreeItem *item) const {
   const WbTreeItem *i = item;
   while (!i->isNode() && !i->isSFNode()) {
-    i = i->parent();
+    i = i->parentItem();
     if (!i)
       return NULL;
   }

@@ -12,4 +12,5 @@ IndexedFaceSet {
   vrmlField MFInt32 normalIndex     []        # [-1,)
   vrmlField MFInt32 texCoordIndex   []        # [-1,)
   vrmlField SFFloat creaseAngle     0
+  field     SFString   url          ""
 }

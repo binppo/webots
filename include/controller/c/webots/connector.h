@@ -25,18 +25,18 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_connector_enable_presence(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_connector_disable_presence(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_connector_get_presence_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_connector_get_presence(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_connector_lock(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_connector_unlock(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_connector_enable_presence(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_connector_disable_presence(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_connector_get_presence_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_connector_get_presence(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_connector_lock(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_connector_unlock(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_CONNECTOR_H */

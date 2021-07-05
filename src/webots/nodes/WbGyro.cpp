@@ -102,6 +102,27 @@ void WbGyro::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbGyro::GYRO_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbGyro::refreshRate() {
+    if(mSensor)
+        return mSensor->refreshRate();
+
+    return 0;
+}
+
+WbVector3 WbGyro::value() {
+  WbVector3 rv;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+      rv.setXyz((double)mValues[0], (double)mValues[1], (double)mValues[2]);
+      mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 void WbGyro::writeAnswer(QDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << (short unsigned int)tag();

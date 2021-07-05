@@ -11,14 +11,14 @@ using namespace std;
 static MainApplication *gApplication = NULL;
 static GenericWindow *gGenericWindow = NULL;
 
-bool wbw_init() {
+bool wbw_init(WbRobotContext *context) {
   cerr << "Warning: this robot window is deprecated. Please use the HTML5-based generic robot window instead by resetting the "
           "Robot.window field."
        << endl;
 
   gApplication = new MainApplication;
   if (gApplication->isInitialized())
-    gGenericWindow = new GenericWindow;
+    gGenericWindow = new GenericWindow(context);
   return gApplication->isInitialized();
 }
 

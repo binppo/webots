@@ -276,11 +276,33 @@ void WbSliderJoint::postPhysicsStep() {
   if (p)
     p->setPositionFromOde(mPosition);
 
+  WbLinearMotor *const lm = linearMotor();
   if (isEnabled()) {
-    WbLinearMotor *const lm = linearMotor();
     if (lm && lm->hasMuscles() && !lm->userControl())
       // dynamic position or velocity control
       emit updateMuscleStretch(-lm->computeFeedback() / lm->maxForceOrTorque(), false, 1);
+  }
+
+  if (lm) {
+    double position;
+    if (lm->fetchTransportQue(position)) {
+
+      mPosition = position;
+
+      if (p)
+        p->setPosition(position);
+
+      WbSolid *const s = solidEndPoint();
+      WbVector3 translation;
+      WbRotation rotation;
+      computeEndPointSolidPositionFromParameters(translation, rotation);
+      mIsEndPointPositionChangedByJoint = true;
+      s->setTranslationAndRotation(translation, rotation);
+      s->resetPhysics();
+      mIsEndPointPositionChangedByJoint = false;
+
+      lm->refreshSensorIfNeeded();
+    }
   }
 }
 

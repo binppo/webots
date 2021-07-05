@@ -1528,7 +1528,7 @@ void WbView3D::mousePressEvent(QMouseEvent *event) {
     }
   }
   delete mMousePressTime;
-  mMousePressTime = new QTime(QTime::currentTime());
+  mMousePressTime = new QElapsedTimer;
   mMousePressTime->start();
   mMousePressPosition = position;
   WbWrenWindow::mousePressEvent(event);

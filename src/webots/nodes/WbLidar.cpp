@@ -279,6 +279,54 @@ void WbLidar::handleMessage(QDataStream &stream) {
   assert(0);
 }
 
+void WbLidar::LIDAR_SET_SAMPLING_PERIOD(int refreshRate) {
+  mRefreshRate = static_cast<short>(refreshRate);
+  if (isRotating())
+    mRefreshRate = WbWorld::instance()->basicTimeStep();
+
+  mSensor->setRefreshRate(mRefreshRate);
+
+  if (mSensor->isEnabled())
+    connect(WbSimulationState::instance(), &WbSimulationState::cameraRenderingStarted, this, &WbLidar::updateCameraTexture,
+            Qt::UniqueConnection);
+  else
+    disconnect(WbSimulationState::instance(), &WbSimulationState::cameraRenderingStarted, this,
+               &WbLidar::updateCameraTexture);
+
+  if (!hasBeenSetup()) {
+    setup();
+    mHasSharedMemoryChanged = true;
+  }
+}
+
+void WbLidar::LIDAR_ENABLE_POINT_CLOUD() {
+  mIsPointCloudEnabled = true;
+}
+
+void WbLidar::LIDAR_DISABLE_POINT_CLOUD() {
+  mIsPointCloudEnabled = false;
+  hidePointCloud();
+}
+
+void WbLidar::LIDAR_SET_FREQUENCY(double frequency) {
+  mDefaultFrequency->setValue(frequency);
+}
+
+void WbLidar::LIDAR_CAMERA_GET_IMAGE() {
+  if (mImageChanged && !isRotating()) {
+    // in case of rotating lidar the copy is done during the step
+    copyAllLayersToSharedMemory();
+  }
+  mImageReady = true;
+}
+
+int WbLidar::refreshRate() {
+    if(mSensor)
+        return mSensor->refreshRate();
+
+    return 0;
+}
+
 void WbLidar::copyAllLayersToSharedMemory() {
   if (!hasBeenSetup() || !mImageShm)
     return;

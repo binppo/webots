@@ -16,6 +16,7 @@
 #define WB_CAMERA_HPP
 
 #include "WbAbstractCamera.hpp"
+#include "WbObjectDetection.hpp"
 
 #include <core/WbConfig.h>
 
@@ -59,6 +60,27 @@ public:
 
   virtual WrTexture *getWrenTexture();
 
+  int getRecognitionRefreshRate() const { return mRecognitionRefreshRate; }
+
+  double minFieldOfView();
+  double maxFieldOfView();
+  double focalLength();
+  double focalDistance();
+  double minFocalDistance();
+  double maxFocalDistance();
+
+  double minRange() const override { return mNear->value(); }
+  double maxRange() const override { return mFar->value(); }
+
+  bool hasRecognition() const;
+
+  QList<WbRecognizedObject*> getRecognizedObjects() const { return mRecognizedObjects; }
+
+public slots:
+  void CAMERA_SET_FOV(double fov);
+  void CAMERA_SET_FOCAL(double focalDistance);
+  void CAMERA_SET_RECOGNITION_SAMPLING_PERIOD(int refreshRate);
+
 protected:
   void setup() override;
 
@@ -88,8 +110,6 @@ private:
   void initializeSharedMemory() override;
 
   int size() const override { return 4 * width() * height(); }
-  double minRange() const override { return mNear->value(); }
-  double maxRange() const override { return mFar->value(); }
   bool antiAliasing() const override { return mAntiAliasing->value(); }
   bool isFrustumEnabled() const override;
 
@@ -129,6 +149,44 @@ private slots:
   void applyFarToWren();
   void applyCameraSettingsToWren() override;
   void updateFrustumDisplayIfNeeded(int optionalRendering) override;
+};
+
+class WB_LIB_EXPORT WbRecognizedObject : public WbObjectDetection {
+public:
+  WbRecognizedObject(WbCamera *camera, WbSolid *object, bool needToCheckCollision, double maxRange) :
+    WbObjectDetection(camera, object, needToCheckCollision, maxRange) {
+    mId = object->uniqueId();
+    mModel = "";
+    mRelativeOrientation = WbRotation(0.0, 1.0, 0.0, 0.0);
+    mPositionOnImage = WbVector2(0, 0);
+    mPixelSize = WbVector2(0, 0);
+    mColors.clear();
+  };
+
+  virtual ~WbRecognizedObject() {}
+
+  int id() const { return mId; }
+  const QString model() const { return mModel; }
+  const WbRotation relativeOrientation() const { return mRelativeOrientation; }
+  const WbVector2 positionOnImage() const { return mPositionOnImage; }
+  const WbVector2 pixelSize() const { return mPixelSize; }
+  const QList<WbRgb> colors() const { return mColors; }
+
+  void setModel(const QString &model) { mModel = model; }
+  void setRelativeOrientation(const WbRotation &relativeOrientation) { mRelativeOrientation = relativeOrientation; }
+  void setPositionOnImage(const WbVector2 &positionOnImage) { mPositionOnImage = positionOnImage; }
+  void setPixelSize(const WbVector2 &pixelSize) { mPixelSize = pixelSize; }
+  void addColor(WbRgb colors) { mColors.append(colors); }
+
+protected:
+  virtual double distance() override { return fabs(mObjectRelativePosition.z()); }
+
+  int mId;
+  QString mModel;
+  WbRotation mRelativeOrientation;
+  WbVector2 mPositionOnImage;
+  WbVector2 mPixelSize;
+  QList<WbRgb> mColors;
 };
 
 #endif  // WB_CAMERA_HPP

@@ -85,6 +85,7 @@
 	<file>resources/icons/light/export_button.png</file>
 	<file>resources/icons/light/fast_button.png</file>
 	<file>resources/icons/light/field.png</file>
+	<file>resources/icons/light/field.svg</file>
 	<file>resources/icons/light/find_button.png</file>
 	<file>resources/icons/light/front_view.png</file>
 	<file>resources/icons/light/help_button.png</file>
@@ -103,10 +104,12 @@
 	<file>resources/icons/light/movie_red_button.png</file>
 	<file>resources/icons/light/new_button.png</file>
 	<file>resources/icons/light/node.png</file>
+	<file>resources/icons/light/node.svg</file>
 	<file>resources/icons/light/open_button.png</file>
 	<file>resources/icons/light/paste_button.png</file>
 	<file>resources/icons/light/pause_button.png</file>
 	<file>resources/icons/light/proto.png</file>
+	<file>resources/icons/light/proto.svg</file>
 	<file>resources/icons/light/real_time_button.png</file>
 	<file>resources/icons/light/reload_button.png</file>
 	<file>resources/icons/light/replace_button.png</file>

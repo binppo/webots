@@ -139,6 +139,30 @@ void WbDifferentialWheels::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbDifferentialWheels::DIFFERENTIAL_WHEELS_SET_SPEED(double left, double right) {
+  mTargetSpeed[0] = left * mSpeedUnit->value();
+  mTargetSpeed[1] = right * mSpeedUnit->value();
+  qBound(-mMaxSpeed->value(), mTargetSpeed[0], mMaxSpeed->value());
+  qBound(-mMaxSpeed->value(), mTargetSpeed[1], mMaxSpeed->value());
+  awake();
+}
+
+void WbDifferentialWheels::DIFFERENTIAL_WHEELS_ENCODERS_SET_SAMPLING_PERIOD(int refreshRate) {
+  mEncoderSensor->setRefreshRate(refreshRate);
+}
+
+void WbDifferentialWheels::DIFFERENTIAL_WHEELS_ENCODERS_SET_VALUE(double pos0, double pos1) {
+  mPosition[0] = pos0;
+  mPosition[1] = pos1;
+}
+
+int WbDifferentialWheels::getEncoderRefreshRate() {
+    if (mEncoderSensor)
+        return mEncoderSensor->refreshRate();
+
+    return 0;
+}
+
 void WbDifferentialWheels::addConfigureToStream(QDataStream &stream) {
   stream << (short unsigned int)0;
   stream << (unsigned char)C_CONFIGURE;

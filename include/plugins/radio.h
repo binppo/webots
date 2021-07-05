@@ -18,8 +18,10 @@
 #define WEBOTS_RADIO_H
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
+
+#include <string>
 
 /* event types for WebotsRadioEvent */
 #define WEBOTS_RADIO_EVENT_RECEIVE          1
@@ -30,7 +32,7 @@ struct WebotsRadioEvent {
   int         type;      /* see above the WEBOTS_RADIO_EVENT_* type list */
   const char *data;      /* data chunk received by the radio */
   int         data_size; /* size of the data chunk */
-  const char *from;      /* address of the emitter of the data */
+  std::string from;      /* address of the emitter of the data */
   double      rssi;      /* wireless networking parameter */
   void       *user_data; /* user pointer defined in radio_set_callback() */
 };
@@ -76,7 +78,7 @@ void webots_radio_connection_set_callback(int radio,void *ptr,
 void webots_radio_connection_close(int connection);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WEBOTS_RADIO_H */

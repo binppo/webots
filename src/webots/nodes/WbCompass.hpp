@@ -41,6 +41,13 @@ public:
   void writeConfigure(QDataStream &) override;
   bool refreshSensorIfNeeded() override;
 
+  int refreshRate();
+
+  WbVector3 values();
+
+public slots:
+  void COMPASS_SET_SAMPLING_PERIOD(int refreshRate);
+
 private:
   // user accessible fields
   WbMFVector3 *mLookupTable;

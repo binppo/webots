@@ -31,6 +31,7 @@ namespace WbContextMenuGenerator {
   static QMenu *gRobotCameraMenu = NULL;
   static QMenu *gRobotRangeFinderMenu = NULL;
   static QMenu *gRobotDisplayMenu = NULL;
+  static QMenu *gUserMenu = NULL;
 
   void enableNodeActions(bool enabled) { gAreNodeActionsEnabled = enabled; }
   void enableRobotActions(bool enabled) { gAreRobotActionsEnabled = enabled; }
@@ -38,6 +39,7 @@ namespace WbContextMenuGenerator {
   void setRobotCameraMenu(QMenu *menu) { gRobotCameraMenu = menu; }
   void setRobotRangeFinderMenu(QMenu *menu) { gRobotRangeFinderMenu = menu; }
   void setRobotDisplayMenu(QMenu *menu) { gRobotDisplayMenu = menu; }
+  void setUserMenu(QMenu *menu) { gUserMenu = menu; }
 
   const QStringList fillTransformToItems(const WbBaseNode *selectedNode) {
     // populate transform combo box
@@ -93,7 +95,7 @@ namespace WbContextMenuGenerator {
     // selection-dependent actions
     if (selectedNode) {
       // actions for robots
-      if (gAreRobotActionsEnabled) {
+      /*if (gAreRobotActionsEnabled) {
 #ifdef __linux__
         // fix for https://github.com/omichel/webots-dev/issues/7443, the context menu doesn't need the double underscore
         // fix for menubars on Unity desktops (Ubuntu 16.04), so undo the workaround before opening the menu and redo it on menu
@@ -111,14 +113,14 @@ namespace WbContextMenuGenerator {
         subMenu->addMenu(gRobotRangeFinderMenu);
         subMenu->addMenu(gRobotDisplayMenu);
         contextMenu.addSeparator();
-      }
+      }*/
 
       // actions for nodes in general
       if (gAreNodeActionsEnabled) {
         contextMenu.addAction(WbActionManager::instance()->action(WbActionManager::FOLLOW_OBJECT));
         contextMenu.addAction(WbActionManager::instance()->action(WbActionManager::FOLLOW_OBJECT_AND_ROTATE));
 
-        QMenu *subMenu = contextMenu.addMenu(QObject::tr("Optional Rendering"));
+        /*QMenu *subMenu = contextMenu.addMenu(QObject::tr("Optional Rendering"));
         subMenu->addAction(WbActionManager::instance()->action(WbActionManager::CENTER_OF_MASS));
         subMenu->addAction(WbActionManager::instance()->action(WbActionManager::CENTER_OF_BUOYANCY));
         subMenu->addAction(WbActionManager::instance()->action(WbActionManager::SUPPORT_POLYGON));
@@ -140,11 +142,11 @@ namespace WbContextMenuGenerator {
             }
           } else
             subMenu->setEnabled(false);
-        }
+        }*/
       }
 
       // actions for PROTO nodes
-      if (gAreProtoActionsEnabled) {
+      /*if (gAreProtoActionsEnabled) {
         contextMenu.addAction(WbActionManager::instance()->action(WbActionManager::SHOW_PROTO_SOURCE));
 
         if (selectedNode->isTemplate())
@@ -153,8 +155,12 @@ namespace WbContextMenuGenerator {
         contextMenu.addAction(WbActionManager::instance()->action(WbActionManager::CONVERT_TO_BASE_NODES));
       }
       contextMenu.addSeparator();
+      */
     }
-    contextMenu.addAction(WbActionManager::instance()->action(WbActionManager::OPEN_HELP));
+    //contextMenu.addAction(WbActionManager::instance()->action(WbActionManager::OPEN_HELP));
+
+    if(gUserMenu)
+        contextMenu.addMenu(gUserMenu);
 
     QObject *focusObject = WbActionManager::instance()->focusObject();
     WbActionManager::instance()->setFocusObject(&contextMenu);

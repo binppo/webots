@@ -452,7 +452,7 @@ void WbWorld::createX3DMetaFile(const QString &filename) const {
         deviceObject.insert("maxPosition", motor->maxPosition());
         deviceObject.insert("initialPosition", 0.0);
       } else {  // case: other WbDevice nodes.
-        const WbBaseNode *parent = jointDevice ? qobject_cast<const WbBaseNode *>(deviceBaseNode->parent()) : deviceBaseNode;
+        const WbBaseNode *parent = jointDevice ? qobject_cast<const WbBaseNode *>(deviceBaseNode->parentNode()) : deviceBaseNode;
         // Retrieve closest exported Transform parent, and compute its translation offset.
         WbMatrix4 m;
         while (parent) {
@@ -469,7 +469,7 @@ void WbWorld::createX3DMetaFile(const QString &filename) const {
             if (transform)
               m *= transform->vrmlMatrix();
           }
-          parent = qobject_cast<const WbBaseNode *>(parent->parent());
+          parent = qobject_cast<const WbBaseNode *>(parent->parentNode());
         }
         // LED case: export color data.
         const WbLed *led = dynamic_cast<const WbLed *>(device);

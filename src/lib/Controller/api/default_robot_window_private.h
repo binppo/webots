@@ -17,6 +17,6 @@
 #ifndef DEFAULT_ROBOT_WINDOW_PRIVATE_H
 #define DEFAULT_ROBOT_WINDOW_PRIVATE_H
 
-void default_robot_window_cleanup();
+void default_robot_window_cleanup(WbRobotContext *context);
 
 #endif

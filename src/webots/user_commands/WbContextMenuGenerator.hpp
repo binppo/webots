@@ -34,6 +34,7 @@ namespace WbContextMenuGenerator {
   WB_LIB_EXPORT void setRobotCameraMenu(QMenu *menu);
   WB_LIB_EXPORT void setRobotRangeFinderMenu(QMenu *menu);
   WB_LIB_EXPORT void setRobotDisplayMenu(QMenu *menu);
+  WB_LIB_EXPORT void setUserMenu(QMenu *menu);
 };  // namespace WbContextMenuGenerator
 
 #endif

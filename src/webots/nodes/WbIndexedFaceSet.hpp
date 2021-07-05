@@ -127,6 +127,7 @@ private:
   WbMFInt *mNormalIndex;
   WbMFInt *mTexCoordIndex;
   WbSFDouble *mCreaseAngle;
+  WbSFString *mUrl;
 
   // other variables
   WbTriangleMesh *mTriangleMesh;
@@ -168,6 +169,7 @@ private slots:
   void updateNormalIndex();
   void updateTexCoordIndex();
   void updateCreaseAngle();
+  void updateSource();
 };
 
 #endif

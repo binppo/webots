@@ -35,7 +35,7 @@ WbPerspective::WbPerspective(const QString &worldPath) :
   mCentralWidgetVisible(true),
   mSelectedTab(-1),
   mOrthographicViewHeight(1.0),
-  mSelectionDisabled(false),
+  mSelectionDisabled(true),
   mViewpointLocked(false) {
   const QFileInfo info(worldPath);
   mBaseName = info.absolutePath() + "/." + info.completeBaseName();
@@ -93,7 +93,7 @@ bool WbPerspective::readContent(QTextStream &in, bool reloading) {
         continue;
       int i;
       ls >> i;
-      mSelectionDisabled = i;
+      //mSelectionDisabled = i;
     } else if (key == "viewpointLocked:") {
       if (reloading)
         continue;

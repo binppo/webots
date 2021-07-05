@@ -57,6 +57,7 @@ public:
   WbRgb enabledCameraFrustrumColor() const override { return WbRgb(0.0f, 1.0f, 1.0f); }
 
   double maxRange() const override { return mMaxRange->value(); }
+  double minRange() const override { return mMinRange->value(); }
 
   // These functions return the value actually used by the lidar (that was initially loaded from the world file or changed
   // before the start of the simulation). It may be different from the current value of the field if it was changed after the
@@ -79,6 +80,20 @@ public:
 
   // lazy matrix multiplication system
   void setMatrixNeedUpdate() override;
+
+  int refreshRate();
+  bool isPointCloudEnabled() const { return mIsPointCloudEnabled; }
+  double frequency() const { return mDefaultFrequency->value(); }
+  double minFrequency() const { return mMinFrequency->value(); }
+  double maxFrequency() const { return mMaxFrequency->value(); }
+  int numberOfLayers() const { return mNumberOfLayers->value(); }
+
+public slots:
+  void LIDAR_SET_SAMPLING_PERIOD(int refreshRate);
+  void LIDAR_ENABLE_POINT_CLOUD();
+  void LIDAR_DISABLE_POINT_CLOUD();
+  void LIDAR_SET_FREQUENCY(double frequency);
+  void LIDAR_CAMERA_GET_IMAGE();
 
 private:
   // user accessible fields
@@ -133,7 +148,6 @@ private:
   int size() const override {
     return (sizeof(float) + sizeof(WbLidarPoint)) * actualHorizontalResolution() * actualNumberOfLayers();
   }
-  double minRange() const override { return mMinRange->value(); }
   bool isRotating() const { return mType->value().startsWith('r', Qt::CaseInsensitive); }
   double verticalFieldOfView() const { return actualFieldOfView() * ((double)height() / (double)width()); }
 

@@ -63,6 +63,17 @@ public:
   // other functions
   void rayCollisionCallback(WbGeometry *object, dGeomID rayGeom, const dContactGeom *);
 
+  int refreshRate();
+
+  double value();
+  double minValue();
+  double maxValue();
+  double aperture();
+  int rayType() const { return mRayType; }
+
+public slots:
+  void DISTANCE_SENSOR_SET_SAMPLING_PERIOD(int refreshRate);
+
 protected:
   void propagateScale() override;
   void updateLineScale() override;

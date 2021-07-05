@@ -57,7 +57,7 @@
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -83,10 +83,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProgramFiles)\Visual Leak Detector\lib\$(Platform);$(LibraryPath)</LibraryPath>
     <TargetExt>.lib</TargetExt>
@@ -95,22 +95,22 @@
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProgramFiles)\Visual Leak Detector\lib\$(Platform);$(LibraryPath)</LibraryPath>
     <TargetExt>.exe</TargetExt>
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
-    <TargetExt>.exe</TargetExt>
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -127,7 +127,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(ProcessorArchitecture)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib;$(SDK)/third_party/lua/lib;$(SDK)/third_party/freetype/win32;$(SDK)/third_party/openvr/lib/win32;$(SDK)/third_party/ois/lib;$(SDK)/third_party/glm/lib;$(SDK)/third_party/pthread/lib;$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(PlatformTarget)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib;$(SDK)/third_party/lua/lib;$(SDK)/third_party/freetype/win32;$(SDK)/third_party/openvr/lib/win32;$(SDK)/third_party/ois/lib;$(SDK)/third_party/glm/lib;$(SDK)/third_party/pthread/lib;$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;Qt5Scriptd.lib;GLEW_LIBd.lib;CC_FBO_LIBd.lib;CC_CORE_LIBd.lib;QCC_GL_LIBd.lib;QCC_IO_LIBd.lib;QCC_DB_LIBd.lib;base.lib;base_prefs.lib;base_static.lib;dynamic_annotations.lib;c3dimg.lib;c3dipplugins.lib;opencv_core310d.lib;opencv_highgui310d.lib;opencv_imgproc310d.lib;opencv_features2d310d.lib;opencv_nonfree310d.lib;opencv_flann310d.lib;opencv_calib3d310d.lib;opencv_video310d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
@@ -198,7 +198,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(ProcessorArchitecture)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib;$(SDK)/third_party/lua/lib;$(SDK)/third_party/freetype/win32;$(SDK)/third_party/openvr/lib/win32;$(SDK)/third_party/ois/lib;$(SDK)/third_party/glm/lib;$(SDK)/third_party/pthread/lib;$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(PlatformTarget)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib;$(SDK)/third_party/lua/lib;$(SDK)/third_party/freetype/win32;$(SDK)/third_party/openvr/lib/win32;$(SDK)/third_party/ois/lib;$(SDK)/third_party/glm/lib;$(SDK)/third_party/pthread/lib;$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;wren.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua5.1.lib;freetype.lib;glm_static.lib;OIS.lib;openvr_api.lib;ode.lib;pthreadVC2.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
@@ -227,7 +227,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SDK)\third_party\qt\include;$(SDK)\third_party\glm;$(SDK)\third_party\freetype\include;$(SDK)\third_party\assimp\include;$(SDK)\third_party\lua\include;$(SDK)\third_party\ois\includes;$(SDK)\third_party\openal\include;$(SDK)\third_party\openvr\headers;$(SolutionDir);$(SolutionDir)include;$(SolutionDir)include\glad;$(SolutionDir)include\ode;$(SolutionDir)src\webots;$(SolutionDir)src\webots\core;$(SolutionDir)src\webots\maths;$(SolutionDir)src\webots\vrml;$(SolutionDir)src\webots\external\siphash;$(SolutionDir)src\webots\external\stb_image;$(SolutionDir)src\webots\external\compilation_timestamp;$(SolutionDir)src\webots\user_commands;$(SolutionDir)src\webots\nodes;$(SolutionDir)src\webots\nodes\utils;$(SolutionDir)src\webots\ode;$(SolutionDir)src\webots\app;$(SolutionDir)include\controller\c;$(SolutionDir)src\webots\util;$(SolutionDir)src\webots\wren;$(SolutionDir)src\webots\engine;$(SolutionDir)src\webots\widgets;$(SolutionDir)src\webots\sound;$(SolutionDir)src\webots\plugins;$(SolutionDir)src\webots\editor;$(SolutionDir)src\webots\control;$(SolutionDir)src\webots\scene_tree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;LIBPEERCONNECTION_LIB=1;PROTOBUF_USE_DLLS;GOOGLE_PROTOBUF_NO_RTTI;GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER="GrGLConfig_chrome.h";GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;U_USING_ICU_NAMESPACE=0;LIBXML_STATIC;WEBKIT_DLL;V8_SHARED;USING_V8_SHARED;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;QWT_DLL;BASE_DLL;CC_USE_AS_DLL;QCC_DB_USE_AS_DLL;DISABLE_OPENNI;EIGEN_USE_NEW_STDVECTOR;EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET;BOOST_ALL_NO_LIB;FLANN_STATIC;QT_DLL;QT_OPENGL_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;LIBPEERCONNECTION_LIB=1;PROTOBUF_USE_DLLS;GOOGLE_PROTOBUF_NO_RTTI;GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER="GrGLConfig_chrome.h";GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;U_USING_ICU_NAMESPACE=0;LIBXML_STATIC;WEBKIT_DLL;V8_SHARED;USING_V8_SHARED;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;QWT_DLL;BASE_DLL;CC_USE_AS_DLL;QCC_DB_USE_AS_DLL;DISABLE_OPENNI;EIGEN_USE_NEW_STDVECTOR;EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET;BOOST_ALL_NO_LIB;FLANN_STATIC;QT_DLL;QT_OPENGL_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;PTW32_STATIC_LIB;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -241,7 +241,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(PlatformTarget)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/lua/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/freetype/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/openal/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/openvr/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/ois/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/glm/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/pthread/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\glad\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;glad.lib;wren.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua53.lib;freetype.lib;glm_static.lib;OIS.lib;OpenAL32.lib;openvr_api.lib;ode.lib;pthread_dll.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;glad.lib;wren.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua53.lib;freetype.lib;glm_static.lib;OIS.lib;OpenAL32.lib;openvr_api.lib;ode.lib;pthread_lib.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>

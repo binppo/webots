@@ -22,7 +22,7 @@
 void keyboard_write_request(WbRequest *req);
 void keyboard_set_sampling_period(int sampling_period);
 bool keyboard_read_answer(int message, WbRequest *r);
-void keyboard_step_end();
-void wb_keyboard_init();
+void keyboard_step_end(WbRobotContext *context);
+void wb_keyboard_init(WbRobotContext *context);
 
 #endif  // KEYBOARD_PRIVATE_H

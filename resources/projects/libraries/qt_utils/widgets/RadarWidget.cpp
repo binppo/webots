@@ -32,12 +32,12 @@ void RadarWidget::readSensors() {
   SensorWidget::readSensors();
 
   WbDeviceTag tag = mDevice->tag();
-  if (wb_radar_get_sampling_period(tag) > 0) {
-    int numberOftargets = wb_radar_get_number_of_targets(tag);
+  if (wb_radar_get_sampling_period(mDevice->context(), tag) > 0) {
+    int numberOftargets = wb_radar_get_number_of_targets(mDevice->context(), tag);
     mTargetNumberLabel->setText(tr("Number of targets: ") + QString::number(numberOftargets));
     mGraph2D->clear();
-    double maxRange = wb_radar_get_max_range(tag);
-    double horizontalFov = wb_radar_get_horizontal_fov(tag);
+    double maxRange = wb_radar_get_max_range(mDevice->context(), tag);
+    double horizontalFov = wb_radar_get_horizontal_fov(mDevice->context(), tag);
     mGraph2D->setXRange(-maxRange, maxRange);
     if (horizontalFov > M_PI)
       mGraph2D->setYRange(-maxRange * 1.2, maxRange * 1.2);
@@ -50,7 +50,7 @@ void RadarWidget::readSensors() {
                                  maxRange * cos(horizontalFov / 2 - i * horizontalFov / 16),
                                  maxRange * sin(horizontalFov / 2 - (i + 1) * horizontalFov / 16),
                                  maxRange * cos(horizontalFov / 2 - (i + 1) * horizontalFov / 16), Qt::blue));
-    const WbRadarTarget *targets = wb_radar_get_targets(tag);
+    const std::vector<WbRadarTarget> targets = wb_radar_get_targets(mDevice->context(), tag);
     for (int i = 0; i < numberOftargets; ++i) {
       double y = targets[i].distance * cos(targets[i].azimuth);
       double x = targets[i].distance * sin(targets[i].azimuth);
@@ -62,12 +62,12 @@ void RadarWidget::readSensors() {
 void RadarWidget::enable(bool enable) {
   WbDeviceTag tag = mDevice->tag();
   if (enable)
-    wb_radar_enable(tag, static_cast<int>(wb_robot_get_basic_time_step()));
+    wb_radar_enable(mDevice->context(), tag, static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
   else
-    wb_radar_disable(tag);
+    wb_radar_disable(mDevice->context(), tag);
 }
 
 bool RadarWidget::isEnabled() const {
   WbDeviceTag tag = mDevice->tag();
-  return wb_radar_get_sampling_period(tag) > 0;
+  return wb_radar_get_sampling_period(mDevice->context(), tag) > 0;
 }

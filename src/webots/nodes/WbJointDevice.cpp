@@ -61,15 +61,15 @@ void WbJointDevice::postFinalize() {
 }
 
 WbJoint *WbJointDevice::joint() const {
-  return qobject_cast<WbJoint *>(parent());
+  return qobject_cast<WbJoint *>(parentNode());
 }
 
 WbPropeller *WbJointDevice::propeller() const {
-  return qobject_cast<WbPropeller *>(parent());
+  return qobject_cast<WbPropeller *>(parentNode());
 }
 
 WbTrack *WbJointDevice::track() const {
-  return qobject_cast<WbTrack *>(parent());
+  return qobject_cast<WbTrack *>(parentNode());
 }
 
 WbLogicalDevice *WbJointDevice::getSiblingDeviceByType(int nodeType) const {

@@ -74,7 +74,7 @@ DeviceWidget *DeviceWidgetFactory::createDeviceWidget(Device *device, QWidget *p
       widget = new RangeFinderWidget(device, parent);
       break;
     case WB_NODE_TOUCH_SENSOR:
-      if (wb_touch_sensor_get_type(device->tag()) == WB_TOUCH_SENSOR_FORCE3D)
+      if (wb_touch_sensor_get_type(device->context(), device->tag()) == WB_TOUCH_SENSOR_FORCE3D)
         widget = new TouchSensorVectorialWidget(device, parent);
       else
         widget = new TouchSensorScalarWidget(device, parent);

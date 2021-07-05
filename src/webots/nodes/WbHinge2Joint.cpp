@@ -458,6 +458,44 @@ void WbHinge2Joint::postPhysicsStep() {
   if (isEnabled() && rm2 && rm2->hasMuscles() && !rm2->userControl())
     // dynamic position or velocity control
     emit updateMuscleStretch(rm2->computeFeedback() / rm2->maxForceOrTorque(), false, 2);
+
+  if (rm || rm2) {
+    double position;
+    bool updated = false;
+    if (rm && rm->fetchTransportQue(position)) {
+      mPosition = position;
+
+      if (p)
+        p->setPosition(position);
+
+      updated = true;
+    }
+
+    if (rm2 && rm2->fetchTransportQue(position)) {
+      mPosition2 = position;
+
+      if (p2)
+        p2->setPosition(position);
+
+      updated = true;
+    }
+
+    if (updated) {
+      WbSolid *const s = solidEndPoint();
+      WbVector3 translation;
+      WbRotation rotation;
+      computeEndPointSolidPositionFromParameters(translation, rotation);
+      mIsEndPointPositionChangedByJoint = true;
+      s->setTranslationAndRotation(translation, rotation);
+      s->resetPhysics();
+      mIsEndPointPositionChangedByJoint = false;
+
+      if (rm)
+        rm->refreshSensorIfNeeded();
+      if (rm2)
+        rm2->refreshSensorIfNeeded();
+    }
+  }
 }
 
 void WbHinge2Joint::reset() {

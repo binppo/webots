@@ -43,6 +43,10 @@ public:
   void writeAnswer(QDataStream &stream) override;
   void handleMessage(QDataStream &stream) override;
 
+public slots:
+  void BRAKE_SET_DAMPING_CONSTANT(double dampingConstant);
+  int BRAKE_GET_ASSOCIATED_DEVICE(int deviceType);
+
 signals:
   // emitted when received command from controller
   void brakingChanged();

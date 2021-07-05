@@ -42,8 +42,15 @@ WbSolid *WbSelection::selectedSolid() const {
 void WbSelection::selectNodeFromSceneTree(WbBaseNode *node) {
   if (mSelectedNode == node)
     return;
-  selectNode(node);
-  emit selectionChangedFromSceneTree(mSelectedAbstractTransform);
+
+  if (!node && mSelectedNode) {
+    selectNode(NULL);
+    emit selectionChangedFromSceneTree(NULL);
+  }
+  else {
+    selectNode(node);
+    emit selectionChangedFromSceneTree(mSelectedAbstractTransform);
+  }
 }
 
 void WbSelection::selectTransformFromView3D(WbAbstractTransform *t) {

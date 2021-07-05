@@ -694,6 +694,30 @@ void WbConnector::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbConnector::CONNECTOR_SET_PRESENCE(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+void WbConnector::CONNECTOR_LOCK() {
+  lock();
+}
+
+void WbConnector::CONNECTOR_UNLOCK() {
+  unlock();
+}
+
+int WbConnector::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+int WbConnector::getPresence() {
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    computeValue();
+  }
+
+  return mValue;
+}
+
 void WbConnector::computeValue() {
   if (faceType() == PASSIVE)
     mValue = -1;

@@ -30,9 +30,9 @@
 extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wbu_default_robot_window_configure();
-CONTROLLER_EXPORT void wbu_default_robot_window_update();
-CONTROLLER_EXPORT void wbu_default_robot_window_set_images_max_size(int max_width, int max_height);
+CONTROLLER_EXPORT void wbu_default_robot_window_configure(WbRobotContext *context);
+CONTROLLER_EXPORT void wbu_default_robot_window_update(WbRobotContext *context);
+CONTROLLER_EXPORT void wbu_default_robot_window_set_images_max_size(WbRobotContext *context, int max_width, int max_height);
 
 #ifdef __cplusplus
 }

@@ -101,6 +101,24 @@ void WbCompass::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbCompass::COMPASS_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbCompass::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+WbVector3 WbCompass::values() {
+  WbVector3 rv;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv.setXyz(mValues[0], mValues[1], mValues[2]);
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 void WbCompass::writeAnswer(QDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << (short unsigned int)tag();

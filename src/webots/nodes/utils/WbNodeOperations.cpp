@@ -333,7 +333,7 @@ void WbNodeOperations::resolveSolidNameClashIfNeeded(WbNode *node) const {
     solidNodes << WbNodeUtilities::findSolidDescendants(node);
   while (!solidNodes.isEmpty()) {
     WbSolid *s = solidNodes.takeFirst();
-    const WbBaseNode *const parentBaseNode = qobject_cast<WbBaseNode *>(s->parent());
+    const WbBaseNode *const parentBaseNode = qobject_cast<WbBaseNode *>(s->parentNode());
     const WbSolid *parentSolidNode = qobject_cast<const WbSolid *>(parentBaseNode);
     const WbSolid *upperSolid = parentSolidNode ? parentSolidNode : parentBaseNode->upperSolid();
     s->resolveNameClashIfNeeded(true, true,
@@ -352,6 +352,9 @@ bool WbNodeOperations::deleteNode(WbNode *node, bool fromSupervisor) {
 
   bool dictionaryNeedsUpdate = node->hasAreferredDefNodeDescendant();
   WbField *parentField = node->parentField();
+  if(!parentField)
+    return false;
+
   assert(parentField);
   WbSFNode *sfnode = qobject_cast<WbSFNode *>(parentField->value());
   WbMFNode *mfnode = qobject_cast<WbMFNode *>(parentField->value());

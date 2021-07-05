@@ -62,6 +62,12 @@ public:
   int channel() const { return mChannel->value(); }
   int mediumType() const { return mMediumType; }
 
+  int refreshRate();
+
+public slots:
+  void RECEIVER_SET_SAMPLING_PERIOD(int refreshRate);
+  void RECEIVER_SET_CHANNEL(int channel);
+
 signals:
   void dataReceived(const void *data, int size) const;
 

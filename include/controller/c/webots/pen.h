@@ -25,14 +25,14 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_pen_write(WbDeviceTag tag, bool write);                         // switch on/off writing
-CONTROLLER_EXPORT void wb_pen_set_ink_color(WbDeviceTag tag, int color, double density);  // set ink color
+CONTROLLER_EXPORT extern void wb_pen_write(WbRobotContext *context, WbDeviceTag tag, bool write);                         // switch on/off writing
+CONTROLLER_EXPORT extern void wb_pen_set_ink_color(WbRobotContext *context, WbDeviceTag tag, int color, double density);  // set ink color
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_PEN_H */

@@ -134,7 +134,8 @@ void WbFieldEditor::setTitle(const QString &title) {
   if (title.isEmpty())
     mTitleLabel->setText("");
   else
-    mTitleLabel->setText("Selection: " + title);
+    mTitleLabel->setText(title);
+    //mTitleLabel->setText("Selection: " + title);
 }
 
 QWidget *WbFieldEditor::lastEditorWidget() {

@@ -29,46 +29,46 @@
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_motor_set_position(WbDeviceTag tag, double position);                  // rad or meters
-CONTROLLER_EXPORT void wb_motor_set_acceleration(WbDeviceTag tag, double acceleration);          // rad/s^2 or m/s^2
-CONTROLLER_EXPORT void wb_motor_set_velocity(WbDeviceTag tag, double velocity);                  // rad/s or m/s
-CONTROLLER_EXPORT void wb_motor_set_force(WbDeviceTag tag, double force);                        // N
-CONTROLLER_EXPORT void wb_motor_set_torque(WbDeviceTag tag, double torque);                      // N*m
-CONTROLLER_EXPORT void wb_motor_set_available_force(WbDeviceTag tag, double force);              // N
-CONTROLLER_EXPORT void wb_motor_set_available_torque(WbDeviceTag tag, double torque);            // N*m
-CONTROLLER_EXPORT void wb_motor_set_control_pid(WbDeviceTag tag, double p, double i, double d);  // set the PID control parameters
+CONTROLLER_EXPORT extern void wb_motor_set_position(WbRobotContext *context, WbDeviceTag tag, double position);                  // rad or meters
+CONTROLLER_EXPORT extern void wb_motor_set_acceleration(WbRobotContext *context, WbDeviceTag tag, double acceleration);          // rad/s^2 or m/s^2
+CONTROLLER_EXPORT extern void wb_motor_set_velocity(WbRobotContext *context, WbDeviceTag tag, double velocity);                  // rad/s or m/s
+CONTROLLER_EXPORT extern void wb_motor_set_force(WbRobotContext *context, WbDeviceTag tag, double force);                        // N
+CONTROLLER_EXPORT extern void wb_motor_set_torque(WbRobotContext *context, WbDeviceTag tag, double torque);                      // N*m
+CONTROLLER_EXPORT extern void wb_motor_set_available_force(WbRobotContext *context, WbDeviceTag tag, double force);              // N
+CONTROLLER_EXPORT extern void wb_motor_set_available_torque(WbRobotContext *context, WbDeviceTag tag, double torque);            // N*m
+CONTROLLER_EXPORT extern void wb_motor_set_control_pid(WbRobotContext *context, WbDeviceTag tag, double p, double i, double d);  // set the PID control parameters
 
-CONTROLLER_EXPORT void wb_motor_enable_force_feedback(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_motor_disable_force_feedback(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_motor_get_force_feedback_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_force_feedback(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_motor_enable_force_feedback(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_motor_disable_force_feedback(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_motor_get_force_feedback_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_force_feedback(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT void wb_motor_enable_torque_feedback(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_motor_disable_torque_feedback(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_motor_get_torque_feedback_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_torque_feedback(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_motor_enable_torque_feedback(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_motor_disable_torque_feedback(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_motor_get_torque_feedback_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_torque_feedback(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT WbJointType wb_motor_get_type(WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbJointType wb_motor_get_type(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT double wb_motor_get_target_position(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_min_position(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_max_position(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_velocity(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_max_velocity(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_acceleration(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_available_force(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_max_force(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_available_torque(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_motor_get_max_torque(WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_target_position(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_min_position(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_max_position(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_velocity(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_max_velocity(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_acceleration(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_available_force(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_max_force(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_available_torque(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_motor_get_max_torque(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT WbDeviceTag wb_motor_get_brake(WbDeviceTag tag);
-CONTROLLER_EXPORT WbDeviceTag wb_motor_get_position_sensor(WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbDeviceTag wb_motor_get_brake(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbDeviceTag wb_motor_get_position_sensor(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_MOTOR_H */

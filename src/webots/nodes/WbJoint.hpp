@@ -58,6 +58,10 @@ public:
   WbJointDevice *device(int index) const;
   virtual int devicesNumber() const;
 
+public slots:
+  virtual void updatePosition() {}
+  virtual void updateAxis();
+
 signals:
   void updateMuscleStretch(double forcePercentage, bool immediateUpdate, int motorIndex);
 
@@ -85,10 +89,8 @@ protected:
 
 protected slots:
   virtual void addDevice(int index);
-  virtual void updatePosition() {}
   void updateParameters() override;
   virtual void updateMinAndMaxStop(double min, double max);
-  virtual void updateAxis();
   void updateJointAxisRepresentation() override;
 
 private:

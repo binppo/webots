@@ -26,26 +26,26 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_mouse_enable(int sampling_period);
-CONTROLLER_EXPORT void wb_mouse_disable();
-CONTROLLER_EXPORT int wb_mouse_get_sampling_period();
+CONTROLLER_EXPORT extern void wb_mouse_enable(WbRobotContext *context, int sampling_period);
+CONTROLLER_EXPORT extern void wb_mouse_disable(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_mouse_get_sampling_period(WbRobotContext *context);
 
-CONTROLLER_EXPORT void wb_mouse_enable_3d_position();
-CONTROLLER_EXPORT void wb_mouse_disable_3d_position();
-CONTROLLER_EXPORT bool wb_mouse_is_3d_position_enabled();
+CONTROLLER_EXPORT extern void wb_mouse_enable_3d_position(WbRobotContext *context);
+CONTROLLER_EXPORT extern void wb_mouse_disable_3d_position(WbRobotContext *context);
+CONTROLLER_EXPORT extern bool wb_mouse_is_3d_position_enabled(WbRobotContext *context);
 
 #ifndef WB_MATLAB_LOADLIBRARY
-CONTROLLER_EXPORT WbMouseState wb_mouse_get_state();
+CONTROLLER_EXPORT extern WbMouseState wb_mouse_get_state(WbRobotContext *context);
 #else
 // This function should be used only in the Matlab wrapper
-CONTROLLER_EXPORT WbMouseState *wb_mouse_get_state_pointer();
+CONTROLLER_EXPORT extern WbMouseState *wb_mouse_get_state_pointer(WbRobotContext *context);
 #endif
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_MOUSE_H */

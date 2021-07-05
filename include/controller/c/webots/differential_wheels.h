@@ -25,24 +25,24 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_differential_wheels_set_speed(double left, double right);
-CONTROLLER_EXPORT double wb_differential_wheels_get_left_speed();
-CONTROLLER_EXPORT double wb_differential_wheels_get_right_speed();
-CONTROLLER_EXPORT double wb_differential_wheels_get_max_speed();
-CONTROLLER_EXPORT double wb_differential_wheels_get_speed_unit();
+CONTROLLER_EXPORT extern void wb_differential_wheels_set_speed(WbRobotContext *context, double left, double right);
+CONTROLLER_EXPORT extern double wb_differential_wheels_get_left_speed(WbRobotContext *context);
+CONTROLLER_EXPORT extern double wb_differential_wheels_get_right_speed(WbRobotContext *context);
+CONTROLLER_EXPORT extern double wb_differential_wheels_get_max_speed(WbRobotContext *context);
+CONTROLLER_EXPORT extern double wb_differential_wheels_get_speed_unit(WbRobotContext *context);
 
-CONTROLLER_EXPORT void wb_differential_wheels_enable_encoders(int sampling_period);
-CONTROLLER_EXPORT void wb_differential_wheels_disable_encoders();
-CONTROLLER_EXPORT int wb_differential_wheels_get_encoders_sampling_period();
-CONTROLLER_EXPORT double wb_differential_wheels_get_left_encoder();
-CONTROLLER_EXPORT double wb_differential_wheels_get_right_encoder();
-CONTROLLER_EXPORT void wb_differential_wheels_set_encoders(double left, double right);
+CONTROLLER_EXPORT extern void wb_differential_wheels_enable_encoders(WbRobotContext *context, int sampling_period);
+CONTROLLER_EXPORT extern void wb_differential_wheels_disable_encoders(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_differential_wheels_get_encoders_sampling_period(WbRobotContext *context);
+CONTROLLER_EXPORT extern double wb_differential_wheels_get_left_encoder(WbRobotContext *context);
+CONTROLLER_EXPORT extern double wb_differential_wheels_get_right_encoder(WbRobotContext *context);
+CONTROLLER_EXPORT extern void wb_differential_wheels_set_encoders(WbRobotContext *context, double left, double right);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_DIFFERENTIAL_WHEELS_H */

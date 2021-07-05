@@ -25,20 +25,20 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 // device functions
-CONTROLLER_EXPORT void wb_microphone_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_microphone_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_microphone_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_microphone_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_microphone_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_microphone_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
 // data packet functions
-CONTROLLER_EXPORT const void *wb_microphone_get_sample_data(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_microphone_get_sample_size(WbDeviceTag tag);
+CONTROLLER_EXPORT extern const void *wb_microphone_get_sample_data(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_microphone_get_sample_size(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_MICROPHONE_H */

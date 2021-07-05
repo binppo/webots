@@ -25,14 +25,14 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_led_set(WbDeviceTag tag, int value);  // 0 for off, 1, 2, etc. for on with a color
-CONTROLLER_EXPORT int wb_led_get(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_led_set(WbRobotContext *context, WbDeviceTag tag, int value);  // 0 for off, 1, 2, etc. for on with a color
+CONTROLLER_EXPORT extern int wb_led_get(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_LED_H */

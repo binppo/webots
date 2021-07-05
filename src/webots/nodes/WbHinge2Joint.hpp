@@ -55,6 +55,7 @@ public:
 
 public slots:
   bool setJoint() override;
+  void updatePosition() override;
 
 protected:
   virtual WbVector3 axis2() const;  // return the axis of the joint with coordinates relative to the parent Solid; defaults to
@@ -76,7 +77,6 @@ protected:
 protected slots:
   virtual void addDevice2(int index);
   void updateParameters() override;
-  void updatePosition() override;
   void updateMinAndMaxStop(double min, double max) override;
   void updateJointAxisRepresentation() override;
 

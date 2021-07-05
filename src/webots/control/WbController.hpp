@@ -25,7 +25,7 @@
 
 class QLocalSocket;
 
-class WB_LIB_EXPORT WbController : public QObject {
+/*class WB_LIB_EXPORT WbController : public QObject {
   Q_OBJECT
 
 public:
@@ -66,6 +66,7 @@ public:
 signals:
   void hasTerminatedByItself(WbController *);
   void requestReceived();
+  void startInternalController(int, const QString&);
 
 public slots:
   void readRequest();
@@ -119,6 +120,7 @@ private:
   void startPython();
   void startMatlab();
   void startBotstudio();
+  void startInternal();
   void copyBinaryAndDependencies(const QString &filename);
   void appendMessageToBuffer(const QString &message, QString *buffer);
   void flushBuffer(QString *buffer);
@@ -136,6 +138,51 @@ private slots:
   void reportMissingCommand(const QString &command);
   void robotDestroyed();
   void writeImmediateAnswer();
+};*/
+
+class WB_LIB_EXPORT WbController : public QObject {
+  Q_OBJECT
+
+public:
+  // constructor & destructor
+  // name: controller name as in Robot.controller, e.g. "void"
+  // arguments: controller arguments as in Robot.controllerArgs
+  explicit WbController(WbRobot *robot);
+  virtual ~WbController();
+
+  // start the controller
+  // it never fails: the void controller is started as a fallback
+  void start();
+
+  WbRobot *robot() const { return mRobot; }
+  int robotId() const;
+  const QString &name() const;
+  bool synchronization() const { return mRobot->synchronization(); }
+  bool isRunning() const;
+  bool isProcessingRequest() const { return mProcessingRequest; }
+
+signals:
+  void hasTerminatedByItself(WbController *);
+  void requestReceived();
+  void startInternalController(int, const QString&);
+
+public slots:
+  void appendMessageToConsole(const QString &message, bool useStdout);
+  void handleRequest(QDataStream &str);
+
+private:
+  WbRobot *mRobot;
+  QString mName;            // controller name, e.g. "void"
+  QString mPrefix;
+  bool mProcessingRequest;
+
+  void updateName(const QString &name);
+
+private slots:
+  void info(const QString &message);
+  void warn(const QString &message);
+  void error(const QString &message);
+  void robotDestroyed();
 };
 
 #endif

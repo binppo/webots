@@ -21,11 +21,11 @@
 #ifndef WB_RADAR_TARGET_H
 #define WB_RADAR_TARGET_H
 
-typedef struct {
+struct WbRadarTarget {
   double distance;
   double received_power;
   double speed;
   double azimuth;
-} WbRadarTarget;
+};
 
 #endif /* WB_RADAR_TARGET_H */

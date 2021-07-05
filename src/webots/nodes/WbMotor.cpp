@@ -30,10 +30,12 @@
 #include "WbSoundEngine.hpp"
 #include "WbTrack.hpp"
 #include "WbUrl.hpp"
+#include "utils/WbPaintTexture.hpp"
 
 #include <ode/ode.h>
 
 #include <QtCore/QDataStream>
+#include <QDebug>
 
 #include <cassert>
 #include <cmath>
@@ -167,7 +169,7 @@ void WbMotor::updateMinAndMaxPosition() {
     // no limits
     return;
 
-  WbJoint *parentJoint = qobject_cast<WbJoint *>(parent());
+  WbJoint *parentJoint = qobject_cast<WbJoint *>(parentNode());
   double p = 0.0;
   if (parentJoint && parentJoint->parameters())
     p = parentJoint->parameters()->position();
@@ -280,6 +282,7 @@ double WbMotor::computeCurrentDynamicVelocity(double ms, double position) {
 // run control without physics simulation
 bool WbMotor::runKinematicControl(double ms, double &position) {
   static const double TARGET_POSITION_THRESHOLD = 1e-6;
+
   bool doNothing = false;
   if (std::isinf(mTargetPosition)) {  // velocity control
     const double maxp = mMaxPosition->value();
@@ -500,6 +503,116 @@ void WbMotor::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbMotor::MOTOR_SET_POSITION(double position) {
+  setTargetPosition(position);
+}
+
+bool WbMotor::fetchTransportQue(double &val) {
+  if (mTransportQueue.isEmpty())
+    return false;
+
+  val = mTransportQueue.takeFirst();
+  mTargetPosition = val;
+  mCurrentVelocity = 0.0;
+  mErrorIntegral = 0.0;
+  mPreviousError = 0.0;
+  mUserControl = true;
+
+  return true;
+}
+
+void WbMotor::MOTOR_RESET_POSITION(double position) {
+  const double maxp = mMaxPosition->value();
+  const double minp = mMinPosition->value();
+  if (maxp != minp) {
+    if (position > maxp) {
+      position = maxp;
+    } else if (position< minp) {
+      position = minp;
+    }
+  }
+
+  mTransportQueue << position;
+}
+
+void WbMotor::MOTOR_SET_VELOCITY(double velocity) {
+  mTargetVelocity = velocity;
+  const double m = mMaxVelocity->value();
+  const bool isNegative = mTargetVelocity < 0.0;
+  if ((isNegative ? -mTargetVelocity : mTargetVelocity) > m) {
+    warn(tr("The requested velocity %1 exceeds 'maxVelocity' = %2.").arg(mTargetVelocity).arg(m));
+    mTargetVelocity = isNegative ? -m : m;
+  }
+  awake();
+}
+
+void WbMotor::MOTOR_SET_ACCELERATION(double acceleration) {
+  setMaxAcceleration(acceleration);
+}
+
+void WbMotor::MOTOR_SET_FORCE(double rawInput) {
+  if (!mUserControl)  // we were previously using motor force
+    turnOffMotor();
+  mUserControl = true;
+  mRawInput = rawInput;
+  if (fabs(mRawInput) > mMotorForceOrTorque) {
+    if (nodeType() == WB_NODE_ROTATIONAL_MOTOR)
+      warn(tr("The requested motor torque %1 exceeds 'maxTorque' = %2").arg(mRawInput).arg(mMotorForceOrTorque));
+    else
+      warn(tr("The requested motor force %1 exceeds 'maxForce' = %2").arg(mRawInput).arg(mMotorForceOrTorque));
+    mRawInput = mRawInput >= 0.0 ? mMotorForceOrTorque : -mMotorForceOrTorque;
+  }
+  awake();
+}
+
+void WbMotor::MOTOR_SET_AVAILABLE_FORCE(double force) {
+  mMotorForceOrTorque = force;
+  const double m = mMaxForceOrTorque->value();
+  if (mMotorForceOrTorque > m) {
+    if (nodeType() == WB_NODE_ROTATIONAL_MOTOR)
+      warn(tr("The requested available motor torque %1 exceeds 'maxTorque' = %2").arg(mMotorForceOrTorque).arg(m));
+    else
+      warn(tr("The requested available motor force %1 exceeds 'maxForce' = %2").arg(mMotorForceOrTorque).arg(m));
+
+    mMotorForceOrTorque = m;
+  }
+  awake();
+}
+
+void WbMotor::MOTOR_SET_CONTROL_PID(double controlP, double controlI, double controlD) {
+  mControlPID->setValue(controlP, controlI, controlD);
+  awake();
+}
+
+void WbMotor::MOTOR_FEEDBACK(int rate) {
+  enableMotorFeedback(rate);
+}
+
+int WbMotor::MOTOR_GET_ASSOCIATED_DEVICE(int deviceType) {
+  assert(mRequestedDeviceTag == NULL);
+  WbLogicalDevice *device = getSiblingDeviceByType(deviceType);
+  int deviceTag = device ? device->tag() : 0;
+
+  return deviceTag;
+}
+
+int WbMotor::getForceRefreshRate() {
+  if(mForceOrTorqueSensor)
+    return mForceOrTorqueSensor->refreshRate();
+
+  return 0;
+}
+
+double WbMotor::currentForce() {
+  double rv = 0.0;
+  if (mForceOrTorqueSensor && (refreshSensorIfNeeded() || mForceOrTorqueSensor->hasPendingValue())) {
+    rv = mForceOrTorqueLastValue;
+    mForceOrTorqueSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 void WbMotor::writeAnswer(QDataStream &stream) {
   if (mForceOrTorqueSensor && (refreshSensorIfNeeded() || mForceOrTorqueSensor->hasPendingValue())) {
     stream << tag();
@@ -553,7 +666,7 @@ void WbMotor::awake() const {
   }
 
   const WbPropeller *const p = propeller();
-  const WbTrack *const t = qobject_cast<WbTrack *>(parent());
+  const WbTrack *const t = qobject_cast<WbTrack *>(parentNode());
   if (p || t) {
     WbSolid *const s = upperSolid();
     assert(s);

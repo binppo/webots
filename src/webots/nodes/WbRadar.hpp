@@ -16,12 +16,13 @@
 #define WB_RADAR_HPP
 
 #include "WbSolidDevice.hpp"
+#include "WbObjectDetection.hpp"
 
 #include <core/WbConfig.h>
 
 class WbAffinePlane;
 class WbSensor;
-class WbRadarTarget;
+class WbRadarTargetObject;
 
 struct WrTransform;
 struct WrRenderable;
@@ -63,7 +64,14 @@ public:
 
   bool computeTarget(const WbVector3 &radarPosition, const WbMatrix3 &radarRotation, const WbMatrix3 &radarInverseRotation,
                      const WbVector3 &radarAxis, const WbAffinePlane &radarPlane, const WbAffinePlane *frustumPlanes,
-                     WbRadarTarget *radarTarget, bool fromRayUpdate);
+                     WbRadarTargetObject *radarTarget, bool fromRayUpdate);
+
+  int refreshRate();
+  int numberOfTargets();
+  QList<WbRadarTargetObject*> getTargets();
+
+public slots:
+  void RADAR_SET_SAMPLING_PERIOD(int refreshRate);
 
 private:
   // user accessible fields
@@ -98,8 +106,8 @@ private:
 
   // other stuff
   WbSensor *mSensor;
-  QList<WbRadarTarget *> mRadarTargets;
-  QList<WbRadarTarget *> mInvalidRadarTargets;
+  QList<WbRadarTargetObject *> mRadarTargets;
+  QList<WbRadarTargetObject *> mInvalidRadarTargets;
   QMap<WbSolid *, WbVector3> mRadarTargetsPreviousTranslations;
 
   // WREN Data (for optional rendering)
@@ -136,6 +144,36 @@ private slots:
   void updateMinDetectableSignal();
   virtual void applyFrustumToWren();
   void updateOptionalRendering(int option);
+};
+
+class WB_LIB_EXPORT WbRadarTargetObject : public WbObjectDetection {
+public:
+  WbRadarTargetObject(WbRadar *radar, WbSolid *solidTarget, bool needToCheckCollision, double maxRange) :
+    WbObjectDetection(radar, solidTarget, needToCheckCollision, maxRange) {
+    mTargetDistance = 0.0;
+    mReceivedPower = 0.0;
+    mSpeed = 0.0;
+    mAzimuth = 0.0;
+  };
+
+  virtual ~WbRadarTargetObject() {}
+
+  double targetDistance() const { return mTargetDistance; }
+  double receivedPower() const { return mReceivedPower; }
+  double speed() const { return mSpeed; }
+  double azimuth() const { return mAzimuth; }
+  void setTargetDistance(double distance) { mTargetDistance = distance; }
+  void setReceivedPower(double receivedPower) { mReceivedPower = receivedPower; }
+  void setSpeed(double speed) { mSpeed = speed; }
+  void setAzimuth(double azimuth) { mAzimuth = azimuth; }
+
+protected:
+  double distance() override { return mObjectRelativePosition.length(); }
+
+  double mTargetDistance;
+  double mReceivedPower;
+  double mSpeed;
+  double mAzimuth;
 };
 
 #endif

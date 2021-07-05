@@ -118,14 +118,14 @@ void WbLed::findMaterialsAndLights(const WbGroup *group) {
           mMaterials.append(material);
 
         connect(appearance, &WbAppearance::fieldChanged, this, &WbLed::updateIfNeeded, Qt::UniqueConnection);
-        connect(appearance->parent(), &WbShape::fieldChanged, this, &WbLed::updateIfNeeded, Qt::UniqueConnection);
+        connect(appearance->parentNode(), &WbShape::fieldChanged, this, &WbLed::updateIfNeeded, Qt::UniqueConnection);
       } else {
         WbPbrAppearance *pbrAppearance = qobject_cast<WbShape *>(n)->pbrAppearance();
         if (pbrAppearance) {
           mPbrAppearances.append(pbrAppearance);
 
           connect(pbrAppearance, &WbPbrAppearance::fieldChanged, this, &WbLed::updateIfNeeded, Qt::UniqueConnection);
-          connect(pbrAppearance->parent(), &WbShape::fieldChanged, this, &WbLed::updateIfNeeded, Qt::UniqueConnection);
+          connect(pbrAppearance->parentNode(), &WbShape::fieldChanged, this, &WbLed::updateIfNeeded, Qt::UniqueConnection);
         }
       }
     } else if (light)
@@ -160,6 +160,11 @@ void WbLed::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+void WbLed::LED_SET(int v) {
+  if (isAnyMaterialOrLightFound())
+    setValue(v);
 }
 
 bool WbLed::isGradual() const {

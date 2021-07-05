@@ -28,43 +28,43 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void *wb_remote_control_custom_function(void *);
+CONTROLLER_EXPORT extern void *wb_remote_control_custom_function(WbRobotContext *context, void *);
 
 // Sensor functions (values read by the controller)
-CONTROLLER_EXPORT void wbr_robot_battery_sensor_set_value(double value);
-CONTROLLER_EXPORT void wbr_differential_wheels_set_encoders(double left, double right);
+CONTROLLER_EXPORT extern void wbr_robot_battery_sensor_set_value(WbRobotContext *context, double value);
+CONTROLLER_EXPORT extern void wbr_differential_wheels_set_encoders(WbRobotContext *context, double left, double right);
 
-CONTROLLER_EXPORT void wbr_accelerometer_set_values(WbDeviceTag tag, const double *values);
-CONTROLLER_EXPORT void wbr_camera_recognition_set_object(WbDeviceTag tag, const WbCameraRecognitionObject *objects, int object_number);
-CONTROLLER_EXPORT void wbr_compass_set_values(WbDeviceTag tag, const double *values);
-CONTROLLER_EXPORT void wbr_distance_sensor_set_value(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_gps_set_values(WbDeviceTag tag, const double *values);
-CONTROLLER_EXPORT void wbr_gps_set_speed(WbDeviceTag tag, const double speed);
-CONTROLLER_EXPORT void wbr_gyro_set_values(WbDeviceTag tag, const double *values);
-CONTROLLER_EXPORT void wbr_inertial_unit_set_value(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_light_sensor_set_value(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_microphone_set_buffer(WbDeviceTag tag, const unsigned char *buffer, int size);
-CONTROLLER_EXPORT void wbr_motor_set_position_feedback(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_motor_set_force_feedback(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_motor_set_torque_feedback(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_position_sensor_set_value(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_radar_set_targets(WbDeviceTag tag, const WbRadarTarget *targets, int target_number);
-CONTROLLER_EXPORT void wbr_touch_sensor_set_value(WbDeviceTag tag, double value);
-CONTROLLER_EXPORT void wbr_touch_sensor_set_values(WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT extern void wbr_accelerometer_set_values(WbRobotContext *context, WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT extern void wbr_camera_recognition_set_object(WbRobotContext *context, WbDeviceTag tag, const WbCameraRecognitionObject *objects, int object_number);
+CONTROLLER_EXPORT extern void wbr_compass_set_values(WbRobotContext *context, WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT extern void wbr_distance_sensor_set_value(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_gps_set_values(WbRobotContext *context, WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT extern void wbr_gps_set_speed(WbRobotContext *context, WbDeviceTag tag, const double speed);
+CONTROLLER_EXPORT extern void wbr_gyro_set_values(WbRobotContext *context, WbDeviceTag tag, const double *values);
+CONTROLLER_EXPORT extern void wbr_inertial_unit_set_value(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_light_sensor_set_value(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_microphone_set_buffer(WbRobotContext *context, WbDeviceTag tag, const unsigned char *buffer, int size);
+CONTROLLER_EXPORT extern void wbr_motor_set_position_feedback(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_motor_set_force_feedback(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_motor_set_torque_feedback(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_position_sensor_set_value(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_radar_set_targets(WbRobotContext *context, WbDeviceTag tag, const WbRadarTarget *targets, int target_number);
+CONTROLLER_EXPORT extern void wbr_touch_sensor_set_value(WbRobotContext *context, WbDeviceTag tag, double value);
+CONTROLLER_EXPORT extern void wbr_touch_sensor_set_values(WbRobotContext *context, WbDeviceTag tag, const double *values);
 
 // TODO doc required
-CONTROLLER_EXPORT void wbr_display_save_image(WbDeviceTag tag, int id, int width, int height, unsigned char *image);
+CONTROLLER_EXPORT extern void wbr_display_save_image(WbRobotContext *context, WbDeviceTag tag, int id, int width, int height, unsigned char *image);
 
-CONTROLLER_EXPORT void wbr_camera_set_image(WbDeviceTag tag, const unsigned char *image);
-CONTROLLER_EXPORT unsigned char *wbr_camera_get_image_buffer(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wbr_camera_set_image(WbRobotContext *context, WbDeviceTag tag, const unsigned char *image);
+CONTROLLER_EXPORT extern unsigned char *wbr_camera_get_image_buffer(WbRobotContext *context, WbDeviceTag tag);
 
 // Actuator functions (values written by the controller)
-typedef struct WbrInterface {
+struct WbrInterface {
   // mandatory functions :
-  struct {
+  struct _mandatory {
     bool (*wbr_start)(void *);
     void (*wbr_stop)();
     bool (*wbr_has_failed)();
@@ -122,10 +122,10 @@ typedef struct WbrInterface {
   void (*wbr_display_image_paste)(WbDeviceTag tag, int id, int x, int y);
   void (*wbr_display_image_save)(WbDeviceTag tag, int id);
 
-} WbrInterface;
+};
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_REMOTE_CONTROL_H */

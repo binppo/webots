@@ -19,6 +19,6 @@
 
 #include "device_private.h"
 
-void wb_supervisor_init(WbDevice *d);
+void wb_supervisor_init(WbRobotContext *context, WbDeviceStruct *d);
 
 #endif  // SUPERVISOR_PRIVATE_H

@@ -22,15 +22,11 @@
 
 #define scheduler_read_int32(d) (*((int *)(d)))
 
-extern unsigned int scheduler_data_size;
-extern char *scheduler_date;
-extern unsigned int scheduler_actual_step;
-
-bool scheduler_init(const char *pipe);
-void scheduler_cleanup();
-WbRequest *scheduler_read_data();
-void scheduler_send_request(WbRequest *);
-bool scheduler_is_local();
-int scheduler_get_pipe_handle();
+bool scheduler_init(WbRobotContext *context, const char *pipe, int robot_id);
+void scheduler_cleanup(WbRobotContext *context);
+WbRequest *scheduler_read_data(WbRobotContext *context);
+void scheduler_send_request(WbRobotContext *context, WbRequest *);
+bool scheduler_is_local(WbRobotContext *context);
+int scheduler_get_pipe_handle(WbRobotContext *context);
 
 #endif  // SCHEDULER_HH

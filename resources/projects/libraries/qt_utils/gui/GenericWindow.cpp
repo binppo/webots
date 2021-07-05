@@ -11,7 +11,7 @@
 
 using namespace webotsQtUtils;
 
-GenericWindow::GenericWindow(QStringList hiddenDevices) : MainWindow(), mMotionEditor(NULL) {
+GenericWindow::GenericWindow(WbRobotContext *ctx, QStringList hiddenDevices) : MainWindow(), mContext(ctx), mMotionEditor(NULL) {
   setStyleSheet("QWidget#borderedWidget { "
                 "  border: 2px groove darkGray; "
                 "  border-radius: 8px; "
@@ -52,7 +52,7 @@ GenericWindow::GenericWindow(QStringList hiddenDevices) : MainWindow(), mMotionE
   );
   setFixedWidth(810);
 
-  QString title(tr("Robot Window: %1").arg(wb_robot_get_name()));
+  QString title(tr("Robot Window: %1").arg(wb_robot_get_name(mContext)));
   setWindowTitle(title);
 
   mTabWidget = new QTabWidget(this);
@@ -60,18 +60,18 @@ GenericWindow::GenericWindow(QStringList hiddenDevices) : MainWindow(), mMotionE
 
   QList<webotsQtUtils::Motor *> motorList;
 
-  mDeviceList << new Device((WbDeviceTag)0);  // robot device
-  for (int index = 0; index < wb_robot_get_number_of_devices(); index++) {
-    WbDeviceTag tag = wb_robot_get_device_by_index(index);
-    if (hiddenDevices.contains(wb_device_get_name(tag)))
+  mDeviceList << new Device(mContext, (WbDeviceTag)0);  // robot device
+  for (int index = 0; index < wb_robot_get_number_of_devices(mContext); index++) {
+    WbDeviceTag tag = wb_robot_get_device_by_index(mContext, index);
+    if (hiddenDevices.contains(wb_device_get_name(mContext, tag)))
       continue;
-    WbNodeType type = wb_device_get_node_type(tag);
+    WbNodeType type = wb_device_get_node_type(mContext, tag);
     if (type == WB_NODE_LINEAR_MOTOR || type == WB_NODE_ROTATIONAL_MOTOR) {
-      Motor *motor = new Motor(tag);
+      Motor *motor = new Motor(mContext, tag);
       mDeviceList << motor;
       motorList << motor;
     } else {
-      Device *device = new Device(tag);
+      Device *device = new Device(mContext, tag);
       mDeviceList << device;
     }
   }
@@ -96,7 +96,7 @@ GenericWindow::GenericWindow(QStringList hiddenDevices) : MainWindow(), mMotionE
   // motion editor
   if (motorList.size() > 0) {
     MotionGlobalSettings::setAvailableMotorList(motorList);
-    mMotionEditor = new MotionEditor(this);
+    mMotionEditor = new MotionEditor(mContext, this);
     mTabWidget->addTab(mMotionEditor, tr("Motion Editor"));
   }
 

@@ -332,11 +332,13 @@ void WbRobot::clearDevices() {
 void WbRobot::updateDevicesAfterDestruction() {
   clearDevices();
   addDevices(this);
+  assignDeviceTags();
 }
 
 void WbRobot::updateDevicesAfterInsertion() {
   clearDevices();
   addDevices(this);
+  assignDeviceTags();
 }
 
 void WbRobot::pinToStaticEnvironment(bool pin) {
@@ -612,6 +614,24 @@ WbDevice *WbRobot::findDevice(WbDeviceTag tag) const {
       return device;
 
   return NULL;  // not found
+}
+
+WbDevice *WbRobot::findDevice(const QString &name) const {
+  foreach (WbDevice *const device, mDevices)
+    if (device->deviceName() == name)
+      return device;
+
+  return NULL;  // not found
+}
+
+QList<WbDevice*> WbRobot::findDevicesByType(int type) const {
+  QList<WbDevice*> list;
+  foreach (WbDevice *const device, mDevices) {
+    if (device->deviceNodeType() == type)
+        list << device;
+  }
+
+  return list;
 }
 
 void WbRobot::powerOn(bool e) {
@@ -962,6 +982,163 @@ void WbRobot::handleMessage(QDataStream &stream) {
   }
   if (mSupervisorUtilities)
     mSupervisorUtilities->handleMessage(stream);
+}
+
+void WbRobot::ROBOT_CONFIGURE() {
+  updateDevicesAfterInsertion();
+  mConfigureRequest = true;
+}
+
+void WbRobot::ROBOT_SET_SAMPLING_PERIOD(int refreshRate) {
+  /*
+  stream >> mRefreshRate;
+  if (needSceneTracker==false) {
+    A_SceneTracker::addNeed();
+    needSceneTracker = true;
+  }
+  */
+}
+
+void WbRobot::ROBOT_SET_BATTERY_SAMPLING_PERIOD(int rate) {
+  mBatterySensor->setRefreshRate(rate);
+}
+
+void WbRobot::ROBOT_SET_DATA(const QString &data) {
+  mCustomData->setValue(data);
+}
+
+void WbRobot::ROBOT_SET_KEYBOARD_SAMPLING_PERIOD(int rate) {
+  mKeyboardSensor->setRefreshRate(rate);
+}
+
+void WbRobot::ROBOT_SET_JOYSTICK_SAMPLING_PERIOD(int rate) {
+  mJoystickSensor->setRefreshRate(rate);
+  if (rate > 0) {
+    if (!mJoystickInterface) {
+      mJoystickInterface = new WbJoystickInterface();
+      if (mJoystickInterface->isCorrectlyInitialized()) {
+        mJoystickTimer = new QTimer(this);
+        mJoystickTimer->setSingleShot(false);
+        connect(mJoystickTimer, &QTimer::timeout, mJoystickInterface, &WbJoystickInterface::step);
+        mJoystickConfigureRequest = true;
+        mJoystickTimer->start(mJoystickInterface->updateRate());
+      } else {
+        warn(mJoystickInterface->initializationError());
+        delete mJoystickInterface;
+        mJoystickInterface = NULL;
+      }
+    }
+  } else if (mJoystickInterface) {
+    mJoystickTimer->stop();
+    disconnect(mJoystickTimer, &QTimer::timeout, mJoystickInterface, &WbJoystickInterface::step);
+    delete mJoystickTimer;
+    delete mJoystickInterface;
+    mJoystickTimer = NULL;
+    mJoystickInterface = NULL;
+    delete mJoyStickLastValue;
+    mJoyStickLastValue = NULL;
+  }
+}
+
+void WbRobot::ROBOT_SET_MOUSE_SAMPLING_PERIOD(int rate) {
+  if (rate <= 0 && mMouse != NULL) {
+    WbMouse::destroy(mMouse);
+    mMouse = NULL;
+  } else if (rate > 0) {
+    if (mMouse == NULL)
+      mMouse = WbMouse::create();
+    mMouse->setRefreshRate(rate);
+  }
+}
+
+void WbRobot::ROBOT_MOUSE_ENABLE_3D_POSITION(bool enable) {
+  if (mMouse)
+    mMouse->set3dPositionEnabled(enable);
+}
+
+void WbRobot::ROBOT_SET_JOYSTICK_FORCE_FEEDBACK(int level) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->addForce(level);
+}
+
+void WbRobot::ROBOT_SET_JOYSTICK_FORCE_FEEDBACK_DURATION(double duration) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setConstantForceDuration(duration);
+}
+
+void WbRobot::ROBOT_SET_JOYSTICK_AUTO_CENTERING_GAIN(double gain) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setAutoCenteringGain(gain);
+}
+
+void WbRobot::ROBOT_SET_JOYSTICK_RESISTANCE_GAIN(double gain) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setResistanceGain(gain);
+}
+
+void WbRobot::ROBOT_SET_JOYSTICK_FORCE_AXIS(int axis) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setForceAxis(axis);
+}
+
+void WbRobot::ROBOT_CLIENT_EXIT_NOTIFY() {
+  emit controllerExited();
+}
+
+void WbRobot::ROBOT_REMOTE_ON() {
+  emit toggleRemoteMode(true);
+}
+
+void WbRobot::ROBOT_REMOTE_OFF() {
+  emit toggleRemoteMode(false);
+}
+
+void WbRobot::ROBOT_PIN(bool pin) {
+  pinToStaticEnvironment(pin);
+}
+
+void WbRobot::ROBOT_CONSOLE_MESSAGE(const QString &nativeMessage, bool useStdOut) {
+  QString message(nativeMessage);
+  if (!message.endsWith('\n'))
+    message += '\n';
+  // cppcheck-suppress knownConditionTrueFalse
+  emit appendMessageToConsole(message, useStdOut);
+}
+
+void WbRobot::ROBOT_WWI_MESSAGE(const QByteArray &message) {
+  emit sendToJavascript(message);
+}
+
+void WbRobot::ROBOT_WAIT_FOR_USER_INPUT_EVENT(int eventType, int timeout) {
+  mMonitoredUserInputEventTypes = eventType;
+  mNeedToWriteUserInputEventAnswer = false;
+  if (mMonitoredUserInputEventTypes >= 0) {
+    if (!mUserInputEventTimer) {
+      mUserInputEventTimer = new QTimer(this);
+      mUserInputEventTimer->setSingleShot(true);
+      connect(mUserInputEventTimer, &QTimer::timeout, this, &WbRobot::userInputEventNeedUpdate);
+    }
+    if (((WB_EVENT_MOUSE_CLICK | WB_EVENT_MOUSE_MOVE) & mMonitoredUserInputEventTypes) && mMouse) {
+      mMouse->setHasMoved(false);
+      mMouse->setHasClicked(false);
+      mMouse->setTracked(true);
+      connect(mMouse, &WbMouse::changed, this, &WbRobot::handleMouseChange);
+    }
+    if ((WB_EVENT_KEYBOARD & mMonitoredUserInputEventTypes) && mKeyboardSensor->isEnabled()) {
+      mKeyboardHasChanged = false;
+      connect(this, &WbRobot::keyboardChanged, this, &WbRobot::userInputEventNeedUpdate);
+    }
+    if (((WB_EVENT_JOYSTICK_BUTTON | WB_EVENT_JOYSTICK_AXIS | WB_EVENT_JOYSTICK_POV) & mMonitoredUserInputEventTypes) &&
+        mJoystickInterface && mJoystickInterface->isCorrectlyInitialized()) {
+      mJoystickInterface->resetButtonHasChanged();
+      mJoystickInterface->resetPovHasChanged();
+      mJoystickInterface->resetAxisHasChanged();
+      connect(mJoystickInterface, &WbJoystickInterface::changed, this, &WbRobot::handleJoystickChange);
+    }
+    mUserInputEventTimer->start(timeout);
+    mUserInputEventReferenceTime = QDateTime::currentDateTime();
+  } else if (mUserInputEventTimer)
+    mUserInputEventTimer->stop();
 }
 
 void WbRobot::dispatchAnswer(QDataStream &stream, bool includeDevices) {

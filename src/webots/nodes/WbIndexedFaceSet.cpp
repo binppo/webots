@@ -34,6 +34,9 @@
 #include "WbTriangleMesh.hpp"
 #include "WbWrenMeshBuffers.hpp"
 #include "WbWrenRenderingContext.hpp"
+#include "WbUrl.hpp"
+
+#include <QtCore/QFileInfo>
 
 #include <wren/config.h>
 #include <wren/node.h>
@@ -61,6 +64,7 @@ void WbIndexedFaceSet::init() {
   mNormalIndex = findMFInt("normalIndex");
   mTexCoordIndex = findMFInt("texCoordIndex");
   mCreaseAngle = findSFDouble("creaseAngle");
+  mUrl = findSFString("url");
 }
 
 WbIndexedFaceSet::WbIndexedFaceSet(WbTokenizer *tokenizer) : WbGeometry("IndexedFaceSet", tokenizer) {
@@ -108,6 +112,7 @@ void WbIndexedFaceSet::postFinalize() {
   connect(mTexCoordIndex, &WbMFInt::changed, this, &WbIndexedFaceSet::updateNormalIndex);
   connect(mTexCoordIndex, &WbMFInt::changed, this, &WbIndexedFaceSet::updateTexCoordIndex);
   connect(mCreaseAngle, &WbSFDouble::changed, this, &WbIndexedFaceSet::updateCreaseAngle);
+  connect(mUrl, &WbSFString::changed, this, &WbIndexedFaceSet::updateSource);
 
   if (coord())
     connect(coord(), &WbCoordinate::fieldChanged, this, &WbIndexedFaceSet::updateCoord, Qt::UniqueConnection);
@@ -142,10 +147,22 @@ WbTriangleMeshCache::TriangleMeshInfo WbIndexedFaceSet::createTriangleMesh() {
 }
 
 void WbIndexedFaceSet::updateTriangleMesh(bool issueWarnings) {
-  mTriangleMeshError =
-    mTriangleMesh->init(coord() ? &(coord()->point()) : NULL, mCoordIndex, normal() ? &(normal()->vector()) : NULL,
-                        mNormalIndex, texCoord() ? &(texCoord()->point()) : NULL, mTexCoordIndex, mCreaseAngle->value(),
-                        mCcw->value(), mNormalPerVertex->value());
+  if (mUrl && !mUrl->value().isEmpty()) {
+    QString filePath(mUrl->value());
+    if(filePath.indexOf('.')>0)
+      filePath = WbUrl::computePath(this, "url", mUrl->value(), false);
+    if(filePath.isEmpty())
+      filePath = mUrl->value();
+
+    mTriangleMeshError =
+      mTriangleMesh->init(filePath, mCreaseAngle->value(),
+                          mCcw->value(), mNormalPerVertex->value());
+  } else {
+    mTriangleMeshError =
+      mTriangleMesh->init(coord() ? &(coord()->point()) : NULL, mCoordIndex, normal() ? &(normal()->vector()) : NULL,
+                          mNormalIndex, texCoord() ? &(texCoord()->point()) : NULL, mTexCoordIndex, mCreaseAngle->value(),
+                          mCcw->value(), mNormalPerVertex->value());
+  }
 
   if (issueWarnings) {
     foreach (QString warning, mTriangleMesh->warnings())
@@ -176,7 +193,7 @@ WbTextureCoordinate *WbIndexedFaceSet::texCoord() const {
 }
 
 void WbIndexedFaceSet::createWrenObjects() {
-  if (WbNodeUtilities::findContainingProto(this))
+  //if (WbNodeUtilities::findContainingProto(this))
     updateTriangleMesh(false);
 
   foreach (QString warning, mTriangleMesh->warnings())
@@ -214,7 +231,7 @@ bool WbIndexedFaceSet::areSizeFieldsVisibleAndNotRegenerator() const {
 }
 
 void WbIndexedFaceSet::attachResizeManipulator() {
-  if (coord())
+  if (coord() || (mUrl && !mUrl->value().isEmpty()))
     WbGeometry::attachResizeManipulator();
 }
 
@@ -351,6 +368,28 @@ void WbIndexedFaceSet::updateCreaseAngle() {
   emit changed();
 }
 
+void WbIndexedFaceSet::updateSource() {
+  if (!mUrl || mUrl->value().isEmpty())
+    return;
+
+  buildWrenMesh(true);
+
+  if (isAValidBoundingObject())
+    applyToOdeData();
+
+  if (mBoundingSphere && !isInBoundingObject())
+    mBoundingSphere->setOwnerSizeChanged();
+
+  if (resizeManipulator() && resizeManipulator()->isAttached())
+    setResizeManipulatorDimensions();  // Must be called after updateTriangleMesh()
+
+  if(defName().isEmpty()) {
+    setDefName(QFileInfo(mUrl->value()).baseName());
+  }
+
+  emit changed();
+}
+
 void WbIndexedFaceSet::buildGeomIntoBuffers(WbWrenMeshBuffers *buffers, const WbMatrix4 &m, bool generateUserTexCoords) const {
   assert(mTriangleMesh->isValid());
   const WbMatrix3 rm = m.extracted3x3Matrix();
@@ -449,7 +488,8 @@ dGeomID WbIndexedFaceSet::createOdeGeom(dSpaceID space) {
 void WbIndexedFaceSet::setOdeTrimeshData() {
   assert(mTriangleMesh->isValid());
   clearTrimeshResources();  // delete trimesh resources if any
-  const int n = coord()->pointSize();
+  //const int n = coord()->pointSize();
+  const int n = mTriangleMesh->numberOfCoords();
   const int nt = mTriangleMesh->numberOfTriangles();
   mTrimeshData = dGeomTriMeshDataCreate();
   mScaledVerticesNeedUpdate = true;

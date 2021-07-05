@@ -19,38 +19,44 @@
 
 #include <webots/supervisor.h>
 #include <webots/types.h>
+#include <string>
+#include <vector>
 #include "device_private.h"
 #include "request.h"
 #include "webots/nodes.h"
 
-#define ROBOT_ASSERT(condition)                                                     \
+#define ROBOT_ASSERT(context, condition)                                                     \
   {                                                                                 \
     if (!(condition))                                                               \
-      robot_abort("%s:%d: assertion failed: %s\n", __FILE__, __LINE__, #condition); \
+      robot_abort(context, "%s:%d: assertion failed: %s\n", __FILE__, __LINE__, #condition); \
   }
 
-int wb_robot_get_step_duration();
+struct UpdateElement;
+struct GPipe;
+struct Label;
+
+int wb_robot_get_step_duration(WbRobotContext *context);
 unsigned int wb_robot_get_dongle_number();
-void wb_robot_flush_unlocked();
-void robot_write_request(WbDevice *, WbRequest *);
-void robot_read_answer(WbDevice *, WbRequest *);
-WbDevice *robot_get_device_with_node(WbDeviceTag tag, WbNodeType node, bool warning);
-int robot_get_number_of_devices();
-WbDeviceTag robot_get_device_tag(WbDevice *);
-WbDevice *robot_get_robot_device();
-double wb_robot_get_time();
-int robot_check_supervisor(const char *func_name);
-int robot_check_differential_wheels(const char *func_name);
-const char *robot_get_device_name(WbDeviceTag tag);
-const char *robot_get_device_model(WbDeviceTag tag);
-void robot_mutex_lock_step();
-void robot_mutex_unlock_step();
-void robot_abort(const char *format, ...);
-WbNodeType robot_get_device_type(WbDeviceTag tag);
-void robot_toggle_remote(WbDevice *, WbRequest *);
-int robot_is_quitting();
-void robot_console_print(const char *text, int stream);
-WbSimulationMode robot_get_simulation_mode();
-void robot_set_simulation_mode(WbSimulationMode mode);
+void wb_robot_flush_unlocked(WbRobotContext *context);
+void robot_write_request(WbRobotContext *, WbDeviceStruct *, WbRequest *);
+void robot_read_answer(WbRobotContext *, WbDeviceStruct *, WbRequest *);
+WbDeviceStruct *robot_get_device_with_node(WbRobotContext *context, WbDeviceTag tag, WbNodeType node, bool warning);
+int robot_get_number_of_devices(WbRobotContext *context);
+WbDeviceTag robot_get_device_tag(WbRobotContext *context, WbDeviceStruct *);
+WbDeviceStruct *robot_get_robot_device(WbRobotContext *context);
+double wb_robot_get_time(WbRobotContext *context);
+int robot_check_supervisor(WbRobotContext *context, const char *func_name);
+int robot_check_differential_wheels(WbRobotContext *context, const char *func_name);
+const char *robot_get_device_name(WbRobotContext *context, WbDeviceTag tag);
+const char *robot_get_device_model(WbRobotContext *context, WbDeviceTag tag);
+void robot_mutex_lock_step(WbRobotContext *context);
+void robot_mutex_unlock_step(WbRobotContext *context);
+void robot_abort(WbRobotContext *context, const char *format, ...);
+WbNodeType robot_get_device_type(WbRobotContext *context, WbDeviceTag tag);
+void robot_toggle_remote(WbRobotContext *context, WbDeviceStruct *, WbRequest *);
+int robot_is_quitting(WbRobotContext *context);
+void robot_console_print(WbRobotContext *context, const char *text, int stream);
+WbSimulationMode robot_get_simulation_mode(WbRobotContext *context);
+void robot_set_simulation_mode(WbRobotContext *context, WbSimulationMode mode);
 
 #endif  // ROBOT_PRIVATE_H

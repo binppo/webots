@@ -21,12 +21,12 @@
 #ifndef WB_LIDAR_POINT_H
 #define WB_LIDAR_POINT_H
 
-typedef struct {
+struct WbLidarPoint {
   float x;
   float y;
   float z;
   int layer_id;
   float time;
-} WbLidarPoint;
+};
 
 #endif /* WB_LIDAR_POINT_H */

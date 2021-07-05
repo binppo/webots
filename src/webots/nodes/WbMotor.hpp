@@ -53,6 +53,7 @@ public:
   double computeCurrentDynamicVelocity(double ms, double position);
   bool runKinematicControl(double ms, double &position);
   double currentVelocity() const { return mCurrentVelocity; }
+  double getTargetVelocity() const { return mTargetVelocity; }
   int kinematicVelocitySign() const { return mKinematicVelocitySign; }
   void setTargetPosition(double tp);
   void resetPhysics();
@@ -74,6 +75,24 @@ public:
   void reset() override;
 
   static const QList<const WbMotor *> &motors() { return cMotors; }
+
+  double targetPosition() const { return mTargetPosition; }
+  int getForceRefreshRate();
+  double currentForce();
+  double availableForce() const { return mMotorForceOrTorque; }
+
+  bool fetchTransportQue(double &val);
+
+public slots:
+  void MOTOR_SET_POSITION(double position);
+  void MOTOR_RESET_POSITION(double position);
+  void MOTOR_SET_VELOCITY(double velocity);
+  void MOTOR_SET_ACCELERATION(double acceleration);
+  void MOTOR_SET_FORCE(double rawInput);
+  void MOTOR_SET_AVAILABLE_FORCE(double force);
+  void MOTOR_SET_CONTROL_PID(double controlP, double controlI, double controlD);
+  void MOTOR_FEEDBACK(int rate);
+  int MOTOR_GET_ASSOCIATED_DEVICE(int deviceType);
 
 signals:
   void minPositionChanged();
@@ -131,6 +150,7 @@ private:
   bool mNeedToConfigure;
   int mKinematicVelocitySign;
   QList<WbJointDevice *> mChangedAssociatedDevices;
+  QList<double> mTransportQueue;
   WbDeviceTag *mRequestedDeviceTag;
 
 private slots:

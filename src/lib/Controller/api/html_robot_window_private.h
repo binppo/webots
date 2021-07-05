@@ -18,8 +18,8 @@
 #define HTML_ROBOT_WINDOW_PRIVATE_H
 
 bool wb_robot_window_load_library(const char *name);
-void html_robot_window_init();
-void html_robot_window_step(int step);
+void html_robot_window_init(WbRobotContext *context);
+void html_robot_window_step(WbRobotContext *context, int step);
 void html_robot_window_cleanup();
 
 #endif  // HTML_ROBOT_WINDOW__PRIVATE_H

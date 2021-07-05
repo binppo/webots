@@ -134,13 +134,13 @@ void WbBoundingSphere::set(const WbVector3 &center, const double radius) {
 }
 
 void WbBoundingSphere::addSubBoundingSphereToParentNode(const WbBaseNode *node) {
-  const WbBaseNode *parent = qobject_cast<const WbBaseNode *>(node->parent());
+  const WbBaseNode *parent = qobject_cast<const WbBaseNode *>(node->parentNode());
   while (parent) {
     if (parent->boundingSphere()) {
       parent->boundingSphere()->addSubBoundingSphere(node->boundingSphere());
       return;
     }
-    parent = qobject_cast<const WbBaseNode *>(parent->parent());
+    parent = qobject_cast<const WbBaseNode *>(parent->parentNode());
   }
 }
 
@@ -345,7 +345,7 @@ WbBoundingSphere::IntersectingShape WbBoundingSphere::computeIntersection(const 
     if (mGeomOwner != NULL) {
       const double d = mGeomOwner->computeDistance(ray);
       if (d > 0.0) {
-        res.shape = qobject_cast<WbShape *>(mGeomOwner->parent());
+        res.shape = qobject_cast<WbShape *>(mGeomOwner->parentNode());
         res.distance = d;
       }
     }

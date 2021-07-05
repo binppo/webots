@@ -131,7 +131,13 @@ QString WbTreeItem::data() const {
 
   switch (mType) {
     case NODE: {
-      QString fullName = mNode->fullName();
+      if (mNode->isUseNode())
+        return mNode->useName();
+      else if (!mNode->defName().isEmpty())
+        return mNode->defName();
+      else
+        return mNode->modelName();
+      /*QString fullName = mNode->fullName();
       if (!fullName.startsWith("DEF ") && !fullName.startsWith("USE ")) {
         if (WbNodeUtilities::isDeviceTypeName(mNode->nodeModelName())) {
           WbSFString *name = mNode->findSFString("name");
@@ -140,6 +146,7 @@ QString WbTreeItem::data() const {
         }
       }
       return fullName;
+      */
     }
     case FIELD: {
       if (mField->isSingle())
@@ -163,9 +170,12 @@ QString WbTreeItem::data() const {
 }
 
 const QPixmap &WbTreeItem::pixmap() const {
-  static const QPixmap nodePixmap("enabledIcons:node.png");
-  static const QPixmap fieldPixmap("enabledIcons:field.png");
-  static const QPixmap protoPixmap("enabledIcons:proto.png");
+  static const QPixmap nodePixmap(":/resources/icons/light/node.svg");
+  static const QPixmap fieldPixmap(":/resources/icons/light/field.svg");
+  static const QPixmap protoPixmap(":/resources/icons/light/proto.svg");
+  //static const QPixmap nodePixmap("enabledIcons:node.png");
+  //static const QPixmap fieldPixmap("enabledIcons:field.png");
+  //static const QPixmap protoPixmap("enabledIcons:proto.png");
   static const QPixmap nullPixmap;
 
   switch (mType) {
@@ -231,7 +241,7 @@ int WbTreeItem::row() const {
 bool WbTreeItem::isFixedRowsMFitem() const {
   assert(isItem());
 
-  const WbTreeItem *const p = parent();
+  const WbTreeItem *const p = parentItem();
   if (p == NULL || !p->isField())
     return false;
 

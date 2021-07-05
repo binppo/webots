@@ -21,7 +21,9 @@
 #ifndef WB_CAMERA_RECOGNITION_OBJECT_H
 #define WB_CAMERA_RECOGNITION_OBJECT_H
 
-typedef struct {
+#include <string>
+
+struct WbCameraRecognitionObject {
   int id;
   double position[3];
   double orientation[4];
@@ -30,7 +32,7 @@ typedef struct {
   int size_on_image[2];
   int number_of_colors;
   double *colors;
-  char *model;
-} WbCameraRecognitionObject;
+  std::string model;
+};
 
 #endif /* WB_CAMERA_RECOGNITION_OBJECT_H */

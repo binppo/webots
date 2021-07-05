@@ -17,7 +17,7 @@
 #ifndef MOTION_PRIVATE_H
 #define MOTION_PRIVATE_H
 
-void motion_step_all(int step);
-void motion_cleanup();
+void motion_step_all(WbRobotContext *context, int step);
+void motion_cleanup(WbRobotContext *context);
 
 #endif

@@ -78,6 +78,21 @@ void WbBrake::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbBrake::BRAKE_SET_DAMPING_CONSTANT(double dampingConstant) {
+  mBrakingDampingConstant = dampingConstant;
+  emit brakingChanged();
+}
+
+int WbBrake::BRAKE_GET_ASSOCIATED_DEVICE(int deviceType) {
+  WbLogicalDevice *device = getSiblingDeviceByType(deviceType);
+  if (!device && deviceType == WB_NODE_ROTATIONAL_MOTOR)
+    // check both motor types
+    device = getSiblingDeviceByType(WB_NODE_LINEAR_MOTOR);
+  int deviceTag = device ? device->tag() : 0;
+
+  return deviceTag;
+}
+
 void WbBrake::writeAnswer(QDataStream &stream) {
   if (mRequestedDeviceTag != NULL) {
     stream << tag();

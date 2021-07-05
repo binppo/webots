@@ -20,6 +20,9 @@
 #include "WbDevice.hpp"
 #include "WbSFString.hpp"
 
+#include <QVector3D>
+#include <QVector4D>
+
 #include <core/WbConfig.h>
 
 class WbMFNode;
@@ -73,6 +76,17 @@ public:
   void detachTranslateRotateManipulator() override { WbAbstractTransform::detachTranslateRotateManipulator(); }
 
   void emitTranslationOrRotationChangedByUser() override {}
+
+  int boneCount();
+  QString boneName(int index);
+  QVector3D bonePosition(int index, bool absolute);
+  QVector4D boneOrientation(int index, bool absolute);
+
+public slots:
+  void SKIN_GET_BONE_POSITION(int index, bool absolute);
+  void SKIN_GET_BONE_ORIENTATION(int index, bool absolute);
+  void SKIN_SET_BONE_POSITION(int index, double x, double y, double z, bool absolute);
+  void SKIN_SET_BONE_ORIENTATION(int index, double x, double y, double z, double angle, bool absolute);
 
 signals:
   void wrenMaterialChanged();

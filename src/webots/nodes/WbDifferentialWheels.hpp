@@ -59,6 +59,19 @@ public:
   double axleLength() const { return mAxleLength->value(); }
   double wheelRadius() const { return mWheelRadius->value(); }
 
+  double leftActualSpeed() const { return mActualSpeed[0]; }
+  double rightActualSpeed() const { return mActualSpeed[1]; }
+  double leftTargetSpeed() const { return mTargetSpeed[0]; }
+  double rightTargetSpeed() const { return mTargetSpeed[1]; }
+  double maxSpeed() const { return mMaxSpeed->value(); }
+
+  int getEncoderRefreshRate();
+
+public slots:
+  void DIFFERENTIAL_WHEELS_SET_SPEED(double left, double right);
+  void DIFFERENTIAL_WHEELS_ENCODERS_SET_SAMPLING_PERIOD(int refreshRate);
+  void DIFFERENTIAL_WHEELS_ENCODERS_SET_VALUE(double pos0, double pos1);
+
 private:
   WbSFDouble *mMotorConsumption;
   WbSFDouble *mAxleLength;

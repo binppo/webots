@@ -110,6 +110,21 @@ void WbPen::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbPen::PEN_WRITE() {
+  mWrite->setValue(true);
+}
+
+void WbPen::PEN_DONT_WRITE() {
+  mWrite->setValue(false);
+}
+
+void WbPen::PEN_SET_INK_COLOR(quint8 r, quint8 g, quint8 b, quint8 density) {
+  mInkColor->setValue(r / 255.0f, g / 255.0f, b / 255.0f);
+
+  mInkDensity->setValue((double)density / 255.0);
+  WbFieldChecker::clampDoubleToRangeWithIncludedBounds(this, mInkDensity, 0.0, 1.0);
+}
+
 void WbPen::prePhysicsStep(double ms) {
   WbSolidDevice::prePhysicsStep(ms);
 

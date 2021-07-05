@@ -26,22 +26,22 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_touch_sensor_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_touch_sensor_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_touch_sensor_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_touch_sensor_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_touch_sensor_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_touch_sensor_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT double wb_touch_sensor_get_value(WbDeviceTag tag);
-CONTROLLER_EXPORT const double *wb_touch_sensor_get_values(WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_touch_sensor_get_value(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const double *wb_touch_sensor_get_values(WbRobotContext *context, WbDeviceTag tag);
 
 typedef enum { WB_TOUCH_SENSOR_BUMPER = 0, WB_TOUCH_SENSOR_FORCE, WB_TOUCH_SENSOR_FORCE3D } WbTouchSensorType;
 
-CONTROLLER_EXPORT WbTouchSensorType wb_touch_sensor_get_type(WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbTouchSensorType wb_touch_sensor_get_type(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_TOUCH_SENSOR_H */

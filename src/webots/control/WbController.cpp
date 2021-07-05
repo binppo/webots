@@ -87,7 +87,7 @@ static void printArray(const QByteArray &buffer, const QString &prefix, int id, 
 }
 */
 
-WbController::WbController(WbRobot *robot) :
+/*WbController::WbController(WbRobot *robot) :
   mStdout(QTextCodec::codecForName("UTF-8")),
   mStderr(QTextCodec::codecForName("UTF-8")),
   mHasPendingImmediateAnswer(false) {
@@ -183,12 +183,19 @@ bool WbController::isRunning() const {
 void WbController::start() {
   mRobot->setControllerStarted(true);
 
-  if (mControllerPath.isEmpty()) {
-    warn(tr("Could not find the controller directory.\nStarts the void controller instead."));
-    startVoidExecutable();
+  if (mControllerPath.isEmpty() || "void"==mName) {
+    //warn(tr("Could not find the controller directory.\nStarts the void controller instead."));
+    //startVoidExecutable();
+    startInternal();
+    return;
   }
 
   mType = findType(mControllerPath);
+  if (WbFileUtil::UNKNOWN == mType) {
+    startInternal();
+    return;
+  }
+
   setProcessEnvironment();
 // on Windows, java is unable to find class in a path including UTF-8 characters (e.g., Chinese)
 #ifdef _WIN32
@@ -814,6 +821,10 @@ void WbController::startBotstudio() {
   mCommandLine = "\"" + QDir::toNativeSeparators(mCommand) + "\"";
 }
 
+void WbController::startInternal() {
+  emit startInternalController(mRobot->uniqueId(), mRobot->name());
+}
+
 void WbController::copyBinaryAndDependencies(const QString &filename) {
   if (WbBinaryIncubator::copyBinaryAndDependencies(filename) == WbBinaryIncubator::FILE_REMOVE_ERROR) {
     warn(tr("An error occured during the copy of controller '%1'. An older version will be executed.\n"
@@ -1106,6 +1117,88 @@ void WbController::readRequest() {
 
   emit requestReceived();
   mProcessingRequest = false;
+}
+
+void WbController::robotDestroyed() {
+  mRobot = NULL;
+  WbControlledWorld::instance()->deleteController(this);
+}*/
+
+
+WbController::WbController(WbRobot *robot) {
+  mRobot = robot;
+  mRobot->setConfigureRequest(true);
+  updateName(mRobot->controllerName());
+  connect(mRobot, &WbRobot::appendMessageToConsole, this, &WbController::appendMessageToConsole);
+  connect(mRobot, &WbRobot::destroyed, this, &WbController::robotDestroyed);
+
+  mProcessingRequest = false;
+}
+
+WbController::~WbController() {
+}
+
+void WbController::updateName(const QString &name) {
+  mName = name;
+  mPrefix = QString("[%1] ").arg(mName);
+}
+
+bool WbController::isRunning() const {
+  return mRobot->isControllerStarted();
+}
+
+// the start() method  never fails: if the controller name is invalid, then the void controller starts instead.
+void WbController::start() {
+  mRobot->setControllerStarted(true);
+
+  emit startInternalController(mRobot->uniqueId(), mRobot->name());
+}
+
+void WbController::info(const QString &message) {
+  WbLog::info(name() + ": " + message);
+}
+
+void WbController::warn(const QString &message) {
+  WbLog::warning(name() + ": " + message);
+}
+
+void WbController::error(const QString &message) {
+  WbLog::error(name() + ": " + message);
+}
+
+void WbController::appendMessageToConsole(const QString &message, bool useStdout) {
+}
+
+void WbController::handleRequest(QDataStream& str) {
+  if (mRobot == NULL)
+    return;
+
+  mProcessingRequest = true;
+
+  const bool needToBlockRegeneration = robot()->supervisor();
+  if (needToBlockRegeneration)
+    WbTemplateManager::instance()->blockRegeneration(true);
+
+  bool immediateMessagesPending = false;
+  mRobot->dispatchMessage(str);
+
+  WbPerformanceLog *log = WbPerformanceLog::instance();
+  if (log && !immediateMessagesPending)
+    log->stopMeasure(WbPerformanceLog::CONTROLLER, mName);
+
+  if (needToBlockRegeneration)
+    WbTemplateManager::instance()->blockRegeneration(false);
+
+  emit requestReceived();
+  mProcessingRequest = false;
+}
+
+int WbController::robotId() const {
+  return mRobot->uniqueId();
+}
+
+const QString &WbController::name() const {
+  return mName;
 }
 
 void WbController::robotDestroyed() {

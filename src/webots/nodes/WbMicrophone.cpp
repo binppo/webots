@@ -105,6 +105,16 @@ void WbMicrophone::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbMicrophone::MICROPHONE_SET_SAMPLING_PERIOD(int refreshRate)
+{
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbMicrophone::refreshRate()
+{
+  return mSensor->refreshRate();
+}
+
 void WbMicrophone::receiveSoundSample(char *sample, int size) {
   mSoundSample = sample;
   mSampleSize = size;

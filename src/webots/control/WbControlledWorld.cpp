@@ -35,7 +35,7 @@ WbControlledWorld *WbControlledWorld::instance() {
   return static_cast<WbControlledWorld *>(WbSimulationWorld::instance());
 }
 
-WbControlledWorld::WbControlledWorld(WbProtoList *protos, WbTokenizer *tokenizer) :
+/*WbControlledWorld::WbControlledWorld(WbProtoList *protos, WbTokenizer *tokenizer) :
   WbSimulationWorld(protos, tokenizer),
   mServer(NULL),
   mFirstStep(true),
@@ -148,7 +148,7 @@ void WbControlledWorld::startController(WbRobot *robot) {
 }
 
 void WbControlledWorld::startControllerFromSocket(WbRobot *robot, QLocalSocket *socket) {
-  if (robot->controllerName().isEmpty() || (socket == NULL && robot->controllerName() == "<extern>")) {
+  if ((socket == NULL && robot->controllerName() == "<extern>")) {
     mRobotsWaitingExternController.append(robot);
     connect(robot, &WbRobot::controllerChanged, this, &WbControlledWorld::updateCurrentRobotController, Qt::UniqueConnection);
     return;
@@ -176,10 +176,11 @@ void WbControlledWorld::startControllerFromSocket(WbRobot *robot, QLocalSocket *
   }
   if (!controller) {
     // if not first step and not an extern controller, the controller should be created when inserting the Robot node
-    assert(mFirstStep || robot->controllerName() == "<extern>");
+    //assert(mFirstStep || robot->controllerName() == "<extern>");
     controller = new WbController(robot);
     connect(robot, &WbRobot::controllerChanged, this, &WbControlledWorld::updateCurrentRobotController, Qt::UniqueConnection);
     connect(controller, &WbController::hasTerminatedByItself, this, &WbControlledWorld::deleteController, Qt::UniqueConnection);
+    connect(controller, SIGNAL(startInternalController(int, const QString&)), this, SIGNAL(startInternalController(int, const QString&)));
   }
   mControllers.append(controller);
   if (socket && robot->controllerName() == "<extern>") {
@@ -430,6 +431,7 @@ void WbControlledWorld::updateRobotController(WbRobot *robot) {
       else  // step executing
         mNewControllers << controller;
       connect(controller, &WbController::hasTerminatedByItself, this, &WbControlledWorld::deleteController);
+      connect(controller, SIGNAL(startInternalController(int, const QString&)), this, SIGNAL(startInternalController(int, const QString&)));
       return;
     }
   }
@@ -447,6 +449,7 @@ void WbControlledWorld::updateRobotController(WbRobot *robot) {
   else  // step executing
     mNewControllers << controller;
   connect(controller, &WbController::hasTerminatedByItself, this, &WbControlledWorld::deleteController);
+  connect(controller, SIGNAL(startInternalController(int, const QString&)), this, SIGNAL(startInternalController(int, const QString&)));
 }
 
 void WbControlledWorld::handleRobotRemoval(WbBaseNode *node) {
@@ -499,4 +502,202 @@ void WbControlledWorld::waitForRobotWindowIfNeededAndCompleteStep() {
 
   mIsExecutingStep = false;
   processWaitingStep();
+}*/
+
+
+
+
+
+WbControlledWorld::WbControlledWorld(WbProtoList *protos, WbTokenizer *tokenizer) :
+  WbSimulationWorld(protos, tokenizer),
+  mFirstStep(true),
+  mRetryEnabled(false),
+  mIsExecutingStep(false),
+  mHasWaitingStep(false) {
+  if (mWorldLoadingCanceled)
+    return;
+
+  mWorker = new QThread;
+  moveToThread(mWorker);
+
+  mWorker->start();
+}
+
+WbControlledWorld::~WbControlledWorld() {
+  if(mWorker)
+  {
+    mWorker->quit();
+	mWorker->wait();
+
+	delete mWorker;
+	mWorker = nullptr;
+  }
+
+  auto itr = mControllers.begin();
+  while (itr != mControllers.end()) {
+    WbController* controller = itr.value();
+    delete controller;
+    ++itr;
+  }
+  while (!mTerminatingControllers.isEmpty()) {
+    WbController *controller = mTerminatingControllers.takeFirst();
+    delete controller;
+  }
+}
+
+void WbControlledWorld::setUpControllerForNewRobot(WbRobot *robot) {
+  if (!robot)
+    return;
+
+  connect(robot, &WbRobot::startControllerRequest, this, &WbControlledWorld::startController);
+
+  if (mFirstStep && !mRetryEnabled)
+    // simulation not started yet, controller will be created at first step() call
+    return;
+
+  updateRobotController(robot);
+  connect(robot, &WbRobot::controllerChanged, this, &WbControlledWorld::updateCurrentRobotController, Qt::UniqueConnection);
+}
+
+void WbControlledWorld::startControllers() {
+  foreach (WbRobot *const robot, robots()) {
+    if (!robot->isControllerStarted())
+      startController(robot);
+  }
+}
+
+void WbControlledWorld::startController(WbRobot *robot) {
+  assert(!robot->isControllerStarted());
+
+  WbController *controller = new WbController(robot);
+  connect(robot, &WbRobot::controllerChanged, this, &WbControlledWorld::updateCurrentRobotController, Qt::UniqueConnection);
+  connect(controller, &WbController::hasTerminatedByItself, this, &WbControlledWorld::deleteController, Qt::UniqueConnection);
+  connect(controller, SIGNAL(startInternalController(int, const QString&)), this, SIGNAL(startInternalController(int, const QString&)));
+
+  mControllers[robot->name()] = controller;
+
+  controller->start();
+}
+
+// delete the controller only if it has not been already deleted
+void WbControlledWorld::deleteController(WbController *controller) {
+  const QString key = mControllers.key(controller);
+  if(!key.isEmpty())
+    mControllers.remove(key);
+  if (controller->isProcessingRequest())
+    mTerminatingControllers.append(controller);
+  else {
+    mTerminatingControllers.removeOne(controller);
+    delete controller;
+  }
+
+  if (mRetryEnabled)
+    // avoid waiting for a terminated controller
+    step();
+}
+
+void WbControlledWorld::retryStepLater() {
+  if (!mRetryEnabled) {
+    mRetryEnabled = true;
+    emit stepBlocked(true);
+  }
+  // call the step() function again when a WbController received some data from the libController
+  auto itr = mControllers.begin();
+  for (; itr != mControllers.end(); ++itr) {
+    WbController* controller = itr.value();
+    connect(controller, &WbController::requestReceived, this, &WbControlledWorld::step, Qt::UniqueConnection);
+  }
+}
+
+void WbControlledWorld::triggerStepFromTimer() {
+  mHasWaitingStep = true;
+  if (!mIsExecutingStep)
+    processWaitingStep();
+}
+
+void WbControlledWorld::processWaitingStep() {
+  if (mHasWaitingStep) {
+    mHasWaitingStep = false;
+    step();
+  }
+}
+
+void WbControlledWorld::step() {
+  if (mFirstStep && !mRetryEnabled) {
+    startControllers();
+  }
+
+  WbSimulationState *const simulationState = WbSimulationState::instance();
+
+  if (mFirstStep)
+    mFirstStep = false;
+
+  if (mRetryEnabled) {
+    mRetryEnabled = false;
+    auto itr = mControllers.begin();
+    for (; itr != mControllers.end(); ++itr) {
+      WbController* controller = itr.value();
+      disconnect(controller, &WbController::requestReceived, this, &WbControlledWorld::step);
+    }
+    emit stepBlocked(false);
+  }
+
+  // delete controllers that could not be deleted previously because still executing
+  if (!mTerminatingControllers.isEmpty()) {
+    foreach (WbController *controller, mTerminatingControllers) {
+      if (!controller->isProcessingRequest()) {
+        mTerminatingControllers.removeOne(controller);
+        delete controller;
+      }
+    }
+  }
+
+  mIsExecutingStep = true;
+  WbSimulationWorld::step();
+
+  emit WbSimulationState::instance()->controllerReadRequestsCompleted();
+
+  mIsExecutingStep = false;
+
+  //WbWrenRenderingContext::instance()->requestView3dRefresh();
+}
+
+void WbControlledWorld::updateCurrentRobotController() {
+  WbRobot *const robot = qobject_cast<WbRobot *>(sender());
+  if (robot)
+    updateRobotController(robot);
+}
+
+void WbControlledWorld::updateRobotController(WbRobot *robot) {
+  assert(robot);
+
+  const int robotID = robot->uniqueId();
+  bool paused = WbSimulationState::instance()->isPaused();
+  const QString &newControllerName = robot->controllerName();
+
+  // restart the controller if needed
+  auto itr = mControllers.begin();
+  for (; itr != mControllers.end(); ++itr) {
+    WbController* controller = itr.value();
+    if (controller->robotId() == robotID) {
+      disconnect(controller, &WbController::hasTerminatedByItself, this,
+                 &WbControlledWorld::deleteController);  // avoids double delete
+      mControllers.remove(itr.key());
+      WbLog::info(tr("Terminating controller \"%1\".").arg(controller->name()));
+      delete controller;
+      robot->setControllerStarted(false);
+      return;
+    }
+  }
+}
+
+QStringList WbControlledWorld::activeControllersNames() const {
+  QStringList list;
+  auto itr = mControllers.begin();
+  for (; itr != mControllers.end(); ++itr) {
+    const WbController* controller = itr.value();
+    if (controller->isRunning())
+      list.append(controller->name());
+  }
+  return list;
 }

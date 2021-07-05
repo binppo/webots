@@ -63,7 +63,8 @@ public:
   void insertItem(int index, WbNode *node);
   WbMFNode &operator=(const WbMFNode &other);
   bool operator==(const WbMFNode &other) const;
-  int nodeIndex(const WbNode *node) const;
+  int nodeIndex(WbNode *node) const;
+  bool contains(WbNode *node) const;
   void write(WbVrmlWriter &) const override;
 
 protected:

@@ -27,6 +27,7 @@
 #include "WbWrenMeshBuffers.hpp"
 #include "WbWrenRenderingContext.hpp"
 #include "WbWrenShaders.hpp"
+#include "WbUrl.hpp"
 
 #include "../external/rply/rply.h"
 
@@ -47,7 +48,7 @@
 void WbPointSet::init() {
   mColor = findSFNode("color");
   mCoord = findSFNode("coord");
-  mFilePath = findSFString("source");
+  mUrl = findSFString("url");
 }
 
 WbPointSet::WbPointSet(WbTokenizer *tokenizer) : WbGeometry("PointSet", tokenizer) {
@@ -63,7 +64,8 @@ WbPointSet::WbPointSet(const WbNode &other) : WbGeometry(other) {
 }
 
 WbPointSet::~WbPointSet() {
-  wr_static_mesh_delete(mWrenMesh);
+  if (mWrenMesh)
+    wr_static_mesh_delete(mWrenMesh);
 }
 
 void WbPointSet::postFinalize() {
@@ -71,7 +73,7 @@ void WbPointSet::postFinalize() {
 
   connect(mCoord, &WbSFNode::changed, this, &WbPointSet::updateCoord);
   connect(mColor, &WbSFNode::changed, this, &WbPointSet::updateColor);
-  connect(mFilePath, &WbSFString::changed, this, &WbPointSet::updateFilePath);
+  connect(mUrl, &WbSFString::changed, this, &WbPointSet::updateSource);
 
   if (coord())
     connect(coord(), &WbCoordinate::fieldChanged, this, &WbPointSet::updateCoord, Qt::UniqueConnection);
@@ -108,6 +110,9 @@ void WbPointSet::setWrenMaterial(WrMaterial *material, bool castShadows) {
 }
 
 bool WbPointSet::sanitizeFields() {
+  if (mUrl && !mUrl->value().isEmpty())
+    return false;
+
   if (coord() && !coord()->point().isEmpty()) {
     if (color() && color()->color().size() != coord()->pointSize()) {
       warn(tr("If a 'Color' node is present in the 'color' field, it should have the same number of component as the "
@@ -120,9 +125,6 @@ bool WbPointSet::sanitizeFields() {
 
     return true;
   }
-
-  if (mPointCloud.count>0)
-    return true;
 
   return true;
 }
@@ -157,27 +159,29 @@ void WbPointSet::buildWrenMesh() {
 void WbPointSet::prebuildWrenMesh(int count, bool reserveRGBTable) {
   WbGeometry::deleteWrenRenderable();
 
-  wr_static_mesh_delete(mWrenMesh);
-  mWrenMesh = NULL;
+  if (mWrenMesh) {
+    wr_static_mesh_delete(mWrenMesh);
+    mWrenMesh = NULL;
+  }
 
   WbGeometry::computeWrenRenderable();
 
-  float *key0 = new float[1];
-  float *key1 = nullptr;
-  if(reserveRGBTable)
-    key1 = new float[1];
+  static float kRandomKeyHash = 0.f;
+  float key0 = kRandomKeyHash;
+  kRandomKeyHash += 0.001f;
+  float key1 = kRandomKeyHash;
+  kRandomKeyHash += 0.001f;
 
   mPointCloud.count = count;
   mPointCloud.coordData = nullptr;
   mPointCloud.colorData = nullptr;
-  mWrenMesh = wr_static_mesh_point_pre_set_new(count, key0, key1, mPointCloud.coordData, mPointCloud.colorData);
-
-  delete[] key0;
-  if(key1)
-    delete[] key1;
+  mWrenMesh = wr_static_mesh_point_pre_set_new(count, &key0, reserveRGBTable? &key1 : nullptr, mPointCloud.coordData, mPointCloud.colorData);
 }
 
 void WbPointSet::postbuildWrenMesh() {
+  if (!mWrenMesh)
+    return;
+
   wr_static_mesh_point_post_set_new(mWrenMesh);
 
   wr_renderable_set_cast_shadows(mWrenRenderable, false);
@@ -219,8 +223,8 @@ int WbPointSet::computeCoordsAndColorData(float *coordsData, float *colorData) {
 }
 
 void WbPointSet::updateData() {
-  if (mFilePath && !mFilePath->value().isEmpty()) {
-    updateFilePath();
+  if (mUrl && !mUrl->value().isEmpty()) {
+    updateSource();
   } else if(sanitizeFields()) {
     updateCoord();
   }
@@ -255,14 +259,20 @@ void WbPointSet::updateColor() {
   emit changed();
 }
 
-void WbPointSet::updateFilePath() {
-  if (!mFilePath || mFilePath->value().isEmpty())
+void WbPointSet::updateSource() {
+  if (!mUrl || mUrl->value().isEmpty())
     return;
 
-  if(loadData(mFilePath->value())) {
+  QString filePath(mUrl->value());
+  if(filePath.indexOf('.')>0)
+    filePath = WbUrl::computePath(this, "url", mUrl->value(), false);
+  if(filePath.isEmpty())
+    filePath = mUrl->value();
+
+  if(loadData(filePath)) {
     if(defName().isEmpty()) {
-      setDefName(QFileInfo(mFilePath->value()).baseName());
-	}
+      setDefName(QFileInfo(mUrl->value()).baseName());
+    }
   }
 
   emit changed();
@@ -270,9 +280,11 @@ void WbPointSet::updateFilePath() {
 
 void WbPointSet::recomputeBoundingSphere() const {
   assert(mBoundingSphere);
-  mBoundingSphere->empty();
 
-  /*if (mPointCloud.coordData) {
+  if (mPointCloud.coordData) {
+    if (!mBoundingSphere->isEmpty())
+      return;
+
     if (mPointCloud.count == 0)
       return;
 
@@ -284,13 +296,13 @@ void WbPointSet::recomputeBoundingSphere() const {
       p1 = p2;
       for (int k = 0; k < mPointCloud.count; ++k) {
         const WbVector3 point(&mPointCloud.coordData[k*3]);
-		if (point[2] != point[2])
+        if (point[2] != point[2])
           continue;
 
-		if (p2[2]!=p2[2]) {
+        if (p2[2]!=p2[2]) {
           p2 = point;
           p1 = p2;
-		}
+        }
 
         const double d = p1.distance2(point);
         if (d > maxDistance) {
@@ -303,10 +315,12 @@ void WbPointSet::recomputeBoundingSphere() const {
 
     for (int k = 0; k < mPointCloud.count; ++k) {
       WbVector3 point(&mPointCloud.coordData[k*3]);
-	  if(point[2] == point[2])
+      if(point[2] == point[2])
         mBoundingSphere->enclose(WbVector3(&mPointCloud.coordData[k*3]));
 	}
-  } else */if (coord()) {
+  } else if (coord()) {
+    mBoundingSphere->empty();
+
     const WbMFVector3 &points = coord()->point();
     if (points.size() == 0)
       return;
@@ -365,7 +379,7 @@ static int vertex_cb(p_ply_argument argument)
 	// but it's false if x is NaN.
 	if (val == val)
 	{
-		pc->coordData[s_PointCount + (flags & POS_MASK)] = static_cast<float>(val/1000.0);
+		pc->coordData[s_PointCount + (flags & POS_MASK)] = static_cast<float>(val/*/1000.0*/);
 	}
 	else
 	{
@@ -398,7 +412,7 @@ static int vertex_cb2(p_ply_argument argument)
 	// but it's false if x is NaN.
 	if (val == val)
 	{
-		pc->coordData[s_PointCount + (flags & POS_MASK)] = static_cast<float>(val/1000.0);
+		pc->coordData[s_PointCount + (flags & POS_MASK)] = static_cast<float>(val/*/1000.0*/);
 	}
 	else
 	{
@@ -583,26 +597,36 @@ bool WbPointSet::loadFromCC(const ccPointCloud *cc)
 	if(!mPointCloud.coordData)
 		return false;
 
-	size_t ptr = 0;
-	for(unsigned int i=0u; i<len; ++i)
+    std::memcpy(reinterpret_cast<void *>(mPointCloud.coordData), reinterpret_cast<const void *>(&cc->getPoint(0)->u),
+                len * sizeof(CCVector3));
+
+	/*for(unsigned int i=0u; i<len; ++i)
 	{
+        float *ptr = mPointCloud.coordData + (i*3);
+
 		const CCVector3 *p = cc->getPoint(i);
-		mPointCloud.coordData[ptr] = p->x / 1000.f;
-		mPointCloud.coordData[++ptr] = p->y / 1000.f;
-		mPointCloud.coordData[++ptr] = p->z / 1000.f;
-		++ptr;
+		ptr[0] = p->x;
+		ptr[1] = p->y;
+		ptr[2] = p->z;
+		ptr[0] /= 1000.f;
+		ptr[1] /= 1000.f;
+		ptr[2] /= 1000.f;
 	}
+    */
 
 	if(cc->hasColors())
 	{
-		ptr = 0;
 		for(unsigned int i=0u; i<len; ++i)
 		{
+            float *ptr = mPointCloud.colorData + (i*3);
+
 			const ccColor::Rgb &c = cc->getPointColor(i);
-			mPointCloud.colorData[ptr] = static_cast<float>(c.r) / 255.f;
-			mPointCloud.colorData[++ptr] = static_cast<float>(c.g) / 255.f;
-			mPointCloud.colorData[++ptr] = static_cast<float>(c.b) / 255.f;
-			++ptr;
+			ptr[0] = static_cast<float>(c.r);
+			ptr[1] = static_cast<float>(c.g);
+			ptr[2] = static_cast<float>(c.b);
+            ptr[0] /= 255.f;
+            ptr[1] /= 255.f;
+            ptr[2] /= 255.f;
 		}
 	}
 

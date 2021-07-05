@@ -4,6 +4,7 @@
 PointSet {
   SFNode  color   NULL  # {Color, PROTO}
   SFNode  coord   NULL  # {Coordinate, PROTO}
+  SFString  url   ""  # {Url, PROTO}
 }
 ```
 

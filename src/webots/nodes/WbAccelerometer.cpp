@@ -102,6 +102,14 @@ void WbAccelerometer::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbAccelerometer::ACCELEROMETER_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbAccelerometer::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbAccelerometer::writeConfigure(QDataStream &stream) {
   mSensor->connectToRobotSignal(robot());
 }

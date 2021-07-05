@@ -37,6 +37,9 @@
 #include "../../lib/Controller/api/messages.h"  // contains the definitions for the macros C_DISPLAY_SET_COLOR, C_DISPLAY_SET_ALPHA, C_DISPLAY_SET_OPACITY, ...
 
 #include <QtCore/QDataStream>
+#include <QtCore/QPoint>
+#include <QtCore/QRect>
+#include <QtGui/QPolygon>
 
 #define SHIFT(value, shift) (((value) >> (shift)) & 0xFF)
 
@@ -377,6 +380,111 @@ void WbDisplay::handleMessage(QDataStream &stream) {
       assert(0);
       break;
   }
+}
+
+void WbDisplay::DISPLAY_ATTACH_CAMERA(int cameraTag) {
+  setTransparentTextureIfNeeded();
+  attachCamera((WbDeviceTag)cameraTag);
+}
+
+void WbDisplay::DISPLAY_DETACH_CAMERA() {
+  detachCamera();
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_SET_COLOR(quint32 color) {
+  mColor = color;
+}
+
+void WbDisplay::DISPLAY_SET_ALPHA(quint8 alpha) {
+  mAlpha = alpha;
+}
+
+void WbDisplay::DISPLAY_SET_OPACITY(quint8 opacity) {
+  mOpacity = opacity;
+}
+
+void WbDisplay::DISPLAY_SET_FONT(const QString &font, quint32 fontSize, bool antiAliasing) {
+  // cppcheck-suppress knownConditionTrueFalse
+  mAntiAliasing = antiAliasing == 1;
+  setFont(font.toLatin1().constData(), fontSize);
+}
+
+void WbDisplay::DISPLAY_DRAW_PIXEL(const QPoint &pos) {
+  drawPixel(pos.x(), pos.y());
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_DRAW_LINE(const QPoint &p0, const QPoint &p1) {
+  drawLine(p0.x(), p0.y(), p1.x(), p1.y());
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_DRAW_TEXT(const QString &text, const QPoint &pos) {
+  drawText(text.toUtf8().constData(), pos.x(), pos.y());
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_DRAW_RECTANGLE(const QRect &rect, bool fill) {
+  drawRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), fill);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_DRAW_OVAL(const QRect &oval, bool fill) {
+  drawOval(oval.left(), oval.top(), oval.right(), oval.bottom(), fill);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_DRAW_POLYGON(const QPolygon &poly, bool fill) {
+  QList<int> px, py;
+  for(int i=0; i<poly.size(); i++) {
+    px << poly[i].x();
+    py << poly[i].y();
+  }
+
+  drawPolygon(&px[0], &py[0], poly.size(), fill);
+
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_IMAGE_COPY(int id, int x, int y, qint16 w, qint16 h) {
+  // get copied data and clipped width and height
+  unsigned int *data = imageCopy(x, y, w, h);
+  if (data != NULL)
+    mImages.push_back(new WbDisplayImage(id, w, h, data, mIsTextureTransparent));
+}
+
+void WbDisplay::DISPLAY_IMAGE_PASTE(int id, int x, int y, bool blend) {
+  imagePaste(id, x, y, blend == 1);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DISPLAY_IMAGE_LOAD(int id, const QByteArray &data, int w, int h, int format) {
+  imageLoad(id, w, h, reinterpret_cast<const void*>(data.constData()), (ImageFormat)format);
+}
+
+void WbDisplay::DISPLAY_IMAGE_SAVE(int id) {
+  if (id == 0) {
+    // save current display image
+    qint16 w = width();
+    qint16 h = height();
+    // get the image data and the clipped width and height
+    unsigned int *data = imageCopy(0, 0, w, h);
+    mSaveOrders.push_back(new WbDisplayImage(0, w, h, data, mIsTextureTransparent));
+	return;
+  }
+
+  const WbDisplayImage *di = imageFind(id);
+  if (di)
+    mSaveOrders.push_back(new WbDisplayImage(*di));
+}
+
+void WbDisplay::DISPLAY_IMAGE_DELETE(int id) {
+  imageDelete(id);
+}
+
+void WbDisplay::DISPLAY_IMAGE_GET_ALL() {
+  mRequestImages = true;
 }
 
 void WbDisplay::writeAnswer(QDataStream &stream) {
@@ -778,7 +886,7 @@ int WbDisplay::drawChar(unsigned long c, int x, int y) {
   return horizontalAdvance;
 }
 
-void WbDisplay::setFont(char *font, unsigned int size) {
+void WbDisplay::setFont(const char *font, unsigned int size) {
   bool fileFound = false;
   QString filename = WbStandardPaths::fontsPath() + QString(font) + ".ttf";
   if (QFile::exists(filename))
@@ -988,7 +1096,7 @@ void WbDisplay::imagePaste(int id, int x, int y, bool blend) {
   }
 }
 
-void WbDisplay::imageLoad(int id, int w, int h, void *data, ImageFormat format) {
+void WbDisplay::imageLoad(int id, int w, int h, const void *data, ImageFormat format) {
   const int nbPixel = w * h;
   unsigned int *clippedImage = new unsigned int[nbPixel];
   bool isTransparent = false;

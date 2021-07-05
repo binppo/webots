@@ -100,6 +100,27 @@ void WbInertialUnit::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbInertialUnit::INERTIAL_UNIT_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbInertialUnit::refreshRate() {
+  if(mSensor)
+      return mSensor->refreshRate();
+
+  return 0;
+}
+
+WbVector3 WbInertialUnit::value() {
+  WbVector3 rv;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv.setXyz((double)mValues[0], (double)mValues[1], (double)mValues[2]);
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 void WbInertialUnit::writeAnswer(QDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << (short unsigned int)tag();

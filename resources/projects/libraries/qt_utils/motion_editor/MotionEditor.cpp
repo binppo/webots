@@ -20,7 +20,7 @@
 
 using namespace webotsQtUtils;
 
-MotionEditor::MotionEditor(QWidget *parent) : QWidget(parent), mMotion(NULL) {
+MotionEditor::MotionEditor(WbRobotContext *ctx, QWidget *parent) : QWidget(parent), mContext(ctx), mMotion(NULL) {
   mMotionPlayer = new MotionPlayer;
   connect(mMotionPlayer, SIGNAL(motionEnded()), this, SLOT(checkPlayAction()));
 
@@ -115,7 +115,7 @@ void MotionEditor::createWidgetsAndLayouts() {
 
   mFixedStepSpinBox = new QSpinBox(mInsertionOptions);
   mFixedStepSpinBox->setToolTip(tr("Specify the time gap between consecutive poses"));
-  mFixedStepSpinBox->setValue(wb_robot_get_basic_time_step());
+  mFixedStepSpinBox->setValue(wb_robot_get_basic_time_step(mContext));
   mFixedStepSpinBox->setRange(1, 1000);
   mFixedStepSpinBox->setSuffix(" " + tr("ms"));
   connect(mFixedStepSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateFixedStep()));
@@ -137,7 +137,7 @@ void MotionEditor::createWidgetsAndLayouts() {
 
 void MotionEditor::initializeMotion(const QString &filename) {
   delete mMotion;
-  mMotion = new Motion(mMotionPlayer, filename);
+  mMotion = new Motion(mContext, mMotionPlayer, filename);
   mMotionWidget->setMotion(mMotion);
 
   bool hasFixedStep = mMotion->hasFixedStep();
@@ -146,7 +146,7 @@ void MotionEditor::initializeMotion(const QString &filename) {
   mFixedStepCheckBox->blockSignals(false);
 
   mFixedStepSpinBox->blockSignals(true);
-  mFixedStepSpinBox->setValue(hasFixedStep ? mMotion->fixedStep() : wb_robot_get_basic_time_step());
+  mFixedStepSpinBox->setValue(hasFixedStep ? mMotion->fixedStep() : wb_robot_get_basic_time_step(mContext));
   mFixedStepSpinBox->blockSignals(false);
 
   if (mMotion->hasInvalidMotorPositions())
@@ -285,5 +285,5 @@ void MotionEditor::reverse(bool playState) {
 }
 
 void MotionEditor::pin(bool enable) {
-  wb_robot_pin_to_static_environment(enable);
+  wb_robot_pin_to_static_environment(mContext, enable);
 }

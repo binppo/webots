@@ -151,7 +151,7 @@ void MotionPlayer::writeActuators() {
 }
 
 int MotionPlayer::getTime() const {
-  return 1000 * wb_robot_get_time();
+  return 1000 * wb_robot_get_time(mMotion->context());
 }
 
 void MotionPlayer::updateMotionDuration() {

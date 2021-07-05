@@ -22,7 +22,7 @@ void ScalarSensorWidget::readSensors() {
   SensorWidget::readSensors();
   if (isEnabled()) {
     double v = value();
-    double time = wb_robot_get_time();
+    double time = wb_robot_get_time(mDevice->context());
     mGraph2D->addPoint2D(Point2D(time, v));
     mGraph2D->keepNPoints(CommonProperties::historySize());
     mGraph2D->updateXRange();

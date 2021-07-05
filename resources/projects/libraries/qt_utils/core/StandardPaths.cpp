@@ -74,7 +74,7 @@ const QString &StandardPaths::getProjectPath() {
   static QString path;
 
   if (!defined) {
-    path = QDir(wb_robot_get_project_path()).path();
+    path = QDir(wb_robot_get_project_path(wb_robot_get_context(0))).path();
     if (!path.endsWith('/'))
       path.append('/');
     defined = true;

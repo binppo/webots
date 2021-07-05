@@ -352,6 +352,44 @@ void WbGps::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbGps::GPS_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbGps::refreshRate() {
+    if(mSensor)
+        return mSensor->refreshRate();
+
+    return 0;
+}
+
+double WbGps::speed() {
+  double rv = 0.0;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv = mMeasuredSpeed;
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
+WbVector3 WbGps::position() {
+    WbVector3 rv;
+    if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+        rv.setXyz(mMeasuredPosition[0], mMeasuredPosition[1], mMeasuredPosition[2]);
+        mSensor->resetPendingValue();
+    }
+
+    return rv;
+}
+
+int WbGps::coordSystem() {
+  if (WbWorld::instance()->worldInfo()->gpsCoordinateSystem().compare("WGS84") == 0)
+    return (int)WGS84;
+
+  return (int)LOCAL;
+}
+
 void WbGps::writeAnswer(QDataStream &stream) {
   if (mNeedToUpdateCoordinateSystem)
     addConfigureToStream(stream);

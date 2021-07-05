@@ -766,7 +766,7 @@ void WbStreamingServer::propagateNodeAddition(WbNode *node) {
     WbVrmlWriter writer(&nodeString, node->modelName() + ".x3d");
     node->write(writer);
     foreach (QWebSocket *client, mClients)
-      client->sendTextMessage(QString("node:%1:%2").arg(node->parent()->uniqueId()).arg(nodeString));
+      client->sendTextMessage(QString("node:%1:%2").arg(node->parentNode()->uniqueId()).arg(nodeString));
   }
 }
 

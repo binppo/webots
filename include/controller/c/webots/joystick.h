@@ -25,33 +25,33 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_joystick_enable(int sampling_period);
-CONTROLLER_EXPORT void wb_joystick_disable();
-CONTROLLER_EXPORT int wb_joystick_get_sampling_period();
+CONTROLLER_EXPORT extern void wb_joystick_enable(WbRobotContext *context, int sampling_period);
+CONTROLLER_EXPORT extern void wb_joystick_disable(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_joystick_get_sampling_period(WbRobotContext *context);
 
-CONTROLLER_EXPORT bool wb_joystick_is_connected();
-CONTROLLER_EXPORT const char *wb_joystick_get_model();
+CONTROLLER_EXPORT extern bool wb_joystick_is_connected(WbRobotContext *context);
+CONTROLLER_EXPORT extern const char *wb_joystick_get_model(WbRobotContext *context);
 
-CONTROLLER_EXPORT int wb_joystick_get_number_of_axes();
-CONTROLLER_EXPORT int wb_joystick_get_axis_value(int axis);
+CONTROLLER_EXPORT extern int wb_joystick_get_number_of_axes(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_joystick_get_axis_value(WbRobotContext *context, int axis);
 
-CONTROLLER_EXPORT int wb_joystick_get_number_of_povs();
-CONTROLLER_EXPORT int wb_joystick_get_pov_value(int pov);
+CONTROLLER_EXPORT extern int wb_joystick_get_number_of_povs(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_joystick_get_pov_value(WbRobotContext *context, int pov);
 
-CONTROLLER_EXPORT int wb_joystick_get_pressed_button();
+CONTROLLER_EXPORT extern int wb_joystick_get_pressed_button(WbRobotContext *context);
 
 // force-feedback
-CONTROLLER_EXPORT void wb_joystick_set_constant_force(int level);
-CONTROLLER_EXPORT void wb_joystick_set_constant_force_duration(double duration);
-CONTROLLER_EXPORT void wb_joystick_set_auto_centering_gain(double gain);
-CONTROLLER_EXPORT void wb_joystick_set_resistance_gain(double gain);
-CONTROLLER_EXPORT void wb_joystick_set_force_axis(int axis);
+CONTROLLER_EXPORT extern void wb_joystick_set_constant_force(WbRobotContext *context, int level);
+CONTROLLER_EXPORT extern void wb_joystick_set_constant_force_duration(WbRobotContext *context, double duration);
+CONTROLLER_EXPORT extern void wb_joystick_set_auto_centering_gain(WbRobotContext *context, double gain);
+CONTROLLER_EXPORT extern void wb_joystick_set_resistance_gain(WbRobotContext *context, double gain);
+CONTROLLER_EXPORT extern void wb_joystick_set_force_axis(WbRobotContext *context, int axis);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_JOYSTICK_H */

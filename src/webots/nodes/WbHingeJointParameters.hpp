@@ -39,9 +39,11 @@ public:
   const WbVector3 &suspensionAxis() const { return mSuspensionAxis->value(); }
 
   virtual const WbVector3 &anchor() const { return mAnchor->value(); }
+  const WbVector3 &dh() const { return mDH->value(); }
 
 signals:
   void anchorChanged();
+  void dhChanged();
   void suspensionChanged();
 
 private:
@@ -51,6 +53,7 @@ private:
 
   // fields
   WbSFVector3 *mAnchor;
+  WbSFVector3 *mDH;
   WbSFDouble *mSuspensionSpringConstant;
   WbSFDouble *mSuspensionDampingConstant;
   WbSFVector3 *mSuspensionAxis;

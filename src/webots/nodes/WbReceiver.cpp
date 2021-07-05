@@ -234,6 +234,21 @@ void WbReceiver::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbReceiver::RECEIVER_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+void WbReceiver::RECEIVER_SET_CHANNEL(int channel) {
+  mChannel->setValue(channel);
+}
+
+int WbReceiver::refreshRate() {
+  if(mSensor)
+    return mSensor->refreshRate();
+
+  return 0;
+}
+
 void WbReceiver::prePhysicsStep(double ms) {
   WbSolidDevice::prePhysicsStep(ms);
   if (mSensor->isEnabled() && !mTransmissionList.isEmpty())

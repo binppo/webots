@@ -23,25 +23,44 @@
 
 #include <webots/types.h>
 
+#include <string>
+#include <vector>
+
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT WbMotionRef wbu_motion_new(const char *filename);
-CONTROLLER_EXPORT void wbu_motion_delete(WbMotionRef motion);
+struct WbMotionStruct {
+  std::string filename;      // file name
+  std::vector<std::string> joint_names;  // array of n_joints joint names
+  std::vector<WbDeviceTag> tags;   // array of n_joints device tags
+  std::vector<WbNodeType> types;   // array of n_joints device types
+  std::vector<int> times;          // array of n_poses poses
+  std::vector<double*> poses;        // two-dimensional [n_poses][n_joints] array
+  int elapsed;         // elapsed time when playing this motion file
+  bool playing;        // is currenly playing
+  bool reverse;        // playing forward of backwards ?
+  bool loop;           // loop when reaching the end (or begining) ?
+  WbMotionRef next;    // next struct in list
+};
 
-CONTROLLER_EXPORT void wbu_motion_play(WbMotionRef motion);
-CONTROLLER_EXPORT void wbu_motion_stop(WbMotionRef motion);
-CONTROLLER_EXPORT void wbu_motion_set_loop(WbMotionRef motion, bool loop);
-CONTROLLER_EXPORT void wbu_motion_set_reverse(WbMotionRef motion, bool reverse);
+CONTROLLER_EXPORT extern WbMotionRef wbu_motion_new(WbRobotContext *context, const char *filename);
+CONTROLLER_EXPORT extern void wbu_motion_delete(WbMotionRef motion);
+CONTROLLER_EXPORT extern WbMotionRef wbu_motion_get_head();
+CONTROLLER_EXPORT extern bool wbu_motion_is_valid(WbMotionRef motion);
 
-CONTROLLER_EXPORT bool wbu_motion_is_over(WbMotionRef motion);
-CONTROLLER_EXPORT int wbu_motion_get_duration(WbMotionRef motion);
-CONTROLLER_EXPORT int wbu_motion_get_time(WbMotionRef motion);
-CONTROLLER_EXPORT void wbu_motion_set_time(WbMotionRef motion, int time);
+CONTROLLER_EXPORT extern void wbu_motion_play(WbMotionRef motion);
+CONTROLLER_EXPORT extern void wbu_motion_stop(WbMotionRef motion);
+CONTROLLER_EXPORT extern void wbu_motion_set_loop(WbMotionRef motion, bool loop);
+CONTROLLER_EXPORT extern void wbu_motion_set_reverse(WbMotionRef motion, bool reverse);
+
+CONTROLLER_EXPORT extern bool wbu_motion_is_over(WbMotionRef motion);
+CONTROLLER_EXPORT extern int wbu_motion_get_duration(WbMotionRef motion);
+CONTROLLER_EXPORT extern int wbu_motion_get_time(WbMotionRef motion);
+CONTROLLER_EXPORT extern void wbu_motion_set_time(WbMotionRef motion, int time);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WBU_MOTION_H */

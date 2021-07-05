@@ -29,19 +29,19 @@
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_position_sensor_enable(WbDeviceTag tag, int sampling_period);  // milliseconds
-CONTROLLER_EXPORT void wb_position_sensor_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_position_sensor_get_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_position_sensor_get_value(WbDeviceTag tag);  // rad or meters
-CONTROLLER_EXPORT WbJointType wb_position_sensor_get_type(WbDeviceTag tag);
-CONTROLLER_EXPORT WbDeviceTag wb_position_sensor_get_motor(WbDeviceTag tag);
-CONTROLLER_EXPORT WbDeviceTag wb_position_sensor_get_brake(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_position_sensor_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);  // milliseconds
+CONTROLLER_EXPORT extern void wb_position_sensor_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_position_sensor_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_position_sensor_get_value(WbRobotContext *context, WbDeviceTag tag);  // rad or meters
+CONTROLLER_EXPORT extern WbJointType wb_position_sensor_get_type(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbDeviceTag wb_position_sensor_get_motor(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern WbDeviceTag wb_position_sensor_get_brake(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_POSITION_SENSOR_H */

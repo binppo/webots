@@ -1187,40 +1187,67 @@ bool WbViewpoint::moveViewpointToObject(WbBaseNode *node) {
     return false;
 
   WbBoundingSphere *boundingSphere = WbNodeUtilities::boundingSphereAncestor(reinterpret_cast<WbNode *>(node));
+  if (!boundingSphere || boundingSphere->isEmpty()) {
+    const WbTransform* const transform = qobject_cast<const WbTransform*>(node);
+    if (transform) {
+      const WbMatrix4& pose = transform->matrix();
+      // Compute direction vector where the viewpoint is looking at.
+      // For all orientation and a zero angle, the viewpoint is looking at the z-axis opposite.
+      const WbVector3 viewpointDirection = mOrientation->value().toQuaternion() * WbVector3(0, 0, -1);
 
-  boundingSphere->recomputeIfNeeded(false);
-  if (boundingSphere->isEmpty())
-    // empty world
-    return false;
+      // Compute a distance coefficient between the object and future viewpoint.
+      // The bounding sphere will be entirely contained in the 3D view.
+      // Use a slightly larger sphere to keep some space between the object and the 3D view borders
+      double radius = 0.1;// std::sqrt(pose(0, 0) * pose(0, 0) + pose(1, 0) * pose(1, 0) + pose(2, 0) * pose(2, 0));
+      double distance = radius / (sin(mFieldOfView->value() / 2.0) * ((mAspectRatio <= 1.0) ? mAspectRatio : (1.0 / mAspectRatio)));
 
-  WbVector3 absoluteCenter;
-  double radius;
-  boundingSphere->computeSphereInGlobalCoordinates(absoluteCenter, radius);
-  const WbVector3 boundingSphereCenter(absoluteCenter.x(), absoluteCenter.y(), absoluteCenter.z());
+      // set a minimum distance
+      if (distance < mNear->value() + radius)
+        distance = mNear->value() + radius;
 
-  // Compute direction vector where the viewpoint is looking at.
-  // For all orientation and a zero angle, the viewpoint is looking at the z-axis opposite.
-  const WbVector3 viewpointDirection = mOrientation->value().toQuaternion() * WbVector3(0, 0, -1);
+      // Compute new position. From the center of the object, move back the viewpoint along
+      // its direction axis.
+      const WbVector3 boundingSphereCenter(pose(0, 3), pose(1, 3), pose(2, 3));
+      const WbVector3 newViewpointPosition = boundingSphereCenter + viewpointDirection * (-distance);
 
-  // Compute a distance coefficient between the object and future viewpoint.
-  // The bounding sphere will be entirely contained in the 3D view.
-  // Use a slightly larger sphere to keep some space between the object and the 3D view borders
-  radius *= 1.05;
-  double distance = radius / (sin(mFieldOfView->value() / 2.0) * ((mAspectRatio <= 1.0) ? mAspectRatio : (1.0 / mAspectRatio)));
+      if (newViewpointPosition != mPosition->value()) {
+        // move to target using eased animation
+        //WbWorld::instance()->setModified();
+        moveTo(WbVector3(newViewpointPosition.x(), newViewpointPosition.y(), newViewpointPosition.z()), mOrientation->value());
+        return true;
+      }
+    }
+  } else {
+      boundingSphere->recomputeIfNeeded(false);
+      WbVector3 absoluteCenter;
+      double radius;
+      boundingSphere->computeSphereInGlobalCoordinates(absoluteCenter, radius);
+      const WbVector3 boundingSphereCenter(absoluteCenter.x(), absoluteCenter.y(), absoluteCenter.z());
 
-  // set a minimum distance
-  if (distance < mNear->value() + radius)
-    distance = mNear->value() + radius;
+      // Compute direction vector where the viewpoint is looking at.
+      // For all orientation and a zero angle, the viewpoint is looking at the z-axis opposite.
+      const WbVector3 viewpointDirection = mOrientation->value().toQuaternion() * WbVector3(0, 0, -1);
 
-  // Compute new position. From the center of the object, move back the viewpoint along
-  // its direction axis.
-  const WbVector3 newViewpointPosition = boundingSphereCenter + viewpointDirection * (-distance);
+      // Compute a distance coefficient between the object and future viewpoint.
+      // The bounding sphere will be entirely contained in the 3D view.
+      // Use a slightly larger sphere to keep some space between the object and the 3D view borders
+      radius *= 1.05;
+      double distance = radius / (sin(mFieldOfView->value() / 2.0) * ((mAspectRatio <= 1.0) ? mAspectRatio : (1.0 / mAspectRatio)));
 
-  if (newViewpointPosition != mPosition->value()) {
-    // move to target using eased animation
-    WbWorld::instance()->setModified();
-    moveTo(WbVector3(newViewpointPosition.x(), newViewpointPosition.y(), newViewpointPosition.z()), mOrientation->value());
-    return true;
+      // set a minimum distance
+      if (distance < mNear->value() + radius)
+        distance = mNear->value() + radius;
+
+      // Compute new position. From the center of the object, move back the viewpoint along
+      // its direction axis.
+      const WbVector3 newViewpointPosition = boundingSphereCenter + viewpointDirection * (-distance);
+
+      if (newViewpointPosition != mPosition->value()) {
+        // move to target using eased animation
+        //WbWorld::instance()->setModified();
+        moveTo(WbVector3(newViewpointPosition.x(), newViewpointPosition.y(), newViewpointPosition.z()), mOrientation->value());
+        return true;
+      }
   }
 
   return false;

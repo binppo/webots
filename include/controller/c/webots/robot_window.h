@@ -20,13 +20,13 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void *wb_robot_window_custom_function(void *);
+CONTROLLER_EXPORT extern void *wb_robot_window_custom_function(void *);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_ROBOT_WINDOW_H */

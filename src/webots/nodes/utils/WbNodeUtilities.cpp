@@ -140,11 +140,11 @@ namespace {
     }
 
     if (qobject_cast<const WbSlot *>(node) && (fieldName == "endPoint")) {  // add something in the endPoint field of a slot
-      if (qobject_cast<const WbSlot *>(node->parent())) {  // pair of slots, we can add everything that is allowed in the
+      if (qobject_cast<const WbSlot *>(node->parentNode())) {  // pair of slots, we can add everything that is allowed in the
                                                            // children field of the parent of first Slot node
-        WbNode *parentNode = node->parent();
-        const WbNode *upperNode = parentNode->parent();
-        const WbField *upperField = parentNode->parentField(true);
+        WbNode *parent = node->parentNode();
+        const WbNode *upperNode = parent->parentNode();
+        const WbField *upperField = parent->parentField(true);
         if (!upperNode || !upperField) {
           assert(false);
           return false;
@@ -157,7 +157,7 @@ namespace {
       // not in a pair => we can only add a Slot of same type
       QString slotType = WbNodeUtilities::slotType(node);
       // if node is a proto and is a parameter of another proto, the pair of slot is not detected
-      if (WbNodeReader::current() && node->isProtoInstance() && node->parent() && node->parent()->isProtoInstance())
+      if (WbNodeReader::current() && node->isProtoInstance() && node->parentNode() && node->parentNode()->isProtoInstance())
         return true;
       if (nodeName != "Slot") {
         errorMessage =
@@ -550,11 +550,11 @@ WbNode *WbNodeUtilities::findUpperNodeByType(const WbNode *node, int nodeType, i
     return nullptr;
 
   int count = searchDegrees > 0 ? searchDegrees : -1;
-  WbBaseNode *n = qobject_cast<WbBaseNode *>(node->parent());
+  WbBaseNode *n = qobject_cast<WbBaseNode *>(node->parentNode());
   while (n && count != 0) {
     if (n->nodeType() == nodeType)
       return n;
-    n = qobject_cast<WbBaseNode *>(n->parent());
+    n = qobject_cast<WbBaseNode *>(n->parentNode());
     count--;
   }
   return nullptr;
@@ -575,14 +575,14 @@ WbMatter *WbNodeUtilities::findUpperMatter(const WbNode *node) {
   if (!node)
     return nullptr;
 
-  WbNode *n = node->parent();
+  WbNode *n = node->parentNode();
 
   while (n) {
 	WbMatter *const matter = qobject_cast<WbMatter *>(n);
     if (matter)
       return matter;
     else
-      n = n->parent();
+      n = n->parentNode();
   }
   return nullptr;
 }
@@ -611,7 +611,7 @@ WbTransform *WbNodeUtilities::findUppermostTransform(const WbNode *node) {
     const WbTransform *transform = qobject_cast<const WbTransform *>(n);
     if (transform)
       uppermostTransform = const_cast<WbTransform *>(transform);
-    n = n->parent();
+    n = n->parentNode();
   };
   return uppermostTransform;
 }
@@ -623,7 +623,7 @@ WbSolid *WbNodeUtilities::findUppermostSolid(const WbNode *node) {
     const WbSolid *solid = qobject_cast<const WbSolid *>(n);
     if (solid)
       uppermostSolid = const_cast<WbSolid *>(solid);
-    n = n->parent();
+    n = n->parentNode();
   };
   return uppermostSolid;
 }
@@ -635,7 +635,7 @@ WbMatter *WbNodeUtilities::findUppermostMatter(WbNode *node) {
     const WbMatter *matter = qobject_cast<const WbMatter *>(n);
     if (matter)
       uppermostMatter = const_cast<WbMatter *>(matter);
-    n = n->parent();
+    n = n->parentNode();
   };
   return uppermostMatter;
 }
@@ -648,13 +648,13 @@ WbTransform *WbNodeUtilities::findUpperTransform(const WbNode *node) {
   if (!node)
     return nullptr;
 
-  WbNode *n = node->parent();
+  WbNode *n = node->parentNode();
   while (n) {
     WbTransform *const transform = qobject_cast<WbTransform *>(n);
     if (transform)
       return transform;
     else
-      n = n->parent();
+      n = n->parentNode();
   }
   return nullptr;
 }
@@ -674,13 +674,13 @@ WbNode *WbNodeUtilities::findUpperTemplateNeedingRegeneration(WbNode *modifiedNo
     return nullptr;
 
   WbField *field = modifiedNode->parentField();
-  WbNode *node = modifiedNode->parent();
+  WbNode *node = modifiedNode->parentNode();
   while (node && field && !node->isWorldRoot()) {
     if (node->isTemplate() && field->isTemplateRegenerator())
       return node;
 
     field = node->parentField();
-    node = node->parent();
+    node = node->parentNode();
   }
 
   return nullptr;
@@ -691,13 +691,13 @@ const WbNode *WbNodeUtilities::findTopNode(const WbNode *node) {
     return nullptr;
 
   const WbNode *n = node;
-  const WbNode *parent = n->parent();
+  const WbNode *parent = n->parentNode();
   while (parent) {
     if (parent->isWorldRoot())
       return n;
 
     n = parent;
-    parent = n->parent();
+    parent = n->parentNode();
   }
   return nullptr;
 }
@@ -737,11 +737,11 @@ bool WbNodeUtilities::hasADefNodeAncestor(const WbNode *node) {
   if (node->isDefNode())
     return true;
 
-  const WbNode *p = node->parent();
+  const WbNode *p = node->parentNode();
   while (p) {
     if (p->isDefNode())
       return true;
-    p = p->parent();
+    p = p->parentNode();
   }
 
   return false;
@@ -754,11 +754,11 @@ bool WbNodeUtilities::hasAUseNodeAncestor(const WbNode *node) {
   if (node->isUseNode())
     return true;
 
-  const WbNode *p = node->parent();
+  const WbNode *p = node->parentNode();
   while (p) {
     if (p->isUseNode())
       return true;
-    p = p->parent();
+    p = p->parentNode();
   }
 
   return false;
@@ -774,7 +774,7 @@ QList<WbNode *> WbNodeUtilities::findUseNodeAncestors(WbNode *node) {
   while (n && !n->isWorldRoot()) {
     if (n->isUseNode())
       list.prepend(n);
-    n = n->parent();
+    n = n->parentNode();
   }
 
   return list;
@@ -790,13 +790,13 @@ WbRobot *WbNodeUtilities::findRobotAncestor(const WbNode *node) {
   if (!node)
     return nullptr;
 
-  while (node->parent()) {
+  while (node->parentNode()) {
     if (isRobotTypeName(node->nodeModelName())) {
       const WbRobot *robot = reinterpret_cast<const WbRobot *>(node);
       return const_cast<WbRobot *>(robot);
     }
 
-    node = node->parent();
+    node = node->parentNode();
   }
   return nullptr;
 }
@@ -805,14 +805,14 @@ bool WbNodeUtilities::isFieldDescendant(const WbNode *node, const QString &field
   if (!node)
     return false;
 
-  WbNode *n = node->parent();
+  WbNode *n = node->parentNode();
   WbField *field = node->parentField(true);
   while (n && !n->isWorldRoot() && field) {
     if (field->name() == fieldName)
       return true;
 
     field = n->parentField(true);
-    n = n->parent();
+    n = n->parentNode();
   }
 
   return false;
@@ -840,7 +840,7 @@ WbNode::NodeUse WbNodeUtilities::checkNodeUse(const WbNode *n) {
     return nodeUse;
   }
 
-  const WbNode *const p = n->parent();
+  const WbNode *const p = n->parentNode();
   if (p) {
     const WbMatter *const m = qobject_cast<const WbMatter *>(p);
     if (m)
@@ -854,7 +854,7 @@ WbNode::NodeUse WbNodeUtilities::checkNodeUse(const WbNode *n) {
 }
 
 bool WbNodeUtilities::isInBoundingObject(const WbNode *node) {
-  const WbNode *const p = node->parent();
+  const WbNode *const p = node->parentNode();
   if (p) {
     const WbSolid *const s = qobject_cast<const WbSolid *>(p);
     if (s)
@@ -874,21 +874,21 @@ WbMatter *WbNodeUtilities::findBoundingObjectAncestor(const WbBaseNode *node) {
   if (!node || !node->isInBoundingObject())
     return nullptr;
 
-  WbNode *ancestor = node->parent();
+  WbNode *ancestor = node->parentNode();
   while (ancestor && !ancestor->isWorldRoot()) {
     WbMatter *solidAncestor = qobject_cast<WbMatter *>(ancestor);
     if (solidAncestor)
       return solidAncestor;
-    ancestor = ancestor->parent();
+    ancestor = ancestor->parentNode();
   }
 
   return nullptr;
 }
 
 bool WbNodeUtilities::isTopNode(const WbNode *node) {
-  if (!node->parent())
+  if (!node->parentNode())
     return false;
-  return (node->parent()->parent() == nullptr);
+  return (node->parentNode()->parentNode() == nullptr);
 }
 
 bool WbNodeUtilities::isSelected(const WbNode *node) {
@@ -919,7 +919,7 @@ WbProtoModel *WbNodeUtilities::findContainingProto(const WbNode *node) {
       if (proto)
         return proto;
 
-      n = n->parent();
+      n = n->parentNode();
     }
   } while (n);
   return nullptr;
@@ -930,7 +930,7 @@ bool WbNodeUtilities::isVisible(const WbNode *node) {
     return false;
 
   const WbNode *n = node;
-  const WbNode *p = n->parent();
+  const WbNode *p = n->parentNode();
   while (n && p && !n->isTopLevel()) {
     if (p->isProtoInstance()) {
       if (p->fields().contains(n->parentField(true)))
@@ -938,7 +938,7 @@ bool WbNodeUtilities::isVisible(const WbNode *node) {
         return false;
     }
     n = p;
-    p = p->parent();
+    p = p->parentNode();
   }
   return true;
 }
@@ -972,7 +972,7 @@ WbMatter *WbNodeUtilities::findUpperVisibleMatter(WbNode *node) {
     while (parent->protoParameterNode())
       parent = parent->protoParameterNode();
     nodeStack.push(parent);
-    parent = parent->parent();
+    parent = parent->parentNode();
   }
 
   if (nodeStack.isEmpty())
@@ -1081,7 +1081,7 @@ bool WbNodeUtilities::isNodeOrAncestorLocked(WbNode *node) {
     if (matter && matter->isLocked())
       return true;
 
-    n = n->parent();
+    n = n->parentNode();
   }
 
   return false;
@@ -1124,12 +1124,12 @@ bool WbNodeUtilities::isTrackAnimatedGeometry(const WbNode *node) {
     return false;
 
   const WbNode *n = node;
-  const WbNode *p = n->parent();
+  const WbNode *p = n->parentNode();
   while (p) {
     if (qobject_cast<const WbTrack *>(p) != nullptr)
       return (n->parentField() && n->parentField()->model()->name() == "animatedGeometry");
     n = p;
-    p = p->parent();
+    p = p->parentNode();
   }
 
   return false;
@@ -1348,7 +1348,7 @@ bool WbNodeUtilities::validateInsertedNode(WbField *field, const WbNode *newNode
         else if (qobject_cast<const WbSlot *>(internalParentNode)) {
           // upper slot
           WbField *internalParentField = internalParentNode->parentField(true);
-          internalParentNode = internalParentNode->parent();
+          internalParentNode = internalParentNode->parentNode();
           newNode->validate(internalParentNode, internalParentField, isInBoundingObject);
         } else  // invalid structure
           newNode->validate(internalParentNode, internalField, isInBoundingObject);
@@ -1495,7 +1495,7 @@ WbNodeUtilities::Answer WbNodeUtilities::isSuitableForTransform(const WbNode *co
     }
     if (destModelName == "Solid" || isSolidDeviceTypeName(destModelName)) {
       const QString &topNodeModelName = findTopNode(srcNode)->nodeModelName();
-      const QString &parentModelName = srcNode->parent()->nodeModelName();
+      const QString &parentModelName = srcNode->parentNode()->nodeModelName();
       if (isRobotTypeName(topNodeModelName))
         return SUITABLE;
       if (destModelName == "Solid" && isSolidTypeName(parentModelName))
@@ -1665,7 +1665,7 @@ bool WbNodeUtilities::hasAJointDescendant(const WbNode *node) {
 // Lookup related to DEF name changes //
 ////////////////////////////////////////
 
-bool WbNodeUtilities::hasASubsequentUseOrDefNode(const WbNode *defNode, const QString &defName, const QString &previousDefName,
+bool WbNodeUtilities::hasASubsequentUseOrDefNode(WbNode *defNode, const QString &defName, const QString &previousDefName,
                                                  bool &useOverlap, bool &defOverlap) {
   if (defName.isEmpty())
     return false;
@@ -1682,10 +1682,10 @@ bool WbNodeUtilities::hasASubsequentUseOrDefNode(const WbNode *defNode, const QS
     return useOverlap;
   }
 
-  const WbNode *node = defNode;
-  const WbNode *parentNode = node->parent();
+  WbNode *node = defNode;
+  WbNode *parent = node->parentNode();
 
-  while (parentNode) {
+  while (parent) {
     WbField *const parentField = node->parentField();
     const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(parentField->value());
     if (mfnode) {
@@ -1717,8 +1717,8 @@ bool WbNodeUtilities::hasASubsequentUseOrDefNode(const WbNode *defNode, const QS
       }
     }
 
-    const int fieldIndex = parentNode->fieldIndex(parentField) + 1;
-    const QVector<WbField *> &fields = parentNode->fieldsOrParameters();
+    const int fieldIndex = parent->fieldIndex(parentField) + 1;
+    const QVector<WbField *> &fields = parent->fieldsOrParameters();
     const int size = fields.size();
     for (int i = fieldIndex; i < size; ++i) {
       WbField *const f = fields[i];
@@ -1730,8 +1730,8 @@ bool WbNodeUtilities::hasASubsequentUseOrDefNode(const WbNode *defNode, const QS
       }
     }
 
-    node = parentNode;
-    parentNode = parentNode->parent();
+    node = parent;
+    parent = parent->parentNode();
   }
 
   return useOverlap;
@@ -1749,7 +1749,7 @@ WbBoundingSphere *WbNodeUtilities::boundingSphereAncestor(const WbNode *node) {
     }
     if (n->isTopLevel())
       break;
-    n = n->parent();
+    n = n->parentNode();
   }
   return nullptr;
 }

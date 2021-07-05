@@ -4,6 +4,8 @@
 #include "../graph2d/Graph2D.hpp"
 #include "../graph2d/Point2D.hpp"
 
+#include <devices/Device.hpp>
+
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
@@ -45,7 +47,7 @@ DifferentialWheelsWidget::DifferentialWheelsWidget(Device *device, QWidget *pare
   mHBoxLayout->addWidget(mButtonWidget, 0);
   mMainWidget->setLayout(mHBoxLayout);
 
-  mMaxSpeed = wb_differential_wheels_get_max_speed() / wb_differential_wheels_get_speed_unit();
+  mMaxSpeed = wb_differential_wheels_get_max_speed(mDevice->context()) / wb_differential_wheels_get_speed_unit(mDevice->context());
 }
 
 DifferentialWheelsWidget::~DifferentialWheelsWidget() {
@@ -54,8 +56,8 @@ DifferentialWheelsWidget::~DifferentialWheelsWidget() {
 void DifferentialWheelsWidget::readSensors() {
   SensorWidget::readSensors();
   if (isEnabled()) {
-    double leftEncoder = wb_differential_wheels_get_left_encoder();
-    double rightEncoder = wb_differential_wheels_get_right_encoder();
+    double leftEncoder = wb_differential_wheels_get_left_encoder(mDevice->context());
+    double rightEncoder = wb_differential_wheels_get_right_encoder(mDevice->context());
 
     QString suffix = "{";
     suffix += QString::number(leftEncoder, 'g', CommonProperties::precision());
@@ -64,7 +66,7 @@ void DifferentialWheelsWidget::readSensors() {
     suffix += "}";
     setTitleSuffix(suffix);
 
-    double time = wb_robot_get_time();
+    double time = wb_robot_get_time(mDevice->context());
     mGraph2D->addPoint2D(Point2D(time, leftEncoder, Qt::red));
     mGraph2D->addPoint2D(Point2D(time, rightEncoder, Qt::blue));
     mGraph2D->keepNPoints(2 * CommonProperties::historySize());
@@ -79,16 +81,16 @@ void DifferentialWheelsWidget::readSensors() {
 void DifferentialWheelsWidget::writeActuators() {
   SensorWidget::writeActuators();
   if (mCommandRequest) {
-    wb_differential_wheels_set_speed(mTargetSpeeds[0], mTargetSpeeds[1]);
+    wb_differential_wheels_set_speed(mDevice->context(), mTargetSpeeds[0], mTargetSpeeds[1]);
     mCommandRequest = false;
   }
 }
 
 void DifferentialWheelsWidget::enable(bool enable) {
   if (enable)
-    wb_differential_wheels_enable_encoders(static_cast<int>(wb_robot_get_basic_time_step()));
+    wb_differential_wheels_enable_encoders(mDevice->context(), static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
   else
-    wb_differential_wheels_disable_encoders();
+    wb_differential_wheels_disable_encoders(mDevice->context());
 }
 
 void DifferentialWheelsWidget::sendCommand() {
@@ -114,7 +116,7 @@ void DifferentialWheelsWidget::sendStopCommand() {
 }
 
 bool DifferentialWheelsWidget::isEnabled() const {
-  return wb_differential_wheels_get_encoders_sampling_period() > 0;
+  return wb_differential_wheels_get_encoders_sampling_period(mDevice->context()) > 0;
 }
 
 bool DifferentialWheelsWidget::isAButtonDown() {

@@ -99,6 +99,37 @@ void WbPositionSensor::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbPositionSensor::POSITION_SENSOR_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbPositionSensor::POSITION_SENSOR_GET_ASSOCIATED_DEVICE(int deviceType) {
+  WbLogicalDevice *device = getSiblingDeviceByType(deviceType);
+  if (!device && deviceType == WB_NODE_ROTATIONAL_MOTOR)
+    // check both motor types
+    device = getSiblingDeviceByType(WB_NODE_LINEAR_MOTOR);
+  int deviceTag = device ? device->tag() : 0;
+
+  return deviceTag;
+}
+
+int WbPositionSensor::refreshRate() {
+    if (mSensor)
+        return mSensor->refreshRate();
+
+    return 0;
+}
+
+double WbPositionSensor::value() {
+  double rv = 0.0;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv = mValue;
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 double WbPositionSensor::position() const {
   // get exact position
   double pos = WbJointDevice::position();

@@ -26,41 +26,41 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_lidar_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_lidar_enable_point_cloud(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_lidar_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_lidar_disable_point_cloud(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_lidar_get_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT bool wb_lidar_is_point_cloud_enabled(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_lidar_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_lidar_enable_point_cloud(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_lidar_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_lidar_disable_point_cloud(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_lidar_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern bool wb_lidar_is_point_cloud_enabled(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT const float *wb_lidar_get_range_image(WbDeviceTag tag);
-CONTROLLER_EXPORT const float *wb_lidar_get_layer_range_image(WbDeviceTag tag, int layer);
+CONTROLLER_EXPORT extern const float *wb_lidar_get_range_image(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const float *wb_lidar_get_layer_range_image(WbRobotContext *context, WbDeviceTag tag, int layer);
 
-CONTROLLER_EXPORT const WbLidarPoint *wb_lidar_get_point_cloud(WbDeviceTag tag);
-CONTROLLER_EXPORT const WbLidarPoint *wb_lidar_get_layer_point_cloud(WbDeviceTag tag, int layer);
-CONTROLLER_EXPORT int wb_lidar_get_number_of_points(WbDeviceTag tag);
+CONTROLLER_EXPORT extern const WbLidarPoint *wb_lidar_get_point_cloud(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const WbLidarPoint *wb_lidar_get_layer_point_cloud(WbRobotContext *context, WbDeviceTag tag, int layer);
+CONTROLLER_EXPORT extern int wb_lidar_get_number_of_points(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT int wb_lidar_get_horizontal_resolution(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_lidar_get_number_of_layers(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_lidar_get_min_frequency(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_lidar_get_max_frequency(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_lidar_get_frequency(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_lidar_set_frequency(WbDeviceTag tag, double frequency);
-CONTROLLER_EXPORT double wb_lidar_get_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_lidar_get_vertical_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_lidar_get_min_range(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_lidar_get_max_range(WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_lidar_get_horizontal_resolution(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_lidar_get_number_of_layers(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_lidar_get_min_frequency(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_lidar_get_max_frequency(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_lidar_get_frequency(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_lidar_set_frequency(WbRobotContext *context, WbDeviceTag tag, double frequency);
+CONTROLLER_EXPORT extern double wb_lidar_get_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_lidar_get_vertical_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_lidar_get_min_range(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_lidar_get_max_range(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef WB_MATLAB_LOADLIBRARY
 // This function should be used only in the Matlab wrapper
-CONTROLLER_EXPORT const WbLidarPoint *wb_lidar_get_point(WbDeviceTag tag, int index);
+CONTROLLER_EXPORT extern const WbLidarPoint *wb_lidar_get_point(WbRobotContext *context, WbDeviceTag tag, int index);
 #endif
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_LIDAR_H */

@@ -304,7 +304,7 @@ void WbSimulationWorld::rayTracingEnabled() {
 }
 
 void WbSimulationWorld::updateNumberOfThreads() {
-  int numberOfthreads =
+  int numberOfthreads = 
     qMin(WbPreferences::instance()->value("General/numberOfThreads", 1).toInt(), WbWorld::instance()->optimalThreadCount());
   mOdeContext->setNumberOfThreads(numberOfthreads);
 }

@@ -93,7 +93,7 @@ public:
 
   // hierarchy
   void setParent(WbNode *parent) { mParent = parent; }
-  WbNode *parent() const { return mParent; }
+  WbNode *parentNode() const { return mParent; }
   bool isTopLevel() const { return mParent && mParent->isWorldRoot(); }
   bool isWorldRoot() const { return !mParent && mUniqueId != -1; }
   bool isProtoRoot() const { return !mParent && mUniqueId == -1; }
@@ -176,7 +176,7 @@ public:
   void updateNestedProtoFlag();
 
   // return if 'node' is a direct child of this PROTO parameters
-  bool isProtoParameterChild(const WbNode *node) const;
+  bool isProtoParameterChild(WbNode *node) const;
   // is a parameter node contained in a PROTO instance
   bool isProtoParameterNode() const;
   // return the node instances redirected to this PROTO parameter node
@@ -203,10 +203,7 @@ public:
   int numFields() const;
   WbField *field(int index) const;
   WbField *findField(const QString &fieldName, bool internal = false) const;
-  WbField *parentField(bool internal = false) const {
-    int index = -1;
-    return parentFieldAndIndex(index, internal);
-  }
+  WbField *parentField(bool internal = false) const;
   WbField *parentFieldAndIndex(int &index, bool internal = false) const;
   int findFieldId(const QString &fieldName) const;
   int fieldIndex(const WbField *field) const;

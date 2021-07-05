@@ -25,7 +25,7 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 enum {
@@ -49,13 +49,13 @@ enum {
   WB_KEYBOARD_ALT = 0x00040000
 };
 
-CONTROLLER_EXPORT void wb_keyboard_enable(int sampling_period);
-CONTROLLER_EXPORT void wb_keyboard_disable();
-CONTROLLER_EXPORT int wb_keyboard_get_sampling_period();
-CONTROLLER_EXPORT int wb_keyboard_get_key();
+CONTROLLER_EXPORT extern void wb_keyboard_enable(WbRobotContext *context, int sampling_period);
+CONTROLLER_EXPORT extern void wb_keyboard_disable(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_keyboard_get_sampling_period(WbRobotContext *context);
+CONTROLLER_EXPORT extern int wb_keyboard_get_key(WbRobotContext *context);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_KEYBOARD_H */

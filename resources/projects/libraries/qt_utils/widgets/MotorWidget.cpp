@@ -61,7 +61,7 @@ void MotorWidget::readSensors() {
     double v = value();
     double target = targetPosition();
     double currentPosition = value();
-    double time = wb_robot_get_time();
+    double time = wb_robot_get_time(mDevice->context());
 
     mGraph2D->addPoint2D(Point2D(time, v));
     mGraph2D->addPoint2D(Point2D(time, target, Qt::red));
@@ -124,45 +124,45 @@ void MotorWidget::setSliderPosition(double value) {
 
 void MotorWidget::enable(bool enable) {
   WbDeviceTag tag = mDevice->tag();
-  if (wb_motor_get_type(tag) == WB_ROTATIONAL) {
+  if (wb_motor_get_type(mDevice->context(), tag) == WB_ROTATIONAL) {
     if (enable)
-      wb_motor_enable_torque_feedback(tag, static_cast<int>(wb_robot_get_basic_time_step()));
+      wb_motor_enable_torque_feedback(mDevice->context(), tag, static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
     else
-      wb_motor_disable_torque_feedback(tag);
+      wb_motor_disable_torque_feedback(mDevice->context(), tag);
   } else {
     if (enable)
-      wb_motor_enable_force_feedback(tag, static_cast<int>(wb_robot_get_basic_time_step()));
+      wb_motor_enable_force_feedback(mDevice->context(), tag, static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
     else
-      wb_motor_disable_force_feedback(tag);
+      wb_motor_disable_force_feedback(mDevice->context(), tag);
   }
 }
 
 bool MotorWidget::isEnabled() const {
-  if (wb_motor_get_type(mDevice->tag()) == WB_ROTATIONAL)
-    return wb_motor_get_torque_feedback_sampling_period(mDevice->tag()) > 0;
+  if (wb_motor_get_type(mDevice->context(), mDevice->tag()) == WB_ROTATIONAL)
+    return wb_motor_get_torque_feedback_sampling_period(mDevice->context(), mDevice->tag()) > 0;
   else
-    return wb_motor_get_force_feedback_sampling_period(mDevice->tag()) > 0;
+    return wb_motor_get_force_feedback_sampling_period(mDevice->context(), mDevice->tag()) > 0;
 }
 
 double MotorWidget::value() {
-  if (wb_motor_get_type(mDevice->tag()) == WB_ROTATIONAL)
-    return wb_motor_get_torque_feedback(mDevice->tag());
+  if (wb_motor_get_type(mDevice->context(), mDevice->tag()) == WB_ROTATIONAL)
+    return wb_motor_get_torque_feedback(mDevice->context(), mDevice->tag());
   else
-    return wb_motor_get_force_feedback(mDevice->tag());
+    return wb_motor_get_force_feedback(mDevice->context(), mDevice->tag());
 }
 
 double MotorWidget::minPosition() const {
-  return wb_motor_get_min_position(mDevice->tag());
+  return wb_motor_get_min_position(mDevice->context(), mDevice->tag());
 }
 
 double MotorWidget::maxPosition() const {
-  return wb_motor_get_max_position(mDevice->tag());
+  return wb_motor_get_max_position(mDevice->context(), mDevice->tag());
 }
 
 double MotorWidget::targetPosition() const {
-  return wb_motor_get_target_position(mDevice->tag());
+  return wb_motor_get_target_position(mDevice->context(), mDevice->tag());
 }
 
 void MotorWidget::setPosition(double position) {
-  wb_motor_set_position(mDevice->tag(), position);
+  wb_motor_set_position(mDevice->context(), mDevice->tag(), position);
 }

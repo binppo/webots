@@ -249,9 +249,6 @@
     <ClCompile Include="core\GeneratedFiles\moc_MainApplication.cpp">
       <Filter>core\GeneratedFiles</Filter>
     </ClCompile>
-    <ClCompile Include="widgets\DepthCameraWidget.cpp">
-      <Filter>widgets</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\StandardPaths.hpp">
@@ -291,9 +288,6 @@
       <Filter>widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets\ScalarSensorWidget.hpp">
-      <Filter>widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="widgets\DepthCameraWidget.hpp">
       <Filter>widgets</Filter>
     </ClInclude>
   </ItemGroup>

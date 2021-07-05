@@ -40,6 +40,13 @@ public:
   void writeAnswer(QDataStream &) override;
   void postPhysicsStep() override;
 
+public slots:
+  void SPEAKER_PLAY_SOUND(const QStringList &soundFiles, double volume, double pitch, double balance, int side, bool loop);
+  void SPEAKER_STOP(const QStringList &sounds);
+  void SPEAKER_SET_ENGINE(const QString &engine);
+  void SPEAKER_SET_LANGUAGE(const QString &language);
+  void SPEAKER_SPEAK(const QString &text, double volume);
+
 private:
   // private functions
   WbSpeaker &operator=(const WbSpeaker &);  // non copyable

@@ -25,17 +25,17 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_distance_sensor_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_distance_sensor_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_distance_sensor_get_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_distance_sensor_get_value(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_distance_sensor_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_distance_sensor_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_distance_sensor_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_distance_sensor_get_value(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT double wb_distance_sensor_get_max_value(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_distance_sensor_get_min_value(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_distance_sensor_get_aperture(WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_distance_sensor_get_max_value(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_distance_sensor_get_min_value(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_distance_sensor_get_aperture(WbRobotContext *context, WbDeviceTag tag);
 
 typedef enum {
   WB_DISTANCE_SENSOR_GENERIC = 0,
@@ -44,10 +44,10 @@ typedef enum {
   WB_DISTANCE_SENSOR_LASER
 } WbDistanceSensorType;
 
-CONTROLLER_EXPORT WbDistanceSensorType wb_distance_sensor_get_type(WbDeviceTag tag);
+CONTROLLER_EXPORT WbDistanceSensorType wb_distance_sensor_get_type(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_DISTANCE_SENSOR_H */

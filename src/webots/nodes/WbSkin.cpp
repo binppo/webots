@@ -770,6 +770,145 @@ void WbSkin::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbSkin::SKIN_GET_BONE_POSITION(int index, bool absolute) {
+  bool invalidSkeleton = false;
+  bool webotsSkeletonWarning = false;
+
+  QString functionName = "wb_skin_get_bone_position";
+  assert(mBonePositionRequest == NULL);
+
+  if (!mSkeleton)
+    invalidSkeleton = true;
+  else {
+    WrSkeletonBone *bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+    assert(bone);
+    float position[3];
+    wr_skeleton_bone_get_position(bone, absolute, position);
+    mBonePositionRequest = new WbVector3(position[0], position[1], position[2]);
+  }
+
+  if (invalidSkeleton)
+    warn(tr("%1 cannot be executed because no valid skeleton is available.").arg(functionName));
+
+  if (webotsSkeletonWarning && !mBonesWarningPrinted) {
+    warn(tr("Skin animation control using %1 is disabled if a Webots "
+            "skeleton is used.\n")
+           .arg(functionName));
+    mBonesWarningPrinted = true;
+  }
+}
+
+void WbSkin::SKIN_GET_BONE_ORIENTATION(int index, bool absolute) {
+  bool invalidSkeleton = false;
+  bool webotsSkeletonWarning = false;
+
+  QString functionName = "wb_skin_get_bone_orientation";
+  assert(mBoneOrientationRequest == NULL);
+
+  if (!mSkeleton)
+    invalidSkeleton = true;
+  else {
+    WrSkeletonBone *bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+    assert(bone);
+    float orientation[4];
+    wr_skeleton_bone_get_orientation(bone, absolute, orientation);
+    mBoneOrientationRequest = new WbRotation(orientation[1], orientation[2], orientation[3], orientation[0]);
+  }
+
+  if (invalidSkeleton)
+    warn(tr("%1 cannot be executed because no valid skeleton is available.").arg(functionName));
+
+  if (webotsSkeletonWarning && !mBonesWarningPrinted) {
+    warn(tr("Skin animation control using %1 is disabled if a Webots "
+            "skeleton is used.\n")
+           .arg(functionName));
+    mBonesWarningPrinted = true;
+  }
+}
+
+void WbSkin::SKIN_SET_BONE_POSITION(int index, double x, double y, double z, bool absolute) {
+  bool invalidSkeleton = false;
+  bool webotsSkeletonWarning = false;
+
+  QString functionName = "wb_skin_set_bone_position";
+  if (!mSkeleton)
+    invalidSkeleton = true;
+  else if (mBonesField->size() > 0)
+    webotsSkeletonWarning = true;
+  else
+    setBonePosition(index, x, y, z, absolute);
+
+  if (invalidSkeleton)
+    warn(tr("%1 cannot be executed because no valid skeleton is available.").arg(functionName));
+
+  if (webotsSkeletonWarning && !mBonesWarningPrinted) {
+    warn(tr("Skin animation control using %1 is disabled if a Webots "
+            "skeleton is used.\n")
+           .arg(functionName));
+    mBonesWarningPrinted = true;
+  }
+}
+
+void WbSkin::SKIN_SET_BONE_ORIENTATION(int index, double x, double y, double z, double angle, bool absolute) {
+  bool invalidSkeleton = false;
+  bool webotsSkeletonWarning = false;
+
+  QString functionName = "wb_skin_set_bone_orientation";
+
+  if (!mSkeleton)
+    invalidSkeleton = true;
+  else if (mBonesField->size() > 0)
+    webotsSkeletonWarning = true;
+  else
+    setBoneOrientation(index, x, y, z, angle, absolute);
+
+  if (invalidSkeleton)
+    warn(tr("%1 cannot be executed because no valid skeleton is available.").arg(functionName));
+
+  if (webotsSkeletonWarning && !mBonesWarningPrinted) {
+    warn(tr("Skin animation control using %1 is disabled if a Webots "
+            "skeleton is used.\n")
+           .arg(functionName));
+    mBonesWarningPrinted = true;
+  }
+}
+
+int WbSkin::boneCount() {
+  const int boneCount = mSkeleton ? wr_skeleton_get_bone_count(mSkeleton) : 0;
+  return boneCount;
+}
+
+QString WbSkin::boneName(int index) {
+  const int boneCount = mSkeleton ? wr_skeleton_get_bone_count(mSkeleton) : 0;
+  if (index < 0 || index >= boneCount)
+      return QString();
+
+  WrSkeletonBone* bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+  return QString::fromLatin1(wr_skeleton_bone_get_name(bone));
+}
+
+QVector3D WbSkin::bonePosition(int index, bool absolute) {
+    const int boneCount = mSkeleton ? wr_skeleton_get_bone_count(mSkeleton) : 0;
+    if (index < 0 || index >= boneCount)
+        return QVector3D();
+
+    WrSkeletonBone *bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+    float position[3];
+    wr_skeleton_bone_get_position(bone, absolute, position);
+    return QVector3D(position[0], position[1], position[2]);
+}
+
+QVector4D WbSkin::boneOrientation(int index, bool absolute) {
+    const int boneCount = mSkeleton ? wr_skeleton_get_bone_count(mSkeleton) : 0;
+    if (index < 0 || index >= boneCount)
+        return QVector4D();
+
+    WrSkeletonBone *bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+    float orientation[4];
+    wr_skeleton_bone_get_orientation(bone, absolute, orientation);
+    return QVector4D(orientation[1], orientation[2], orientation[3], orientation[0]);
+}
+
 void WbSkin::writeAnswer(QDataStream &stream) {
   if (mNeedConfigureAfterModelChanged) {
     writeConfigure(stream);

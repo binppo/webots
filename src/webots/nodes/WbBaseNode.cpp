@@ -136,8 +136,8 @@ void WbBaseNode::reset() {
 void WbBaseNode::createWrenObjects() {
   mWrenObjectsCreatedCalled = true;
 
-  if (parent()) {
-    const WbBaseNode *const p = static_cast<WbBaseNode *>(parent());
+  if (parentNode()) {
+    const WbBaseNode *const p = static_cast<WbBaseNode *>(parentNode());
     mWrenNode = p->wrenNode();
   } else
     mWrenNode = wr_scene_get_root(wr_scene_get_instance());

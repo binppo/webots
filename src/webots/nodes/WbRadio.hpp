@@ -44,6 +44,16 @@ public:
   static void createAndSetupPluginObjects();
   static void runPlugin(double ms);
 
+public slots:
+  void RADIO_SET_SAMPLING_PERIOD(int refreshRate);
+  void RADIO_SET_ADDRESS(const QString &address);
+  void RADIO_SET_FREQUENCY(double frequency);
+  void RADIO_SET_CHANNEL(int channel);
+  void RADIO_SET_BITRATE(int bitrate);
+  void RADIO_SET_RX_SENSITIVITY(double rxSensitivity);
+  void RADIO_SET_TX_POWER(double txPower);
+  void RADIO_SEND(const QString &dest, const QByteArray &data, double delay);
+
 private:
   void receiveCallback(const struct WebotsRadioEvent *event);
   static void staticReceiveCallback(const int radio, const struct WebotsRadioEvent *event);

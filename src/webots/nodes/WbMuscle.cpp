@@ -120,7 +120,7 @@ void WbMuscle::postFinalize() {
   WbBaseNode::postFinalize();
 
   mParentTransform = WbNodeUtilities::findUpperTransform(this);
-  const WbJoint *joint = qobject_cast<WbJoint *>(parent()->parent());
+  const WbJoint *joint = qobject_cast<WbJoint *>(parentNode()->parentNode());
   updateEndPoint(joint->solidEndPoint());
   WbWrenVertexArrayFrameListener::instance()->subscribeMuscle(this);
   updateMaterial();
@@ -197,7 +197,7 @@ void WbMuscle::updateEndPointPosition() {
 
 void WbMuscle::updateEndPoint(WbBaseNode *node) {
   const WbSolid *solid = qobject_cast<WbSolid *>(node);
-  const WbJoint *joint = qobject_cast<WbJoint *>(parent()->parent());
+  const WbJoint *joint = qobject_cast<WbJoint *>(parentNode()->parentNode());
   if (mEndPoint != solid) {
     if (mEndPoint) {
       disconnect(mEndPoint->translationFieldValue(), &WbSFVector3::changedByOde, this, &WbMuscle::stretch);
@@ -220,7 +220,7 @@ void WbMuscle::updateEndPoint(WbBaseNode *node) {
 }
 
 void WbMuscle::updateStretchForce(double forcePercentage, bool immediateUpdate, int motorIndex) {
-  const WbMotor *motor = qobject_cast<WbMotor *>(parent());
+  const WbMotor *motor = qobject_cast<WbMotor *>(parentNode());
   if (motor->positionIndex() != motorIndex)
     return;
   mStatus = forcePercentage;

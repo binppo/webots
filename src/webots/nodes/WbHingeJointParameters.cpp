@@ -16,6 +16,7 @@
 
 void WbHingeJointParameters::init(bool fromDeprecatedHinge2JointParameters) {
   mAnchor = findSFVector3("anchor");
+  mDH = findSFVector3("dh");
   mSuspensionSpringConstant = findSFDouble("suspensionSpringConstant");
   mSuspensionDampingConstant = findSFDouble("suspensionDampingConstant");
   mSuspensionAxis = findSFVector3("suspensionAxis");
@@ -64,6 +65,7 @@ void WbHingeJointParameters::postFinalize() {
   WbJointParameters::postFinalize();
 
   connect(mAnchor, &WbSFVector3::changed, this, &WbHingeJointParameters::anchorChanged);
+  connect(mDH, &WbSFVector3::changed, this, &WbHingeJointParameters::dhChanged);
   connect(mSuspensionSpringConstant, &WbSFDouble::changed, this, &WbHingeJointParameters::updateSuspension);
   connect(mSuspensionDampingConstant, &WbSFDouble::changed, this, &WbHingeJointParameters::updateSuspension);
   connect(mSuspensionAxis, &WbSFVector3::changed, this, &WbHingeJointParameters::updateSuspension);

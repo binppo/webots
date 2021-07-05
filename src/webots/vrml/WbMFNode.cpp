@@ -199,10 +199,14 @@ void WbMFNode::defHasChanged() {
     mVector[i]->defHasChanged();
 }
 
-int WbMFNode::nodeIndex(const WbNode *node) const {
-  if (mVector.contains(const_cast<WbNode *>(node)))
-    return mVector.indexOf(const_cast<WbNode *>(node));
+int WbMFNode::nodeIndex(WbNode *node) const {
+  if (mVector.contains(node))
+    return mVector.indexOf(node);
   return -1;
+}
+
+bool WbMFNode::contains(WbNode *node) const {
+  return mVector.contains(node);
 }
 
 void WbMFNode::write(WbVrmlWriter &writer) const {

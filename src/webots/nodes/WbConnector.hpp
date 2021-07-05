@@ -58,6 +58,14 @@ public:
   static bool isAllowingMouseMotion();
   static void solidHasMoved(WbSolid *solid);
 
+  int refreshRate();
+  int getPresence();
+
+public slots:
+  void CONNECTOR_SET_PRESENCE(int refreshRate);
+  void CONNECTOR_LOCK();
+  void CONNECTOR_UNLOCK();
+
 private:
   // fields
   WbSFString *mType;               // connection type "symmetric", "active" or "passive"

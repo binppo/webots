@@ -599,6 +599,52 @@ void WbDistanceSensor::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbDistanceSensor::DISTANCE_SENSOR_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+  if (refreshRate == 0) {  // sensor disabled
+    // update rays appearance
+    applyOptionalRenderingToWren();
+  }
+}
+
+int WbDistanceSensor::refreshRate() {
+    if (mSensor)
+        return mSensor->refreshRate();
+
+    return 0;
+}
+
+double WbDistanceSensor::value() {
+    double rv = 0.0;
+    if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+        rv = mValue;
+        mSensor->resetPendingValue();
+    }
+
+    return rv;
+}
+
+double WbDistanceSensor::minValue() {
+    if (mLut)
+        return mLut->minMetricsRange();
+
+    return 0.0;
+}
+
+double WbDistanceSensor::maxValue() {
+    if (mLut)
+        return mLut->maxMetricsRange();
+
+    return 0.0;
+}
+
+double WbDistanceSensor::aperture() {
+    if (mAperture)
+        return mAperture->value();
+
+    return 0.0;
+}
+
 void WbDistanceSensor::writeAnswer(QDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << tag();

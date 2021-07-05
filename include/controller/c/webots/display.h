@@ -25,47 +25,47 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT int wb_display_get_width(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_display_get_height(WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_display_get_width(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_display_get_height(WbRobotContext *context, WbDeviceTag tag);
 
 // drawing properties
-CONTROLLER_EXPORT void wb_display_set_color(WbDeviceTag tag, int color);
-CONTROLLER_EXPORT void wb_display_set_alpha(WbDeviceTag tag, double alpha);
-CONTROLLER_EXPORT void wb_display_set_opacity(WbDeviceTag tag, double opacity);
-CONTROLLER_EXPORT void wb_display_set_font(WbDeviceTag tag, const char *font, int size, bool anti_aliasing);
+CONTROLLER_EXPORT extern void wb_display_set_color(WbRobotContext *context, WbDeviceTag tag, int color);
+CONTROLLER_EXPORT extern void wb_display_set_alpha(WbRobotContext *context, WbDeviceTag tag, double alpha);
+CONTROLLER_EXPORT extern void wb_display_set_opacity(WbRobotContext *context, WbDeviceTag tag, double opacity);
+CONTROLLER_EXPORT extern void wb_display_set_font(WbRobotContext *context, WbDeviceTag tag, const char *font, int size, bool anti_aliasing);
 
-CONTROLLER_EXPORT void wb_display_attach_camera(WbDeviceTag tag, WbDeviceTag camera_tag);
-CONTROLLER_EXPORT void wb_display_detach_camera(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_display_attach_camera(WbRobotContext *context, WbDeviceTag tag, WbDeviceTag camera_tag);
+CONTROLLER_EXPORT extern void wb_display_detach_camera(WbRobotContext *context, WbDeviceTag tag);
 
 // draw primitive
-CONTROLLER_EXPORT void wb_display_draw_pixel(WbDeviceTag tag, int x, int y);
-CONTROLLER_EXPORT void wb_display_draw_line(WbDeviceTag tag, int x1, int y1, int x2, int y2);
-CONTROLLER_EXPORT void wb_display_draw_rectangle(WbDeviceTag tag, int x, int y, int width, int height);
-CONTROLLER_EXPORT void wb_display_draw_oval(WbDeviceTag tag, int cx, int cy, int a, int b);
-CONTROLLER_EXPORT void wb_display_draw_polygon(WbDeviceTag tag, const int *x, const int *y, int size);
-CONTROLLER_EXPORT void wb_display_draw_text(WbDeviceTag tag, const char *text, int x, int y);
-CONTROLLER_EXPORT void wb_display_fill_rectangle(WbDeviceTag tag, int x, int y, int width, int height);
-CONTROLLER_EXPORT void wb_display_fill_oval(WbDeviceTag tag, int cx, int cy, int a, int b);
-CONTROLLER_EXPORT void wb_display_fill_polygon(WbDeviceTag tag, const int *x, const int *y, int size);
+CONTROLLER_EXPORT extern void wb_display_draw_pixel(WbRobotContext *context, WbDeviceTag tag, int x, int y);
+CONTROLLER_EXPORT extern void wb_display_draw_line(WbRobotContext *context, WbDeviceTag tag, int x1, int y1, int x2, int y2);
+CONTROLLER_EXPORT extern void wb_display_draw_rectangle(WbRobotContext *context, WbDeviceTag tag, int x, int y, int width, int height);
+CONTROLLER_EXPORT extern void wb_display_draw_oval(WbRobotContext *context, WbDeviceTag tag, int cx, int cy, int a, int b);
+CONTROLLER_EXPORT extern void wb_display_draw_polygon(WbRobotContext *context, WbDeviceTag tag, const int *x, const int *y, int size);
+CONTROLLER_EXPORT extern void wb_display_draw_text(WbRobotContext *context, WbDeviceTag tag, const char *text, int x, int y);
+CONTROLLER_EXPORT extern void wb_display_fill_rectangle(WbRobotContext *context, WbDeviceTag tag, int x, int y, int width, int height);
+CONTROLLER_EXPORT extern void wb_display_fill_oval(WbRobotContext *context, WbDeviceTag tag, int cx, int cy, int a, int b);
+CONTROLLER_EXPORT extern void wb_display_fill_polygon(WbRobotContext *context, WbDeviceTag tag, const int *x, const int *y, int size);
 
 // WbImageRef handle functions
-#define WB_IMAGE_RGB 3
-#define WB_IMAGE_RGBA 4
-#define WB_IMAGE_ARGB 5
-#define WB_IMAGE_BGRA 6
+//#define WB_IMAGE_RGB 3
+//#define WB_IMAGE_RGBA 4
+//#define WB_IMAGE_ARGB 5
+//#define WB_IMAGE_BGRA 6
 
-CONTROLLER_EXPORT WbImageRef wb_display_image_new(WbDeviceTag tag, int width, int height, const void *data, int format);
-CONTROLLER_EXPORT WbImageRef wb_display_image_copy(WbDeviceTag tag, int x, int y, int width, int height);
-CONTROLLER_EXPORT WbImageRef wb_display_image_load(WbDeviceTag tag, const char *filename);
-CONTROLLER_EXPORT void wb_display_image_delete(WbDeviceTag tag, WbImageRef ir);
-CONTROLLER_EXPORT void wb_display_image_paste(WbDeviceTag tag, WbImageRef ir, int x, int y, bool blend);
-CONTROLLER_EXPORT void wb_display_image_save(WbDeviceTag tag, WbImageRef ir, const char *filename);
+CONTROLLER_EXPORT extern WbImageRef wb_display_image_new(WbRobotContext *context, WbDeviceTag tag, int width, int height, const void *data, int format);
+CONTROLLER_EXPORT extern WbImageRef wb_display_image_copy(WbRobotContext *context, WbDeviceTag tag, int x, int y, int width, int height);
+CONTROLLER_EXPORT extern WbImageRef wb_display_image_load(WbRobotContext *context, WbDeviceTag tag, const char *filename);
+CONTROLLER_EXPORT extern void wb_display_image_delete(WbRobotContext *context, WbDeviceTag tag, WbImageRef ir);
+CONTROLLER_EXPORT extern void wb_display_image_paste(WbRobotContext *context, WbDeviceTag tag, WbImageRef ir, int x, int y, bool blend);
+CONTROLLER_EXPORT extern void wb_display_image_save(WbRobotContext *context, WbDeviceTag tag, WbImageRef ir, const char *filename);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_DISPLAY_H */

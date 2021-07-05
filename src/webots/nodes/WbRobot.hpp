@@ -87,6 +87,8 @@ public:
   int deviceCount() const { return mDevices.size(); }
   WbDevice *device(int index) const { return mDevices[index]; }
   WbDevice *findDevice(WbDeviceTag tag) const;
+  WbDevice* findDevice(const QString& name) const;
+  QList<WbDevice*> findDevicesByType(int type) const;
   void descendantNodeInserted(WbBaseNode *decendant) override;
   QList<WbRenderingDevice *> renderingDevices() { return mRenderingDevices; }
 
@@ -130,8 +132,31 @@ public:
 
   WbKinematicDifferentialWheels *kinematicDifferentialWheels() { return mKinematicDifferentialWheels; }
 
+  int computeSimulationMode();
+
 public slots:
   void receiveFromJavascript(const QByteArray &message);
+
+  void ROBOT_CONFIGURE();
+  void ROBOT_SET_SAMPLING_PERIOD(int refreshRate);
+  void ROBOT_SET_BATTERY_SAMPLING_PERIOD(int rate);
+  void ROBOT_SET_DATA(const QString &data);
+  void ROBOT_SET_KEYBOARD_SAMPLING_PERIOD(int rate);
+  void ROBOT_SET_JOYSTICK_SAMPLING_PERIOD(int rate);
+  void ROBOT_SET_MOUSE_SAMPLING_PERIOD(int rate);
+  void ROBOT_MOUSE_ENABLE_3D_POSITION(bool enable);
+  void ROBOT_SET_JOYSTICK_FORCE_FEEDBACK(int level);
+  void ROBOT_SET_JOYSTICK_FORCE_FEEDBACK_DURATION(double duration);
+  void ROBOT_SET_JOYSTICK_AUTO_CENTERING_GAIN(double gain);
+  void ROBOT_SET_JOYSTICK_RESISTANCE_GAIN(double gain);
+  void ROBOT_SET_JOYSTICK_FORCE_AXIS(int axis);
+  void ROBOT_CLIENT_EXIT_NOTIFY();
+  void ROBOT_REMOTE_ON();
+  void ROBOT_REMOTE_OFF();
+  void ROBOT_PIN(bool pin);
+  void ROBOT_CONSOLE_MESSAGE(const QString &nativeMessage, bool useStdOut);
+  void ROBOT_WWI_MESSAGE(const QByteArray &message);
+  void ROBOT_WAIT_FOR_USER_INPUT_EVENT(int eventType, int timeout);
 
 signals:
   void startControllerRequest(WbRobot *robot);
@@ -252,7 +277,6 @@ private:
   void pinToStaticEnvironment(bool pin);
   double energyConsumption() const;
   void clearDevices();
-  int computeSimulationMode();
 
 private slots:
   void updateDevicesAfterDestruction();

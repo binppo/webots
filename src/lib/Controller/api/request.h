@@ -24,14 +24,12 @@
 #define request_write_tag request_write_uint16
 #define request_read_tag request_read_uint16
 
-struct _WbRequest {
+struct WbRequest {
   int pointer;
   int size;  // size of the memory chunk
   char *data;
   bool immediate;
 };
-
-typedef struct _WbRequest WbRequest;
 
 WbRequest *request_new_from_data(const void *data, int size);
 WbRequest *request_new_empty();
@@ -59,7 +57,7 @@ unsigned int request_read_uint32(WbRequest *);
 float request_read_float(WbRequest *);
 double request_read_double(WbRequest *);
 void *request_read_data(WbRequest *, int size);
-char *request_read_string(WbRequest *);  // to be released with g_free
+const char *request_read_string(WbRequest *);  // to be released with g_free
 bool request_is_over(WbRequest *);
 int request_get_size(WbRequest *);
 int request_get_position(WbRequest *);

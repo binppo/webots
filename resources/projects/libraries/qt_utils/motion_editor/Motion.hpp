@@ -8,6 +8,7 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
+struct WbRobotContext;
 namespace webotsQtUtils {
 
   class Pose;
@@ -19,7 +20,7 @@ namespace webotsQtUtils {
   public:
     static Motion *instance();
 
-    explicit Motion(const MotionPlayer *player, const QString &filepath = "");
+    explicit Motion(WbRobotContext *ctx, const MotionPlayer *player, const QString &filepath = "");
     virtual ~Motion();
 
     const QList<Pose *> &poses() const { return mPoses; }
@@ -52,6 +53,8 @@ namespace webotsQtUtils {
     bool isPoseSelectionBlocked() const { return mIsPoseSelectionBlocked; }
     int selectedPoseIndex() const { return mSelectedPoseIndex; }
 
+    WbRobotContext *context() const { return mContext; }
+
   signals:
     void updated();
     void poseSelected(int index);
@@ -78,6 +81,7 @@ namespace webotsQtUtils {
     QString mName;
     QString mFilePath;
     QList<Pose *> mPoses;
+    WbRobotContext *mContext;
 
     bool mIsValid;
     bool mIsPoseSelectionBlocked;

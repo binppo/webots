@@ -48,6 +48,12 @@ public:
 
   // inherited from WbJointDevice
   double position() const;
+  int refreshRate();
+  double value();
+
+public slots:
+  void POSITION_SENSOR_SET_SAMPLING_PERIOD(int refreshRate);
+  int POSITION_SENSOR_GET_ASSOCIATED_DEVICE(int deviceType);
 
 private:
   // user accessible field

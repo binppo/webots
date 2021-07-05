@@ -44,7 +44,7 @@ void VectorialSensorWidget::readSensors() {
   SensorWidget::readSensors();
   if (isEnabled()) {
     const double *v = values();
-    double time = wb_robot_get_time();
+    double time = wb_robot_get_time(mDevice->context());
     QVector4D *v4 = new QVector4D(v[0], v[1], v[2], time);
     mVectorList.append(v4);
     displayVector(v4);

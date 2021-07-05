@@ -9,6 +9,7 @@
 
 #include <QtCore/QList>
 
+struct WbRobotContext;
 namespace webotsQtUtils {
 
   class CategoryWidget;
@@ -20,7 +21,7 @@ namespace webotsQtUtils {
     Q_OBJECT
 
   public:
-    explicit GenericWindow(QStringList hiddenDevices = QStringList());
+    explicit GenericWindow(WbRobotContext *ctx, QStringList hiddenDevices = QStringList());
     virtual ~GenericWindow();
 
     void readSensors();
@@ -31,6 +32,7 @@ namespace webotsQtUtils {
 
     MotionEditor *mMotionEditor;
     QTabWidget *mTabWidget;
+    WbRobotContext *mContext;
 
     QList<Device *> mDeviceList;
     QList<DeviceWidget *> mDeviceWidgetList;

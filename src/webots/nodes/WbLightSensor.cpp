@@ -182,6 +182,28 @@ void WbLightSensor::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbLightSensor::LIGHT_SENSOR_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbLightSensor::refreshRate() {
+    if (mSensor)
+        return mSensor->refreshRate();
+
+    return 0;
+}
+
+double WbLightSensor::value() {
+  double rv = 0.0;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv = mValue;
+
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 void WbLightSensor::writeAnswer(QDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << tag();

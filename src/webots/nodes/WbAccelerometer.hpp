@@ -41,6 +41,10 @@ public:
   void writeConfigure(QDataStream &) override;
   bool refreshSensorIfNeeded() override;
 
+public slots:
+  void ACCELEROMETER_SET_SAMPLING_PERIOD(int refreshRate);
+  int refreshRate();
+
   // field accessors
   void setAcceleration(double x, double y, double z) {
     mValues[0] = x;

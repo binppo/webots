@@ -57,6 +57,12 @@ public:
   void computeLightMeasurement(const WbLight *light, const WbVector3 &sensorAxis, const WbVector3 &sensorPos,
                                WbVector3 &lightDirection, double &distance, double &direct, double &attenuation) const;
 
+  int refreshRate();
+  double value();
+
+public slots:
+  void LIGHT_SENSOR_SET_SAMPLING_PERIOD(int refreshRate);
+
 private:
   // private functions
   WbLightSensor &operator=(const WbLightSensor &);  // non copyable

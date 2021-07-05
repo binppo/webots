@@ -25,6 +25,9 @@ class WbDisplayImage;
 class WbImageTexture;
 
 class QDataStream;
+class QPoint;
+class QPolygon;
+class QRect;
 
 class WB_LIB_EXPORT WbDisplay : public WbRenderingDevice {
   Q_OBJECT
@@ -51,6 +54,26 @@ public:
   void createWrenObjects() override;
   void postPhysicsStep() override;
   void reset() override;
+
+public slots:
+  void DISPLAY_ATTACH_CAMERA(int camerTag);
+  void DISPLAY_DETACH_CAMERA();
+  void DISPLAY_SET_COLOR(quint32 color);
+  void DISPLAY_SET_ALPHA(quint8 alpha);
+  void DISPLAY_SET_OPACITY(quint8 opacity);
+  void DISPLAY_SET_FONT(const QString &font, quint32 fontSize, bool antiAliasing);
+  void DISPLAY_DRAW_PIXEL(const QPoint &pos);
+  void DISPLAY_DRAW_LINE(const QPoint &p0, const QPoint &p1);
+  void DISPLAY_DRAW_TEXT(const QString &text, const QPoint &pos);
+  void DISPLAY_DRAW_RECTANGLE(const QRect &rect, bool fill);
+  void DISPLAY_DRAW_OVAL(const QRect &oval, bool fill);
+  void DISPLAY_DRAW_POLYGON(const QPolygon &poly, bool fill);
+  void DISPLAY_IMAGE_COPY(int id, int x, int y, qint16 w, qint16 h);
+  void DISPLAY_IMAGE_PASTE(int id, int x, int y, bool blend);
+  void DISPLAY_IMAGE_LOAD(int id, const QByteArray &data, int w, int h, int format);
+  void DISPLAY_IMAGE_SAVE(int id);
+  void DISPLAY_IMAGE_DELETE(int id);
+  void DISPLAY_IMAGE_GET_ALL();
 
 protected:
   void setup() override;
@@ -81,13 +104,13 @@ private:
   void drawRectangle(int x, int y, int w, int h, bool fill);
   void drawOval(int cx, int cy, int a, int b, bool fill);
   int drawChar(unsigned long c, int x, int y);  // return character width in pixels
-  void setFont(char *font, unsigned int size);
+  void setFont(const char *font, unsigned int size);
   void drawText(const char *txt, int x, int y);
   void drawPolygon(const int *px, const int *py, int size, bool fill);
   unsigned int *imageCopy(short int x, short int y, short int &w,
                           short int &h);  // return copied data and clipped width and height
   void imagePaste(int id, int x, int y, bool blend);
-  void imageLoad(int id, int w, int h, void *data, ImageFormat format);
+  void imageLoad(int id, int w, int h, const void *data, ImageFormat format);
   void imageDelete(int id);
   WbDisplayImage *imageFind(int id);
   static int channelNumberFromPixelFormat(ImageFormat pixelFormat);

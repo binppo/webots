@@ -3,10 +3,10 @@
 #include <stdio.h>
 using namespace webotsQtUtils;
 
-Device::Device(WbDeviceTag tag) : mTag(tag), mType(WB_NODE_NO_NODE), mName(""), mCategory("Unknown") {
+Device::Device(WbRobotContext *ctx, WbDeviceTag tag) : mTag(tag), mContext(ctx), mType(WB_NODE_NO_NODE), mName(""), mCategory("Unknown") {
   if (tag) {
-    mType = wb_device_get_node_type(tag);
-    mName = QString::fromUtf8(wb_device_get_name(tag));
+    mType = wb_device_get_node_type(mContext, tag);
+    mName = QString::fromUtf8(wb_device_get_name(mContext, tag));
 
     switch (mType) {
       case WB_NODE_ACCELEROMETER:
@@ -56,8 +56,8 @@ Device::Device(WbDeviceTag tag) : mTag(tag), mType(WB_NODE_NO_NODE), mName(""), 
         break;
     }
   } else {  // robot
-    mType = wb_robot_get_type();
-    mName = QString::fromUtf8(wb_robot_get_name());
+    mType = wb_robot_get_type(mContext);
+    mName = QString::fromUtf8(wb_robot_get_name(mContext));
 
     if (mType == WB_NODE_DIFFERENTIAL_WHEELS)
       mCategory = "DifferentialWheels";

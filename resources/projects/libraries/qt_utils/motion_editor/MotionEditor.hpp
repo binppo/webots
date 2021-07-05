@@ -13,6 +13,8 @@ class QMainWindow;
 class QPushButton;
 class QSpinBox;
 
+struct WbRobotContext;
+
 namespace webotsQtUtils {
 
   class Motion;
@@ -23,7 +25,7 @@ namespace webotsQtUtils {
     Q_OBJECT
 
   public:
-    explicit MotionEditor(QWidget *parent = NULL);
+    explicit MotionEditor(WbRobotContext *ctx, QWidget *parent = NULL);
     virtual ~MotionEditor();
 
     void writeActuators();
@@ -49,6 +51,7 @@ namespace webotsQtUtils {
     Motion *mMotion;
     MotionPlayer *mMotionPlayer;
     MotionWidget *mMotionWidget;
+    WbRobotContext *mContext;
 
     QGroupBox *mMotionFileOptions;
     QGroupBox *mInsertionOptions;

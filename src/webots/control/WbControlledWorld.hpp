@@ -16,6 +16,7 @@
 #define WB_CONTROLLED_WORLD_HPP
 
 #include <QtCore/QList>
+#include <QtCore/QMap>
 #include "WbSimulationWorld.hpp"  // TODO: should we rename WbSimulationWorld to WbSimulatedWorld ?
 
 #include <core/WbConfig.h>
@@ -25,7 +26,7 @@ class QLocalSocket;
 class QThread;
 class WbController;
 
-class WB_LIB_EXPORT WbControlledWorld : public WbSimulationWorld {
+/*class WB_LIB_EXPORT WbControlledWorld : public WbSimulationWorld {
   Q_OBJECT
 
 public:
@@ -52,6 +53,7 @@ public slots:
 
 signals:
   void stepBlocked(bool blocked);
+  void startInternalController(int, const QString&);
 
 protected:
   void setUpControllerForNewRobot(WbRobot *robot) override;
@@ -88,6 +90,57 @@ private slots:
   void addControllerConnection();
   void updateCurrentRobotController();
   void waitForRobotWindowIfNeededAndCompleteStep();
+};*/
+
+class WB_LIB_EXPORT WbControlledWorld : public WbSimulationWorld {
+  Q_OBJECT
+
+public:
+  // singleton instance
+  static WbControlledWorld *instance();
+
+  // constructors and destructor
+  WbControlledWorld(WbProtoList *protos = NULL, WbTokenizer *tokenizer = NULL);
+  virtual ~WbControlledWorld();
+
+  void startControllers();
+  void startController(WbRobot *robot);
+
+  QStringList activeControllersNames() const;
+  bool isExecutingStep() const { return mIsExecutingStep; }
+
+  void step() override;
+
+public slots:
+  void deleteController(WbController *controller);
+  void triggerStepFromTimer() override;
+
+signals:
+  void stepBlocked(bool blocked);
+  void startInternalController(int, const QString&);
+
+protected:
+  void setUpControllerForNewRobot(WbRobot *robot) override;
+
+private:
+  void updateRobotController(WbRobot *robot);
+
+  QMap<QString, WbController *> mControllers;
+  QList<WbController *> mTerminatingControllers;    // controllers waiting to be deleted
+  bool mFirstStep;
+  QThread *mWorker;
+
+  // wait for controller synchronization in step mode
+  bool mRetryEnabled;
+  void retryStepLater();
+  void processWaitingStep();
+
+  // avoid executing a new step before the current one is completed
+  bool mIsExecutingStep;  // flag indicating if a step is currently being processed
+  bool mHasWaitingStep;   // flag indicating if a new step execution has been requested
+
+private slots:
+  void updateCurrentRobotController();
 };
 
 #endif  // WB_CONTROLLED_WORLD_HPP

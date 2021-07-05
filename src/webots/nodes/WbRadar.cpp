@@ -16,7 +16,6 @@
 
 #include "WbAffinePlane.hpp"
 #include "WbFieldChecker.hpp"
-#include "WbObjectDetection.hpp"
 #include "WbRandom.hpp"
 #include "WbSensor.hpp"
 #include "WbWorld.hpp"
@@ -36,35 +35,6 @@
 
 #include <cassert>
 
-class WbRadarTarget : public WbObjectDetection {
-public:
-  WbRadarTarget(WbRadar *radar, WbSolid *solidTarget, bool needToCheckCollision, double maxRange) :
-    WbObjectDetection(radar, solidTarget, needToCheckCollision, maxRange) {
-    mTargetDistance = 0.0;
-    mReceivedPower = 0.0;
-    mSpeed = 0.0;
-    mAzimuth = 0.0;
-  };
-
-  virtual ~WbRadarTarget() {}
-
-  double targetDistance() const { return mTargetDistance; }
-  double receivedPower() const { return mReceivedPower; }
-  double speed() const { return mSpeed; }
-  double azimuth() const { return mAzimuth; }
-  void setTargetDistance(double distance) { mTargetDistance = distance; }
-  void setReceivedPower(double receivedPower) { mReceivedPower = receivedPower; }
-  void setSpeed(double speed) { mSpeed = speed; }
-  void setAzimuth(double azimuth) { mAzimuth = azimuth; }
-
-protected:
-  double distance() override { return mObjectRelativePosition.length(); }
-
-  double mTargetDistance;
-  double mReceivedPower;
-  double mSpeed;
-  double mAzimuth;
-};
 
 void WbRadar::init() {
   mMinRange = findSFDouble("minRange");
@@ -312,7 +282,7 @@ void WbRadar::updateRaysSetupIfNeeded() {
   WbAffinePlane radarPlane(radarRotation * WbVector3(0.0, 1.0, 0.0), radarAxis);
   WbAffinePlane *frustumPlanes = WbObjectDetection::computeFrustumPlanes(radarPosition, radarRotation, verticalFieldOfView(),
                                                                          horizontalFieldOfView(), maxRange());
-  foreach (WbRadarTarget *target, mRadarTargets) {
+  foreach (WbRadarTargetObject *target, mRadarTargets) {
     target->object()->updateTransformAfterPhysicsStep();
     bool valid = target->recomputeRayDirection(this, radarPosition, radarRotation, radarInverseRotation, frustumPlanes);
     if (valid)
@@ -328,7 +298,7 @@ void WbRadar::updateRaysSetupIfNeeded() {
 }
 
 void WbRadar::rayCollisionCallback(dGeomID geom, WbSolid *collidingSolid, double depth) {
-  foreach (WbRadarTarget *target, mRadarTargets) {
+  foreach (WbRadarTargetObject *target, mRadarTargets) {
     // check if this target is the one that collides
     if (target->geom() == geom) {
       // make sure the colliding solid is not the target itself
@@ -375,6 +345,37 @@ void WbRadar::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbRadar::RADAR_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbRadar::refreshRate() {
+  if(mSensor)
+    return mSensor->refreshRate();
+
+  return 0;
+}
+
+int WbRadar::numberOfTargets() {
+  int rv = 0;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv = mRadarTargets.size();
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
+QList<WbRadarTargetObject*> WbRadar::getTargets() {
+  QList<WbRadarTargetObject*> rv;
+  if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+    rv = mRadarTargets;
+    mSensor->resetPendingValue();
+  }
+
+  return rv;
+}
+
 void WbRadar::writeConfigure(QDataStream &stream) {
   mSensor->connectToRobotSignal(robot());
 
@@ -419,7 +420,7 @@ void WbRadar::computeTargets(bool finalSetup, bool needCollisionDetection) {
     if (target == this)
       continue;
     // create target
-    WbRadarTarget *generatedTarget = new WbRadarTarget(this, target, needCollisionDetection, maxRange());
+    WbRadarTargetObject *generatedTarget = new WbRadarTargetObject(this, target, needCollisionDetection, maxRange());
     if (finalSetup) {
       bool valid = computeTarget(radarPosition, radarRotation, radarInverseRotation, radarAxis, radarPlane, frustumPlanes,
                                  generatedTarget, false);
@@ -436,7 +437,7 @@ void WbRadar::computeTargets(bool finalSetup, bool needCollisionDetection) {
 
 bool WbRadar::computeTarget(const WbVector3 &radarPosition, const WbMatrix3 &radarRotation,
                             const WbMatrix3 &radarInverseRotation, const WbVector3 &radarAxis, const WbAffinePlane &radarPlane,
-                            const WbAffinePlane *frustumPlanes, WbRadarTarget *radarTarget, bool fromRayUpdate) {
+                            const WbAffinePlane *frustumPlanes, WbRadarTargetObject *radarTarget, bool fromRayUpdate) {
   assert(radarTarget);
 
   if (!fromRayUpdate) {

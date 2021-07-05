@@ -82,27 +82,27 @@
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProgramFiles)\Visual Leak Detector\lib\$(Platform);$(LibraryPath)</LibraryPath>
     <TargetExt>.exe</TargetExt>
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProgramFiles)\Visual Leak Detector\lib\$(Platform);$(LibraryPath)</LibraryPath>
     <TargetExt>.exe</TargetExt>
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <TargetExt>.exe</TargetExt>
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProgramFiles)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <TargetExt>.exe</TargetExt>
-    <OutDir>$(SolutionDir)lib\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(PROCESSOR_ARCHITECTURE)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(PlatformTarget)\$(PlatformToolset)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -191,7 +191,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(PlatformTarget)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/lua/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/freetype/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/openal/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/openvr/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/ois/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/glm/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/pthread/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\glad\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\webots_lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;glad.lib;wren.lib;webots_lib.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua53.lib;freetype.lib;glm_static.lib;OIS.lib;OpenAL32.lib;openvr_api.lib;ode.lib;pthread_dll.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;glad.lib;wren.lib;webots_lib.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua53.lib;freetype.lib;glm_static.lib;OIS.lib;OpenAL32.lib;openvr_api.lib;ode.lib;pthread_lib.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
@@ -230,7 +230,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SDK)/third_party/qt/lib/$(PlatformTarget)/$(PlatformToolset)/dynamic/$(Configuration);$(SDK)/third_party/assimp/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/lua/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/freetype/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/openal/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/openvr/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/ois/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/glm/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SDK)/third_party/pthread/lib/$(PlatformTarget)/$(PlatformToolset)/$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\wren\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\ode\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\glad\$(Configuration);$(SolutionDir)lib\$(PlatformTarget)\$(PlatformToolset)\webots_lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;glad.lib;wren.lib;webots_lib.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua53.lib;freetype.lib;glm_static.lib;OIS.lib;OpenAL32.lib;openvr_api.lib;ode.lib;pthread_dll.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Script.lib;Qt5Gamepad.lib;Qt5PrintSupport.lib;Qt5OpenGL.lib;Qt5OpenGLExtensions.lib;Qt5Network.lib;Qt5Test.lib;Qt5WebChannel.lib;Qt5WebEngine.lib;Qt5WebEngineWidgets.lib;Qt5WebSockets.lib;Qt5WebView.lib;glad.lib;wren.lib;webots_lib.lib;assimp-vc141-mt.lib;opengl32.lib;glu32.lib;lua53.lib;freetype.lib;glm_static.lib;OIS.lib;OpenAL32.lib;openvr_api.lib;ode.lib;pthread_lib.lib;D3d9.lib;shlwapi.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>

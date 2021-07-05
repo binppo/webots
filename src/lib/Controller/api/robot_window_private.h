@@ -27,6 +27,6 @@ void robot_window_update_gui();
 void robot_window_read_sensors();
 void robot_window_write_actuators();
 void robot_window_cleanup();
-void robot_window_show();
+void robot_window_show(WbRobotContext*);
 
 #endif  // ROBOT_WINDOW_H

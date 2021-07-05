@@ -78,6 +78,12 @@ WbSceneTree::WbSceneTree(QWidget *parent) :
   mActionManager(WbActionManager::instance()),
   mClipboard(WbClipboard::instance()),
   mHandleWidth(6) {
+
+  setStyleSheet(
+R"???(
+font: 57 9pt "Roboto Bold";
+)???");
+
   mModel = NULL;
   mTreeView = NULL;
   mSelectedItem = NULL;
@@ -292,7 +298,7 @@ void WbSceneTree::copy() {
     value = mSelectedItem->field()->value();
   } else {
     // node or item
-    value = mSelectedItem->parent()->field()->value();
+    value = mSelectedItem->parentItem()->field()->value();
     row = mSelectedItem->row();
   }
 
@@ -327,9 +333,9 @@ void WbSceneTree::pasteInSFValue() {
   WbValue *item = field->value();
 
   if (mClipboard->type() == WB_SF_NODE) {
-    const QString &nodeString = mClipboard->computeNodeExportStringForInsertion(selectedItem->parent()->node(), field, -1);
+    const QString &nodeString = mClipboard->computeNodeExportStringForInsertion(selectedItem->parentItem()->node(), field, -1);
     WbNodeOperations::OperationResult result =
-      WbNodeOperations::instance()->importNode(selectedItem->parent()->node(), field, -1, QString(), nodeString, true);
+      WbNodeOperations::instance()->importNode(selectedItem->parentItem()->node(), field, -1, QString(), nodeString, true);
     if (result == WbNodeOperations::FAILURE)
       return;
 
@@ -364,7 +370,7 @@ void WbSceneTree::pasteInMFValue() {
 
   if (mSelectedItem->isField()) {
     // multiple field
-    const WbTreeItem *nodeItem = mSelectedItem->parent();
+    const WbTreeItem *nodeItem = mSelectedItem->parentItem();
     fieldItem = mSelectedItem;
     field = mSelectedItem->field();
     assert(field && field->isMultiple());
@@ -374,14 +380,14 @@ void WbSceneTree::pasteInMFValue() {
       parentNode = nodeItem->node();
   } else {
     // sibling is selected (node or item)
-    fieldItem = mSelectedItem->parent();
+    fieldItem = mSelectedItem->parentItem();
     field = fieldItem->field();
     assert(fieldItem->isField() && field && field->isMultiple());
 
     index = mSelectedItem->row() + 1;
     parentItem = static_cast<WbMultipleValue *>(field->value());
     if (mSelectedItem->isNode())
-      parentNode = mSelectedItem->node()->parent();
+      parentNode = mSelectedItem->node()->parentNode();
   }
 
   if (mClipboard->type() == WB_SF_NODE) {
@@ -455,7 +461,7 @@ void WbSceneTree::del(WbNode *nodeToDel) {
   } else {
     // item
     mRowsAreAboutToBeRemoved = true;
-    WbMultipleValue *mvalue = static_cast<WbMultipleValue *>(mSelectedItem->parent()->field()->value());
+    WbMultipleValue *mvalue = static_cast<WbMultipleValue *>(mSelectedItem->parentItem()->field()->value());
     WbUndoStack::instance()->push(new WbRemoveItemCommand(mvalue, mSelectedItem->row()));
   }
 
@@ -508,7 +514,7 @@ void WbSceneTree::del(const QString &name) {
   } else {
     // item
     mRowsAreAboutToBeRemoved = true;
-    WbMultipleValue *mvalue = static_cast<WbMultipleValue *>(mSelectedItem->parent()->field()->value());
+    WbMultipleValue *mvalue = static_cast<WbMultipleValue *>(mSelectedItem->parentItem()->field()->value());
     WbUndoStack::instance()->push(new WbRemoveItemCommand(mvalue, mSelectedItem->row()));
   }
 
@@ -550,7 +556,7 @@ void WbSceneTree::reset() {
 
   if (field->singleType() == WB_SF_NODE) {
     bool dictionaryNeedsUpdate = false;
-    WbNode *parentNode = mSelectedItem->parent()->node();
+    WbNode *parentNode = mSelectedItem->parentItem()->node();
 
     // check if referred DEF node is going to be deleted
     bool containsReferredNode = false;
@@ -682,8 +688,8 @@ void WbSceneTree::transform(const QString &modelName) {
   const bool isExpanded = mTreeView->isExpanded(currentModelIndex);
 
   // create new node
-  WbNode::setGlobalParent(currentNode->parent());
-  WbNode *const newNode = WbConcreteNodeFactory::instance()->createNode(modelName, 0, currentNode->parent());
+  WbNode::setGlobalParent(currentNode->parentNode());
+  WbNode *const newNode = WbConcreteNodeFactory::instance()->createNode(modelName, 0, currentNode->parentNode());
   if (!newNode) {
     WbLog::error(tr("Transformation aborted: impossible to create a node of type %1.").arg(modelName));
     mRowsAreAboutToBeRemoved = false;
@@ -703,8 +709,8 @@ void WbSceneTree::transform(const QString &modelName) {
   WbNode::setGlobalParent(NULL);
 
   // reassign pointer in parent
-  WbField *parentField = mSelectedItem->parent()->field();
-  WbNode *upperTemplate = WbNodeUtilities::findUpperTemplateNeedingRegenerationFromField(parentField, currentNode->parent());
+  WbField *parentField = mSelectedItem->parentItem()->field();
+  WbNode *upperTemplate = WbNodeUtilities::findUpperTemplateNeedingRegenerationFromField(parentField, currentNode->parentNode());
   bool isInsideATemplateRegenerator = upperTemplate && upperTemplate != currentNode;
   if (mSelectedItem->isSFNode()) {
     WbSFNode *const sfnode = qobject_cast<WbSFNode *>(mSelectedItem->field()->value());
@@ -716,7 +722,7 @@ void WbSceneTree::transform(const QString &modelName) {
     newNode->validate();
     WbTemplateManager::instance()->blockRegeneration(false);
   } else {
-    assert(mSelectedItem->parent()->isField());
+    assert(mSelectedItem->parentItem()->isField());
     WbMFNode *mfnode = qobject_cast<WbMFNode *>(parentField->value());
     assert(mfnode);
     int nodeIndex = mfnode->nodeIndex(currentNode);
@@ -759,7 +765,7 @@ void WbSceneTree::convertProtoToBaseNode() {
     const bool isFollowedNode = (solid && viewpoint->followedSolid() == solid);
     int index;
     WbField *parentField = currentNode->parentFieldAndIndex(index);
-    WbNode *parentNode = currentNode->parent();
+    WbNode *parentNode = currentNode->parentNode();
     QString nodeString;
     WbVrmlWriter writer(&nodeString, currentNode->modelName() + ".proto");
     currentNode->write(writer);
@@ -796,7 +802,7 @@ void WbSceneTree::moveViewpointToObject() {
       if (node->isTopLevel())
         break;
     }
-    itemToMoveTo = itemToMoveTo->parent();
+    itemToMoveTo = itemToMoveTo->parentItem();
   }
 }
 
@@ -889,7 +895,7 @@ void WbSceneTree::addNew() {
       selectedField = selectedFieldItem->field();
     } else {  // item
       newNodeIndex = mSelectedItem->row() + 1;
-      selectedFieldItem = mSelectedItem->parent();
+      selectedFieldItem = mSelectedItem->parentItem();
       selectedField = selectedFieldItem->field();
     }
 
@@ -906,13 +912,13 @@ void WbSceneTree::addNew() {
       return;
     }
 
-    selectedNodeParent = mSelectedItem->parent()->node();
+    selectedNodeParent = mSelectedItem->parentItem()->node();
 
   } else {  // node
     newNodeIndex = mSelectedItem->row() + 1;
-    selectedFieldItem = mSelectedItem->parent();
+    selectedFieldItem = mSelectedItem->parentItem();
     selectedField = selectedFieldItem->field();
-    selectedNodeParent = mSelectedItem->node()->parent();
+    selectedNodeParent = mSelectedItem->node()->parentNode();
   }
 
   assert(selectedNodeParent && selectedField);
@@ -1003,17 +1009,17 @@ void WbSceneTree::addToScene(const QString &phrase) {
       selectedField = selectedFieldItem->field();
     } else {  // item
       newNodeIndex = mSelectedItem->row() + 1;
-      selectedFieldItem = mSelectedItem->parent();
+      selectedFieldItem = mSelectedItem->parentItem();
       selectedField = selectedFieldItem->field();
     }
 
-    selectedNodeParent = mSelectedItem->parent()->node();
+    selectedNodeParent = mSelectedItem->parentItem()->node();
 
   } else {  // node
     newNodeIndex = mSelectedItem->row() + 1;
-    selectedFieldItem = mSelectedItem->parent();
+    selectedFieldItem = mSelectedItem->parentItem();
     selectedField = selectedFieldItem->field();
-    selectedNodeParent = mSelectedItem->node()->parent();
+    selectedNodeParent = mSelectedItem->node()->parentNode();
   }
 
   // import node
@@ -1023,6 +1029,35 @@ void WbSceneTree::addToScene(const QString &phrase) {
   //updateSelection();
 
   mTreeView->scrollToModelIndex(mModel->itemToIndex(mSelectedItem));
+
+  WbWorld::instance()->setModifiedFromSceneTree();
+
+  updateValue();
+  updateToolbar();
+}
+
+void WbSceneTree::addToNode(const QString &phrase, WbBaseNode *baseNode) {
+  QVector<WbField *> fields = baseNode->fields();
+  if(fields.isEmpty())
+    return;
+
+  int newNodeIndex = 0;
+  WbField *parentField = nullptr;
+  foreach (WbField *const field, fields) {
+    if(WB_MF_NODE == field->type()) {
+      parentField = field;
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
+      newNodeIndex = mfnode->size();
+      break;
+    }
+  }
+
+  if(!parentField) {
+    parentField = fields[0];
+  }
+
+  // import node
+  WbNodeOperations::instance()->importNode(baseNode, parentField, newNodeIndex, "", phrase);
 
   WbWorld::instance()->setModifiedFromSceneTree();
 
@@ -1067,10 +1102,10 @@ bool WbSceneTree::isPasteAllowed() {
     WbNode *parentNode = NULL;
     if (mSelectedItem->isField()) {
       field = mSelectedItem->field();
-      parentNode = mSelectedItem->parent()->node();
+      parentNode = mSelectedItem->parentItem()->node();
     } else {  // else sibling node
-      field = mSelectedItem->parent()->field();
-      parentNode = mSelectedItem->node()->parent();
+      field = mSelectedItem->parentItem()->field();
+      parentNode = mSelectedItem->node()->parentNode();
     }
 
     // prevent pasting a node between WorldInfo and Viewpoint nodes
@@ -1101,7 +1136,7 @@ bool WbSceneTree::isPasteAllowed() {
     if (mSelectedItem->isField()) {
       field = mSelectedItem->field();
     } else if (mSelectedItem->isItem()) {
-      field = mSelectedItem->parent()->field();
+      field = mSelectedItem->parentItem()->field();
     }
   }
 
@@ -1163,15 +1198,15 @@ void WbSceneTree::updateSelection() {
   if (mSelectedItem->isField()) {
     const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
     isNonNullNode = sfnode && sfnode->value();
-    WbNode *const node = mSelectedItem->parent()->node();
+    WbNode *const node = mSelectedItem->parentItem()->node();
     mFieldEditor->editField(node, field, -1);
   } else if (mSelectedItem->isItem()) {
-    WbNode *const node = mSelectedItem->parent()->parent()->node();
+    WbNode *const node = mSelectedItem->parentItem()->parentItem()->node();
     mFieldEditor->editField(node, field, mSelectedItem->row());
   } else {  // node
-    WbNode *const node = mSelectedItem->parent()->node();
+    WbNode *const node = mSelectedItem->parentItem()->node();
     isNonNullNode = true;
-    mFieldEditor->editField(node, mSelectedItem->parent()->field(), mSelectedItem->row());
+    mFieldEditor->editField(node, mSelectedItem->parentItem()->field(), mSelectedItem->row());
   }
 
   WbContextMenuGenerator::enableNodeActions(mSelectedItem->isNode());
@@ -1264,7 +1299,7 @@ void WbSceneTree::updateValue() {
     QString fieldName = field->name();
     if (fieldName == "scale" || mSelectedItem->isSFNode()) {
       // update values displayed in field editor
-      mFieldEditor->editField(mSelectedItem->parent()->node(), field, -1);
+      mFieldEditor->editField(mSelectedItem->parentItem()->node(), field, -1);
     }
 
     mFieldEditor->updateValue();
@@ -1341,7 +1376,7 @@ void WbSceneTree::prepareNodeRegeneration(WbNode *node, bool nested) {
       mSelectionInsideTreeStateRecovery = true;
       break;
     }
-    n = n->parent();
+    n = n->parentNode();
   }
   if (!mSelectionInsideTreeStateRecovery)
     mSelectionBeforeTreeStateRegeneration = mModel->indexToItem(mTreeView->currentIndex());

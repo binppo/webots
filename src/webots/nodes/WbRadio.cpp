@@ -213,6 +213,65 @@ void WbRadio::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbRadio::RADIO_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+void WbRadio::RADIO_SET_ADDRESS(const QString &address) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  mAddress->setValue(address);
+  if (plugin)
+    plugin->setAddress(mID, address.toLatin1().constData());
+}
+
+void WbRadio::RADIO_SET_FREQUENCY(double frequency) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  mFrequency->setValue(frequency);
+  if (plugin)
+    plugin->setFrequency(mID, frequency);
+}
+
+void WbRadio::RADIO_SET_CHANNEL(int channel) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  mChannel->setValue(channel);
+  if (plugin)
+    plugin->setChannel(mID, channel);
+}
+
+void WbRadio::RADIO_SET_BITRATE(int bitrate) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  mBitrate->setValue(bitrate);
+  if (plugin)
+    plugin->setBitrate(mID, bitrate);
+}
+
+void WbRadio::RADIO_SET_RX_SENSITIVITY(double rxSensitivity) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  mRxSensitivity->setValue(rxSensitivity);
+  if (plugin)
+    plugin->setRxSensitivity(mID, rxSensitivity);
+}
+
+void WbRadio::RADIO_SET_TX_POWER(double txPower) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  mTxPower->setValue(txPower);
+  if (plugin)
+    plugin->setTxPower(mID, txPower);
+}
+
+void WbRadio::RADIO_SEND(const QString &dest, const QByteArray &data, double delay) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+
+  if (plugin)
+    plugin->send(mID, dest.toLatin1().constData(), reinterpret_cast<const void*>(data.constData()), data.size(), delay);
+}
+
 void WbRadio::writeConfigure(QDataStream &stream) {
   stream << tag();
   stream << (unsigned char)C_CONFIGURE;
@@ -294,9 +353,7 @@ static struct WebotsRadioEvent *radio_event_duplicate(const struct WebotsRadioEv
   copy->data = new char[orig->data_size];
   memcpy((void *)copy->data, orig->data, orig->data_size);
   copy->data_size = orig->data_size;
-  int len = strlen(orig->from) + 1;
-  copy->from = new char[len];
-  strncpy((char *)copy->from, orig->from, len);
+  copy->from = orig->from;
   copy->rssi = orig->rssi;
   return copy;
 }
@@ -304,7 +361,7 @@ static struct WebotsRadioEvent *radio_event_duplicate(const struct WebotsRadioEv
 // destroy WebotsRadioEvent and substructures
 static void radio_event_destroy(struct WebotsRadioEvent *p) {
   delete[] p->data;
-  delete[] p->from;
+  //delete[] p->from;
   delete p;
 }
 
@@ -327,7 +384,7 @@ void WbRadio::writeAnswer(QDataStream &stream) {
       stream << tag();
       stream << (unsigned char)C_RADIO_RECEIVE;
       stream << (double)event->rssi;
-      QByteArray from = QString(event->from).toUtf8();
+      QByteArray from = QString(event->from.c_str()).toUtf8();
       stream.writeRawData(from.constData(), from.size() + 1);
       stream << (int)event->data_size;
       stream.writeRawData(event->data, event->data_size);

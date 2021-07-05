@@ -45,6 +45,14 @@ public:
   bool refreshSensorIfNeeded() override;
   void reset() override;
 
+  int refreshRate();
+  double speed();
+  WbVector3 position();
+  int coordSystem();
+
+public slots:
+  void GPS_SET_SAMPLING_PERIOD(int refreshRate);
+
 private:
   // user accessible fields
   WbSFString *mType;

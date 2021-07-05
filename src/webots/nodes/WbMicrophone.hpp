@@ -47,6 +47,11 @@ public:
   // receive sample from plugin
   void receiveSoundSample(char *sample, int size);
 
+  int refreshRate();
+
+public slots:
+  void MICROPHONE_SET_SAMPLING_PERIOD(int refreshRate);
+
 signals:
   void soundSampleRequested(double lastUpdate);
 

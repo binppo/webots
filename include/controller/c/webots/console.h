@@ -21,17 +21,17 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #define WB_STDOUT 0
 #define WB_STDERR 1
 
 // this function is for an internal purpose, please use regular stdout/stderr functions instead
-CONTROLLER_EXPORT void wb_console_print(const char *text, int stream);
+CONTROLLER_EXPORT extern void wb_console_print(WbRobotContext *context, const char *text, int stream);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_CONSOLE_H */

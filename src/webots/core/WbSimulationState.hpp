@@ -20,6 +20,9 @@
 //
 
 #include <QtCore/QObject>
+#include <QtCore/QMap>
+#include <QtCore/QMutex>
+#include <QtCore/QPair>
 
 #include <core/WbConfig.h>
 
@@ -60,6 +63,10 @@ public:
   void unsubscribeToRayTracing();
   bool isRayTracingEnabled() { return mRayTracingSubscribersCount != 0; }
 
+  void registerSchedule(double timestamp, int procId, int taskId);
+  void clearSchedule(int procId=-1);
+  const QMap<double, QPair<int,int>>& schedule() const;
+
 signals:
   // the simulation mode has changed
   void modeChanged();
@@ -75,6 +82,8 @@ signals:
   // ray tracing is enabled
   void rayTracingEnabled();
 
+  void scheduledEvent(int procId, int taskId);
+
 protected:
   WbSimulationState();
   virtual ~WbSimulationState();
@@ -84,6 +93,8 @@ private:
   Mode mMode, mPreviousMode;
   bool mEnabled;
   double mTime;
+  QMutex mScheduleMutex;
+  QMap<double,QPair<int,int>> mScheduledEvents;
 
   // ray tracing
   int mRayTracingSubscribersCount;

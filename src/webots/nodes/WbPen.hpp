@@ -39,6 +39,11 @@ public:
   void prePhysicsStep(double ms) override;
   void reset() override;
 
+public slots:
+  void PEN_WRITE();
+  void PEN_DONT_WRITE();
+  void PEN_SET_INK_COLOR(quint8 r, quint8 g, quint8 b, quint8 density);
+
 private:
   WbSFBool *mWrite;
   WbSFColor *mInkColor;

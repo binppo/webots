@@ -11,17 +11,17 @@ InertialUnitWidget::InertialUnitWidget(Device *device, QWidget *parent) : Vector
 void InertialUnitWidget::enable(bool enable) {
   WbDeviceTag tag = mDevice->tag();
   if (enable)
-    wb_inertial_unit_enable(tag, static_cast<int>(wb_robot_get_basic_time_step()));
+    wb_inertial_unit_enable(mDevice->context(), tag, static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
   else
-    wb_inertial_unit_disable(tag);
+    wb_inertial_unit_disable(mDevice->context(), tag);
 }
 
 bool InertialUnitWidget::isEnabled() const {
   WbDeviceTag tag = mDevice->tag();
-  return wb_inertial_unit_get_sampling_period(tag) > 0;
+  return wb_inertial_unit_get_sampling_period(mDevice->context(), tag) > 0;
 }
 
 const double *InertialUnitWidget::values() {
   WbDeviceTag tag = mDevice->tag();
-  return wb_inertial_unit_get_roll_pitch_yaw(tag);
+  return wb_inertial_unit_get_roll_pitch_yaw(mDevice->context(), tag);
 }

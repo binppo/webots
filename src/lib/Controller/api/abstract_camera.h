@@ -19,19 +19,21 @@
 
 #include <webots/types.h>
 
+#include <string>
+
 #include "device_private.h"
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-typedef struct {
+struct AbstractCamera {
   bool enable;
   int sampling_period;
   unsigned int unique_id;  // camera id
   int width;
   int height;
-  char *shm_key;
+  std::string shm_key;
   int shmid;
   double camnear;
   bool spherical;
@@ -44,27 +46,27 @@ typedef struct {
 #ifdef _WIN32
   HANDLE shm_file;
 #endif
-} AbstractCamera;
+};
 
-void wb_abstract_camera_cleanup(WbDevice *d);
+void wb_abstract_camera_cleanup(WbDeviceStruct *d);
 
-void wb_abstract_camera_new(WbDevice *d, unsigned int id, int w, int h, double fov, double camnear, bool spherical);
+void wb_abstract_camera_new(WbDeviceStruct *d, unsigned int id, int w, int h, double fov, double camnear, bool spherical);
 
-void wb_abstract_camera_write_request(WbDevice *d, WbRequest *r);
-bool wb_abstract_camera_handle_command(WbDevice *d, WbRequest *r, unsigned char command);
+void wb_abstract_camera_write_request(WbRobotContext *context, WbDeviceStruct *d, WbRequest *r);
+bool wb_abstract_camera_handle_command(WbRobotContext *context, WbDeviceStruct *d, WbRequest *r, unsigned char command);
 
-void abstract_camera_toggle_remote(WbDevice *d, WbRequest *r);
+void abstract_camera_toggle_remote(WbDeviceStruct *d, WbRequest *r);
 
-bool abstract_camera_request_image(AbstractCamera *ac, const char *functionName);
-void wbr_abstract_camera_set_image(WbDevice *d, const unsigned char *image);
-unsigned char *wbr_abstract_camera_get_image_buffer(WbDevice *d);
+bool abstract_camera_request_image(WbRobotContext *context, AbstractCamera *ac, const char *functionName);
+void wbr_abstract_camera_set_image(WbRobotContext *context, WbDeviceStruct *d, const unsigned char *image);
+unsigned char *wbr_abstract_camera_get_image_buffer(WbRobotContext *context, WbDeviceStruct *d);
 
-void wb_abstract_camera_enable(WbDevice *d, int sampling_period);
-int wb_abstract_camera_get_sampling_period(WbDevice *d);
-int wb_abstract_camera_get_height(WbDevice *d);
-int wb_abstract_camera_get_width(WbDevice *d);
-double wb_abstract_camera_get_fov(WbDevice *d);
-double wb_abstract_camera_get_near(WbDevice *d);
-void wb_abstract_camera_update_timestamp(WbDevice *d);
+void wb_abstract_camera_enable(WbRobotContext *context, WbDeviceStruct *d, int sampling_period);
+int wb_abstract_camera_get_sampling_period(WbRobotContext *context, WbDeviceStruct *d);
+int wb_abstract_camera_get_height(WbRobotContext *context, WbDeviceStruct *d);
+int wb_abstract_camera_get_width(WbRobotContext *context, WbDeviceStruct *d);
+double wb_abstract_camera_get_fov(WbRobotContext *context, WbDeviceStruct *d);
+double wb_abstract_camera_get_near(WbRobotContext *context, WbDeviceStruct *d);
+void wb_abstract_camera_update_timestamp(WbRobotContext *context, WbDeviceStruct *d);
 
 #endif  // ABSTRACT_CAMERA_PRIVATE_H

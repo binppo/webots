@@ -1,20 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "src\ode\ode.vcxproj", "{EB4C6B2A-63DC-4757-963A-1DEBEB13B08D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "src\glad\glad.vcxproj", "{36D3FC58-193E-428C-828E-2C32B87D3548}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wren", "src\wren\wren.vcxproj", "{18D653FC-436A-470D-8EB0-8464CF01487A}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "controller", "src\lib\Controller\controller.vcxproj", "{885184EF-1188-4D32-8325-44F4608B19C8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EB4C6B2A-63DC-4757-963A-1DEBEB13B08D} = {EB4C6B2A-63DC-4757-963A-1DEBEB13B08D}
-		{36D3FC58-193E-428C-828E-2C32B87D3548} = {36D3FC58-193E-428C-828E-2C32B87D3548}
-		{18D653FC-436A-470D-8EB0-8464CF01487A} = {18D653FC-436A-470D-8EB0-8464CF01487A}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osm_gui", "resources\osm_importer\osm_gui\osm_gui.vcxproj", "{CC92F604-7D62-4245-9C28-3FE8DED889DB}"
 EndProject
@@ -74,18 +67,6 @@ Global
 		{18D653FC-436A-470D-8EB0-8464CF01487A}.Release|x64.Build.0 = Release|x64
 		{18D653FC-436A-470D-8EB0-8464CF01487A}.Release|x86.ActiveCfg = Release|Win32
 		{18D653FC-436A-470D-8EB0-8464CF01487A}.Release|x86.Build.0 = Release|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Debug|Win32.Build.0 = Debug|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Debug|x64.ActiveCfg = Debug|x64
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Debug|x64.Build.0 = Debug|x64
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Debug|x86.ActiveCfg = Debug|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Debug|x86.Build.0 = Debug|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Release|Win32.ActiveCfg = Release|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Release|Win32.Build.0 = Release|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Release|x64.ActiveCfg = Release|x64
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Release|x64.Build.0 = Release|x64
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Release|x86.ActiveCfg = Release|Win32
-		{885184EF-1188-4D32-8325-44F4608B19C8}.Release|x86.Build.0 = Release|Win32
 		{CC92F604-7D62-4245-9C28-3FE8DED889DB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CC92F604-7D62-4245-9C28-3FE8DED889DB}.Debug|Win32.Build.0 = Debug|Win32
 		{CC92F604-7D62-4245-9C28-3FE8DED889DB}.Debug|x64.ActiveCfg = Debug|x64

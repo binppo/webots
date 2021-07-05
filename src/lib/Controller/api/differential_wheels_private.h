@@ -19,6 +19,6 @@
 
 #include "device_private.h"
 
-void wb_differential_wheels_init(WbDevice *d);
+void wb_differential_wheels_init(WbRobotContext *context, WbDeviceStruct *d);
 
 #endif  // DIFFERENTIAL_WHEELS_PRIVATE_H

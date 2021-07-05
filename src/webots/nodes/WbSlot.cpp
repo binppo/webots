@@ -56,10 +56,10 @@ void WbSlot::preFinalize() {
   WbBaseNode::preFinalize();
 
   connect(mEndPoint, &WbSFString::changed, this, &WbSlot::endPointChanged);
-  WbGroup *pg = qobject_cast<WbGroup *>(parent());
+  WbGroup *pg = qobject_cast<WbGroup *>(parentNode());
   if (pg)  // parent is a group
     connect(this, &WbSlot::endPointInserted, pg, &WbGroup::insertChildFromSlot);
-  WbSlot *ps = qobject_cast<WbSlot *>(parent());
+  WbSlot *ps = qobject_cast<WbSlot *>(parentNode());
   if (ps)  // parent is another slot
     connect(this, &WbSlot::endPointInserted, ps, &WbSlot::endPointInserted);
 
@@ -80,7 +80,7 @@ void WbSlot::postFinalize() {
 
 void WbSlot::updateType() {
   QString connectedType;
-  const WbSlot *const parentSlot = qobject_cast<WbSlot *>(parent());
+  const WbSlot *const parentSlot = qobject_cast<WbSlot *>(parentNode());
   const WbSlot *const childSlot = slotEndPoint();
   if (parentSlot)
     connectedType = parentSlot->slotType();

@@ -25,22 +25,22 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #ifndef WB_CHANNEL_BROADCAST
 #define WB_CHANNEL_BROADCAST -1
 #endif
 
-CONTROLLER_EXPORT int wb_emitter_send(WbDeviceTag tag, const void *data, int size);
-CONTROLLER_EXPORT int wb_emitter_get_buffer_size(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_emitter_set_channel(WbDeviceTag tag, int channel);
-CONTROLLER_EXPORT int wb_emitter_get_channel(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_emitter_get_range(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_emitter_set_range(WbDeviceTag tag, double range);
+CONTROLLER_EXPORT extern int wb_emitter_send(WbRobotContext *context, WbDeviceTag tag, const void *data, int size);
+CONTROLLER_EXPORT extern int wb_emitter_get_buffer_size(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_emitter_set_channel(WbRobotContext *context, WbDeviceTag tag, int channel);
+CONTROLLER_EXPORT extern int wb_emitter_get_channel(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_emitter_get_range(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_emitter_set_range(WbRobotContext *context, WbDeviceTag tag, double range);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_EMITTER_H */

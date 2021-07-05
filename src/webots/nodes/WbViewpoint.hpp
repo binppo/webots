@@ -130,8 +130,6 @@ public:
   void eyeToPixels(const WbVector3 &eyePosition, WbVector2 &P) const;
   double zEye(const WbVector3 &pos) const;
 
-  bool moveViewpointToObject(WbBaseNode *node);  // return true if node was valid
-
   // Virtual reality headset
   bool enableVirtualRealityHeadset(bool enable);
   void setVirtualRealityHeadsetAntiAliasing(bool enable);
@@ -139,6 +137,13 @@ public:
   WbLensFlare *lensFlare() const;
   void updatePostProcessingEffects();
   void updatePostProcessingParameters();
+
+public slots:
+  bool moveViewpointToObject(WbBaseNode *node);  // return true if node was valid
+
+  // can be used for any generic animated viewpoint movement
+  void moveTo(const WbVector3 &targetPosition, const WbRotation &targetRotation, bool movingToAxis = false);
+  void orbitTo(const WbVector3 &targetUnitVector, const WbRotation &targetRotation);
 
 protected:
   void exportNodeFields(WbVrmlWriter &writer) const override;
@@ -274,10 +279,6 @@ private:
 
   void recomputeFollowField();
   void createCameraListenerIfNeeded();
-
-  // can be used for any generic animated viewpoint movement
-  void moveTo(const WbVector3 &targetPosition, const WbRotation &targetRotation, bool movingToAxis = false);
-  void orbitTo(const WbVector3 &targetUnitVector, const WbRotation &targetRotation);
 
 private slots:
   void updateFieldOfView();

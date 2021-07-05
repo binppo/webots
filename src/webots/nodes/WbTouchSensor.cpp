@@ -125,6 +125,32 @@ void WbTouchSensor::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbTouchSensor::TOUCH_SENSOR_SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbTouchSensor::refreshRate() {
+  if(mSensor)
+    return mSensor->refreshRate();
+
+  return 0;
+}
+
+QVector<double> WbTouchSensor::values() {
+    QVector<double> rv;
+    if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
+        if (mDeviceType != FORCE3D) {  // BUMPER or FORCE
+            rv << mValues[0];
+        } 
+        else {  // FORCE_3D
+            rv << mValues[0] << mValues[1] << mValues[2];
+        }
+        mSensor->resetPendingValue();
+    }
+
+    return rv;
+}
+
 void WbTouchSensor::writeAnswer(QDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << tag();

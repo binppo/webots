@@ -43,6 +43,12 @@ public:
   void writeConfigure(QDataStream &) override;
   bool refreshSensorIfNeeded() override;
 
+  int refreshRate();
+  WbVector3 value();
+
+public slots:
+  void GYRO_SET_SAMPLING_PERIOD(int refreshRate);
+
 private:
   // user accessible fields
   WbMFVector3 *mLookupTable;

@@ -22,7 +22,7 @@
 void joystick_write_request(WbRequest *req);
 void joystick_set_sampling_period(int sampling_period);
 bool joystick_read_answer(int message, WbRequest *r);
-void joystick_step_end();
-void wb_joystick_init();
+void joystick_step_end(WbRobotContext *context);
+void wb_joystick_init(WbRobotContext *context);
 
 #endif  // JOYSTICK_PRIVATE_H

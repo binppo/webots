@@ -85,7 +85,7 @@ private:
   // user accessible fields
   WbSFNode *mCoord;
   WbSFNode *mColor;
-  WbSFString *mFilePath;
+  WbSFString *mUrl;
   WbPointCloud mPointCloud;
 
   bool sanitizeFields();
@@ -105,7 +105,7 @@ private:
 private slots:
   void updateCoord();
   void updateColor();
-  void updateFilePath();
+  void updateSource();
   void updateData();
 };
 

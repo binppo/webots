@@ -364,25 +364,25 @@ void WbNode::setDefName(const QString &defName, bool recurse) {
   if (!recurse)
     return;
 
-  const WbNode *parentNode = parent();
+  const WbNode *parent = parentNode();
   const WbNode *previousParentNode = this;
   QList<int> parentIndices;
-  while (parentNode) {
-    int index = subNodeIndex(previousParentNode, parentNode);
+  while (parent) {
+    int index = subNodeIndex(previousParentNode, parent);
     if (index < 0)
       // parent-child link not correctly setup
       return;
     parentIndices.prepend(index);
-    if (!parentNode->useNodes().isEmpty()) {
-      const QList<WbNode *> &useList = parentNode->useNodes();
+    if (!parent->useNodes().isEmpty()) {
+      const QList<WbNode *> &useList = parent->useNodes();
       foreach (WbNode *const useNode, useList) {
         WbNode *const defNode = findNodeFromSubNodeIndices(parentIndices, useNode);
         assert(defNode != NULL);
         defNode->setDefName(defName, false);
       }
     }
-    previousParentNode = parentNode;
-    parentNode = parentNode->parent();
+    previousParentNode = parent;
+    parent = parent->parentNode();
   }
 }
 
@@ -466,7 +466,7 @@ QString WbNode::fullPath(const QString &fieldName, QString &parameterName) const
     else
       path = n->usefulName() + " > " + path;
 
-    n = n->parent();
+    n = n->parentNode();
   }
 
   return path;
@@ -567,25 +567,58 @@ int WbNode::parameterIndex(const WbField *field) const {
   return parameterList.indexOf(const_cast<WbField *>(field));
 }
 
+WbField *WbNode::parentField(bool internal) const {
+  const WbNode *const parent = parentNode();
+  if (!parent)
+    return NULL;
+
+  //const QVector<WbField *> &fields = internal ? parent->fields() : parent->fieldsOrParameters();
+  const QVector<WbField *> &fields = parent->fields();
+  foreach (WbField *const field, fields) {
+    WbValue *const value = field->value();
+    if (value->type() == WB_SF_NODE) {
+      const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(value);
+      if (sfnode && sfnode->value() == this) {
+        return field;
+      }
+    } else if (value->type() == WB_MF_NODE) {
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(value);
+      for(int k=0; k<mfnode->size(); ++k) {
+        if(mfnode->item(k) == this)
+          return field;
+      }
+    }
+  }
+
+  return NULL;
+}
+
 // Retrieves the field in which this node sits and returns the index of the node within this field
 WbField *WbNode::parentFieldAndIndex(int &index, bool internal) const {
   index = -1;
-  const WbNode *const parentNode = parent();
-  if (!parentNode)
+  const WbNode *const parent = parentNode();
+  if (!parent)
     return NULL;
 
-  const QVector<WbField *> &fields = internal ? parentNode->fields() : parentNode->fieldsOrParameters();
+  //const QVector<WbField *> &fields = internal ? parent->fields() : parent->fieldsOrParameters();
+  const QVector<WbField *> &fields = parent->fields();
   foreach (WbField *const field, fields) {
-    const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(field->value());
-    if (sfnode && sfnode->value() == this) {
-      index = 0;
-      return field;
-    } else {
-      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
+    WbValue *const value = field->value();
+    if (value->type() == WB_SF_NODE) {
+      const WbSFNode *const sfnode = qobject_cast<WbSFNode *>(value);
+      if (sfnode && sfnode->value() == this) {
+        index = 0;
+        return field;
+      }
+    } else if (value->type() == WB_MF_NODE) {
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(value);
       if (mfnode) {
-        index = mfnode->nodeIndex(this);
-        if (index != -1)
-          return field;
+        for(int k=0; k<mfnode->size(); ++k) {
+          if(mfnode->item(k) == this) {
+            index = k;
+            return field;
+          }
+        }
       }
     }
   }
@@ -762,7 +795,7 @@ void WbNode::notifyFieldChanged() {
     }
 
     // climb up the family tree but stop if child insertion is not completed
-    WbNode *p = n->parent();
+    WbNode *p = n->parentNode();
     if (!p || !n->mInsertionCompleted)
       break;
     n = p;
@@ -1676,7 +1709,7 @@ void WbNode::reset() {
     setRegenerationRequired(true);
 }
 
-bool WbNode::isProtoParameterChild(const WbNode *node) const {
+bool WbNode::isProtoParameterChild(WbNode *node) const {
   if (!isProtoInstance())
     return false;
 
@@ -1701,14 +1734,14 @@ bool WbNode::isProtoParameterNode() const {
   if (mIsCreationCompleted)
     return mIsProtoParameterNodeDescendant;
 
-  WbNode *parentNode = parent();
-  if (!parentNode || parentNode->isWorldRoot())
+  WbNode *parent = parentNode();
+  if (!parent || parent->isWorldRoot())
     return false;
 
-  if (parentNode->isProtoParameterChild(this))
+  if (parent->isProtoParameterChild(const_cast<WbNode*>(this)))
     return true;
 
-  return parentNode->isProtoParameterNode();
+  return parent->isProtoParameterNode();
 }
 
 QList<WbNode *> WbNode::subNodes(bool recurse, bool searchInFields, bool searchInParameters) const {
@@ -1760,7 +1793,7 @@ void WbNode::setRegenerationRequired(bool required) {
 }
 
 bool WbNode::hasAProtoAncestor() const {
-  const WbNode *currentNode = parent();
+  const WbNode *currentNode = parentNode();
   while (currentNode) {
     if (currentNode->isProtoInstance())
       return true;
@@ -1769,14 +1802,14 @@ bool WbNode::hasAProtoAncestor() const {
     if (protoParameterNode && protoParameterNode->isProtoInstance())
       return true;
 
-    currentNode = currentNode->parent();
+    currentNode = currentNode->parentNode();
   }
 
   return false;
 }
 
 WbNode *WbNode::protoAncestor() const {
-  WbNode *currentNode = parent();
+  WbNode *currentNode = parentNode();
   while (currentNode) {
     if (currentNode->isProtoInstance())
       return currentNode;
@@ -1785,7 +1818,7 @@ WbNode *WbNode::protoAncestor() const {
     if (protoParameterNode && protoParameterNode->isProtoInstance())
       return protoParameterNode;
 
-    currentNode = currentNode->parent();
+    currentNode = currentNode->parentNode();
   }
   return NULL;
 }
@@ -1793,7 +1826,7 @@ WbNode *WbNode::protoAncestor() const {
 bool WbNode::isAnAncestorOf(const WbNode *node) const {
   const WbNode *currentNode = node;
   while (currentNode) {
-    currentNode = currentNode->parent();
+    currentNode = currentNode->parentNode();
     if (currentNode == this)
       return true;
   }
@@ -1852,8 +1885,8 @@ bool WbNode::hasAreferredDefNodeDescendant(const WbNode *root) const {
 int WbNode::level() const {
   int level = 0;
   const WbNode *node = this;
-  while (node->parent()) {
-    node = node->parent();
+  while (node->parentNode()) {
+    node = node->parentNode();
     ++level;
   };
 

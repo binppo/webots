@@ -26,18 +26,18 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT const char *wb_device_get_name(WbDeviceTag dt);
-CONTROLLER_EXPORT const char *wb_device_get_model(WbDeviceTag dt);
-CONTROLLER_EXPORT WbNodeType wb_device_get_node_type(WbDeviceTag dt);
+CONTROLLER_EXPORT extern const char *wb_device_get_name(WbRobotContext *context, WbDeviceTag dt);
+CONTROLLER_EXPORT extern const char *wb_device_get_model(WbRobotContext *context, WbDeviceTag dt);
+CONTROLLER_EXPORT extern WbNodeType wb_device_get_node_type(WbRobotContext *context, WbDeviceTag dt);
 
 // deprecated since Webots 8.0.0, please use wb_device_get_node_type() instead
-CONTROLLER_EXPORT WbNodeType wb_device_get_type(WbDeviceTag dt) WB_DEPRECATED;
+CONTROLLER_EXPORT extern WbNodeType wb_device_get_type(WbRobotContext *context, WbDeviceTag dt) WB_DEPRECATED;
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_DEVICE_H */

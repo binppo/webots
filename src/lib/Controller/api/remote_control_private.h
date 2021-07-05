@@ -33,8 +33,8 @@ void remote_control_stop();
 void remote_control_stop_actuators();
 bool remote_control_has_failed();
 void remote_control_step(int duration);
-WbRequest *remote_control_handle_messages(WbRequest *r);
-void remote_control_handle_one_message(WbRequest *r, WbDeviceTag tag);
+WbRequest *remote_control_handle_messages(WbRobotContext *context, WbRequest *r);
+void remote_control_handle_one_message(WbRobotContext *context, WbRequest *r, WbDeviceTag tag);
 
 bool remote_control_is_function_defined(const char *function_name);
 

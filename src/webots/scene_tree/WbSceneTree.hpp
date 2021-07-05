@@ -71,6 +71,7 @@ public:
   void setHandleWidth(const int &handleWidth) { mHandleWidth = handleWidth; }
 
   void del(const QString &name);
+  void del(WbNode *nodeToDel = NULL);
   WbNode *find(const QString &name);
 
 public slots:
@@ -79,6 +80,7 @@ public slots:
   void updateApplicationActions();
   void updateSelection();
   void addToScene(const QString&);
+  void addToNode(const QString&, WbBaseNode *parentNode);
 
 signals:
   void valueChangedFromGui();
@@ -108,8 +110,6 @@ private slots:
   void exportObject();
   void openProtoInTextEditor();
   void openTemplateInstanceInTextEditor();
-
-  void del(WbNode *nodeToDel = NULL);
 
 private:
   QSplitter *mSplitter;

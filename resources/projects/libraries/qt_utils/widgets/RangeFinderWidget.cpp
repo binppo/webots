@@ -21,10 +21,10 @@ void RangeFinderWidget::readSensors() {
   SensorWidget::readSensors();
 
   WbDeviceTag tag = mDevice->tag();
-  if (wb_range_finder_get_sampling_period(tag) > 0) {
-    int rangeFinderWidth = wb_range_finder_get_width(tag);
-    int rangeFinderHeight = wb_range_finder_get_height(tag);
-    const float *raw = wb_range_finder_get_range_image(tag);
+  if (wb_range_finder_get_sampling_period(mDevice->context(), tag) > 0) {
+    int rangeFinderWidth = wb_range_finder_get_width(mDevice->context(), tag);
+    int rangeFinderHeight = wb_range_finder_get_height(mDevice->context(), tag);
+    const float *raw = wb_range_finder_get_range_image(mDevice->context(), tag);
     if (!raw || rangeFinderWidth < 1 || rangeFinderHeight < 1)
       return;
 
@@ -36,7 +36,7 @@ void RangeFinderWidget::readSensors() {
     unsigned char *buffer = new unsigned char[rangeFinderWidth * rangeFinderHeight * 4];
     int k = 0, r = 0;
     int size = rangeFinderWidth * rangeFinderHeight;
-    float _255OverMax = 255.0f / wb_range_finder_get_max_range(tag);
+    float _255OverMax = 255.0f / wb_range_finder_get_max_range(mDevice->context(), tag);
     while (r < size) {
       buffer[k++] = raw[r] * _255OverMax;
       buffer[k++] = raw[r] * _255OverMax;
@@ -58,12 +58,12 @@ void RangeFinderWidget::readSensors() {
 void RangeFinderWidget::enable(bool enable) {
   WbDeviceTag tag = mDevice->tag();
   if (enable)
-    wb_range_finder_enable(tag, static_cast<int>(wb_robot_get_basic_time_step()));
+    wb_range_finder_enable(mDevice->context(), tag, static_cast<int>(wb_robot_get_basic_time_step(mDevice->context())));
   else
-    wb_range_finder_disable(tag);
+    wb_range_finder_disable(mDevice->context(), tag);
 }
 
 bool RangeFinderWidget::isEnabled() const {
   WbDeviceTag tag = mDevice->tag();
-  return wb_range_finder_get_sampling_period(tag) > 0;
+  return wb_range_finder_get_sampling_period(mDevice->context(), tag) > 0;
 }

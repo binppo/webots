@@ -25,29 +25,31 @@
 #include <webots/radar_target.h>
 #include <webots/types.h>
 
+#include <vector>
+
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_radar_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_radar_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_radar_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_radar_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_radar_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_radar_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT int wb_radar_get_number_of_targets(WbDeviceTag tag);
-CONTROLLER_EXPORT const WbRadarTarget *wb_radar_get_targets(WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_radar_get_number_of_targets(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const std::vector<WbRadarTarget> wb_radar_get_targets(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT double wb_radar_get_min_range(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_radar_get_max_range(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_radar_get_horizontal_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_radar_get_vertical_fov(WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_radar_get_min_range(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_radar_get_max_range(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_radar_get_horizontal_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_radar_get_vertical_fov(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef WB_MATLAB_LOADLIBRARY
 // This function should be used only in the Matlab wrapper
-CONTROLLER_EXPORT const WbRadarTarget *wb_radar_get_target(WbDeviceTag tag, int index);
+CONTROLLER_EXPORT extern const WbRadarTarget *wb_radar_get_target(WbRobotContext *context, WbDeviceTag tag, int index);
 #endif
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_RADAR_H */

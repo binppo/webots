@@ -32,11 +32,17 @@
 // There can be a maximum of 65534 devices on a robot (65535 being reserved)
 typedef unsigned short WbDeviceTag;  // identifier of a device
 
+typedef void *WbMutexRef;  // identifier of a mutex
+
 // Opaque type definitions
-typedef struct WbImageStructPrivate *WbImageRef;
-typedef struct WbMotionStructPrivate *WbMotionRef;
-typedef struct WbNodeStructPrivate *WbNodeRef;
-typedef struct WbFieldStructPrivate *WbFieldRef;
+typedef struct WbImageStruct *WbImageRef;
+typedef struct WbMotionStruct *WbMotionRef;
+typedef struct WbNodeStruct *WbNodeRef;
+typedef struct WbFieldStruct *WbFieldRef;
+struct WbDeviceStruct;
+struct WbRobotStruct;
+struct WbRequest;
+struct WbRobotContext;
 
 // define "bool" type for C controllers
 // C++ code will use the standard definition of "bool"

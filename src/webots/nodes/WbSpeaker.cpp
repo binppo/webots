@@ -156,6 +156,35 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbSpeaker::SPEAKER_PLAY_SOUND(const QStringList &soundFiles, double volume, double pitch, double balance, int side, bool loop) {
+  for (int i = 0; i < soundFiles.size(); ++i) {
+    playSound(soundFiles[i].toLatin1().constData(), volume, pitch, balance, loop, side);
+  }
+}
+
+void WbSpeaker::SPEAKER_STOP(const QStringList &sounds) {
+  // cppcheck-suppress knownConditionTrueFalse
+  if (sounds.isEmpty())
+    stopAll();
+  else {
+    for (int i = 0; i < sounds.size(); ++i) {
+      stop(sounds[i].toLatin1().constData());
+    }
+  }
+}
+
+void WbSpeaker::SPEAKER_SET_ENGINE(const QString &engine) {
+  mEngine = engine;
+}
+
+void WbSpeaker::SPEAKER_SET_LANGUAGE(const QString &language) {
+  mLanguage = language;
+}
+
+void WbSpeaker::SPEAKER_SPEAK(const QString &text, double volume) {
+  playText(text.toLatin1().constData(), volume);
+}
+
 void WbSpeaker::writeAnswer(QDataStream &stream) {
   foreach (const WbSoundSource *source, mPlayingSoundSourcesMap) {
     if (!source->isPlaying()) {

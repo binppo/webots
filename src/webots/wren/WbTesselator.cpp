@@ -117,7 +117,7 @@ QString WbTesselator::tesselate(const QList<QVector<int>> &indexes, const QList<
 
   TesselatorData *tesselatorData = static_cast<TesselatorData *>(malloc(sizeof(TesselatorData) * vertexSize));
 
-  for (int i = 0; i < vertexSize; i++) {
+  for (int i = 0; i < vertexSize; ++i) {
     const WbVector3 &currentVertex = vertices[i];
 
     TesselatorData *data = &tesselatorData[i];

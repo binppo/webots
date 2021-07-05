@@ -46,6 +46,7 @@ public:
 
 public slots:
   bool setJoint() override;
+  void updatePosition() override;
 
 protected:
   WbLinearMotor *linearMotor() const;
@@ -55,7 +56,6 @@ protected:
   void applyToOdeSpringAndDampingConstants(dBodyID body, dBodyID parentBody) override;
 
 protected slots:
-  void updatePosition() override;
   void updateParameters() override;
   void updateMinAndMaxStop(double min, double max) override;
 

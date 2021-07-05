@@ -41,7 +41,7 @@ public:
   WbTreeItem(WbField *field, int index);
   virtual ~WbTreeItem();
 
-  WbTreeItem *parent() const { return mParent; }
+  WbTreeItem *parentItem() const { return mParent; }
   void appendChild(WbTreeItem *const child) {
     mChildren.append(child);
     child->mParent = this;

@@ -24,12 +24,13 @@ Motion *Motion::instance() {
   return cInstance;
 }
 
-Motion::Motion(const MotionPlayer *player, const QString &filepath) :
+Motion::Motion(WbRobotContext *ctx, const MotionPlayer *player, const QString &filepath) :
   mNewPoseCounter(0),
   mPlayer(player),
+  mContext(ctx),
   mIsValid(true),
   mIsPoseSelectionBlocked(false) {
-  mFixedStep = wb_robot_get_basic_time_step();
+  mFixedStep = wb_robot_get_basic_time_step(mContext);
   assert(!cInstance);
   setFilePath(filepath, true);
   load();
@@ -134,7 +135,7 @@ void Motion::setFixedStep(int step) {
 
 int Motion::estimateFixedStepValue() const {
   if (mPoses.count() <= 2)
-    return wb_robot_get_basic_time_step();
+    return wb_robot_get_basic_time_step(mContext);
 
   int referenceDeltaTime = qAbs(mPoses[1]->time() - mPoses[0]->time());
   referenceDeltaTime = qMax(1, qMin(100, referenceDeltaTime));

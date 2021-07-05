@@ -18,26 +18,25 @@
 #define DEVICE_PRIVATE_H
 
 #include <webots/nodes.h>
+#include <string>
 #include "request.h"
 
 #ifndef NAN
 #define NAN (0.0 / 0.0)
 #endif
 
-typedef struct _WbDevice WbDevice;
-
-struct _WbDevice {
+struct WbDeviceStruct {
   WbNodeType node;
-  char *name;
-  char *model;
+  std::string name;
+  std::string model;
   void *pdata;
-  void (*read_answer)(WbDevice *, WbRequest *);
-  void (*write_request)(WbDevice *, WbRequest *);
-  void (*cleanup)(WbDevice *);
-  void (*toggle_remote)(WbDevice *, WbRequest *);
+  void (*read_answer)(WbRobotContext *, WbDeviceStruct *, WbRequest *);
+  void (*write_request)(WbRobotContext *, WbDeviceStruct *, WbRequest *);
+  void (*cleanup)(WbRobotContext *, WbDeviceStruct *);
+  void (*toggle_remote)(WbRobotContext *, WbDeviceStruct *, WbRequest *);
 };
 
-void wb_device_cleanup(WbDevice *);
-void wb_device_init(WbDevice *);
+void wb_device_cleanup(WbRobotContext *context, WbDeviceStruct *);
+void wb_device_init(WbDeviceStruct *);
 
 #endif  // DEVICE_PRIVATE_H

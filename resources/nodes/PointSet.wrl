@@ -3,7 +3,6 @@
 PointSet {
   vrmlField SFNode     color     NULL
   vrmlField SFNode     coord     NULL
-  vrmlField SFNode     normal    NULL
   field     SFString   name      ""
-  field     SFString   source    ""
+  field     SFString   url       ""
 }

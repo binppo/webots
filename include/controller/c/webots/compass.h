@@ -25,17 +25,17 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_compass_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_compass_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_compass_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_compass_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_compass_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_compass_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT const double *wb_compass_get_values(WbDeviceTag tag);
+CONTROLLER_EXPORT extern const double *wb_compass_get_values(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_COMPASS_H */

@@ -25,26 +25,26 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_range_finder_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_range_finder_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_range_finder_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_range_finder_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_range_finder_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_range_finder_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT const float *wb_range_finder_get_range_image(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_range_finder_get_width(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_range_finder_get_height(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_range_finder_get_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_range_finder_get_min_range(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_range_finder_get_max_range(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_range_finder_save_image(WbDeviceTag tag, const char *filename, int quality);
+CONTROLLER_EXPORT extern const float *wb_range_finder_get_range_image(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_range_finder_get_width(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_range_finder_get_height(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_range_finder_get_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_range_finder_get_min_range(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_range_finder_get_max_range(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_range_finder_save_image(WbRobotContext *context, WbDeviceTag tag, const char *filename, int quality);
 
 // range finder functions
 #define wb_range_finder_image_get_depth(image, width, x, y) (image[(y) * (width) + (x)])
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_RANGE_FINDER_H */

@@ -117,13 +117,13 @@ typedef enum {
 } WbNodeType;
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT const char *wb_node_get_name(WbNodeType t);
+CONTROLLER_EXPORT extern const char *wb_node_get_name(WbNodeType t);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_NODES_H */

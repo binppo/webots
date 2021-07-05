@@ -26,39 +26,39 @@
 #include <webots/types.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
-CONTROLLER_EXPORT void wb_camera_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_camera_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_camera_get_sampling_period(WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_camera_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_camera_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_camera_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
 
-CONTROLLER_EXPORT const unsigned char *wb_camera_get_image(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_camera_get_width(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_camera_get_height(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_camera_get_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_camera_get_max_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_camera_get_min_fov(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_camera_set_fov(WbDeviceTag tag, double fov);  // fov specified in rad
-CONTROLLER_EXPORT double wb_camera_get_focal_length(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_camera_get_focal_distance(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_camera_get_max_focal_distance(WbDeviceTag tag);
-CONTROLLER_EXPORT double wb_camera_get_min_focal_distance(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_camera_set_focal_distance(WbDeviceTag tag, double focal_distance);
-CONTROLLER_EXPORT double wb_camera_get_near(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_camera_save_image(WbDeviceTag tag, const char *filename, int quality);
+CONTROLLER_EXPORT extern const unsigned char *wb_camera_get_image(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_camera_get_width(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_camera_get_height(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_camera_get_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_camera_get_max_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_camera_get_min_fov(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_camera_set_fov(WbRobotContext *context, WbDeviceTag tag, double fov);  // fov specified in rad
+CONTROLLER_EXPORT extern double wb_camera_get_focal_length(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_camera_get_focal_distance(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_camera_get_max_focal_distance(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern double wb_camera_get_min_focal_distance(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_camera_set_focal_distance(WbRobotContext *context, WbDeviceTag tag, double focal_distance);
+CONTROLLER_EXPORT extern double wb_camera_get_near(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_camera_save_image(WbRobotContext *context, WbDeviceTag tag, const char *filename, int quality);
 
 // smart camera
-CONTROLLER_EXPORT bool wb_camera_has_recognition(WbDeviceTag tag);
-CONTROLLER_EXPORT void wb_camera_recognition_enable(WbDeviceTag tag, int sampling_period);
-CONTROLLER_EXPORT void wb_camera_recognition_disable(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_camera_recognition_get_sampling_period(WbDeviceTag tag);
-CONTROLLER_EXPORT int wb_camera_recognition_get_number_of_objects(WbDeviceTag tag);
-CONTROLLER_EXPORT const WbCameraRecognitionObject *wb_camera_recognition_get_objects(WbDeviceTag tag);
+CONTROLLER_EXPORT extern bool wb_camera_has_recognition(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern void wb_camera_recognition_enable(WbRobotContext *context, WbDeviceTag tag, int sampling_period);
+CONTROLLER_EXPORT extern void wb_camera_recognition_disable(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_camera_recognition_get_sampling_period(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern int wb_camera_recognition_get_number_of_objects(WbRobotContext *context, WbDeviceTag tag);
+CONTROLLER_EXPORT extern const WbCameraRecognitionObject *wb_camera_recognition_get_objects(WbRobotContext *context, WbDeviceTag tag);
 
 #ifdef WB_MATLAB_LOADLIBRARY
 // This function should be used only in the Matlab wrapper
-CONTROLLER_EXPORT const WbCameraRecognitionObject *wb_camera_recognition_get_object(WbDeviceTag tag, int index);
+CONTROLLER_EXPORT extern const WbCameraRecognitionObject *wb_camera_recognition_get_object(WbRobotContext *context, WbDeviceTag tag, int index);
 #endif
 
 /* useful macros to get pixel colors from the image data, width and coords *
@@ -90,7 +90,7 @@ CONTROLLER_EXPORT const WbCameraRecognitionObject *wb_camera_recognition_get_obj
 #define wb_camera_image_get_grey(image, width, x, y) wb_camera_image_get_gray(image, width, x, y)
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif /* WB_CAMERA_H */

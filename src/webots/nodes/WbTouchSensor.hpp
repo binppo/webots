@@ -49,6 +49,12 @@ public:
   void createOdeObjects() override;
   bool refreshSensorIfNeeded() override;
 
+  int refreshRate();
+  QVector<double> values();
+
+public slots:
+  void TOUCH_SENSOR_SET_SAMPLING_PERIOD(int refreshRate);
+
 protected:
   // reimplemented protected functions
   dJointID createJoint(dBodyID body, dBodyID parentBody, dWorldID world) const override;

@@ -20,7 +20,6 @@
 #include "WbFocus.hpp"
 #include "WbLensFlare.hpp"
 #include "WbLight.hpp"
-#include "WbObjectDetection.hpp"
 #include "WbPerformanceLog.hpp"
 #include "WbPreferences.hpp"
 #include "WbProtoModel.hpp"
@@ -44,43 +43,6 @@
 #include <QtCore/QDataStream>
 #include <QtCore/QtGlobal>
 
-class WbRecognizedObject : public WbObjectDetection {
-public:
-  WbRecognizedObject(WbCamera *camera, WbSolid *object, bool needToCheckCollision, double maxRange) :
-    WbObjectDetection(camera, object, needToCheckCollision, maxRange) {
-    mId = object->uniqueId();
-    mModel = "";
-    mRelativeOrientation = WbRotation(0.0, 1.0, 0.0, 0.0);
-    mPositionOnImage = WbVector2(0, 0);
-    mPixelSize = WbVector2(0, 0);
-    mColors.clear();
-  };
-
-  virtual ~WbRecognizedObject() {}
-
-  int id() const { return mId; }
-  const QString model() const { return mModel; }
-  const WbRotation relativeOrientation() const { return mRelativeOrientation; }
-  const WbVector2 positionOnImage() const { return mPositionOnImage; }
-  const WbVector2 pixelSize() const { return mPixelSize; }
-  const QList<WbRgb> colors() const { return mColors; }
-
-  void setModel(const QString &model) { mModel = model; }
-  void setRelativeOrientation(const WbRotation &relativeOrientation) { mRelativeOrientation = relativeOrientation; }
-  void setPositionOnImage(const WbVector2 &positionOnImage) { mPositionOnImage = positionOnImage; }
-  void setPixelSize(const WbVector2 &pixelSize) { mPixelSize = pixelSize; }
-  void addColor(WbRgb colors) { mColors.append(colors); }
-
-protected:
-  virtual double distance() override { return fabs(mObjectRelativePosition.z()); }
-
-  int mId;
-  QString mModel;
-  WbRotation mRelativeOrientation;
-  WbVector2 mPositionOnImage;
-  WbVector2 mPixelSize;
-  QList<WbRgb> mColors;
-};
 
 void WbCamera::init() {
   mCharType = 'c';
@@ -577,6 +539,91 @@ void WbCamera::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+void WbCamera::CAMERA_SET_FOV(double fov) {
+
+  WbZoom *z = zoom();
+  if (z) {
+    if (fov >= z->minFieldOfView() && fov <= z->maxFieldOfView())
+      mFieldOfView->setValue(fov);
+    else
+      warn(
+        tr("wb_camera_set_fov(%1) out of zoom range [%2, %3].").arg(fov).arg(z->minFieldOfView()).arg(z->maxFieldOfView()));
+  } else
+    warn(tr("wb_camera_set_fov() cannot be applied to this camera: missing 'zoom'."));
+}
+
+void WbCamera::CAMERA_SET_FOCAL(double focalDistance) {
+  WbFocus *f = focus();
+  if (f) {
+    if ((focalDistance >= f->minFocalDistance()) && (focalDistance <= f->maxFocalDistance()))
+      f->setFocalDistance(focalDistance);
+    else
+      warn(tr("wb_camera_set_focal_distance(%1) out of focus range [%2, %3].")
+             .arg(focalDistance)
+             .arg(f->minFocalDistance())
+             .arg(f->maxFocalDistance()));
+  } else
+    warn(tr("wb_camera_set_focal_distance() cannot be applied to this camera: missing 'focus'."));
+}
+
+void WbCamera::CAMERA_SET_RECOGNITION_SAMPLING_PERIOD(int refreshRate) {
+  mRecognitionRefreshRate = refreshRate;
+  mRecognitionSensor->setRefreshRate(mRecognitionRefreshRate);
+}
+
+double WbCamera::minFieldOfView() {
+  WbZoom *z = zoom();
+  if (z)
+    return z->minFieldOfView();
+
+  return 0.0;
+}
+
+double WbCamera::maxFieldOfView() {
+  WbZoom *z = zoom();
+  if (z)
+    return z->maxFieldOfView();
+
+  return 0.0;
+}
+
+double WbCamera::focalLength() {
+  WbFocus *f = focus();
+  if (f)
+    return f->focalLength();
+
+  return 0.0;
+}
+
+double WbCamera::focalDistance() {
+  WbFocus *f = focus();
+  if (f)
+    return f->focalDistance();
+
+  return 0.0;
+}
+
+double WbCamera::minFocalDistance() {
+  WbFocus *f = focus();
+  if (f)
+    return f->minFocalDistance();
+
+  return 0.0;
+}
+
+double WbCamera::maxFocalDistance() {
+  WbFocus *f = focus();
+  if (f)
+    return f->maxFocalDistance();
+
+  return 0.0;
+}
+
+bool WbCamera::hasRecognition() const
+{
+    return (nullptr != recognition());
 }
 
 void WbCamera::computeObjects(bool finalSetup, bool needCollisionDetection) {

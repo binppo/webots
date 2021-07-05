@@ -51,6 +51,13 @@ public:
   double aperture() const { return mAperture->value(); }
   int mediumType() const { return mMediumType; }
 
+  int bufferSize() const;
+
+public slots:
+  void EMITTER_SEND(int channel, double range, const QByteArray &data);
+  void EMITTER_SET_CHANNEL(int channel);
+  void EMITTER_SET_RANGE(double range);
+
 private:
   int mMediumType;                // UNKNOWN, RADIO, SERIAL or INFRA_RED
   double mByteRate;               // expressed in bytes per millisecond;

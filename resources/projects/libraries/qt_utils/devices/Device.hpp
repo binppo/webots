@@ -10,10 +10,11 @@
 
 #include <QtCore/QString>
 
+struct WbRobotContext;
 namespace webotsQtUtils {
   class Device {
   public:
-    explicit Device(WbDeviceTag tag);
+    explicit Device(WbRobotContext *ctx, WbDeviceTag tag);
     virtual ~Device() {}
 
     WbDeviceTag tag() const { return mTag; }
@@ -21,9 +22,12 @@ namespace webotsQtUtils {
     const QString &name() const { return mName; }
     const QString &category() const { return mCategory; }
 
+    WbRobotContext *context() const { return mContext; }
+
   protected:
     WbDeviceTag mTag;
     WbNodeType mType;
+    WbRobotContext *mContext;
     QString mName;
     QString mCategory;
   };

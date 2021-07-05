@@ -166,7 +166,7 @@ namespace WbNodeUtilities {
   WB_LIB_EXPORT bool hasAJointDescendant(const WbNode *node);
 
   // has this DEF node a subsequent USE or DEF node using its new definition
-  WB_LIB_EXPORT bool hasASubsequentUseOrDefNode(const WbNode *defNode, const QString &defName, const QString &previousDefName,
+  WB_LIB_EXPORT bool hasASubsequentUseOrDefNode(WbNode *defNode, const QString &defName, const QString &previousDefName,
                                   bool &useOverlap, bool &defOverlap);
 
   // is this node selected

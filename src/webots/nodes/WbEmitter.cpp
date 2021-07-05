@@ -180,6 +180,27 @@ void WbEmitter::handleMessage(QDataStream &stream) {
   }
 }
 
+void WbEmitter::EMITTER_SEND(int channel, double range, const QByteArray &data) {
+  mChannel->setValue(channel);
+  mRange->setValue(range);
+  mQueue.enqueue(new WbDataPacket(this, mChannel->value(), reinterpret_cast<const void*>(data.constData()), data.size()));
+}
+
+void WbEmitter::EMITTER_SET_CHANNEL(int channel) {
+  mChannel->setValue(channel);
+}
+
+void WbEmitter::EMITTER_SET_RANGE(double range) {
+  mRange->setValue(range);
+}
+
+int WbEmitter::bufferSize() const {
+    if (mBufferSize)
+        return mBufferSize->value();
+
+    return 0;
+}
+
 void WbEmitter::prePhysicsStep(double ms) {
   WbSolidDevice::prePhysicsStep(ms);
 
