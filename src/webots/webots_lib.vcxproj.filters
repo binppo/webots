@@ -1,0 +1,3122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="wren">
+      <UniqueIdentifier>{72b53cf5-eccb-4513-9c71-a4fce565eec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widgets">
+      <UniqueIdentifier>{56a32d6a-c335-4e90-b3a7-8e36f9b06910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vrml">
+      <UniqueIdentifier>{ddef5a00-09f3-48e1-99ea-1737556444a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="maths">
+      <UniqueIdentifier>{c385a414-d3d0-4b55-a4bc-0177e7a7698a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{3dcbf0b6-4d18-412b-b744-a8f28c6ddae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wren\GeneratedFiles">
+      <UniqueIdentifier>{91908323-86cd-48a0-a6a8-b2fcfec6331a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vrml\GeneratedFiles">
+      <UniqueIdentifier>{64cf3e5c-62f9-42d3-a60e-9a575f84532b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\GeneratedFiles">
+      <UniqueIdentifier>{3e913342-e9a7-4b7e-9cf8-3543584d9d1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="control">
+      <UniqueIdentifier>{da4e502b-703d-4be7-970e-75ec78714627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor">
+      <UniqueIdentifier>{88d023d4-ed36-485e-a3a3-1a607012a459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{ddb5260d-a310-4c26-9f06-2085ebcbc96e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes">
+      <UniqueIdentifier>{1bb607c1-c784-49b2-b816-6d56da890460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="plugins">
+      <UniqueIdentifier>{9eeec14c-f333-4e43-8300-a0db2404a5dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene_tree">
+      <UniqueIdentifier>{2eb85344-ceb5-4023-a06d-8a59f75f8b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{5642209b-2746-4434-bba7-781f51ecde92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\utils">
+      <UniqueIdentifier>{34560996-1aaf-4dac-9a5b-05ac990cac8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user_commands">
+      <UniqueIdentifier>{5a9d2492-d779-473b-8bbc-5df9dde050e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ode">
+      <UniqueIdentifier>{57ef35a9-9bc2-4ecd-8923-b7a63a8a35ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sound">
+      <UniqueIdentifier>{8ea078c0-e8c2-465d-90a9-4c7ed0277c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{d0d9b9ba-4297-428d-9023-4d91fe696d72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\compilation_timestamp">
+      <UniqueIdentifier>{68683c60-58cd-415b-9130-9c37e0d50fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\siphash">
+      <UniqueIdentifier>{2d5b7849-17dc-4226-b72c-9e9bcdeffdb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app">
+      <UniqueIdentifier>{8832a00c-c5a4-41ca-8e31-2ae8c618d3b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{f06fcc72-00ab-401e-8262-f5dc28f2657d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="control\GeneratedFiles">
+      <UniqueIdentifier>{9e106ad6-828c-423e-8e2f-ebbfefe2fffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor\GeneratedFiles">
+      <UniqueIdentifier>{2d5a4231-089e-4b10-a1a9-753a9d8a77b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui\GeneratedFiles">
+      <UniqueIdentifier>{a1d2307a-79bd-41d8-ab71-4a79b925f7c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\GeneratedFiles">
+      <UniqueIdentifier>{e04b03df-bb23-44a1-a76a-7fc0a24c9870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine\GeneratedFiles">
+      <UniqueIdentifier>{28fc0c51-42d4-43e8-9de6-55c50d5238e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ode\GeneratedFiles">
+      <UniqueIdentifier>{84478baa-b0a7-4cba-b813-29259a7ebbe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="plugins\GeneratedFiles">
+      <UniqueIdentifier>{fca92235-3d5b-47e7-be78-ddf52be26b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene_tree\GeneratedFiles">
+      <UniqueIdentifier>{b58c7d52-93aa-4dda-9527-ab0c9828b446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user_commands\GeneratedFiles">
+      <UniqueIdentifier>{4891ec79-5580-4c56-b0db-efa11b21e90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widgets\GeneratedFiles">
+      <UniqueIdentifier>{6aefcdfd-0197-4020-83d4-f22a822a285f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\GeneratedFiles">
+      <UniqueIdentifier>{dc7de70d-a7f7-444e-af67-9efcb7b5506a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\utils\GeneratedFiles">
+      <UniqueIdentifier>{26ac5610-c26b-4767-ab2a-f855cb0329ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\rply">
+      <UniqueIdentifier>{5ed77ef3-cb23-4b41-8250-35d16fb0b5cf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="wren\WbCoordinateSystem.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbLightRepresentation.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbResizeManipulator.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbSpotLightRepresentation.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbSupportPolygonRepresentation.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbTesselator.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbTranslateRotateManipulator.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenAbstractManipulator.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenAbstractPostProcessingEffect.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenAbstractResizeManipulator.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenBloom.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenCamera.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenColorNoise.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenDepthOfField.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenFullScreenOverlay.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenGtao.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenHdr.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenLabelOverlay.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenLensDistortion.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenLensFlare.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenMotionBlur.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenNoiseMask.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenOpenGlContext.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenPicker.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenPostProcessingEffects.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenRangeNoise.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenRangeQuantization.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenRenderingContext.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenShaders.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenSmaa.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\WbWrenTextureOverlay.cpp">
+      <Filter>wren</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbAffinePlane.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbMathsUtilities.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbMatrix3.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbMatrix4.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbPolygon.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbPrecision.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbRandom.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbRay.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbRotation.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\WbVector4.cpp">
+      <Filter>maths</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbApplicationInfo.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbBinaryIncubator.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbControllerPlugin.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbDesktopServices.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbFileUtil.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbGuiRefreshOracle.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbHttpReply.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbIniParser.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbLanguage.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbLog.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbMacAddress.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbNetwork.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbPreferences.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbProject.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbSimulationState.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbStandardPaths.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbSysInfo.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbTelemetry.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbTemplateEngine.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbTranslator.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbVersion.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbWebotsUpdateManager.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbWindowsRegistry.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbField.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbFieldModel.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFBool.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFColor.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFDouble.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFInt.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFNode.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFRotation.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFString.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFVector2.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMFVector3.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbMultipleValue.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbNode.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbNodeFactory.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbNodeModel.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbNodeReader.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbParser.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbProtoModel.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbProtoTemplateEngine.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFBool.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFColor.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFDouble.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFInt.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFNode.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFRotation.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFString.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFVector2.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSFVector3.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbSingleValue.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbToken.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbTokenizer.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbValue.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbVariant.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenRenderingContext.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbResizeManipulator.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenCamera.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenTextureOverlay.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenAbstractManipulator.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenAbstractResizeManipulator.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbTranslateRotateManipulator.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenFullScreenOverlay.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbWrenOpenGlContext.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="wren\GeneratedFiles\moc_WbCoordinateSystem.cpp">
+      <Filter>wren\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbNode.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbField.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbValue.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMultipleValue.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbNodeReader.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbVariant.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbProtoTemplateEngine.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFRotation.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFRotation.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSingleValue.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFVector2.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFVector3.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbProtoModel.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFVector2.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFVector3.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFDouble.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFString.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFDouble.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFString.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFColor.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFColor.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFBool.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFNode.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFBool.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFNode.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbMFInt.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbSFInt.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbGuiRefreshOracle.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbLog.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbPreferences.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbProject.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbSimulationState.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbTelemetry.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbTemplateEngine.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbWebotsUpdateManager.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="control\WbControlledWorld.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\WbController.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\WbLanguageTools.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbBuildEditor.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbFindReplaceDialog.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbProjectRelocationDialog.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbSyntaxHighlighter.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbTextBuffer.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbTextEditor.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\WbTextFind.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbAboutBox.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbAbstractDragEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbConsole.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbDragOverlayEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbDragResizeEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbDragScaleEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbDragSolidEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbDragViewpointEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbGuiApplication.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbGuidedTour.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbMainWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbNewControllerWizard.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbNewPhysicsPluginWizard.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbNewProjectWizard.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbNewVersionDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbOpenSampleWorldDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbPreferencesDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbRecentFilesList.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbRenderingDeviceWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbRenderingDeviceWindowFactory.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbRobotWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbSaveWarningDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbSimulationStateIndicator.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbSimulationView.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbSingleTaskApplication.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbSplashScreen.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbVideoRecorder.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbVideoRecorderDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbView3D.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbWebotsUpdateDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbWheelEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbWrenWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="util\WbPerformanceLog.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbAddInertiaMatrixDialog.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbAddNodeDialog.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbBoolEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbColorEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbDoubleEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbExtendedStringEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbFieldDoubleSpinBox.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbFieldEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbFieldIntSpinBox.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbFieldLineEdit.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbIntEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbNodeEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbNodePane.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbPhysicsViewer.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbPositionViewer.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbRotationEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbSceneTree.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbSceneTreeModel.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbStringEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbTreeItem.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbTreeView.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbValueEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbVector2Editor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbVector3Editor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbVelocityViewer.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins\WbPhysicsPlugin.cpp">
+      <Filter>plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins\WbPlugin.cpp">
+      <Filter>plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins\WbRadioPlugin.cpp">
+      <Filter>plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAbstractAppearance.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAbstractCamera.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAccelerometer.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAppearance.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBackground.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBallJoint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBallJointParameters.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBaseNode.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBasicJoint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBox.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBrake.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCamera.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCapsule.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCharger.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbColor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCompass.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCone.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbConnector.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbContactProperties.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCoordinate.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCylinder.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbDamping.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbDevice.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbDirectionalLight.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbDisplay.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbDistanceSensor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbElevationGrid.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbEmitter.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbFluid.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbFocus.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbFog.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbGeometry.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbGps.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbGroup.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbGyro.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbHinge2Joint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbHingeJoint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbHingeJointParameters.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbImageTexture.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbImmersionProperties.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbIndexedFaceSet.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbIndexedLineSet.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbInertialUnit.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbJoint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbJointDevice.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbJointParameters.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLed.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLens.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLensFlare.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLidar.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLight.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLightSensor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLinearMotor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLogicalDevice.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbLookupTable.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbMaterial.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbMatter.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbMicrophone.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbMotor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbMuscle.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbNormal.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPbrAppearance.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPen.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPhysics.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPlane.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPointLight.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPointSet.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPositionSensor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPropeller.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRadar.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRadio.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRangeFinder.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbReceiver.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRecognition.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRenderingDevice.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRobot.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbRotationalMotor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSensor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbShape.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSkin.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSliderJoint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSlot.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSolid.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSolidDevice.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSolidReference.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSpeaker.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSphere.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbSpotLight.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTextureCoordinate.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTextureTransform.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTouchSensor.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTrack.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTrackWheel.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbViewpoint.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbWorldInfo.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbZoom.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbBoundingSphere.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbConcreteNodeFactory.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbDataPacket.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbDictionary.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbDisplayFont.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbFieldChecker.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbHiddenKinematicParameters.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbJoystickInterface.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbJoystickListener.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbKinematicDifferentialWheels.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbMassChecker.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbMouse.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbNodeOperations.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbNodeUtilities.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbObjectDetection.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbPaintTexture.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbSolidMerger.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbSolidUtilities.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbSupervisorUtilities.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbTemplateManager.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbTriangleMesh.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbTriangleMeshCache.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbVirtualRealityHeadset.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbVisualBoundingSphere.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbWorld.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbWrenMeshBuffers.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbWrenVertexArrayFrameListener.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\WbDockTitleBar.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\WbDockWidget.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\WbDoubleSpinBox.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\WbIntSpinBox.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\WbLineEdit.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\WbMessageBox.cpp">
+      <Filter>widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbActionManager.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbAddItemCommand.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbClipboard.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbContextMenuGenerator.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbEditCommand.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbResetCommand.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbResizeAndTranslateCommand.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbResizeCommand.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\WbUndoStack.cpp">
+      <Filter>user_commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ode\WbOdeContext.cpp">
+      <Filter>ode</Filter>
+    </ClCompile>
+    <ClCompile Include="ode\WbOdeDebugger.cpp">
+      <Filter>ode</Filter>
+    </ClCompile>
+    <ClCompile Include="ode\WbOdeUtilities.cpp">
+      <Filter>ode</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbContactSound.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbContactSoundManager.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbMicrosoftTextToSpeech.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbMotorSoundManager.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbPicoTextToSpeech.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbSoundClip.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbSoundEngine.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbSoundSource.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound\WbWaveFile.cpp">
+      <Filter>sound</Filter>
+    </ClCompile>
+    <ClCompile Include="app\WbApplication.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\WbContactPointsRepresentation.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\WbPerspective.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\WbPhysicsVectorRepresentation.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\WbSelection.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\WbAnimationRecorder.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\WbSimulationCluster.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\WbSimulationWorld.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="control\GeneratedFiles\moc_WbControlledWorld.cpp">
+      <Filter>control\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="control\GeneratedFiles\moc_WbController.cpp">
+      <Filter>control\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbBuildEditor.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbFindReplaceDialog.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbProjectRelocationDialog.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbSyntaxHighlighter.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbTextBuffer.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbTextEditor.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\GeneratedFiles\moc_WbTextFind.cpp">
+      <Filter>editor\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbMainWindow.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbView3D.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbSimulationView.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbDragSolidEvent.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbConsole.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbVideoRecorder.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbSplashScreen.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbNewVersionDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbGuidedTour.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbPreferencesDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbWrenWindow.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbOpenSampleWorldDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbRenderingDeviceWindow.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbNewControllerWizard.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbSingleTaskApplication.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbRobotWindow.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbRecentFilesList.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbRenderingDeviceWindowFactory.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbDragResizeEvent.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbDragScaleEvent.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbWebotsUpdateDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbSimulationStateIndicator.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbSaveWarningDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbVideoRecorderDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbNewProjectWizard.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbNewPhysicsPluginWizard.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbGuiApplication.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbAbstractDragEvent.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbAboutBox.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="app\GeneratedFiles\moc_WbApplication.cpp">
+      <Filter>app\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="app\GeneratedFiles\moc_WbContactPointsRepresentation.cpp">
+      <Filter>app\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="app\GeneratedFiles\moc_WbPhysicsVectorRepresentation.cpp">
+      <Filter>app\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="app\GeneratedFiles\moc_WbSelection.cpp">
+      <Filter>app\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\GeneratedFiles\moc_WbAnimationRecorder.cpp">
+      <Filter>engine\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\GeneratedFiles\moc_WbSimulationWorld.cpp">
+      <Filter>engine\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ode\GeneratedFiles\moc_WbOdeContext.cpp">
+      <Filter>ode\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins\GeneratedFiles\moc_WbPhysicsPlugin.cpp">
+      <Filter>plugins\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins\GeneratedFiles\moc_WbPlugin.cpp">
+      <Filter>plugins\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins\GeneratedFiles\moc_WbRadioPlugin.cpp">
+      <Filter>plugins\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_WbDockTitleBar.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_WbDockWidget.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_WbDoubleSpinBox.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_WbIntSpinBox.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\GeneratedFiles\moc_WbLineEdit.cpp">
+      <Filter>widgets\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\GeneratedFiles\moc_WbActionManager.cpp">
+      <Filter>user_commands\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="user_commands\GeneratedFiles\moc_WbUndoStack.cpp">
+      <Filter>user_commands\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbAddInertiaMatrixDialog.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbAddNodeDialog.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbBoolEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbColorEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbDoubleEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbExtendedStringEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbFieldDoubleSpinBox.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbFieldEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbFieldIntSpinBox.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbFieldLineEdit.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbIntEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbNodeEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbNodePane.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbPhysicsViewer.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbPositionViewer.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbRotationEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbSceneTree.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbSceneTreeModel.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbStringEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbTreeItem.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbTreeView.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbValueEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbVector2Editor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbVector3Editor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbVelocityViewer.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSolid.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbViewpoint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRobot.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRenderingDevice.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbGroup.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbWorldInfo.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbMatter.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLight.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLidar.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbJointParameters.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPhysics.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbAbstractCamera.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbShape.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSkin.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbContactProperties.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBaseNode.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPbrAppearance.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRadar.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBasicJoint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbJoint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTrack.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCamera.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbIndexedFaceSet.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbMotor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbGeometry.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbMuscle.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLens.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbAbstractAppearance.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbElevationGrid.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSpotLight.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbConnector.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbFluid.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbHingeJointParameters.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbMaterial.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSlot.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPointLight.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbHinge2Joint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTextureTransform.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBallJoint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLensFlare.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbFocus.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbImageTexture.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbHingeJoint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbReceiver.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbImmersionProperties.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRangeFinder.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCylinder.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCapsule.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbMicrophone.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbFog.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLightSensor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPropeller.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBackground.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTrackWheel.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbGps.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSliderJoint.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbDamping.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSolidReference.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSensor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBallJointParameters.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCone.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbColor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbEmitter.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbIndexedLineSet.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRecognition.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTouchSensor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbDistanceSensor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBrake.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSphere.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPositionSensor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbAccelerometer.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbInertialUnit.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPen.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbAppearance.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbDisplay.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLed.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCompass.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPointSet.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbZoom.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbDirectionalLight.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbGyro.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPlane.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBox.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCharger.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRadio.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTextureCoordinate.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbRotationalMotor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbJointDevice.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbLinearMotor.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCoordinate.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbSpeaker.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbNormal.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbSupervisorUtilities.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbWorld.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbTemplateManager.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbNodeOperations.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbVirtualRealityHeadset.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbJoystickInterface.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbJoystickListener.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbVisualBoundingSphere.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbMouse.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbSolidMerger.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbPaintTexture.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbMassChecker.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\GeneratedFiles\moc_WbFieldChecker.cpp">
+      <Filter>nodes\utils\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="external\rply\rply.c">
+      <Filter>external\rply</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbQjsFile.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbQjsFile.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbMultimediaStreamingLimiter.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbMultimediaStreamingServer.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbMultimediaStreamingServer.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAltimeter.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbAltimeter.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbBillboard.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbBillboard.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbMesh.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbMesh.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTriangleMeshGeometry.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTriangleMeshGeometry.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbUpdatedDialog.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbUpdatedDialog.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbProtoManager.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbProtoManager.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbWriter.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbTcpServer.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbTcpServer.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbShareWindow.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbShareWindow.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbCadShape.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbCadShape.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbNewProtoWizard.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbNewProtoWizard.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\utils\WbDataStream.cpp">
+      <Filter>nodes\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbProtoTreeItem.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbProtoTreeItem.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbExternProtoEditor.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbExternProtoEditor.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbInsertExternProtoDialog.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbInsertExternProtoDialog.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbUrl.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbVrmlNodeUtilities.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\WbProtoIcon.cpp">
+      <Filter>scene_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAnchorParameter.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbNewWorldWizard.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbDownloader.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbDownloadManager.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WbQtObjectSpy.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="external\siphash\arch_specific.cpp">
+      <Filter>external\siphash</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbNewWorldWizard.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tree\GeneratedFiles\moc_WbProtoIcon.cpp">
+      <Filter>scene_tree\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbAnchorParameter.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbQtObjectSpy.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbDownloader.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="core\GeneratedFiles\moc_WbDownloadManager.cpp">
+      <Filter>core\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbDragPoseEvent.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbDragPoseEvent.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WbW3dStreamingServer.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GeneratedFiles\moc_WbW3dStreamingServer.cpp">
+      <Filter>gui\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbAbstractPose.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbPose.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbPose.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbVacuumGripper.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbVacuumGripper.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbFieldValueRestriction.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\GeneratedFiles\moc_WbFieldValueRestriction.cpp">
+      <Filter>vrml\GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="vrml\WbNodeProtoInfo.cpp">
+      <Filter>vrml</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\WbTransform.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="nodes\GeneratedFiles\moc_WbTransform.cpp">
+      <Filter>nodes\GeneratedFiles</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="wren\WbLightRepresentation.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbSpotLightRepresentation.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbSupportPolygonRepresentation.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbTesselator.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenAbstractPostProcessingEffect.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenBloom.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenColorNoise.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenDepthOfField.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenGtao.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenHdr.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenLabelOverlay.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenLensDistortion.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenLensFlare.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenMotionBlur.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenNoiseMask.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenPicker.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenPostProcessingEffects.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenRangeNoise.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenRangeQuantization.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenShaders.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="wren\WbWrenSmaa.hpp">
+      <Filter>wren</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbAffinePlane.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbMathsUtilities.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbMatrix3.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbMatrix4.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbPolygon.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbPrecision.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbQuaternion.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbRandom.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbRay.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbRotation.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbVector2.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbVector3.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\WbVector4.hpp">
+      <Filter>maths</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbApplicationInfo.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbBinaryIncubator.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbControllerPlugin.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbDesktopServices.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbFileUtil.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbHttpReply.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbIniParser.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbLanguage.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbMacAddress.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbNetwork.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbStandardPaths.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbSysInfo.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbTranslator.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbVersion.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbWindowsRegistry.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbFieldModel.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbNodeFactory.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbNodeModel.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbParser.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbToken.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbTokenizer.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="control\WbLanguageTools.hpp">
+      <Filter>control</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\WbDragOverlayEvent.hpp">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\WbDragViewpointEvent.hpp">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\WbWheelEvent.hpp">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="util\WbPerformanceLog.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\WbDevice.hpp">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\WbLogicalDevice.hpp">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\WbLookupTable.hpp">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\WbSolidDevice.hpp">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbBoundingSphere.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbConcreteNodeFactory.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbDataPacket.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbDictionary.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbDisplayFont.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbHiddenKinematicParameters.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbKinematicDifferentialWheels.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbNodeUtilities.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbObjectDetection.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbTriangleMesh.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbTriangleMeshCache.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbWrenMeshBuffers.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbWrenVertexArrayFrameListener.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="widgets\WbMessageBox.hpp">
+      <Filter>widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbAddItemCommand.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbClipboard.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbContextMenuGenerator.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbEditCommand.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbResetCommand.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbResizeAndTranslateCommand.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbResizeCommand.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ode\WbOdeDebugger.hpp">
+      <Filter>ode</Filter>
+    </ClInclude>
+    <ClInclude Include="ode\WbOdeUtilities.hpp">
+      <Filter>ode</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbContactSound.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbContactSoundManager.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbMicrosoftTextToSpeech.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbMotorSoundManager.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbPicoTextToSpeech.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbSoundClip.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbSoundEngine.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbSoundSource.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbWaveFile.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="external\compilation_timestamp\compilation_timestamp.h">
+      <Filter>external\compilation_timestamp</Filter>
+    </ClInclude>
+    <ClInclude Include="external\siphash\compiler_specific.hpp">
+      <Filter>external\siphash</Filter>
+    </ClInclude>
+    <ClInclude Include="external\siphash\endianess.hpp">
+      <Filter>external\siphash</Filter>
+    </ClInclude>
+    <ClInclude Include="external\siphash\sip_hash.hpp">
+      <Filter>external\siphash</Filter>
+    </ClInclude>
+    <ClInclude Include="external\siphash\state_helpers.hpp">
+      <Filter>external\siphash</Filter>
+    </ClInclude>
+    <ClInclude Include="app\WbPerspective.hpp">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\WbSimulationCluster.hpp">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbConfig.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\resource.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="external\rply\rply.h">
+      <Filter>external\rply</Filter>
+    </ClInclude>
+    <ClInclude Include="core\WbAction.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\WbMultimediaStreamingLimiter.hpp">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbWriter.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\utils\WbDataStream.hpp">
+      <Filter>nodes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbRgb.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbUrl.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbVrmlNodeUtilities.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+    <ClInclude Include="user_commands\WbRemoveItemCommand.hpp">
+      <Filter>user_commands</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\WbTextToSpeech.hpp">
+      <Filter>sound</Filter>
+    </ClInclude>
+    <ClInclude Include="ode\WbOdeContact.hpp">
+      <Filter>ode</Filter>
+    </ClInclude>
+    <ClInclude Include="ode\WbOdeGeomData.hpp">
+      <Filter>ode</Filter>
+    </ClInclude>
+    <ClInclude Include="ode\WbOdeTypes.hpp">
+      <Filter>ode</Filter>
+    </ClInclude>
+    <ClInclude Include="external\siphash\arch_specific.hpp">
+      <Filter>external\siphash</Filter>
+    </ClInclude>
+    <ClInclude Include="nodes\WbAbstractPose.hpp">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="vrml\WbNodeProtoInfo.hpp">
+      <Filter>vrml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="wren\WbCoordinateSystem.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbField.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbGuiRefreshOracle.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbLog.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenTextureOverlay.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMultipleValue.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFBool.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFColor.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFDouble.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFInt.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFNode.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFRotation.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFString.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFVector2.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbMFVector3.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbNodeReader.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbNode.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbProject.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbPreferences.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbProtoTemplateEngine.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbProtoModel.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFVector3.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFBool.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFColor.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFDouble.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFInt.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFNode.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFRotation.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFString.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSFVector2.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbResizeManipulator.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbTelemetry.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbSimulationState.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbSingleValue.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbTranslateRotateManipulator.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbTemplateEngine.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbValue.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbVariant.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbWebotsUpdateManager.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenAbstractManipulator.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenAbstractResizeManipulator.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenCamera.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenFullScreenOverlay.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenOpenGlContext.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="wren\WbWrenRenderingContext.hpp">
+      <Filter>wren</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbAboutBox.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbZoom.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbAbstractCamera.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbAbstractDragEvent.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbAccelerometer.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="user_commands\WbActionManager.hpp">
+      <Filter>user_commands</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbAddInertiaMatrixDialog.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbAddNodeDialog.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbBoolEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbColorEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbDoubleEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbExtendedStringEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbFieldDoubleSpinBox.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbFieldEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbFieldIntSpinBox.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbFieldLineEdit.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbIntEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbNodeEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbNodePane.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbPhysicsViewer.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbPositionViewer.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbRobotWindow.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbVelocityViewer.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbVector3Editor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbVector2Editor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbValueEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbTextEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbStringEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbSceneTree.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbSceneTreeModel.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbRotationEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbTreeItem.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbTreeView.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\WbDockTitleBar.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\WbDockWidget.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\WbDoubleSpinBox.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\WbIntSpinBox.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widgets\WbLineEdit.hpp">
+      <Filter>widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="user_commands\WbUndoStack.hpp">
+      <Filter>user_commands</Filter>
+    </CustomBuild>
+    <CustomBuild Include="plugins\WbPhysicsPlugin.hpp">
+      <Filter>plugins</Filter>
+    </CustomBuild>
+    <CustomBuild Include="plugins\WbRadioPlugin.hpp">
+      <Filter>plugins</Filter>
+    </CustomBuild>
+    <CustomBuild Include="plugins\WbPlugin.hpp">
+      <Filter>plugins</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbAppearance.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBackground.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBallJoint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBallJointParameters.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBaseNode.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBasicJoint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBox.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBrake.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCamera.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCapsule.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCharger.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbColor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCompass.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCone.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbConnector.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbContactProperties.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCoordinate.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCylinder.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbDamping.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbDirectionalLight.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbDisplay.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbDistanceSensor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbElevationGrid.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbEmitter.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbFluid.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbFocus.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbFog.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbGeometry.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbGps.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbGroup.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbGyro.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbHinge2Joint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbHingeJoint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbHingeJointParameters.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbImageTexture.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbImmersionProperties.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbIndexedFaceSet.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbIndexedLineSet.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbInertialUnit.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbJoint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbJointDevice.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbJointParameters.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLed.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLens.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLensFlare.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLidar.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLight.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLightSensor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbLinearMotor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbMaterial.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbMatter.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbMicrophone.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbMotor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbMuscle.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbNormal.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPbrAppearance.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPen.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPhysics.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPlane.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPointLight.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPointSet.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPositionSensor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPropeller.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRadar.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRadio.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRangeFinder.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbReceiver.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRecognition.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRenderingDevice.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRobot.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbRotationalMotor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSensor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbShape.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSkin.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSliderJoint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSlot.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSolid.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSolidReference.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSpeaker.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSphere.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbSpotLight.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTextureCoordinate.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTextureTransform.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTouchSensor.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTrack.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTrackWheel.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbViewpoint.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbWorldInfo.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbAbstractAppearance.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="engine\WbAnimationRecorder.hpp">
+      <Filter>engine</Filter>
+    </CustomBuild>
+    <CustomBuild Include="app\WbApplication.hpp">
+      <Filter>app</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbBuildEditor.hpp">
+      <Filter>editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbConsole.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="app\WbContactPointsRepresentation.hpp">
+      <Filter>app</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbWrenWindow.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbWebotsUpdateDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbView3D.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbVideoRecorderDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbVideoRecorder.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbSplashScreen.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbSingleTaskApplication.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbSimulationView.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbSimulationStateIndicator.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbSaveWarningDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbRenderingDeviceWindowFactory.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbRenderingDeviceWindow.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbRecentFilesList.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbPreferencesDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbOpenSampleWorldDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbNewVersionDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbNewProjectWizard.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbNewPhysicsPluginWizard.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbNewControllerWizard.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbMainWindow.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbGuidedTour.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbGuiApplication.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbDragSolidEvent.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbDragScaleEvent.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbDragResizeEvent.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbWorld.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbVirtualRealityHeadset.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbVisualBoundingSphere.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbTemplateManager.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbTextFind.hpp">
+      <Filter>editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbSyntaxHighlighter.hpp">
+      <Filter>editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbTextBuffer.hpp">
+      <Filter>editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbFindReplaceDialog.hpp">
+      <Filter>editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="editor\WbProjectRelocationDialog.hpp">
+      <Filter>editor</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbSolidUtilities.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbSolidMerger.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="engine\WbSimulationWorld.hpp">
+      <Filter>engine</Filter>
+    </CustomBuild>
+    <CustomBuild Include="app\WbSelection.hpp">
+      <Filter>app</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbPaintTexture.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="app\WbPhysicsVectorRepresentation.hpp">
+      <Filter>app</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbNodeOperations.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ode\WbOdeContext.hpp">
+      <Filter>ode</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbMassChecker.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbMouse.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbJoystickInterface.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbJoystickListener.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="control\WbControlledWorld.hpp">
+      <Filter>control</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbFieldChecker.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="control\WbController.hpp">
+      <Filter>control</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\utils\WbSupervisorUtilities.hpp">
+      <Filter>nodes\utils</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\resource.qrc" />
+    <CustomBuild Include="nodes\WbAltimeter.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbBillboard.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbMesh.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbMultimediaStreamingServer.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbQjsFile.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTriangleMeshGeometry.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbUpdatedDialog.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbProtoManager.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbTcpServer.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbShareWindow.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbCadShape.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbNewProtoWizard.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbProtoTreeItem.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbExternProtoEditor.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbInsertExternProtoDialog.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbNewWorldWizard.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="scene_tree\WbProtoIcon.hpp">
+      <Filter>scene_tree</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbAnchorParameter.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbQtObjectSpy.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbDownloader.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\WbDownloadManager.hpp">
+      <Filter>core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbDragPoseEvent.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\WbW3dStreamingServer.hpp">
+      <Filter>gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbPose.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbVacuumGripper.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vrml\WbFieldValueRestriction.hpp">
+      <Filter>vrml</Filter>
+    </CustomBuild>
+    <CustomBuild Include="nodes\WbTransform.hpp">
+      <Filter>nodes</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="gui\webots.ico">
+      <Filter>gui</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
