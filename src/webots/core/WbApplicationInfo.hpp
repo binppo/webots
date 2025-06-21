@@ -17,15 +17,17 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbVersion;
 
 namespace WbApplicationInfo {
-  const WbVersion &version();
-  const QString &branch();
-  const QString &repo();
-  const QString &commit();
-  unsigned int releaseDate();  // returns the UNIX time stamp of the compilation date
-  const QString getInfoFromFile(const QString &name);
+  WB_LIB_EXPORT const WbVersion &version();
+  WB_LIB_EXPORT const QString &branch();
+  WB_LIB_EXPORT const QString &repo();
+  WB_LIB_EXPORT const QString &commit();
+  WB_LIB_EXPORT unsigned int releaseDate();  // returns the UNIX time stamp of the compilation date
+  WB_LIB_EXPORT const QString getInfoFromFile(const QString &name);
 }  // namespace WbApplicationInfo
 
 #endif

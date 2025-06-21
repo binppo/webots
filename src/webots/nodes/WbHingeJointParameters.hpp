@@ -18,7 +18,9 @@
 #include "WbJointParameters.hpp"
 #include "WbSFVector3.hpp"
 
-class WbHingeJointParameters : public WbJointParameters {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbHingeJointParameters : public WbJointParameters {
   Q_OBJECT
 
 public:
@@ -29,6 +31,7 @@ public:
   virtual ~WbHingeJointParameters() override;
 
   int nodeType() const override { return WB_NODE_HINGE_JOINT_PARAMETERS; }
+  void preFinalize() override;
   void postFinalize() override;
 
   double suspensionSpringConstant() const { return mSuspensionSpringConstant->value(); }
@@ -36,12 +39,14 @@ public:
   const WbVector3 &suspensionAxis() const { return mSuspensionAxis->value(); }
 
   virtual const WbVector3 &anchor() const { return mAnchor->value(); }
+  const WbVector3 &dh() const { return mDH->value(); }
 
   double stopErp() const { return mStopErp->value(); }
   double stopCfm() const { return mStopCfm->value(); }
 
 signals:
   void anchorChanged();
+  void dhChanged();
   void suspensionChanged();
   void stopErpChanged();
   void stopCfmChanged();
@@ -53,6 +58,7 @@ private:
 
   // fields
   WbSFVector3 *mAnchor;
+  WbSFVector3 *mDH;
   WbSFDouble *mSuspensionSpringConstant;
   WbSFDouble *mSuspensionDampingConstant;
   WbSFVector3 *mSuspensionAxis;

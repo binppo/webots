@@ -26,7 +26,9 @@
 
 #include <QtCore/QList>
 
-class WbLight : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbLight : public WbBaseNode {
   Q_OBJECT
 
 public:

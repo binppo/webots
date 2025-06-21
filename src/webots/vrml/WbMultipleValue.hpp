@@ -25,7 +25,9 @@
 #include "WbValue.hpp"
 #include "WbVariant.hpp"
 
-class WbMultipleValue : public WbValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMultipleValue : public WbValue {
   Q_OBJECT
 
 public:
@@ -62,7 +64,7 @@ private:
 };
 
 // template iterator class use by all WbMF containers
-template<class MF, class T> class WbMFIterator {
+template<class MF, class T> class WB_LIB_EXPORT WbMFIterator {
 public:
   explicit WbMFIterator(const MF &mf) : i(-1), mMf(&mf) {}
   explicit WbMFIterator(const MF *mf) : i(-1), mMf(mf) {}

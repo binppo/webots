@@ -18,9 +18,14 @@
 #include "WbSFDouble.hpp"
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 
-class WbMicrophone : public WbSolidDevice {
+class WB_LIB_EXPORT WbMicrophone : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -44,6 +49,13 @@ public:
 
   // receive sample from plugin
   void receiveSoundSample(char *sample, int size);
+
+  int refreshRate();
+  int sampleSize();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  QByteArray RECEIVE();
 
 signals:
   void soundSampleRequested(double lastUpdate);

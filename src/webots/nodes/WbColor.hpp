@@ -17,7 +17,9 @@
 
 #include "WbBaseNode.hpp"
 
-class WbColor : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbColor : public WbBaseNode {
   Q_OBJECT
 
 public:

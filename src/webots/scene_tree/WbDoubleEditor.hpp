@@ -21,9 +21,11 @@
 
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFieldDoubleSpinBox;
 
-class WbDoubleEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbDoubleEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

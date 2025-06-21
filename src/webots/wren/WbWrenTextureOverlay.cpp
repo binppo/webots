@@ -69,8 +69,7 @@ WbWrenTextureOverlay::WbWrenTextureOverlay(void *data, int width, int height, Te
   if (!mData)
     allocateBlackImageIntoData();
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
   if (texture) {
     mRequestUpdateTexture = false;
     mOwnTexture = false;
@@ -131,6 +130,7 @@ WbWrenTextureOverlay::WbWrenTextureOverlay(void *data, int width, int height, Te
   setVisible(false, true);
 
   WbWrenOpenGlContext::doneWren();
+  }
 }
 
 ////////////////////////////////////////
@@ -290,8 +290,7 @@ void WbWrenTextureOverlay::copyDataToTexture(void *data, TextureType type, int x
   if (log)
     log->startMeasure(WbPerformanceLog::GPU_MEMORY_TRANSFER);
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
   if (type == TEXTURE_TYPE_DEPTH) {
     int *processedData = new int[width * height];
     const float *originalData = static_cast<float *>(data);
@@ -308,6 +307,7 @@ void WbWrenTextureOverlay::copyDataToTexture(void *data, TextureType type, int x
     wr_texture_change_data(mWrenTexture, data, x, y, width, height);
 
   WbWrenOpenGlContext::doneWren();
+  }
 
   if (log)
     log->stopMeasure(WbPerformanceLog::GPU_MEMORY_TRANSFER);
@@ -413,9 +413,10 @@ WrTexture2d *WbWrenTextureOverlay::createForegroundTexture() {
   wr_texture_set_translucent(WR_TEXTURE(texture2d), true);
   wr_texture_2d_set_data(texture2d, NULL);
   // make context active to generate immediately the foreground texture name
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
   wr_texture_setup(WR_TEXTURE(texture2d));
   WbWrenOpenGlContext::doneWren();
+  }
 
   mWrenForegroundTexture = WR_TEXTURE(texture2d);
   wr_overlay_set_foreground_texture(mWrenOverlay, mWrenForegroundTexture);

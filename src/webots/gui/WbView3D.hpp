@@ -29,10 +29,13 @@
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QPoint>
 
+#include <core/WbConfig.h>
+
 class WbAbstractPose;
 class WbCamera;
 class WbDragKinematicsEvent;
 class WbDragForceEvent;
+class WbDragScaleHandleEvent;
 class WbDragTorqueEvent;
 class WbDragOverlayEvent;
 class WbDragResizeHandleEvent;
@@ -50,7 +53,7 @@ class WbWheelEvent;
 class WbWrenPicker;
 class WbWrenFullScreenOverlay;
 
-class WbView3D : public WbWrenWindow {
+class WB_LIB_EXPORT WbView3D : public WbWrenWindow {
   Q_OBJECT;
 
 public:
@@ -58,6 +61,7 @@ public:
   virtual ~WbView3D() override;
 
   void setParentWidget(QWidget *widget) { mParentWidget = widget; }
+  QWidget *parentWidget() const { return mParentWidget; }
 
   // accessor
   WbWrenRenderingContext *wrenRenderingContext() const { return mWrenRenderingContext; }
@@ -121,6 +125,7 @@ signals:
   void screenshotReady();
   void applicationActionsUpdateRequested();
   void contextMenuRequested(const QPoint &pos, QWidget *parentWidget);
+  void keyPressed(int key);
 
 private:
   QWidget *mParentWidget;
@@ -176,6 +181,7 @@ private:
   WbDragKinematicsEvent *mDragKinematics;
   WbDragOverlayEvent *mDragOverlay;
   WbDragResizeHandleEvent *mDragResize;
+  WbDragScaleHandleEvent *mDragScale;
   WbDragTranslateAlongAxisEvent *mDragTranslate;
   WbDragRotateAroundWorldVerticalAxisEvent *mDragVerticalAxisRotate;
   WbDragRotateAroundAxisEvent *mDragRotate;

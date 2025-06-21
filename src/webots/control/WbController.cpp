@@ -45,10 +45,11 @@
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 #include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QHostAddress>
 
 #include <cassert>
 #include <iostream>
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -269,7 +270,7 @@ void WbController::start() {
     mProcess = new QProcess();
     connect(mProcess, &QProcess::readyReadStandardOutput, this, &WbController::readStdout);
     connect(mProcess, &QProcess::readyReadStandardError, this, &WbController::readStderr);
-    connect(mProcess, &QProcess::finished, this, &WbController::processFinished);
+    connect(mProcess, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, &WbController::processFinished);
     connect(mProcess, &QProcess::errorOccurred, this, &WbController::processErrorOccurred);
     if (mControllerPath.isEmpty()) {
       warn(tr("Could not find the controller directory.\nStarting the <generic> controller instead."));

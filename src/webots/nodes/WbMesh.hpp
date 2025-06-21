@@ -17,11 +17,13 @@
 
 #include "WbTriangleMeshGeometry.hpp"
 
+#include <core/WbConfig.h>
+
 class WbDownloader;
 class WbMFString;
 struct aiScene;
 
-class WbMesh : public WbTriangleMeshGeometry {
+class WB_LIB_EXPORT WbMesh : public WbTriangleMeshGeometry {
   Q_OBJECT
 
 public:

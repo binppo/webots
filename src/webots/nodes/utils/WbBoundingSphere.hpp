@@ -44,6 +44,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 
+#include <core/WbConfig.h>
+
 class WbBoundingSphere;
 class WbShape;
 class WbSkin;
@@ -53,7 +55,7 @@ class WbBaseNode;
 class WbGeometry;
 class WbRay;
 
-class WbBoundingSphere {
+class WB_LIB_EXPORT WbBoundingSphere {
 public:
   // Enable propagation of dirty state to parent bounding spheres
   static void enableUpdates(bool enabled, WbBoundingSphere *root = NULL);

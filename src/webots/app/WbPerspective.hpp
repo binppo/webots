@@ -27,6 +27,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 class QTextStream;
 
 struct ConsoleSettings {
@@ -35,7 +37,7 @@ struct ConsoleSettings {
   QString name;
 };
 
-class WbPerspective {
+class WB_LIB_EXPORT WbPerspective {
 public:
   // create perspective for this world file
   explicit WbPerspective(const QString &worldPath);

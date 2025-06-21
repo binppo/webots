@@ -17,50 +17,52 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class QOpenGLFunctions;
 
 namespace WbSysInfo {
   enum WbPlatform { LINUX_PLATFORM, MACOS_PLATFORM, WIN32_PLATFORM };
 
-  const QString &sysInfo();
-  const QString &platformShortName();  // either "windows", "mac", "linux32" or "linux64"
-  const QString &processor();
-  bool isVirtualMachine();
+  WB_LIB_EXPORT const QString &sysInfo();
+  WB_LIB_EXPORT const QString &platformShortName();  // either "windows", "mac", "linux32" or "linux64"
+  WB_LIB_EXPORT const QString &processor();
+  WB_LIB_EXPORT bool isVirtualMachine();
 #ifdef __linux__
-  const QString &linuxCpuModelName();
-  bool isRootUser();
-  inline bool isSnap() {
+  WB_LIB_EXPORT const QString &linuxCpuModelName();
+  WB_LIB_EXPORT bool isRootUser();
+  WB_LIB_EXPORT inline bool isSnap() {
     return qgetenv("SNAP_NAME") == "webots";
   }
 #else
-  inline bool isSnap() {
+  WB_LIB_EXPORT inline bool isSnap() {
     return false;
   }
 #endif
-  QString environmentVariable(const QString &name);
-  void setEnvironmentVariable(const QString &name, const QString &value);
-  QString shortPath(const QString &path);  // Windows 8.3 short path name
+  WB_LIB_EXPORT QString environmentVariable(const QString &name);
+  WB_LIB_EXPORT void setEnvironmentVariable(const QString &name, const QString &value);
+  WB_LIB_EXPORT QString shortPath(const QString &path);  // Windows 8.3 short path name
 
-  WbPlatform platform();
+  WB_LIB_EXPORT WbPlatform platform();
 
-  bool isPointerSize32bits();
-  bool isPointerSize64bits();
+  WB_LIB_EXPORT bool isPointerSize32bits();
+  WB_LIB_EXPORT bool isPointerSize64bits();
 
-  int coreCount();
+  WB_LIB_EXPORT int coreCount();
 
 #ifdef _WIN32
-  quint32 gpuDeviceId(QOpenGLFunctions *gl);
-  quint32 gpuVendorId(QOpenGLFunctions *gl);
-  int intelGPUGeneration(QOpenGLFunctions *gl);
-  bool isAmdLowEndGpu(QOpenGLFunctions *gl);
+  WB_LIB_EXPORT quint32 gpuDeviceId(QOpenGLFunctions *gl);
+  WB_LIB_EXPORT quint32 gpuVendorId(QOpenGLFunctions *gl);
+  WB_LIB_EXPORT int intelGPUGeneration(QOpenGLFunctions *gl);
+  WB_LIB_EXPORT bool isAmdLowEndGpu(QOpenGLFunctions *gl);
 #else
-  bool isLowEndGpu();
+  WB_LIB_EXPORT bool isLowEndGpu();
 #endif
-  const void initializeOpenGlInfo();
-  const QString &openGLRenderer();
-  const QString &openGLVendor();
-  const QString &openGLVersion();
-  void openGlLineWidthRange(double &min, double &max);
+  WB_LIB_EXPORT const void initializeOpenGlInfo();
+  WB_LIB_EXPORT const QString &openGLRenderer();
+  WB_LIB_EXPORT const QString &openGLVendor();
+  WB_LIB_EXPORT const QString &openGLVersion();
+  WB_LIB_EXPORT void openGlLineWidthRange(double &min, double &max);
 };  // namespace WbSysInfo
 
 #endif

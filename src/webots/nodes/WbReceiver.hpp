@@ -21,13 +21,17 @@
 #include "WbSolidDevice.hpp"
 
 #include <QtCore/QQueue>
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 class WbDataPacket;
 class WbEmitter;
 class WbSensor;
 class Transmission;
 
-class WbReceiver : public WbSolidDevice {
+class WB_LIB_EXPORT WbReceiver : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -60,6 +64,12 @@ public:
   double aperture() const { return mAperture->value(); }
   int channel() const { return mChannel->value(); }
   int mediumType() const { return mMediumType; }
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  void SET_CHANNEL(int receiverChannel);
+  QList<WbDataPacket*> RECEIVE();
 
 signals:
   void dataReceived(const void *data, int size) const;

@@ -56,7 +56,7 @@ namespace wren {
     Texture2d();
     virtual ~Texture2d() override {}
 
-    void setGlName(unsigned int glName) override { mCacheData->mGlName = glName; };
+    void setGlName(unsigned int glName) override { if (mCacheData) mCacheData->mGlName = glName; };
     void prepareGl() override;
     void cleanupGl() override;
 

@@ -25,7 +25,9 @@ class WbProtoTreeItem;
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
-class WbProtoTreeItem : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbProtoTreeItem : public QObject {
   Q_OBJECT
 public:
   WbProtoTreeItem(const QString &url, WbProtoTreeItem *parent, bool importable);

@@ -17,12 +17,14 @@
 
 #include "WbTriangleMeshGeometry.hpp"
 
+#include <core/WbConfig.h>
+
 class WbCoordinate;
 class WbNormal;
 class WbTextureCoordinate;
 class WbVector3;
 
-class WbIndexedFaceSet : public WbTriangleMeshGeometry {
+class WB_LIB_EXPORT WbIndexedFaceSet : public WbTriangleMeshGeometry {
   Q_OBJECT
 
 public:
@@ -86,6 +88,7 @@ private:
   WbMFInt *mNormalIndex;
   WbMFInt *mTexCoordIndex;
   WbSFDouble *mCreaseAngle;
+  WbSFString *mUrl;
 
 private slots:
   void updateCoord();
@@ -97,6 +100,7 @@ private slots:
   void updateNormalIndex();
   void updateTexCoordIndex();
   void updateCreaseAngle();
+  void updateSource();
 };
 
 #endif

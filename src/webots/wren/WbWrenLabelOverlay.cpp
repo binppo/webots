@@ -90,10 +90,12 @@ void WbWrenLabelOverlay::updateText(const QString &text) {
 
   setText(text);
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  updateTextureSize();
-  drawText();
-  WbWrenOpenGlContext::doneWren();
+  if(WbWrenOpenGlContext::makeWrenCurrent()) {
+    updateTextureSize();
+    drawText();
+    WbWrenOpenGlContext::doneWren();
+  }
+
   updateOverlayDimensions();
 }
 

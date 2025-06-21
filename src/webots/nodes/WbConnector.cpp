@@ -35,7 +35,7 @@
 #include <wren/static_mesh.h>
 #include <wren/transform.h>
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QList>
@@ -744,6 +744,14 @@ void WbConnector::save(const QString &id) {
   mIsInitiallyLocked[id] = mIsLocked->value();
 }
 
+int WbConnector::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+bool WbConnector::isLocked() {
+  return mIsLocked->value();
+}
+
 void WbConnector::writeAnswer(WbDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     computeValue();
@@ -1064,4 +1072,22 @@ void WbConnector::deleteWrenObjects() {
 
   for (int i = 0; i < 3; ++i)
     wr_material_delete(mMaterial[i]);
+}
+
+void WbConnector::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+int WbConnector::GET_PRESENCE() {
+  computeValue();
+
+  return mValue;
+}
+
+void WbConnector::LOCK() {
+  lock();
+}
+
+void WbConnector::UNLOCK() {
+  unlock();
 }

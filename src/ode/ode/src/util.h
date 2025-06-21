@@ -24,6 +24,7 @@
 #define _ODE_UTIL_H_
 
 #include "objects.h"
+#include "malloc.h"
 
 /* the efficient alignment. most platforms align data structures to some
  * number of bytes, but this is not always the most efficient alignment.
@@ -50,7 +51,7 @@
  * up to 15 bytes per allocation, depending on what alloca() returns.
  */
 #define dALLOCA16(n) \
-    dEFFICIENT_PTR(alloca((n)+(EFFICIENT_ALIGNMENT)))
+    dEFFICIENT_PTR(_alloca((n)+(EFFICIENT_ALIGNMENT)))
 
 #ifndef SIZE_MAX
 #define SIZE_MAX  ((size_t)(-1))

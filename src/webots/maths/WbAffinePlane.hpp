@@ -23,7 +23,9 @@
 #include <cmath>
 #include "WbVector3.hpp"
 
-class WbAffinePlane {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbAffinePlane {
 public:
   // construct an identity quaternion
   WbAffinePlane() : mA(1.0), mB(0.0), mC(0.0), mD(0.0) {}

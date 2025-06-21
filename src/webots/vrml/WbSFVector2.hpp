@@ -23,10 +23,13 @@
 #include "WbVector2.hpp"
 #include "WbWriter.hpp"
 
-class WbSFVector2 : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFVector2 : public WbSingleValue {
   Q_OBJECT
 
 public:
+  WbSFVector2() {}
   WbSFVector2(WbTokenizer *tokenizer, const QString &worldPath) { readSFVector2(tokenizer, worldPath); }
   WbSFVector2(const WbSFVector2 &other) : mValue(other.mValue) {}
   virtual ~WbSFVector2() override {}

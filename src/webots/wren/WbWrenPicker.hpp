@@ -27,12 +27,16 @@
 #include <wren/texture_rtt.h>
 #include <wren/viewport.h>
 
-class WbWrenPicker {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenPicker {
 public:
   // These constants are reserved unique IDs used by the handles
-  static const int HANDLES_X_AXIS = 0x7FFFFFF1, HANDLES_Y_AXIS = 0x7FFFFFF2, HANDLES_Z_AXIS = 0x7FFFFFF3,
-                   HANDLES_TRANSLATE = 0x7FFFFFF0, HANDLES_ROTATE = 0x7FFFFFF4, HANDLES_SCALE = 0x7FFFFFF8,
-                   HANDLES_RESIZE = 0x7FFFFFFC;
+  enum {
+        HANDLES_X_AXIS = 0x7FFFFFF1, HANDLES_Y_AXIS = 0x7FFFFFF2, HANDLES_Z_AXIS = 0x7FFFFFF3,
+        HANDLES_TRANSLATE = 0x7FFFFFF0, HANDLES_ROTATE = 0x7FFFFFF4, HANDLES_SCALE = 0x7FFFFFF8,
+        HANDLES_RESIZE = 0x7FFFFFFC
+  };
 
   static void setPickable(WrRenderable *renderable, int uniqueId, bool pickable);
 

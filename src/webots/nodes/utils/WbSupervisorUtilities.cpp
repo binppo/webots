@@ -54,8 +54,8 @@
 #include "WbVirtualRealityHeadset.hpp"
 #endif
 
-#include "../../../include/controller/c/webots/supervisor.h"
-#include "../../controller/c/messages.h"
+#include <controller/c/webots/supervisor.h>
+#include <controller/c/messages.h>
 
 #include <ode/ode.h>
 
@@ -63,6 +63,13 @@
 #include <QtCore/QDataStream>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtGui/QColor>
+#include <QtGui/QQuaternion>
+#include <QtGui/QVector2D>
+#include <QtGui/QVector3D>
+#include <QtGui/QVector4D>
+#include <QtGui/QMatrix3x3>
+#include <QtGui/QMatrix4x4>
 #include <cassert>
 
 static const int MAX_LABELS = 100;
@@ -296,7 +303,9 @@ void WbSupervisorUtilities::deleteControllerRequests() {
   delete mFieldGetRequest;
   delete mAnimationStartStatus;
   delete mAnimationStopStatus;
-  delete mMovieStatus;
+  if(mMovieStatus)
+    delete[] mMovieStatus;
+  mMovieStatus = NULL;
   delete mSaveStatus;
 }
 
@@ -381,9 +390,10 @@ void WbSupervisorUtilities::processImmediateMessages(bool blockRegeneration) {
   WbTemplateManager::instance()->blockRegeneration(true);
   for (int i = 0; i < n; ++i) {
     const WbFieldSetRequest *r = mFieldSetRequests.at(i);
-    WbWrenOpenGlContext::makeWrenCurrent();
-    r->apply();
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      r->apply();
+      WbWrenOpenGlContext::doneWren();
+    }
     delete r;
   }
   mFieldSetRequests.clear();
@@ -1292,7 +1302,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
               actualField = actualField->parameter();
 
             mFoundFieldActualFieldNodeId = actualField->parentNode()->uniqueId();
-            mFoundFieldActualFieldIndex = actualField->parentNode()->fieldsOrParameters().indexOf(actualField);
+            mFoundFieldActualFieldIndex = actualField->parentNode()->fieldsOrParameters().indexOf(const_cast<WbField*>(actualField));
             assert(mFoundFieldActualFieldIndex >= 0);
           }
         }
@@ -1361,7 +1371,7 @@ void WbSupervisorUtilities::handleMessage(QDataStream &stream) {
               actualField = actualField->parameter();
 
             mFoundFieldActualFieldNodeId = actualField->parentNode()->uniqueId();
-            mFoundFieldActualFieldIndex = actualField->parentNode()->fieldsOrParameters().indexOf(actualField);
+            mFoundFieldActualFieldIndex = actualField->parentNode()->fieldsOrParameters().indexOf(const_cast<WbField*>(actualField));
             assert(mFoundFieldActualFieldIndex >= 0);
           }
         }
@@ -2007,6 +2017,40 @@ void WbSupervisorUtilities::pushContactPointsToStream(WbDataStream &stream, WbSo
   }
 }
 
+void WbSupervisorUtilities::moveTo(const QVector3D& targetPosition, const QVector4D& targetRotation) {
+  WbWorld::instance()->viewpoint()->moveTo(WbVector3(targetPosition.x(), targetPosition.y(), targetPosition.z())
+      , WbRotation(targetRotation.x(), targetRotation.y(), targetRotation.z(), targetRotation.w()));
+}
+
+void WbSupervisorUtilities::orbitTo(const QVector3D& targetUnitVector, const QVector4D& targetRotation) {
+  WbWorld::instance()->viewpoint()->orbitTo(WbVector3(targetUnitVector.x(), targetUnitVector.y(), targetUnitVector.z())
+      , WbRotation(targetRotation.x(), targetRotation.y(), targetRotation.z(), targetRotation.w()));
+}
+
+void WbSupervisorUtilities::southView() {
+  WbWorld::instance()->viewpoint()->southView();
+}
+
+void WbSupervisorUtilities::northView() {
+  WbWorld::instance()->viewpoint()->northView();
+}
+
+void WbSupervisorUtilities::westView() {
+  WbWorld::instance()->viewpoint()->westView();
+}
+
+void WbSupervisorUtilities::eastView() {
+  WbWorld::instance()->viewpoint()->eastView();
+}
+
+void WbSupervisorUtilities::topView() {
+  WbWorld::instance()->viewpoint()->topView();
+}
+
+void WbSupervisorUtilities::bottomView() {
+  WbWorld::instance()->viewpoint()->bottomView();
+}
+
 void WbSupervisorUtilities::writeAnswer(WbDataStream &stream) {
   if (!mUpdatedNodeIds.isEmpty()) {
     foreach (int id, mUpdatedNodeIds) {
@@ -2375,6 +2419,9 @@ void WbSupervisorUtilities::writeConfigure(WbDataStream &stream) {
 }
 
 void WbSupervisorUtilities::movieStatusChanged(int status) {
+  if(mMovieStatus)
+    delete[] mMovieStatus;
+
   mMovieStatus = new int[1];
   *mMovieStatus = status;
 }
@@ -2399,6 +2446,18 @@ QStringList WbSupervisorUtilities::labelsState() const {
   return labelsList;
 }
 
+const WbBaseNode* WbSupervisorUtilities::getNodeFromId(int id) {
+  const WbBaseNode *node = qobject_cast<const WbBaseNode *>(WbNode::findNode(id));
+
+  return node;
+}
+
+const WbBaseNode* WbSupervisorUtilities::getSelectedNode() {
+  const WbBaseNode *node = qobject_cast<const WbBaseNode *>(WbSelection::instance()->selectedNode());
+
+  return node;
+}
+
 QString WbSupervisorUtilities::createLabelUpdateString(const WbWrenLabelOverlay *labelOverlay) const {
   assert(labelOverlay);
   double x, y;
@@ -2419,3 +2478,1012 @@ QString WbSupervisorUtilities::createLabelUpdateString(const WbWrenLabelOverlay 
     .arg(y)
     .arg(text.replace("\n", "\\n"));
 }
+
+void WbSupervisorUtilities::SIMULATION_QUIT(int exitStatus) {
+  WbApplication::instance()->simulationQuit(exitStatus);
+}
+
+void WbSupervisorUtilities::SIMULATION_RESET() {
+  WbWorld::instance()->setResetRequested(false);
+}
+
+void WbSupervisorUtilities::RESET_STATE(int nodeId, const QString& stateName) {
+  WbNode *const node = getProtoParameterNodeInstance(nodeId, "wb_supervisor_node_load_state()");
+  if (node)
+    node->reset(stateName);
+}
+
+void WbSupervisorUtilities::SAVE_STATE(int nodeId, const QString& stateName) {
+  WbNode *const node = getProtoParameterNodeInstance(nodeId, "wb_supervisor_node_save_state()");
+  if (node)
+    node->save(stateName);
+}
+
+void WbSupervisorUtilities::SET_JOINT_POSITION(int nodeId, int index, double position) {
+  WbNode *const node = getProtoParameterNodeInstance(nodeId, "wb_supervisor_node_set_joint_position()");
+  WbJoint *joint = dynamic_cast<WbJoint *>(node);
+  assert(joint);
+  if (joint) {
+    // check if position is valid
+    const WbJointParameters *parameters;
+    if (index == 1)
+      parameters = joint->parameters();
+    else if (index == 2)
+      parameters = joint->parameters2();
+    else if (index == 3)
+      parameters = joint->parameters3();
+    else {
+      assert(false);
+      parameters = NULL;
+    }
+    if (parameters) {
+      const double userPosition = position;
+      if (parameters->clampPosition(position))
+        mRobot->warn(tr("wb_supervisor_node_set_joint_position() called with a 'position' argument %1 outside hard limits "
+                        "of the joint. Applied position is %2.")
+                       .arg(userPosition)
+                       .arg(position));
+    }
+
+    joint->setPosition(position, index);
+    if (!parameters)
+      // force updating the joint position (this slot is automatically triggered by WbJointParameters node)
+      joint->updatePosition();
+  }
+}
+
+void WbSupervisorUtilities::RELOAD_WORLD() {
+  WbApplication::instance()->worldReload();
+}
+
+void WbSupervisorUtilities::SIMULATION_RESET_PHYSICS() {
+  WbApplication::instance()->resetPhysics();
+}
+
+void WbSupervisorUtilities::SIMULATION_CHANGE_MODE(int newMode) {
+  emit changeSimulationModeRequested(newMode);
+}
+
+void WbSupervisorUtilities::SET_LABEL(const QString& text, const QString& font, int id, double x, double y, double size, int color) {
+  bool fileFound = false;
+  QString filename = WbStandardPaths::fontsPath() + font + ".ttf";
+  if (QFile::exists(filename))
+    fileFound = true;
+  else {
+    filename = WbProject::current()->path() + "fonts/" + font + ".ttf";
+    if (QFile::exists(filename))
+      fileFound = true;
+  }
+
+  if (!fileFound) {
+    mRobot->warn(tr("wb_supervisor_set_label() called with an invalid '%1' font, 'Arial' used instead.").arg(font));
+    filename = WbStandardPaths::fontsPath() + "Arial.ttf";
+  }
+
+  int labelId;
+  if (id < MAX_LABELS)
+    labelId = (int)id + mRobot->uniqueId() * MAX_LABELS;  // kind of hack to avoid an id clash.
+  else {
+    mRobot->warn(tr("wb_supervisor_set_label() is out of range. The supported range is [0, %1].").arg(MAX_LABELS - 1));
+    return;
+  }
+
+  const WbWrenLabelOverlay *existingLabel = WbWrenLabelOverlay::retrieveById(labelId);
+  if (existingLabel && x == existingLabel->x() && y == existingLabel->y() && size == existingLabel->size() &&
+      filename == existingLabel->font() && text == existingLabel->text()) {
+    const float *oldColors = existingLabel->color();
+    float colorArray[4];
+    WbWrenLabelOverlay::colorToArray(colorArray, color);
+    if (colorArray[0] == oldColors[0] && colorArray[1] == oldColors[1] && colorArray[2] == oldColors[2] &&
+        colorArray[3] == oldColors[3])
+      return;
+  }
+
+  mLabelIds.removeAll(labelId);
+  mLabelIds << labelId;
+
+  WbWrenLabelOverlay *label = WbWrenLabelOverlay::createOrRetrieve(labelId, filename);
+  const QString error = label->getFontError();
+  if (error != "") {
+    mRobot->warn(tr(error.toStdString().c_str()));
+    return;
+  }
+  label->setText(text);
+  label->setPosition(x, y);
+  label->setSize(size);
+  label->setColor(color);
+  label->applyChangesToWren();
+  emit labelChanged(createLabelUpdateString(label));
+}
+
+void WbSupervisorUtilities::EXPORT_IMAGE(QString fileName, int quality) {
+  makeFilenameAbsolute(fileName);
+  WbApplication::instance()->takeScreenshot(fileName, quality);
+}
+
+void WbSupervisorUtilities::START_MOVIE(QString fileName, int width, int height, int codec, int quality, int acceleration, bool caption) {
+  makeFilenameAbsolute(fileName);
+  // cppcheck-suppress knownConditionTrueFalse
+  WbApplication::instance()->startVideoCapture(fileName, codec, width, height, quality, acceleration, caption);
+}
+
+void WbSupervisorUtilities::STOP_MOVIE() {
+  WbApplication::instance()->stopVideoCapture();
+}
+
+void WbSupervisorUtilities::START_ANIMATION(QString fileName) {
+  makeFilenameAbsolute(fileName);
+  WbApplication::instance()->startAnimationCapture(fileName);
+}
+
+void WbSupervisorUtilities::STOP_ANIMATION() {
+  WbApplication::instance()->stopAnimationCapture();
+}
+
+QVector<const WbSolid*> WbSupervisorUtilities::GET_CONTACT_NODES(int id, bool includeDescendants) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_number_of_contact_points()");
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (!solid) {
+    mRobot->warn(
+      tr("wb_supervisor_node_get_number_of_contact_points() and wb_supervisor_node_get_contact_point() can exclusively "
+         "be used with a Solid"));
+    return {};
+  }
+
+  const QVector<const WbSolid *> solids = solid->computedSolidPerContactPoints();
+  return solids;
+}
+
+QVector<QVector3D> WbSupervisorUtilities::GET_CONTACT_POINTS(int id, bool includeDescendants) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_number_of_contact_points()");
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (!solid) {
+    mRobot->warn(
+      tr("wb_supervisor_node_get_number_of_contact_points() and wb_supervisor_node_get_contact_point() can exclusively "
+         "be used with a Solid"));
+    return {};
+  }
+
+  const QVector<WbVector3> contactPoints = solid->computedContactPoints(includeDescendants);
+  QVector<QVector3D> ret;
+  for(const WbVector3 &v : contactPoints) {
+    ret.append(QVector3D(v.x(), v.y(), v.z()));
+  }
+  return ret;
+}
+
+void WbSupervisorUtilities::SET_VELOCITY(int id, const QVector3D& linearVelocity, const QVector3D& angularVelocity) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_set_velocity()");
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (solid) {
+    double linearVelocityArray[3] = { linearVelocity.x(), linearVelocity.y(), linearVelocity.z() };
+    double angularVelocityArray[3] = { angularVelocity.x(), angularVelocity.y(), angularVelocity.z() };
+    solid->setLinearVelocity(linearVelocityArray);
+    solid->setAngularVelocity(angularVelocityArray);
+  } else
+    mRobot->warn(tr("wb_supervisor_node_set_velocity() can exclusively be used with a Solid"));
+}
+
+void WbSupervisorUtilities::RESET_PHYSICS(int id) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_simulation_reset_physics()");
+  WbSolid *solidNode = dynamic_cast<WbSolid *>(node);
+  if (solidNode) {
+    solidNode->resetPhysics(false);
+    solidNode->pausePhysics(true);
+  }
+  QList<WbNode *> descendants = node->subNodes(true);
+  for (int i = 0; i < descendants.size(); i++) {
+    WbNode *child = descendants.at(i);
+    WbSolid *solidChild = dynamic_cast<WbSolid *>(child);
+    if (solidChild) {
+      solidChild->resetPhysics(false);
+      solidChild->pausePhysics(true);
+    }
+  }
+}
+
+void WbSupervisorUtilities::SET_VISIBILITY(int nodeId, int fromId, bool visible) {
+  WbNode *const node = getProtoParameterNodeInstance(nodeId, "wb_supervisor_node_set_visibility()");
+  if (!node)
+    return;
+
+  WbNode *const cameraNode = getProtoParameterNodeInstance(fromId, "wb_supervisor_node_set_visibility()");
+  WbAbstractCamera *const camera = dynamic_cast<WbAbstractCamera *>(cameraNode);
+  WbViewpoint *const viewpoint = dynamic_cast<WbViewpoint *>(cameraNode);
+  WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+  assert(baseNode);
+  if (camera)
+    // cppcheck-suppress knownConditionTrueFalse
+    camera->setNodesVisibility(baseNode->findClosestDescendantNodesWithDedicatedWrenNode(), visible);
+  else if (viewpoint)
+    // cppcheck-suppress knownConditionTrueFalse
+    viewpoint->setNodesVisibility(baseNode->findClosestDescendantNodesWithDedicatedWrenNode(), visible);
+}
+
+void WbSupervisorUtilities::MOVE_VIEWPOINT(int nodeId) {
+  WbNode *const node = getProtoParameterNodeInstance(nodeId, "wb_supervisor_node_move_viewpoint()");
+  WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+  assert(baseNode);
+  if (WbNodeUtilities::boundingSphereAncestor(baseNode) != NULL)
+    WbWorld::instance()->viewpoint()->moveViewpointToObject(baseNode);
+}
+
+void WbSupervisorUtilities::ADD_FORCE(int id, const QVector3D& fv, bool relative) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_add_force()");
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (solid) {
+    WbVector3 force(fv.x(), fv.y(), fv.z());
+    if (relative)
+      force = solid->matrix().extracted3x3Matrix() * force;
+    const dBodyID body = solid->bodyMerger();
+    if (body) {
+      const WbVector3 position =
+        solid->computedGlobalCenterOfMass() - solid->solidMerger()->solid()->computedGlobalCenterOfMass();
+      dBodyAddForceAtRelPos(body, force.x(), force.y(), force.z(), position.x(), position.y(), position.z());
+      dBodyEnable(body);
+    } else
+      mRobot->warn(tr("wb_supervisor_node_add_force() can't be used with a kinematic Solid"));
+  } else
+    mRobot->warn(tr("wb_supervisor_node_add_force() can exclusively be used with a Solid"));
+}
+
+void WbSupervisorUtilities::ADD_FORCE_WITH_OFFSET(int id, const QVector3D& fv, const QVector3D& ov, bool relative) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_add_force_with_offset()");
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (solid) {
+    const dBodyID body = solid->bodyMerger();
+    if (body) {
+      const WbMatrix4 &solidMatrix = solid->matrix();
+      const WbVector3 offset = solidMatrix * WbVector3(ov.x(), ov.y(), ov.z());
+      WbVector3 force(fv.x(), fv.y(), fv.z());
+      if (relative)
+        force = solidMatrix.extracted3x3Matrix() * force;
+      dBodyEnable(body);
+      dBodyAddForceAtPos(body, force.x(), force.y(), force.z(), offset.x(), offset.y(), offset.z());
+    } else
+      mRobot->warn(tr("wb_supervisor_node_add_force_with_offset() can't be used with a kinematic Solid"));
+  } else
+    mRobot->warn(tr("wb_supervisor_node_add_force_with_offset() can exclusively be used with a Solid"));
+}
+
+void WbSupervisorUtilities::ADD_TORQUE(int id, const QVector3D& tv, bool relative) {
+  WbNode *const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_add_torque()");
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (solid) {
+    WbVector3 torque(tv.x(), tv.y(), tv.z());
+    if (relative)
+      torque = solid->matrix().extracted3x3Matrix() * torque;
+    const dBodyID body = solid->bodyMerger();
+    if (body) {
+      dBodyEnable(body);
+      dBodyAddTorque(body, torque.x(), torque.y(), torque.z());
+    } else
+      mRobot->warn(tr("wb_supervisor_node_add_torque() can't be used with a kinematic Solid"));
+  } else
+    mRobot->warn(tr("wb_supervisor_node_add_torque() can exclusively be used with a Solid"));
+}
+
+void WbSupervisorUtilities::LOAD_WORLD(const QString& worldToLoad) {
+  mWorldToLoad = worldToLoad;
+  makeFilenameAbsolute(mWorldToLoad);
+  mLoadWorldRequested = true;
+}
+
+bool WbSupervisorUtilities::SAVE_WORLD(const QString& saveAs) {
+  bool status = false;
+  if (!saveAs.isEmpty()) {
+    QString filename(saveAs);
+    makeFilenameAbsolute(filename);
+    status = WbWorld::instance()->saveAs(filename);
+  } else {
+    status = WbWorld::instance()->save();
+  }
+  return status;
+}
+
+const WbNodeProtoInfo* WbSupervisorUtilities::GET_PROTO(int nodeId, int parentProtoId) {
+  const WbNode *const node = WbNode::findNode(nodeId);
+
+  const WbNodeProtoInfo* protoInfo = nullptr;
+  int protoId = -1;
+  if (node && node->isProtoInstance()) {
+    if (parentProtoId < 0)
+      protoId = 0;
+    else if (parentProtoId < node->protoParents().size() - 1)
+      protoId = parentProtoId + 1;
+
+    if(protoId>=0) {
+      protoInfo = node->protoParents().at(protoId);
+    }
+  }
+  return protoInfo;
+}
+
+void WbSupervisorUtilities::GET_FROM_INDEX(int nodeId, int protoIndex, int fieldIndex, bool allowSearchInProto) {
+  const WbNode *const node = WbNode::findNode(nodeId);
+  if (node) {
+    const WbField *field = NULL;
+    if (protoIndex < 0) {
+      field = node->field(fieldIndex, allowSearchInProto == 1);
+      if (field) {
+        const WbMultipleValue *mv = dynamic_cast<WbMultipleValue *>(field->value());
+        const WbSFNode *sfNode = dynamic_cast<WbSFNode *>(field->value());
+        if (mv)
+          mFoundFieldCount = mv->size();
+        else if (sfNode)
+          mFoundFieldCount = sfNode->value() ? 1 : 0;
+
+        mFoundFieldIsInternal = allowSearchInProto == 1;
+        mFoundFieldName = field->name();
+
+        if (mv || sfNode) {
+          mWatchedFields.append(WbUpdatedFieldInfo(node->uniqueId(), field->name(), mFoundFieldCount));
+          field->listenToValueSizeChanges();
+          connect(field, &WbField::valueSizeChanged, this, &WbSupervisorUtilities::notifyFieldUpdate, Qt::UniqueConnection);
+        }
+      }
+    } else if (protoIndex < node->protoParents().size()) {
+      const WbNodeProtoInfo *protoInfo = node->protoParents().at(protoIndex);
+      const WbFieldReference &fieldRef = protoInfo->findFieldByIndex(fieldIndex);
+      field = fieldRef.actualField;
+      if (field) {
+        mFoundFieldIsInternal = true;
+        mFoundFieldName = fieldRef.name;
+      }
+
+      // the supervisor will lookup the actual field for proto field reads, so there's no need send the count
+      // or listen to value size changes
+    }
+
+    if (field) {
+      mFoundFieldIndex = fieldIndex;
+      mFoundFieldType = field->type();
+
+      if (WbVrmlNodeUtilities::isVisible(field)) {
+        // This only tells us that there is a corresponding parameter in the scene tree.
+        // Not that this specific field is the actual field. We still have to find it.
+        const WbField *actualField = field;
+        while (actualField->parameter())
+          actualField = actualField->parameter();
+
+        mFoundFieldActualFieldNodeId = actualField->parentNode()->uniqueId();
+        mFoundFieldActualFieldIndex = actualField->parentNode()->fieldsOrParameters().indexOf(const_cast<WbField*>(actualField));
+        assert(mFoundFieldActualFieldIndex >= 0);
+      }
+    }
+  }
+  return;
+}
+
+void WbSupervisorUtilities::CONTACT_POINTS_CHANGE_TRACKING_STATE(int nodeId, bool includeDescendants, int refreshRate) {
+  WbNode *const node = WbNode::findNode(nodeId);
+  if (!node) {
+    mRobot->warn(
+      tr("'wb_supervisor_node_%1_contact_point_tracking' called for an invalid node.").arg((refreshRate>0) ? "enable" : "disable"));
+    return;
+  }
+  WbSolid *const solid = dynamic_cast<WbSolid *>(node);
+  if (!solid) {
+    mRobot->warn(tr("Node '%1' (%2) is not suitable for contact points tracking, aborting request.")
+                   .arg(node->usefulName())
+                   .arg(node->modelName()));
+    return;
+  }
+
+  int trackingInfoIndex = -1;
+  for (int i = 0; i < mTrackedContactPoints.size(); i++) {
+    if (mTrackedContactPoints[i].solid == solid) {
+      trackingInfoIndex = i;
+      break;
+    }
+  }
+
+  if (refreshRate>0) {
+    if (trackingInfoIndex == -1) {
+      WbTrackedContactPointInfo trackedContactPoint;
+      trackedContactPoint.solid = solid;
+      trackedContactPoint.solidId = nodeId;
+      trackedContactPoint.includeDescendants = includeDescendants;
+      trackedContactPoint.samplingPeriod = 0;
+      trackedContactPoint.lastUpdate = 0;
+      mTrackedContactPoints.append(trackedContactPoint);
+      connect(solid, &WbSolid::destroyed, this, &WbSupervisorUtilities::removeTrackedContactPoints);
+    } else {
+      mTrackedContactPoints[trackingInfoIndex].includeDescendants = includeDescendants;
+      mTrackedContactPoints[trackingInfoIndex].samplingPeriod = refreshRate;
+      mTrackedContactPoints[trackingInfoIndex].lastUpdate = -INFINITY;
+    }
+  } else if (trackingInfoIndex != -1)
+    mTrackedContactPoints.removeAt(trackingInfoIndex);
+  else
+    mRobot->warn(tr("No active contact points tracking could be found for the node '%1'.").arg(solid->usefulName()));
+  return;
+}
+
+void WbSupervisorUtilities::POSE_CHANGE_TRACKING_STATE(int fromNodeId, int toNodeId, int refreshRate) {
+  WbNode *const toNode = WbNode::findNode(toNodeId);
+  if (!toNode) {
+    mRobot->warn(
+      tr("'wb_supervisor_node_%1_pose_tracking' called for an invalid node.").arg((refreshRate>0) ? "enable" : "disable"));
+    return;
+  }
+  WbPose *const toPoseNode = dynamic_cast<WbPose *>(toNode);
+  if (!toPoseNode) {
+    mRobot->warn(tr("Node '%1' (%2) is not suitable for pose tracking, aborting request.")
+                   .arg(toNode->usefulName())
+                   .arg(toNode->modelName()));
+    return;
+  }
+
+  WbNode *const fromNode = WbNode::findNode(fromNodeId);
+  int index = -1;
+  for (int i = 0; i < mTrackedPoses.size(); i++) {
+    if (mTrackedPoses[i].fromNode == fromNode && mTrackedPoses[i].toNode == toPoseNode) {
+      index = i;
+      break;
+    }
+  }
+
+  if (refreshRate>0) {
+    WbPose *const fromPoseNode = fromNode ? dynamic_cast<WbPose *>(fromNode) : NULL;
+    if (fromNodeId && !fromPoseNode)
+      mRobot->warn(tr("Pose tracking can be exclusively used with Pose (or derived) 'from_node' argument, but '%1' (%2) is "
+                      "given. The absolute pose in global coordinates will be returned.")
+                     .arg(fromNode->usefulName())
+                     .arg(fromNode->modelName()));
+
+    if (index < 0) {
+      WbTrackedPoseInfo trackedPose;
+      trackedPose.fromNode = fromPoseNode;
+      trackedPose.toNode = toPoseNode;
+      trackedPose.samplingPeriod = refreshRate;
+      trackedPose.lastUpdate = -INFINITY;
+      mTrackedPoses.append(trackedPose);
+      if (fromPoseNode)
+        connect(fromPoseNode, &WbNode::destroyed, this, &WbSupervisorUtilities::removeTrackedPoseNode);
+      connect(toPoseNode, &WbNode::destroyed, this, &WbSupervisorUtilities::removeTrackedPoseNode);
+    } else {
+      mTrackedPoses[index].samplingPeriod = refreshRate;
+      mTrackedPoses[index].lastUpdate = -INFINITY;
+    }
+  } else if (index >= 0)
+    mTrackedPoses.removeAt(index);
+  else
+    mRobot->warn(tr("No active pose tracking could be found matching nodes '%1' (to) and '%2' (from) arguments.")
+                   .arg(toNode->usefulName())
+                   .arg(fromNode->usefulName()));
+}
+
+void WbSupervisorUtilities::FIELD_CHANGE_TRACKING_STATE(int nodeId, int fieldId, bool internal, int refreshRate) {
+  const WbNode *const node = WbNode::findNode(nodeId);
+  if (!node) {
+    mRobot->warn(tr("'wb_supervisor_field_%1_sf_tracking' called for an invalid node.").arg((refreshRate>0) ? "enable" : "disable"));
+    return;
+  }
+
+  WbField *field = node->field(fieldId, internal == 1);
+  if (!field) {
+    mRobot->warn(
+      tr("'wb_supervisor_field_%1_sf_tracking' called for an invalid field.").arg((refreshRate>0) ? "enable" : "disable"));
+    return;
+  }
+
+  int index = -1;
+  for (int i = 0; i < mTrackedFields.size(); i++) {
+    if (mTrackedFields[i].field == field) {
+      index = i;
+      break;
+    }
+  }
+
+  if (refreshRate>0) {
+    if (index < 0) {
+      WbTrackedFieldInfo trackedField;
+      trackedField.field = field;
+      trackedField.samplingPeriod = refreshRate;
+      trackedField.lastUpdate = -INFINITY;
+      trackedField.fieldId = fieldId;
+      trackedField.nodeId = nodeId;
+      trackedField.internal = internal;
+      mTrackedFields.append(trackedField);
+      connect(field, &WbField::destroyed, this, &WbSupervisorUtilities::removeTrackedField);
+    } else {
+      mTrackedFields[index].samplingPeriod = refreshRate;
+      mTrackedFields[index].lastUpdate = -INFINITY;
+    }
+  } else if (index >= 0)
+    mTrackedFields.removeAt(index);
+  else
+    mRobot->warn(tr("No active field tracking could be found matching the field '%1' of node '%2'.")
+                   .arg(field->name())
+                   .arg(node->modelName()));
+}
+
+void WbSupervisorUtilities::FIELD_SET_VALUE(int uniqueId, int fieldId, const QVariant& fieldValue, bool internal, int index) {
+  const WbNode *const node = WbNode::findNode(uniqueId);
+  WbField *field = node ? node->field(fieldId, internal) : NULL;
+
+  // we read the data depending on the field type
+  unsigned char b = 0;
+  int i = 0;
+  double d0 = 0.0, d1 = 0.0, d2 = 0.0, d3 = 0.0;
+
+  switch (fieldValue.type()) {
+    case QVariant::Bool:
+      mFieldSetRequests << new WbBoolFieldSetRequest(field, index, fieldValue.toBool());
+      break;
+    case QVariant::Int:
+      mFieldSetRequests << new WbIntFieldSetRequest(field, index, fieldValue.toInt());
+      break;
+    case QVariant::Double:
+      mFieldSetRequests << new WbDoubleFieldSetRequest(field, index, fieldValue.toDouble());
+      break;
+    case QVariant::Vector2D: {
+      auto v = fieldValue.value<QVector2D>();
+      mFieldSetRequests << new WbVector2FieldSetRequest(field, index, v.x(), v.y());
+      break;
+    }
+    case QVariant::Color: {
+      auto c = fieldValue.value<QColor>();
+      mFieldSetRequests << new WbColorFieldSetRequest(field, index, c.redF(), c.greenF(), c.blueF());
+      break;
+    }
+    case QVariant::Vector3D: {
+      auto v = fieldValue.value<QVector3D>();
+      mFieldSetRequests << new WbVector3FieldSetRequest(field, index, v.x(), v.y(), v.z());
+      break;
+    }
+    case QVariant::Quaternion: {
+      auto v = fieldValue.value<QVector4D>();
+      mFieldSetRequests << new WbRotationFieldSetRequest(field, index, v.x(), v.y(), v.z(), v.w());
+      break;
+    }
+    case QVariant::String:
+      mFieldSetRequests << new WbStringFieldSetRequest(field, index, fieldValue.toString());
+      break;
+  }
+}
+
+void WbSupervisorUtilities::FIELD_INSERT_VALUE(int nodeId, int fieldId, const QVariant& fieldValue, int index) {
+  // apply queued set field operations
+  processImmediateMessages(true);
+
+  const WbNode *const node = WbNode::findNode(nodeId);
+  const WbField *field = node->field(fieldId);
+
+  switch (field->type()) {  // import value
+    case WB_MF_BOOL: {
+      // cppcheck-suppress unassignedVariable
+      // cppcheck-suppress knownConditionTrueFalse
+      (dynamic_cast<WbMFBool *>(field->value()))->insertItem(index, fieldValue.toBool());
+      break;
+    }
+    case WB_MF_INT32: {
+      (dynamic_cast<WbMFInt *>(field->value()))->insertItem(index, fieldValue.toInt());
+      break;
+    }
+    case WB_MF_FLOAT: {
+      (dynamic_cast<WbMFDouble *>(field->value()))->insertItem(index, fieldValue.toDouble());
+      break;
+    }
+    case WB_MF_VEC2F: {
+      auto v = fieldValue.value<QVector2D>();
+      WbVector2 value(v.x(), v.y());
+      (dynamic_cast<WbMFVector2 *>(field->value()))->insertItem(index, value);
+      break;
+    }
+    case WB_MF_VEC3F: {
+      auto v = fieldValue.value<QVector3D>();
+      WbVector3 value(v.x(), v.y(), v.z());
+      (dynamic_cast<WbMFVector3 *>(field->value()))->insertItem(index, value);
+      break;
+    }
+    case WB_MF_ROTATION: {
+      auto v = fieldValue.value<QVector4D>();
+      WbRotation value(v.x(), v.y(), v.z(), v.w());
+      (dynamic_cast<WbMFRotation *>(field->value()))->insertItem(index, value);
+      break;
+    }
+    case WB_MF_COLOR: {
+      auto c = fieldValue.value<QColor>();
+      WbRgb value(c.redF(), c.greenF(), c.blueF());
+      (dynamic_cast<WbMFColor *>(field->value()))->insertItem(index, value);
+      break;
+    }
+    case WB_MF_STRING: {
+      (dynamic_cast<WbMFString *>(field->value()))->insertItem(index, fieldValue.toString());
+      break;
+    }
+    case WB_MF_NODE:
+    case WB_SF_NODE: {
+      const QString nodeString = fieldValue.toString();
+      processImmediateMessages(true);  // apply queued set field operations
+      WbNodeOperations::instance()->importNode(nodeId, fieldId, index, WbNodeOperations::FROM_SUPERVISOR, nodeString);
+      const WbSFNode *sfNode = dynamic_cast<WbSFNode *>(WbNode::findNode(nodeId)->field(fieldId)->value());
+      mImportedNodeId = sfNode && sfNode->value() ? sfNode->value()->uniqueId() : -1;
+      break;
+    }
+    default:
+      assert(0);
+  }
+
+  WbTemplateManager::instance()->blockRegeneration(false);
+  emit worldModified();
+}
+
+void WbSupervisorUtilities::REMOVE_NODE(int nodeId) {
+  WbNode *node = WbNode::findNode(nodeId);
+
+  // as findNode might return the internal one, it's necessary to climb the ladder up to the protoParameterNode otherwise
+  // the scene tree will not be refreshed when deleting it
+  while (node && node->protoParameterNode())
+    node = node->protoParameterNode();
+
+  if (!WbVrmlNodeUtilities::isVisible(node)) {
+    mRobot->warn(
+      tr("Node '%1' is internal to a PROTO and therefore cannot be deleted from a Supervisor.").arg(node->usefulName()));
+    return;
+  }
+
+  if (node) {
+    if (node == mRobot)
+      mShouldRemoveNode = true;
+    else {
+      WbNodeOperations::instance()->deleteNode(node, true);
+      emit worldModified();
+    }
+  }
+}
+
+void WbSupervisorUtilities::FIELD_REMOVE_VALUE(int nodeId, int fieldId, int index) {
+  // apply queued set field operations
+  processImmediateMessages(true);
+
+  bool modified = false;
+  const WbNode *parentNode = WbNode::findNode(nodeId);
+  WbField *field = parentNode->field(fieldId);
+  switch (field->type()) {  // remove value
+    case WB_MF_BOOL:
+    case WB_MF_INT32:
+    case WB_MF_FLOAT:
+    case WB_MF_VEC2F:
+    case WB_MF_VEC3F:
+    case WB_MF_ROTATION:
+    case WB_MF_COLOR:
+    case WB_MF_STRING: {
+      WbMultipleValue *multipleValue = dynamic_cast<WbMultipleValue *>(field->value());
+      assert(multipleValue->size() > index);
+      multipleValue->removeItem(index);
+      modified = true;
+      break;
+    }
+    case WB_MF_NODE: {
+      const WbMFNode *mfNode = dynamic_cast<WbMFNode *>(field->value());
+      assert(mfNode->size() > index);
+      WbNode *node = mfNode->item(index);
+
+      const WbViewpoint *viewpoint = dynamic_cast<WbViewpoint *>(node);
+      const WbWorldInfo *worldInfo = dynamic_cast<WbWorldInfo *>(node);
+      if (viewpoint || worldInfo) {
+        node = NULL;
+        mRobot->warn(tr(
+          "wb_supervisor_field_remove_mf() called with the 'index' argument referring to a Viewpoint or WorldInfo node."));
+      }
+
+      if (node) {
+        if (node == mRobot)
+          mShouldRemoveNode = true;
+        else {
+          WbNodeOperations::instance()->deleteNode(node, true);
+          modified = true;
+        }
+      }
+      break;
+    }
+    case WB_SF_NODE: {
+      const WbSFNode *sfNode = dynamic_cast<WbSFNode *>(field->value());
+      if (sfNode->value()) {
+        if (sfNode->value() == mRobot)
+          mShouldRemoveNode = true;
+        else {
+          WbNodeOperations::instance()->deleteNode(sfNode->value(), true);
+          modified = true;
+        }
+      }
+      break;
+    }
+    default:
+      assert(0);
+  }
+
+  WbTemplateManager::instance()->blockRegeneration(false);
+  if (modified)
+    emit worldModified();
+}
+
+const WbBaseNode* WbSupervisorUtilities::GET_FROM_ID(int id) {
+  const WbBaseNode *node = dynamic_cast<const WbBaseNode *>(WbNode::findNode(id));
+
+  return node;
+}
+
+const WbBaseNode* WbSupervisorUtilities::GET_FROM_DEF(const QString& nodeName, int parentProtoId) {
+  WbNode *proto = parentProtoId > 0 ? WbNode::findNode(parentProtoId) : NULL;
+  const WbBaseNode *baseNode = dynamic_cast<const WbBaseNode *>(getNodeFromDEF(nodeName, proto != NULL, proto));
+  if (!proto && baseNode && !baseNode->parentField())  // make sure the parent field is visible
+    return NULL;
+
+  return baseNode;
+}
+
+const WbBaseNode* WbSupervisorUtilities::GET_FROM_TAG(int tag) {
+  const WbDevice* device = mRobot->findDevice(tag);
+  if (!device)
+    return NULL;
+
+  const WbBaseNode* baseNode = dynamic_cast<const WbBaseNode*>(device);
+
+  return baseNode;
+}
+
+const WbBaseNode* WbSupervisorUtilities::GET_SELECTED() {
+  const WbBaseNode *baseNode = dynamic_cast<const WbBaseNode *>(WbSelection::instance()->selectedNode());
+
+  return baseNode;
+}
+
+const WbField* WbSupervisorUtilities::GET_FROM_NAME(int id, const QString& name, bool allowSearchInProto) {
+  const WbNode *const node = WbNode::findNode(id);
+  if (!node)
+    return NULL;
+
+  id = node->findFieldId(name, allowSearchInProto);
+  if (id == -1)
+    return NULL;
+
+  const WbField* field = node->field(id, allowSearchInProto);
+
+  return field;
+}
+
+QMatrix4x4 WbSupervisorUtilities::GET_POSE(int idFrom, int idTo) {
+  WbNode *const toNode = getProtoParameterNodeInstance(idTo, "wb_supervisor_node_get_pose()");
+  WbPose *const transformTo = dynamic_cast<WbPose *>(toNode);
+
+  WbMatrix4 mTo(transformTo->matrix());
+  const WbVector3 &sTo = mTo.scale();
+  mTo.scale(1.0 / sTo.x(), 1.0 / sTo.y(), 1.0 / sTo.z());
+
+  WbMatrix4 m(mTo);
+
+  if (idFrom) {
+    WbNode *const fromNode = getProtoParameterNodeInstance(idFrom, "wb_supervisor_node_get_pose()");
+    WbPose *const transformFrom = dynamic_cast<WbPose *>(fromNode);
+    if (transformFrom) {
+      WbMatrix4 mFrom(transformFrom->matrix());
+      const WbVector3 &sFrom = mFrom.scale();
+      mFrom.scale(1.0 / sFrom.x(), 1.0 / sFrom.y(), 1.0 / sFrom.z());
+
+      m = mFrom.pseudoInversed() * mTo;
+    }
+  }
+
+  return QMatrix4x4(m(0, 0), m(0, 1), m(0, 2), m(0, 3)
+      , m(1, 0), m(1, 1), m(1, 2), m(1, 3)
+      , m(2, 0), m(2, 1), m(2, 2), m(2, 3)
+      , m(3, 0), m(3, 1), m(3, 2), m(3, 3));
+}
+
+QVector3D WbSupervisorUtilities::GET_POSITION(int id) {
+  WbNode* const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_position()");
+  WbPose* const transform = dynamic_cast<WbPose*>(node);
+  if (!transform)
+    return QVector3D();
+
+  const WbVector3& pos = transform->matrix().translation();
+
+  return QVector3D(pos.x(), pos.y(), pos.z());
+}
+
+QMatrix4x4 WbSupervisorUtilities::GET_ORIENTATION(int id) {
+  WbNode* const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_orientation()");
+  WbPose* const transform = dynamic_cast<WbPose*>(node);
+  if (!transform)
+    return QMatrix4x4();
+
+  WbMatrix4 m(transform->matrix());
+
+  // remove scale from matrix
+  const WbVector3& s = m.scale();
+  m.scale(1.0 / s.x(), 1.0 / s.y(), 1.0 / s.z());
+
+  return QMatrix4x4(m(0, 0), m(0, 1), m(0, 2), 0.0
+      , m(1, 0), m(1, 1), m(1, 2), 0.0
+      , m(2, 0), m(2, 1), m(2, 2), 0.0
+      , 0.0, 0.0, 0.0, 1.0);
+}
+
+QVector3D WbSupervisorUtilities::GET_CENTER_OF_MASS(int id) {
+  WbNode* const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_center_of_mass()");
+  WbSolid* const solid = dynamic_cast<WbSolid*>(node);
+  if (!solid)
+    return QVector3D();
+
+  const WbVector3& com = solid->computedGlobalCenterOfMass();
+
+  return QVector3D(com.x(), com.y(), com.z());
+}
+
+bool WbSupervisorUtilities::GET_STATIC_BALANCE(int id) {
+  WbNode* const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_static_balance()");
+  WbSolid* const solid = dynamic_cast<WbSolid*>(node);
+  if (!solid)
+    return false;
+
+  return solid->staticBalance();
+}
+
+QList<QVector3D> WbSupervisorUtilities::GET_VELOCITY(int id) {
+  WbNode* const node = getProtoParameterNodeInstance(id, "wb_supervisor_node_get_velocity()");
+  WbSolid* const solid = dynamic_cast<WbSolid*>(node);
+  if (!solid)
+    return QList<QVector3D>();
+
+  const WbVector3 linearVelocity = solid->relativeLinearVelocity();
+  const WbVector3 angularVelocity = solid->relativeAngularVelocity();
+
+  return QList<QVector3D>()
+      << QVector3D(linearVelocity[0], linearVelocity[1], linearVelocity[2])
+      << QVector3D(angularVelocity[0], angularVelocity[1], angularVelocity[2]);
+}
+
+QString WbSupervisorUtilities::EXPORT_STRING(int nodeId) {
+  WbNode* node = WbNode::findNode(nodeId);
+
+  return WbVrmlNodeUtilities::exportNodeToString(node);
+}
+
+int WbSupervisorUtilities::GET_FIELD_COUNT(int nodeId, bool allowSearchInProto) {
+  WbNode* const node = WbNode::findNode(nodeId);
+  if (!node)
+    return -1;
+
+  return (allowSearchInProto ? node->fields().size() : node->numFields());
+}
+
+QVariant WbSupervisorUtilities::GET_VALUE(int uniqueId, int fieldId, bool internal, int index) {
+  WbNode* const node = WbNode::findNode(uniqueId);
+  WbField* field = NULL;
+
+  if (node)
+    field = node->field(fieldId, internal);
+
+  if (!field)
+    return QVariant();
+
+  switch (field->type()) {
+  case WB_MF_BOOL: {
+    bool v = dynamic_cast<WbMFBool *>(field->value())->item(mFieldGetRequest->index);
+    return v;
+  }
+  case WB_SF_BOOL: {
+    bool v = dynamic_cast<WbSFBool *>(field->value())->value();
+    return v;
+  }
+  case WB_MF_INT32: {
+    const int v = dynamic_cast<WbMFInt *>(field->value())->item(mFieldGetRequest->index);
+    return v;
+  }
+  case WB_SF_INT32: {
+    int v = dynamic_cast<WbSFInt *>(field->value())->value();
+    return v;
+  }
+  case WB_MF_FLOAT: {
+    const double v = dynamic_cast<WbMFDouble *>(field->value())->item(mFieldGetRequest->index);
+    return v;
+  }
+  case WB_SF_FLOAT: {
+    double v = dynamic_cast<WbSFDouble *>(field->value())->value();
+    return v;
+  }
+  case WB_MF_VEC2F: {
+    const WbVector2 &v = dynamic_cast<WbMFVector2 *>(field->value())->item(mFieldGetRequest->index);
+    return QVariant::fromValue(QVector2D(v.x(), v.y()));
+  }
+  case WB_SF_VEC2F: {
+    const WbVector2 &v = dynamic_cast<WbSFVector2 *>(field->value())->value();
+    return QVariant::fromValue(QVector2D(v.x(), v.y()));
+  }
+  case WB_MF_VEC3F: {
+    const WbVector3 &v = dynamic_cast<WbMFVector3 *>(field->value())->item(mFieldGetRequest->index);
+    return QVariant::fromValue(QVector3D(v.x(), v.y(), v.z()));
+  }
+  case WB_SF_VEC3F: {
+    const WbVector3 &v = dynamic_cast<WbSFVector3 *>(field->value())->value();
+    return QVariant::fromValue(QVector3D(v.x(), v.y(), v.z()));
+  }
+  case WB_MF_COLOR: {
+    const WbRgb &v = dynamic_cast<WbMFColor *>(field->value())->item(mFieldGetRequest->index);
+    return QVariant::fromValue(QColor(v.red(), v.green(), v.blue()));
+  }
+  case WB_SF_COLOR: {
+    const WbRgb &v = dynamic_cast<WbSFColor *>(field->value())->value();
+    return QVariant::fromValue(QColor(v.red(), v.green(), v.blue()));
+  }
+  case WB_MF_ROTATION: {
+    const WbRotation &v = dynamic_cast<WbMFRotation *>(field->value())->item(mFieldGetRequest->index);
+    return QVariant::fromValue(QVector4D(v.x(), v.y(), v.z(), v.angle()));
+  }
+  case WB_SF_ROTATION: {
+    const WbRotation &v = dynamic_cast<WbSFRotation *>(field->value())->value();
+    return QVariant::fromValue(QVector4D(v.x(), v.y(), v.z(), v.angle()));
+  }
+  case WB_MF_STRING: {
+    const QString &v = dynamic_cast<WbMFString *>(field->value())->item(mFieldGetRequest->index);
+    return v;
+  }
+  case WB_SF_STRING: {
+    const QString &v = dynamic_cast<WbSFString *>(field->value())->value();
+    return v;
+  }
+  case WB_MF_NODE: {
+    const WbMFNode::WbNodePtr &v = dynamic_cast<WbMFNode *>(field->value())->item(mFieldGetRequest->index);
+    WbNode *const node = dynamic_cast<WbNode *>(v);
+    const WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+    if (baseNode)
+      return baseNode->uniqueId();
+    else
+      return 0;
+  }
+  case WB_SF_NODE: {
+    WbNode *const node = dynamic_cast<WbSFNode *>(field->value())->value();
+    const WbBaseNode *const baseNode = dynamic_cast<WbBaseNode *>(node);
+    if (baseNode)
+      return baseNode->uniqueId();
+    else
+      return 0;
+  }
+  }
+}
+
+bool WbSupervisorUtilities::REALITY_HEADSET_IS_USED() {
+#ifdef _WIN32
+  return WbVirtualRealityHeadset::isInUse();
+#else
+  return false;
+#endif
+}
+
+QVector3D WbSupervisorUtilities::REALITY_HEADSET_GET_POSITION() {
+#ifdef _WIN32
+  if (!WbVirtualRealityHeadset::isInUse())
+    return QVector3D();
+  else if (!WbVirtualRealityHeadset::instance()->isPositionTrackingEnabled())
+    return QVector3D();
+  const WbVector3 position =
+    WbVirtualRealityHeadset::isInUse() ? WbVirtualRealityHeadset::instance()->currentPosition() : WbVector3();
+#else
+    const WbVector3 position = WbVector3();
+#endif
+
+  return QVector3D(position[0], position[1], position[2]);
+}
+
+QMatrix4x4 WbSupervisorUtilities::HEADSET_GET_ORIENTATION() {
+#ifdef _WIN32
+  if (!WbVirtualRealityHeadset::isInUse())
+    return QMatrix4x4();
+  else if (!WbVirtualRealityHeadset::instance()->isOrientationTrackingEnabled())
+    return QMatrix4x4();
+  const WbMatrix3 m =
+    WbVirtualRealityHeadset::isInUse() ? WbVirtualRealityHeadset::instance()->currentOrientation() : WbMatrix3();
+#else
+  const WbMatrix3 m = WbMatrix3();
+#endif
+
+  return QMatrix4x4(m(0, 0), m(0, 1), m(0, 2), 0.0
+      , m(1, 0), m(1, 1), m(1, 2), 0.0
+      , m(2, 0), m(2, 1), m(2, 2), 0.0
+      , 0.0, 0.0, 0.0, 1.0);
+}
+

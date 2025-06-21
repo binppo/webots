@@ -19,9 +19,11 @@
 // Description: manage motor sounds
 //
 
+#include <core/WbConfig.h>
+
 namespace WbMotorSoundManager {
-  void update();
-  void clearAllMotorSoundSources();
+  WB_LIB_EXPORT void update();
+  WB_LIB_EXPORT void clearAllMotorSoundSources();
 };  // namespace WbMotorSoundManager
 
 #endif

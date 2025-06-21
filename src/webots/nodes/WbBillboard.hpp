@@ -17,7 +17,9 @@
 
 #include "WbGroup.hpp"
 
-class WbBillboard : public WbGroup {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBillboard : public WbGroup {
   Q_OBJECT
 
 public:

@@ -15,6 +15,8 @@
 #ifndef WB_SUPPORT_POLYGON_REPRESENTATION_HPP
 #define WB_SUPPORT_POLYGON_REPRESENTATION_HPP
 
+#include <core/WbConfig.h>
+
 //
 // Description: class handling the rendering of the support polygon of a robot
 //
@@ -28,7 +30,7 @@ struct WrStaticMesh;
 struct WrMaterial;
 struct WrRenderable;
 
-class WbSupportPolygonRepresentation {
+class WB_LIB_EXPORT WbSupportPolygonRepresentation {
 public:
   WbSupportPolygonRepresentation();
   virtual ~WbSupportPolygonRepresentation();

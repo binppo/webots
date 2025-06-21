@@ -22,7 +22,9 @@
 
 #include "../../../include/controller/c/webots/supervisor.h"
 
-class WbFieldValueRestriction : public WbVariant {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbFieldValueRestriction : public WbVariant {
   Q_OBJECT;
 
 public:

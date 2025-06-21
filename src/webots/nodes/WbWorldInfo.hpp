@@ -22,12 +22,14 @@
 #include "WbSFVector3.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbReceiver;
 class WbDamping;
 class WbContactProperties;
 class WbVersion;
 
-class WbWorldInfo : public WbBaseNode {
+class WB_LIB_EXPORT WbWorldInfo : public WbBaseNode {
   Q_OBJECT
 
 public:

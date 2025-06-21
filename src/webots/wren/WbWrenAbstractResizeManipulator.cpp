@@ -44,25 +44,25 @@ WbWrenAbstractResizeManipulator::WbWrenAbstractResizeManipulator(ResizeConstrain
 }
 
 WbWrenAbstractResizeManipulator::~WbWrenAbstractResizeManipulator() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    for (WrStaticMesh *mesh : mMeshes)
+      wr_static_mesh_delete(mesh);
 
-  for (WrStaticMesh *mesh : mMeshes)
-    wr_static_mesh_delete(mesh);
+    for (WrRenderable *renderable : mRenderables) {
+      // Delete picking material
+      wr_material_delete(wr_renderable_get_material(renderable, "picking"));
+      wr_node_delete(WR_NODE(renderable));
+    }
 
-  for (WrRenderable *renderable : mRenderables) {
-    // Delete picking material
-    wr_material_delete(wr_renderable_get_material(renderable, "picking"));
-    wr_node_delete(WR_NODE(renderable));
+    for (int i = 0; i < mNumberOfHandles; ++i) {
+      wr_material_delete(mHandleMaterials[i]);
+      wr_material_delete(mAxisMaterials[i]);
+      wr_node_delete(WR_NODE(mHandleTransforms[i]));
+      wr_node_delete(WR_NODE(mAxisTransforms[i]));
+    }
+
+    WbWrenOpenGlContext::doneWren();
   }
-
-  for (int i = 0; i < mNumberOfHandles; ++i) {
-    wr_material_delete(mHandleMaterials[i]);
-    wr_material_delete(mAxisMaterials[i]);
-    wr_node_delete(WR_NODE(mHandleTransforms[i]));
-    wr_node_delete(WR_NODE(mAxisTransforms[i]));
-  }
-
-  WbWrenOpenGlContext::doneWren();
 }
 
 void WbWrenAbstractResizeManipulator::initializeHandlesEntities(bool resize) {

@@ -26,6 +26,8 @@
 #include <QtCore/QVarLengthArray>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbAbstractCamera;
 class WbDataStream;
 class WbDevice;
@@ -41,7 +43,7 @@ class QByteArray;
 class QDataStream;
 class QTimer;
 
-class WbRobot : public WbSolid {
+class WB_LIB_EXPORT WbRobot : public WbSolid {
   Q_OBJECT
 
 public:
@@ -116,6 +118,8 @@ public:
   const WbMFDouble &battery() const { return *mBattery; }
   bool selfCollision() const { return mSelfCollision->value(); }
 
+  void setSupervisor(bool enable);
+
   WbSupervisorUtilities *supervisorUtilities() const { return mSupervisorUtilities; }
 
   const bool isRobot() const override { return true; };
@@ -146,8 +150,29 @@ public:
   QString encodedName() const;  // name used for controller connections
 
 public slots:
+  void SET_URDF(const QString& data);
+  QString GET_URDF() const;
+  void SET_BATTERY_SAMPLING_PERIOD(int refreshRate);
+  void SET_DATA(const QString& data);
+  void SET_KEYBOARD_SAMPLING_PERIOD(int refreshRate);
+  void SET_JOYSTICK_SAMPLING_PERIOD(int refreshRate);
+  void SET_MOUSE_SAMPLING_PERIOD(int refreshRate);
+  void MOUSE_ENABLE_3D_POSITION(bool enable);
+  void SET_JOYSTICK_FORCE_FEEDBACK(int level);
+  void SET_JOYSTICK_FORCE_FEEDBACK_DURATION(double duration);
+  void SET_JOYSTICK_AUTO_CENTERING_GAIN(double gain);
+  void SET_JOYSTICK_RESISTANCE_GAIN(double gain);
+  void SET_JOYSTICK_FORCE_AXIS(int axis);
+  void REMOTE_ON();
+  void REMOTE_OFF();
+  void PIN(bool pin);
+  void CONSOLE_MESSAGE(QString message, bool streamChannel);
+  void WWI_MESSAGE(const QByteArray& message);
+
   void receiveFromJavascript(const QByteArray &message);
   void updateControllerDir();
+
+  void pinToStaticEnvironment(bool pin);
 
 signals:
   void startControllerRequest(WbRobot *robot);
@@ -278,7 +303,6 @@ private:
   QString searchDynamicLibraryAbsolutePath(const QString &key, const QString &pluginSubdirectory);
   void updateDevicesAfterInsertion();
   void updateControllerStatusInDevices();
-  void pinToStaticEnvironment(bool pin);
   double energyConsumption() const;
   void clearDevices();
   int computeSimulationMode();

@@ -26,12 +26,14 @@
 #include <QtCore/QRegularExpression>
 #include <QtWidgets/QPlainTextEdit>
 
+#include <core/WbConfig.h>
+
 class QAction;
 class WbFindReplaceDialog;
 class WbTextFind;
 class WbSyntaxHighlighter;
 
-class ConsoleEdit : public QPlainTextEdit {
+class WB_LIB_EXPORT ConsoleEdit : public QPlainTextEdit {
   Q_OBJECT
 
 public:
@@ -70,7 +72,7 @@ private slots:
 };
 
 // cppcheck-suppress noConstructor
-class WbConsole : public WbDockWidget {
+class WB_LIB_EXPORT WbConsole : public WbDockWidget {
   Q_OBJECT
   // WbLog colors
   Q_PROPERTY(QString errorColor MEMBER mErrorColor READ errorColor WRITE setErrorColor)

@@ -19,10 +19,12 @@
 // Description: manage a sound buffer
 //
 
+#include <core/WbConfig.h>
+
 class WbSoundClip;
 class WbVector3;
 
-class WbSoundSource {
+class WB_LIB_EXPORT WbSoundSource {
 public:
   WbSoundSource();
   virtual ~WbSoundSource();

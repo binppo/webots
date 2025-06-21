@@ -33,6 +33,7 @@
 #include "WbTokenizer.hpp"
 #include "WbVersion.hpp"
 #include "WbWorld.hpp"
+#include "WbWrenOpenGlContext.hpp"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
@@ -43,6 +44,13 @@
 
 WbApplication *WbApplication::cInstance = NULL;
 static QString gProjectLibsInPath;
+
+WbApplication *WbApplication::instance() {
+  if(!cInstance)
+	  cInstance = new WbApplication;
+
+  return cInstance;
+}
 
 bool updateParsingProgress(int progress) {
   WbApplication::instance()->setWorldLoadingProgress(progress);
@@ -59,8 +67,6 @@ void updateDownloadingProgress(int progress) {
 }
 
 WbApplication::WbApplication() {
-  assert(cInstance == NULL);
-  cInstance = this;
 
   mWorld = NULL;
   mWorldLoadingCanceled = false;
@@ -114,7 +120,6 @@ WbApplication::~WbApplication() {
   delete mWorld;
   WbPreferences::cleanup();
   WbNodeOperations::cleanup();
-  cInstance = NULL;
 
   // remove temporary folder
   QDir tmpDir(WbStandardPaths::webotsTmpPath());

@@ -22,7 +22,7 @@
 #include "WbSensor.hpp"
 #include "WbWorld.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 
@@ -98,6 +98,10 @@ void WbAltimeter::reset(const QString &id) {
   WbSolidDevice::reset(id);
 }
 
+int WbAltimeter::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbAltimeter::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -123,6 +127,18 @@ void WbAltimeter::writeAnswer(WbDataStream &stream) {
   }
 }
 
+double WbAltimeter::value() {
+  return mMeasuredAltitude;
+}
+
+void WbAltimeter::setValue(double val) {
+  mMeasuredAltitude = val;
+}
+
 void WbAltimeter::writeConfigure(WbDataStream &stream) {
   mSensor->connectToRobotSignal(robot());
+}
+
+void WbAltimeter::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

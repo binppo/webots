@@ -17,9 +17,11 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class QProcessEnvironment;
 
-class WbLanguageTools {
+class WB_LIB_EXPORT WbLanguageTools {
 public:
   // get platform dependent commands
   static QString pythonCommand(QString &shortVersion, const QString &command, QProcessEnvironment &env);

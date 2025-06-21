@@ -23,6 +23,8 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidget>
 
+#include <core/WbConfig.h>
+
 class WbDoubleSpinBox;
 class WbIntSpinBox;
 
@@ -30,7 +32,7 @@ class QCheckBox;
 class QListWidget;
 class QSize;
 
-class WbVideoRecorderDialog : public QDialog {
+class WB_LIB_EXPORT WbVideoRecorderDialog : public QDialog {
   Q_OBJECT
 
 public:

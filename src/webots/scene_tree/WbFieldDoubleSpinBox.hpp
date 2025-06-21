@@ -24,10 +24,12 @@
 
 #include "WbDoubleSpinBox.hpp"
 
+#include <core/WbConfig.h>
+
 class QKeyEvent;
 class QFocusEvent;
 
-class WbFieldDoubleSpinBox : public WbDoubleSpinBox {
+class WB_LIB_EXPORT WbFieldDoubleSpinBox : public WbDoubleSpinBox {
   Q_OBJECT
 
 public:

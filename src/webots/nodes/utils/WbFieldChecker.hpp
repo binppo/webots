@@ -30,6 +30,8 @@ class WbVector3;
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 // NOTE: The pattern "return if changed" at the WbFieldChecker caller level is difficult to remove.
 //       Indeed, I hoped solving that by blocking the signals of the WbValue when setting it to default
 //       but this doesn't work in some cases (e.g. PROTOs)
@@ -37,7 +39,7 @@ class WbVector3;
 //       and this is complex (and perhaps impossible):
 //         http://stackoverflow.com/questions/15633086/qt-block-temporarily-signals-between-2-qobjects
 
-class WbFieldChecker : public QObject {
+class WB_LIB_EXPORT WbFieldChecker : public QObject {
   Q_OBJECT
 
 public:

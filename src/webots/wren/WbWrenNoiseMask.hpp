@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenNoiseMask : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenNoiseMask : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenNoiseMask();
 

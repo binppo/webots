@@ -224,7 +224,7 @@ bool WbDictionary::updateDef(WbBaseNode *&node, WbSFNode *sfNode, WbMFNode *mfNo
     return true;
   }
 
-  const QVector<WbField *> &fields = node->fieldsOrParameters();
+  const auto &fields = node->fieldsOrParameters();
   foreach (const WbField *const field, fields) {
     WbValue *const value = field->value();
     WbSFNode *const sf = dynamic_cast<WbSFNode *>(value);
@@ -359,7 +359,7 @@ void WbDictionary::updateProtosDef(WbBaseNode *&node, WbSFNode *sfNode, WbMFNode
     return;
 
   // Handles non-parameter fields only
-  const QVector<WbField *> &fields = node->fields();
+  const auto &fields = node->fields();
   foreach (const WbField *const field, fields) {
     if (field->parameter())
       continue;
@@ -457,7 +457,7 @@ bool WbDictionary::checkBoundingObjectConstraints(const WbBaseNode *defNode, QSt
   subNodes << defNode;
   while (!subNodes.isEmpty()) {
     const WbNode *const parentNode = subNodes.takeFirst();
-    const QVector<WbField *> &fields = parentNode->fields();
+    const auto &fields = parentNode->fields();
     for (int i = 0, size = fields.size(); i < size; ++i) {
       const WbSFNode *const sfnode = dynamic_cast<WbSFNode *>(fields[i]->value());
       if (sfnode) {
@@ -584,7 +584,7 @@ void WbDictionary::updateForInsertion(const WbNode *const node, bool suitableOnl
   }
 
   // Check fields and parameters
-  const QVector<WbField *> &fields = node->fieldsOrParameters();
+  const auto &fields = node->fieldsOrParameters();
   for (int i = 0, size = fields.size(); !mStopUpdate && i < size; ++i) {
     bool isInsertionField = node == mTargetNode && fields[i] == mTargetField;
     if (isInsertionField && mTargetIndex < 1) {

@@ -18,9 +18,11 @@
 #include "WbBaseNode.hpp"
 #include "WbMFVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
-class WbNormal : public WbBaseNode {
+class WB_LIB_EXPORT WbNormal : public WbBaseNode {
   Q_OBJECT
 
 public:

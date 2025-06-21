@@ -19,9 +19,11 @@
 
 #include <wren/scene.h>
 
+#include <core/WbConfig.h>
+
 // TODO: only the first Fog node should be taken into account
 
-class WbFog : public WbBaseNode {
+class WB_LIB_EXPORT WbFog : public WbBaseNode {
   Q_OBJECT
 
 public:

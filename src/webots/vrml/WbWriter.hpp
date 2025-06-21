@@ -23,6 +23,8 @@
 #include <QtCore/QMap>
 
 #include "WbVector3.hpp"
+ 
+#include <core/WbConfig.h>
 
 class QIODevice;
 
@@ -33,7 +35,7 @@ class WbRotation;
 class WbQuaternion;
 class WbRgb;
 
-class WbWriter {
+class WB_LIB_EXPORT WbWriter {
 public:
   WbWriter(QIODevice *device, const QString &fileName);
   WbWriter(QString *target, const QString &fileName);

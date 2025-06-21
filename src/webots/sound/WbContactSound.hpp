@@ -23,11 +23,13 @@
 
 #include <WbVector3.hpp>
 
+#include <core/WbConfig.h>
+
 class WbContactProperties;
 class WbSoundClip;
 class WbSoundSource;
 
-class WbContactSound {
+class WB_LIB_EXPORT WbContactSound {
 public:
   WbContactSound(const dGeomID &geom1, const dGeomID &geom2, const WbContactProperties *contactProperties);
   virtual ~WbContactSound();

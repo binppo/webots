@@ -22,7 +22,9 @@
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
 
-class WbOdeContext : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbOdeContext : public QObject {
   Q_OBJECT
 
 public:

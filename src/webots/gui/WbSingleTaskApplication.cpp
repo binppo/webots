@@ -33,7 +33,7 @@
 #include <QtCore/QRegularExpression>
 #include <QtGui/QOpenGLContext>
 #include <QtGui/QOpenGLFunctions>
-#include <QtOpenGLWidgets/QOpenGLWidget>
+#include <QtWidgets/QOpenGLWidget>
 #include <QtWidgets/QMainWindow>
 
 #ifdef __APPLE__
@@ -130,7 +130,7 @@ void WbSingleTaskApplication::convertProto() const {
 
   // Generate a node structure
   WbNode::setInstantiateMode(true);
-  const WbNode *node = WbNode::createProtoInstanceFromParameters(model, fields, "");
+  const WbNode *node = WbNode::createProtoInstanceFromParameters(model, fields.toList(), "");
   for (WbNode *subNode : node->subNodes(true)) {
     if (dynamic_cast<WbSolidReference *>(subNode))
       cout << tr("Warning: Exporting a Joint node with a SolidReference endpoint (%1) to URDF is not supported.")

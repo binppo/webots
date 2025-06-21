@@ -22,11 +22,13 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QWizard>
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 class QLabel;
 class QButtonGroup;
 
-class WbNewPhysicsPluginWizard : public QWizard {
+class WB_LIB_EXPORT WbNewPhysicsPluginWizard : public QWizard {
   Q_OBJECT
 
 public:

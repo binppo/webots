@@ -23,6 +23,8 @@
 
 #include "WbSolid.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 class WbBrake;
 class WbLinearMotor;
@@ -36,7 +38,7 @@ class WbTrackWheel;
 
 struct WrNode;
 
-class WbTrack : public WbSolid {
+class WB_LIB_EXPORT WbTrack : public WbSolid {
   Q_OBJECT
 public:
   explicit WbTrack(WbTokenizer *tokenizer = NULL);

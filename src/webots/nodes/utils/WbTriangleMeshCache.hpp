@@ -17,18 +17,20 @@
 
 #include "sip_hash.hpp"
 
+#include <core/WbConfig.h>
+
 class WbTriangleMeshGeometry;
 class WbTriangleMesh;
 
 namespace WbTriangleMeshCache {
   extern const highwayhash::HH_U64 SIPHASH_KEY[2];
 
-  template<class T> uint64_t sipHash13x(const T *bytes, const int size) {
+  template<class T> WB_LIB_EXPORT uint64_t sipHash13x(const T *bytes, const int size) {
     return highwayhash::SipHash13(SIPHASH_KEY, reinterpret_cast<const char *>(bytes), size * sizeof(T));
   }
 
   // TriangleMeshInfo is shared by all WbTriangleMeshGeometry instances requiring the same WbTriangleMesh.
-  struct TriangleMeshInfo {
+  struct WB_LIB_EXPORT TriangleMeshInfo {
     TriangleMeshInfo();
     explicit TriangleMeshInfo(WbTriangleMesh *triangleMesh);
 
@@ -37,7 +39,7 @@ namespace WbTriangleMeshCache {
   };
 
   // Key type for an instance of WbTriangleMeshGeometry. Instances can share a WbTriangleMesh if their keys compare equal.
-  struct TriangleMeshGeometryKey {
+  struct WB_LIB_EXPORT TriangleMeshGeometryKey {
     TriangleMeshGeometryKey();
     explicit TriangleMeshGeometryKey(const WbTriangleMeshGeometry *triangleMeshGeometry);
 
@@ -48,12 +50,12 @@ namespace WbTriangleMeshCache {
   };
 
   // Key hashing function required by std::unordered_map
-  struct TriangleMeshGeometryKeyHasher {
+  struct WB_LIB_EXPORT TriangleMeshGeometryKeyHasher {
     std::size_t operator()(const TriangleMeshGeometryKey &k) const;
   };
 
-  void useTriangleMesh(WbTriangleMeshGeometry *user);
-  void releaseTriangleMesh(WbTriangleMeshGeometry *user);
+  WB_LIB_EXPORT void useTriangleMesh(WbTriangleMeshGeometry *user);
+  WB_LIB_EXPORT void releaseTriangleMesh(WbTriangleMeshGeometry *user);
 }  // namespace WbTriangleMeshCache
 
 #endif

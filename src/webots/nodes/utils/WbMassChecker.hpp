@@ -17,7 +17,9 @@
 
 #include <QtCore/QObject>
 
-class WbMassChecker : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMassChecker : public QObject {
   Q_OBJECT
 
 public:

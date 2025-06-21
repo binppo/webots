@@ -43,18 +43,20 @@ WrTexture2d *loadReadOnlyTexture(const QString &path) {
     image->swap(tmp);
   }
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  WrTexture2d* targetTexture = nullptr;
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    targetTexture = wr_texture_2d_new();
+    wr_texture_set_translucent(WR_TEXTURE(targetTexture), true);
+    wr_texture_set_size(WR_TEXTURE(targetTexture), image->width(), image->height());
+    wr_texture_2d_set_data(targetTexture, reinterpret_cast<const char *>(image->bits()));
+    wr_texture_2d_set_file_path(targetTexture, imagePath);
+    wr_texture_2d_set_cache_persistency(targetTexture, true);
+    wr_texture_set_translucent(WR_TEXTURE(targetTexture), isTranslucent);
+    wr_texture_setup(WR_TEXTURE(targetTexture));
 
-  WrTexture2d *targetTexture = wr_texture_2d_new();
-  wr_texture_set_translucent(WR_TEXTURE(targetTexture), true);
-  wr_texture_set_size(WR_TEXTURE(targetTexture), image->width(), image->height());
-  wr_texture_2d_set_data(targetTexture, reinterpret_cast<const char *>(image->bits()));
-  wr_texture_2d_set_file_path(targetTexture, imagePath);
-  wr_texture_2d_set_cache_persistency(targetTexture, true);
-  wr_texture_set_translucent(WR_TEXTURE(targetTexture), isTranslucent);
-  wr_texture_setup(WR_TEXTURE(targetTexture));
+    WbWrenOpenGlContext::doneWren();
+  }
 
-  WbWrenOpenGlContext::doneWren();
   delete image;
   return targetTexture;
 }

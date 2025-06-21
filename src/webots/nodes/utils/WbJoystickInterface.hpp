@@ -19,6 +19,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 namespace OIS {
   class JoyStick;
   class ForceFeedback;
@@ -27,7 +29,7 @@ namespace OIS {
 
 class WbJoystickListener;
 
-class WbJoystickInterface : public QObject {
+class WB_LIB_EXPORT WbJoystickInterface : public QObject {
   Q_OBJECT
 
 public:

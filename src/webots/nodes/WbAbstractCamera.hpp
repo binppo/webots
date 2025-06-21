@@ -18,6 +18,11 @@
 #include "WbRenderingDevice.hpp"
 #include "WbSensor.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 struct WrTransform;
 struct WrStaticMesh;
 struct WrRenderable;
@@ -36,7 +41,7 @@ class WbPosixMemoryMappedFile;
 
 class QDataStream;
 
-class WbAbstractCamera : public WbRenderingDevice {
+class WB_LIB_EXPORT WbAbstractCamera : public WbRenderingDevice {
   Q_OBJECT
 
 public:
@@ -82,6 +87,13 @@ public:
   static void resetStaticCounters() { cCameraNumber = 0; }
 
   const unsigned char *constImage() const { return image(); }
+
+  int refreshRate();
+
+public slots:
+  METAMETHOD_ARG1_DEFINE(void, SET_SAMPLING_PERIOD, qint16, refreshRate)
+
+  void updateAntiAliasing();
 
 signals:
   void enabled(WbAbstractCamera *camera, bool isActive);
@@ -167,9 +179,6 @@ protected:
   bool mExternalWindowEnabled;
   void updateFrustumDisplay();
   virtual void updateTextureUpdateNotifications(bool enabled);
-
-public slots:
-  void updateAntiAliasing();
 
 protected slots:
   // update methods

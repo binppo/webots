@@ -30,13 +30,15 @@
 
 #include <QtCore/QSize>
 
+#include <core/WbConfig.h>
+
 class WbAbstractPose;
 class WbWrenLabelOverlay;
 class WbTranslateRotateManipulator;
 class WbViewpoint;
 
 // WbDragPoseEvent class (abstract) : change the position or the orientation of a Pose node
-class WbDragPoseEvent : public WbDragKinematicsEvent {
+class WB_LIB_EXPORT WbDragPoseEvent : public WbDragKinematicsEvent {
 public:
   WbDragPoseEvent(WbViewpoint *viewpoint, WbAbstractPose *selectedPose);
   virtual ~WbDragPoseEvent() override;
@@ -47,7 +49,7 @@ protected:
 };
 
 // another abstract layer:
-class WbTranslateEvent : public WbDragPoseEvent {
+class WB_LIB_EXPORT WbTranslateEvent : public WbDragPoseEvent {
 public:
   WbTranslateEvent(WbViewpoint *viewpoint, WbAbstractPose *selectedPose);
   virtual ~WbTranslateEvent() override;
@@ -65,7 +67,7 @@ protected:
 // Implemented classes:
 
 // WbDragHorizontalEvent class
-class WbDragHorizontalEvent : public WbTranslateEvent {
+class WB_LIB_EXPORT WbDragHorizontalEvent : public WbTranslateEvent {
 public:
   WbDragHorizontalEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbAbstractPose *selectedPose);
   virtual ~WbDragHorizontalEvent() override;
@@ -78,7 +80,7 @@ private:
 };
 
 // WbDragVerticalEvent class
-class WbDragVerticalEvent : public WbTranslateEvent {
+class WB_LIB_EXPORT WbDragVerticalEvent : public WbTranslateEvent {
 public:
   WbDragVerticalEvent(const QPoint &initialPosition, WbViewpoint *viewpoint, WbAbstractPose *selectedPose);
   virtual ~WbDragVerticalEvent() override;
@@ -90,7 +92,7 @@ private:
 };
 
 // WbDragTranslateAlongAxisEvent class
-class WbDragTranslateAlongAxisEvent : public WbDragPoseEvent {
+class WB_LIB_EXPORT WbDragTranslateAlongAxisEvent : public WbDragPoseEvent {
   Q_OBJECT;
 
 public:
@@ -116,7 +118,7 @@ protected:
   double mAbsoluteScale;
 };
 
-class WbDragRotateAroundWorldVerticalAxisEvent : public WbDragPoseEvent {
+class WB_LIB_EXPORT WbDragRotateAroundWorldVerticalAxisEvent : public WbDragPoseEvent {
   Q_OBJECT;
 
 public:
@@ -133,7 +135,7 @@ protected:
 };
 
 // WbDragRotateAroundAxisEvent class
-class WbDragRotateAroundAxisEvent : public WbDragPoseEvent {
+class WB_LIB_EXPORT WbDragRotateAroundAxisEvent : public WbDragPoseEvent {
   Q_OBJECT;
 
 public:

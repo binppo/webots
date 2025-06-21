@@ -27,11 +27,15 @@
 
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbMFInt;
 class WbMFVector2;
 class WbMFVector3;
 
-class WbTriangleMesh {
+class ccMesh;
+
+class WB_LIB_EXPORT WbTriangleMesh {
 public:
   WbTriangleMesh();
   virtual ~WbTriangleMesh();
@@ -42,6 +46,7 @@ public:
   // to be initialized from a WbMesh
   QString init(const double *coord, const double *normal, const double *texCoord, const unsigned int *index,
                int numberOfVertices, int indexSize);
+  QString init(const QString &source, double creaseAngle, bool counterClockwise, bool normalPerVertex);
 
   void cleanup();
 
@@ -50,6 +55,7 @@ public:
 
   int numberOfTriangles() const { return mNTriangles; }
   int numberOfVertices() const { return mCoordinates.size() / 3; }
+  int numberOfCoords() const { return mNCoords; }
 
   static int index(int triangle, int vertex) { return 3 * triangle + vertex; }
   double vertex(int triangle, int vertex, int component) const {
@@ -93,10 +99,12 @@ private:
   bool mNormalsValid;
   bool mNormalPerVertex;
   int mNTriangles;
+  int mNCoords;
 
   // populate mTmpCoordIndices and mTmpTexIndices
   void indicesPass(const WbMFVector3 *coord, const WbMFInt *coordIndex, const WbMFInt *normalIndex,
                    const WbMFInt *texCoordIndex);
+  void indicesPass(const ccMesh *mesh, bool hasNormal, bool hasTexCoord);
   // contains triplet of coordinate indices (valid triangles)
   QVarLengthArray<int, 1> mCoordIndices;
   // contains doublet of normal indices (match with the mTmpNormalIndices order) or nothing
@@ -105,14 +113,17 @@ private:
   QVarLengthArray<int, 1> mTmpTexIndices;
   // populate mTmpTriangleNormals and mTmpVertexNormals
   QString tmpNormalsPass(const WbMFVector3 *coord, const WbMFVector3 *normal);
+  QString tmpNormalsPass(const ccMesh *mesh);
   // contains normal vectors for each triangle (match with the mTmpCoordIndices order)
   QVarLengthArray<WbVector3, 1> mTmpTriangleNormals;
   // contains a map coordIndex->triangleIndex
   QMultiHash<int, int> mTmpVertexToTriangle;
   // populate mIndices, mCoordinates, mTextureCoordinates and mNormals
   void finalPass(const WbMFVector3 *coord, const WbMFVector3 *normal, const WbMFVector2 *texCoord, double creaseAngle);
+  void finalPass(const ccMesh *mesh, double creaseAngle);
   // populate mTextureCoordinates with default values
   void setDefaultTextureCoordinates(const WbMFVector3 *coord);
+  void setDefaultTextureCoordinates(const ccMesh *mesh);
   // contains triplets representing the vertex coordinates (match with the mIndices order)
   QVarLengthArray<double, 1> mCoordinates;
   // contains triplets representing the vertex coordinates scaled by an absolute factor
@@ -126,6 +137,8 @@ private:
   QVarLengthArray<bool, 1> mIsNormalCreased;
   // improve tesselation problems by cutting bad triangles
   QList<QVector<int>> cutTriangleIfNeeded(const WbMFVector3 *coord, const QList<QVector<int>> &tesselatedPolygon,
+                                          const int triangleIndex);
+  QList<QVector<int>> cutTriangleIfNeeded(const ccMesh *mesh, const QList<QVector<int>> &tesselatedPolygon,
                                           const int triangleIndex);
   QStringList mWarnings;
 

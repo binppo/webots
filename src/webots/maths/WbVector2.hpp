@@ -27,7 +27,9 @@
 #include <cfloat>
 #include <cmath>
 
-class WbVector2 {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbVector2 {
 public:
   // construct as null vector
   WbVector2() : mX(0.0), mY(0.0) {}

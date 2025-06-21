@@ -21,6 +21,8 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 #define NUMBER_OF_THEMES 3
 
 class QCheckBox;
@@ -28,7 +30,7 @@ class QLabel;
 class QPushButton;
 class QRadioButton;
 
-class WbNewVersionDialog : public QDialog {
+class WB_LIB_EXPORT WbNewVersionDialog : public QDialog {
   Q_OBJECT
   Q_PROPERTY(QColor backgroundColor MEMBER mBackgroundColor READ backgroundColor WRITE setBackgroundColor)
   Q_PROPERTY(QString newVersionIconPath MEMBER mNewVersionIconPath READ newVersionIconPath WRITE setNewVersionIconPath)

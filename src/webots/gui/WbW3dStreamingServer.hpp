@@ -19,7 +19,9 @@
 
 #include <QtCore/QHash>
 
-class WbW3dStreamingServer : public WbTcpServer {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbW3dStreamingServer : public WbTcpServer {
   Q_OBJECT
 
 public:

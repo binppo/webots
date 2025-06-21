@@ -27,11 +27,13 @@
 #include <WbValue.hpp>
 #include <WbVariant.hpp>
 
+#include <core/WbConfig.h>
+
 class WbTokenizer;
 class WbToken;
 class WbWriter;
 
-class WbFieldModel {
+class WB_LIB_EXPORT WbFieldModel {
 public:
   // create from tokenizer
   WbFieldModel(WbTokenizer *tokenizer, const QString &worldPath);

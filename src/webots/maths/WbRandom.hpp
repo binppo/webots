@@ -19,17 +19,19 @@
 // Description: random number generator with uniform and gaussian distributions
 //
 
+#include <core/WbConfig.h>
+
 namespace WbRandom {
   // reset the random seed
-  void setSeed(unsigned int s);
-  unsigned int getSeed();
+  WB_LIB_EXPORT void setSeed(unsigned int s);
+  WB_LIB_EXPORT unsigned int getSeed();
   // use George Marsaglia's MWC algorithm to produce an unsigned integer
-  unsigned int nextUInt();
+  WB_LIB_EXPORT unsigned int nextUInt();
   // returns a random number between 0..1 from a uniform distribution
-  double nextUniform();
+  WB_LIB_EXPORT double nextUniform();
   // return random number from a normal (Gaussian) distribution with
   // mean 0.0 and standard deviation 1.0
-  double nextGaussian();
+  WB_LIB_EXPORT double nextGaussian();
 };  // namespace WbRandom
 
 #endif

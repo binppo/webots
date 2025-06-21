@@ -20,9 +20,11 @@
 #include <QtCore/QVector>
 #include <QtXml/QDomDocument>
 
+#if defined USE_PICO
 #include <picoapi.h>
 #include <picoapid.h>
 #include <picoos.h>
+#endif
 #include <cassert>
 
 // adaptation layer defines
@@ -39,6 +41,7 @@ static const int N_LANGUAGES = sizeof(gLanguages) / sizeof(char *);
 
 // adapation layer global variables
 static char *gPicoMemArea = NULL;
+#if defined USE_PICO
 static pico_System gPicoSystem = NULL;
 static pico_Engine gPicoEngine = NULL;
 static pico_Resource gPicoTaResources[] = {NULL, NULL, NULL, NULL, NULL, NULL};
@@ -47,11 +50,13 @@ static pico_Char *gPicoTaFileNames[] = {NULL, NULL, NULL, NULL, NULL, NULL};
 static pico_Char *gPicoSgFileNames[] = {NULL, NULL, NULL, NULL, NULL, NULL};
 static pico_Char *gPicoTaResourceNames[] = {NULL, NULL, NULL, NULL, NULL, NULL};
 static pico_Char *gPicoSgResourceNames[] = {NULL, NULL, NULL, NULL, NULL, NULL};
+#endif
 
 static bool gInitializationSuccess = false;
 static int gCurrentLanguage = 0;
 static QString gError = "";
 
+#if defined USE_PICO
 static void terminate() {
   if (gPicoSystem) {
     pico_terminate(&gPicoSystem);
@@ -61,8 +66,10 @@ static void terminate() {
   gPicoMemArea = NULL;
   gInitializationSuccess = false;
 }
+#endif
 
 static void releaseTaResource() {
+#if defined USE_PICO
   if (gPicoSystem) {
     for (int i = 0; i < N_LANGUAGES; ++i) {
       if (gPicoTaResources[i]) {
@@ -79,9 +86,11 @@ static void releaseTaResource() {
       }
     }
   }
+#endif
 }
 
 static void releaseSgResource() {
+#if defined USE_PICO
   if (gPicoSystem) {
     for (int i = 0; i < N_LANGUAGES; ++i) {
       if (gPicoSgResources[i]) {
@@ -98,22 +107,27 @@ static void releaseSgResource() {
       }
     }
   }
+#endif
 }
 
 static void releaseVoices() {
+#if defined USE_PICO
   if (gPicoSystem) {
     for (int i = 0; i < N_LANGUAGES; ++i)
       pico_releaseVoiceDefinition(gPicoSystem, reinterpret_cast<pico_Char *>(const_cast<char *>(gLanguages[i])));
   }
+#endif
 }
 
 static void releaseEngine() {
+#if defined USE_PICO
   if (gPicoSystem) {
     if (gPicoEngine) {
       pico_disposeEngine(gPicoSystem, &gPicoEngine);
       gPicoEngine = NULL;
     }
   }
+#endif
 }
 
 static void cleanup() {
@@ -121,10 +135,13 @@ static void cleanup() {
   releaseVoices();
   releaseSgResource();
   releaseTaResource();
+#if defined USE_PICO
   terminate();
+#endif
 }
 
 static void createEngine(int languageIndex) {
+#if defined USE_PICO
   assert(languageIndex < N_LANGUAGES);
   int ret = 0;
   pico_Retstring outMessage;
@@ -134,9 +151,11 @@ static void createEngine(int languageIndex) {
     releaseEngine();
     return;
   }
+#endif
 }
 
 static void init() {
+#if defined USE_PICO
   assert(!gInitializationSuccess);  // only one instance of this object can exist
 
   pico_Retstring outMessage;
@@ -217,6 +236,7 @@ static void init() {
       return;
     }
   }
+#endif
 
   // Create a new Pico engine.
   // Warning: only one engine is allowed at the same time, we therefore need to release it
@@ -317,12 +337,14 @@ qint16 *WbPicoTextToSpeech::generateBufferFromText(const QString &text, int *siz
     return NULL;
   updateEngineIfRequired(language.toStdString().c_str());
   // Flush engine-internal buffers (e.g. reset voice effects, but preserve language).
-  pico_resetEngine(gPicoEngine, PICO_RESET_SOFT);
 
   const int PICO_BLOCK_SIZE = 1024;
   int bufferSize = 0;
   int bufferIndex = 0;
   qint16 *buffer = NULL;
+
+#if defined USE_PICO
+  pico_resetEngine(gPicoEngine, PICO_RESET_SOFT);
 
   int status;
   QString t = toSsml(text);
@@ -369,6 +391,7 @@ qint16 *WbPicoTextToSpeech::generateBufferFromText(const QString &text, int *siz
       bufferIndex += bytesReceived;
     } while (PICO_STEP_BUSY == status);
   }
+#endif
   gError.clear();
   *size = bufferIndex / sizeof(qint16);
   buffer = static_cast<qint16 *>(realloc(buffer, bufferIndex));  // reduce the size of the buffer to the minimum

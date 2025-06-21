@@ -15,11 +15,13 @@
 #ifndef WB_ODE_GEOM_DATA
 #define WB_ODE_GEOM_DATA
 
+#include <core/WbConfig.h>
+
 class WbFluid;
 class WbSolid;
 class WbGeometry;
 
-class WbOdeGeomData {
+class WB_LIB_EXPORT WbOdeGeomData {
 public:
   // constructors and destructor
   explicit WbOdeGeomData(WbSolid *solid, WbGeometry *geometry = NULL) :

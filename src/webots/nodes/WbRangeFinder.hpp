@@ -17,7 +17,12 @@
 
 #include "WbAbstractCamera.hpp"
 
-class WbRangeFinder : public WbAbstractCamera {
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRangeFinder : public WbAbstractCamera {
   Q_OBJECT
 
 public:
@@ -36,9 +41,11 @@ public:
   WbRgb enabledCameraFrustrumColor() const override { return WbRgb(1.0f, 1.0f, 0.0f); }
 
   bool isRangeFinder() override { return true; }
+  double minRange() const override { return mMinRange->value(); }
   double maxRange() const override { return mMaxRange->value(); }
 
   int textureGLId() const override;
+  float *rangeFinderImage() const;
 
 private:
   // user accessible fields
@@ -49,15 +56,12 @@ private:
   // private functions
   void addConfigureToStream(WbDataStream &stream, bool reconfigure = false) override;
 
-  float *rangeFinderImage() const;
-
   WbRangeFinder &operator=(const WbRangeFinder &);  // non copyable
   WbNode *clone() const override { return new WbRangeFinder(*this); }
   void init();
   void initializeImageMemoryMappedFile() override;
 
   int size() const override { return sizeof(float) * width() * height(); }
-  double minRange() const override { return mMinRange->value(); }
   bool isFrustumEnabled() const override;
 
   // WREN

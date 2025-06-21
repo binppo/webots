@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenRangeQuantization : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenRangeQuantization : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenRangeQuantization();
 

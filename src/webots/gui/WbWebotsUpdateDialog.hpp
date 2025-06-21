@@ -21,9 +21,11 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QLabel;
 
-class WbWebotsUpdateDialog : public QDialog {
+class WB_LIB_EXPORT WbWebotsUpdateDialog : public QDialog {
   Q_OBJECT
 
 public:

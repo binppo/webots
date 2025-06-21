@@ -27,7 +27,7 @@
 #include <ode/ode.h>
 #include <QtCore/QDataStream>
 #include <cassert>
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 void WbTouchSensor::init() {
   mIsTouching = false;
@@ -115,6 +115,25 @@ void WbTouchSensor::updateResolution() {
   WbFieldChecker::resetDoubleIfNonPositiveAndNotDisabled(this, mResolution, -1.0, -1.0);
 }
 
+int WbTouchSensor::lookupTableSize() const {
+  return mLookupTable->size();
+}
+
+QVector<QVector3D> WbTouchSensor::lookupTable() const {
+  QVector<QVector3D> table;
+  for (int i = 0; i < mLookupTable->size(); i++) {
+    table << QVector3D(mLookupTable->item(i).x()
+        , mLookupTable->item(i).y()
+        , mLookupTable->item(i).z());
+  }
+
+  return table;
+}
+
+int WbTouchSensor::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbTouchSensor::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -128,6 +147,13 @@ void WbTouchSensor::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+QList<double> WbTouchSensor::value() {
+  if (mDeviceType != FORCE3D)
+    return QList<double>() << mValues[0];
+  else
+   return QList<double>() << mValues[0] << mValues[1] << mValues[2];
 }
 
 void WbTouchSensor::writeAnswer(WbDataStream &stream) {
@@ -282,4 +308,8 @@ bool WbTouchSensor::forceBehavior() const {
 
 void WbTouchSensor::setSolidMerger() {
   mSolidMerger = physics() ? new WbSolidMerger(this) : NULL;
+}
+
+void WbTouchSensor::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

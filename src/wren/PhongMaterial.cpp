@@ -37,6 +37,9 @@ namespace wren {
   std::unordered_map<cache::Key, cache::PhongMaterialData> PhongMaterial::cCache;
 
   void PhongMaterial::setTexture(Texture *texture, size_t index) {
+    if (!mCacheData)
+      return;
+
     Material::setTexture(texture, index);
 
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
@@ -45,6 +48,9 @@ namespace wren {
   }
 
   size_t PhongMaterial::sortingId() const {
+    if (!mCacheData)
+      return 0;
+
     const unsigned long long programId = static_cast<unsigned long long>(mDefaultProgram->glName());
 
     size_t textureId = 0;
@@ -67,6 +73,9 @@ namespace wren {
   }
 
   void PhongMaterial::clearMaterial() {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
 
     material.mAmbient = glm::vec4(gVec3Ones, 1.0f);
@@ -87,6 +96,9 @@ namespace wren {
   }
 
   void PhongMaterial::setColor(const glm::vec3 &color) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     glm::vec4 linearColor = colorutils::srgbToLinear(glm::vec4(color, 1.0f));
     material.mAmbient = linearColor;
@@ -98,6 +110,9 @@ namespace wren {
   }
 
   void PhongMaterial::setAmbient(const glm::vec3 &ambient, bool linearColor) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mAmbient = linearColor ? glm::vec4(ambient, 1.0f) : colorutils::srgbToLinear(glm::vec4(ambient, 1.0f));
 
@@ -105,6 +120,9 @@ namespace wren {
   }
 
   void PhongMaterial::setDiffuse(const glm::vec3 &diffuse, bool linearColor) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mDiffuse = linearColor ? glm::vec4(diffuse, 1.0f) : colorutils::srgbToLinear(glm::vec4(diffuse, 1.0f));
 
@@ -112,6 +130,9 @@ namespace wren {
   }
 
   void PhongMaterial::setSpecular(const glm::vec3 &specular) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mSpecularAndExponent = colorutils::srgbToLinear(glm::vec4(specular, material.mSpecularAndExponent.w));
 
@@ -119,6 +140,9 @@ namespace wren {
   }
 
   void PhongMaterial::setEmissive(const glm::vec3 &emissive) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mEmissiveAndOpacity = colorutils::srgbToLinear(glm::vec4(emissive, material.mEmissiveAndOpacity.w));
 
@@ -126,6 +150,9 @@ namespace wren {
   }
 
   void PhongMaterial::setShininess(float shininess) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mSpecularAndExponent.w = shininess * 128.0f;
 
@@ -133,6 +160,9 @@ namespace wren {
   }
 
   void PhongMaterial::setSpecularExponent(float specularExponent) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mSpecularAndExponent.w = specularExponent;
 
@@ -140,6 +170,9 @@ namespace wren {
   }
 
   void PhongMaterial::setTransparency(float transparency) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
     material.mEmissiveAndOpacity.w = 1.0f - transparency;
 
@@ -148,6 +181,9 @@ namespace wren {
 
   void PhongMaterial::setAllParameters(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular,
                                        const glm::vec3 &emissive, float shininess, float transparency) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PhongMaterial material(mCacheData->mMaterial);
 
     material.mAmbient = colorutils::srgbToLinear(glm::vec4(ambient, 1.0f));
@@ -162,8 +198,10 @@ namespace wren {
     if (bindProgram)
       Material::useProgram();
 
-    assert(mCacheData);
-    glstate::bindPhongMaterial(mCacheData);
+    if (mCacheData) {
+      assert(mCacheData);
+      glstate::bindPhongMaterial(mCacheData);
+    }
 
     updateUniforms();
     Material::bindTextures();
@@ -218,6 +256,9 @@ namespace wren {
   }
 
   void PhongMaterial::updateTranslucency() {
+    if (!mCacheData)
+      return;
+
     Material::updateTranslucency();
 
     if (!mIsTranslucent)

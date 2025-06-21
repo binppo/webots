@@ -23,10 +23,12 @@
 #include "WbSFVector2.hpp"
 #include "WbSFVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSoundClip;
 class WbDownloader;
 
-class WbContactProperties : public WbBaseNode {
+class WB_LIB_EXPORT WbContactProperties : public WbBaseNode {
   Q_OBJECT
 
 public:

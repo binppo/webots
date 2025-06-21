@@ -194,6 +194,10 @@ void WbControlledWorld::checkIfReadRequestCompleted() {
 }
 
 void WbControlledWorld::step() {
+  WbSimulationWorld::step();
+}
+
+/*void WbControlledWorld::step() {
   if (mFirstStep && !mRetryEnabled) {
     foreach (WbRobot *const robot, robots()) {
       if (!robot->isControllerStarted())
@@ -283,7 +287,7 @@ void WbControlledWorld::step() {
   }
 
   waitForRobotWindowIfNeededAndCompleteStep();
-}
+}*/
 
 bool WbControlledWorld::needToWait(bool *waitForExternControllerStart) {
   if (waitForExternControllerStart)

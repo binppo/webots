@@ -834,7 +834,7 @@ WbNode::NodeUse WbNodeUtilities::checkNodeUse(const WbNode *n) {
   }
 
   if (n->isProtoParameterNode()) {
-    QVector<WbNode *> instances = n->protoParameterNodeInstances();
+    auto instances = n->protoParameterNodeInstances();
     // check if at least one of the instances is in bounding object
     foreach (const WbNode *instance, instances) {
       nodeUse = static_cast<WbNode::NodeUse>(nodeUse | checkNodeUse(instance));
@@ -1791,4 +1791,13 @@ WbBoundingSphere *WbNodeUtilities::boundingSphereAncestor(const WbNode *node) {
     n = n->parentNode();
   }
   return NULL;
+}
+
+static ccDBRoot *mSceneDB = nullptr;
+void WbNodeUtilities::setSceneDB(ccDBRoot *db) {
+  mSceneDB = db;
+}
+
+ccDBRoot *WbNodeUtilities::getSceneDB() {
+  return mSceneDB;
 }

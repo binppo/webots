@@ -22,8 +22,10 @@
 #include "WbDevice.hpp"
 #include "WbSolid.hpp"
 
+#include <core/WbConfig.h>
+
 // Generic Webots devices, i.e., all devices but WbMotor and WbPositionSensor
-class WbSolidDevice : public WbDevice, public WbSolid {
+class WB_LIB_EXPORT WbSolidDevice : public WbDevice, public WbSolid {
 public:
   // destructor
   virtual ~WbSolidDevice() override;

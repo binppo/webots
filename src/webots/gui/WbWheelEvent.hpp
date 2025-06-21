@@ -22,11 +22,13 @@
 
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbViewpoint;
 class WbSolid;
 
 // WbWheelEvent class
-class WbWheelEvent {
+class WB_LIB_EXPORT WbWheelEvent {
 public:
   virtual ~WbWheelEvent() {}
   virtual void apply(int delta) = 0;
@@ -36,7 +38,7 @@ protected:
 };
 
 // WbWheelLiftSolidEvent class
-class WbWheelLiftSolidEvent : public WbWheelEvent {
+class WB_LIB_EXPORT WbWheelLiftSolidEvent : public WbWheelEvent {
 public:
   WbWheelLiftSolidEvent(WbViewpoint *viewpoint, WbSolid *selectedSolid);
   virtual ~WbWheelLiftSolidEvent() override;

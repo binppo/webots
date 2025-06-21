@@ -101,7 +101,7 @@ int WbMultimediaStreamingServer::bytesToWrite() {
 void WbMultimediaStreamingServer::removeTcpClient() {
   const QTcpSocket *client = qobject_cast<QTcpSocket *>(sender());
   if (client)
-    mTcpClients.removeAll(client);
+    mTcpClients.removeAll(const_cast<QTcpSocket*>(client));
   if (mTcpClients.isEmpty())
     mLimiterTimer.stop();
 }
@@ -158,7 +158,9 @@ void WbMultimediaStreamingServer::processLimiterTimeout() {
       // send one image in full resolution
       mFullResolutionOnPause = 2;
       const QSize &fullSize(mLimiter->fullResolution());
-      cMainWindow->setView3DSize(fullSize);
+      //cMainWindow->setView3DSize(fullSize);
+      QMetaObject::invokeMethod(this, "setView3DSize", Qt::QueuedConnection,
+        Q_ARG(const QSize&, fullSize));
     }
     mLimiter->resetStop();
     return;
@@ -172,7 +174,9 @@ void WbMultimediaStreamingServer::updateStreamingParameters(int skippedImagesCou
   mLimiter->recomputeStreamingLimits(skippedImagesCount);
   if ((mBlockedResolutionFactor < 0) && (mFullResolutionOnPause > 0 || mLimiter->resolutionChanged())) {
     const QSize &newSize(mLimiter->resolution());
-    cMainWindow->setView3DSize(newSize);
+    //cMainWindow->setView3DSize(newSize);
+    QMetaObject::invokeMethod(this, "setView3DSize", Qt::QueuedConnection,
+        Q_ARG(const QSize&, newSize));
     mFullResolutionOnPause = 0;
   }
   mImageUpdateTimeStep = mLimiter->updateTimeStep();
@@ -347,7 +351,9 @@ void WbMultimediaStreamingServer::processTextMessage(QString message) {
     const int height = resolution[1].toInt();
     QString args;
     if ((mImageWidth <= 0 && mImageHeight <= 0) || client == mWebSocketClients.first()) {
-      cMainWindow->setView3DSize(QSize(width, height));
+      //cMainWindow->setView3DSize(QSize(width, height));
+      QMetaObject::invokeMethod(this, "setView3DSize", Qt::QueuedConnection,
+          Q_ARG(const QSize&, QSize(width, height)));
       mImageWidth = width;
       mImageHeight = height;
       WbLog::info(tr("Streaming server: Resolution changed to %1x%2.").arg(width).arg(height));
@@ -370,7 +376,10 @@ void WbMultimediaStreamingServer::processTextMessage(QString message) {
       mImageWidth = resolution[0].toInt();
       mImageHeight = resolution[1].toInt();
       WbLog::info(tr("Streaming server: Client resize: new resolution %1x%2.").arg(mImageWidth).arg(mImageHeight));
-      cMainWindow->setView3DSize(QSize(mImageWidth, mImageHeight));
+      //cMainWindow->setView3DSize(QSize(mImageWidth, mImageHeight));
+      QMetaObject::invokeMethod(this, "setView3DSize", Qt::QueuedConnection,
+          Q_ARG(const QSize&, QSize(mImageWidth, mImageHeight)));
+
       sendToClients(QString("resize: %1 %2").arg(mImageWidth).arg(mImageHeight));
       mLimiter->resetResolution(QSize(mImageWidth, mImageHeight));
     } else

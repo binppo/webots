@@ -17,7 +17,9 @@
 
 #include "WbPlugin.hpp"
 
-class WbRadioPlugin : public WbPlugin {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRadioPlugin : public WbPlugin {
   Q_OBJECT
 
 public:

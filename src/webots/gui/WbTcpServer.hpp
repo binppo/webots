@@ -21,17 +21,19 @@
 
 #include "WbLog.hpp"
 
+#include <core/WbConfig.h>
+
 class QTcpSocket;
 class QTcpServer;
 class QWebSocket;
 class QWebSocketServer;
 
-class WbMainWindow;
+class WbVideoArea;
 class WbNode;
 class WbRobot;
 class WbView3D;
 
-class WbTcpServer : public QObject {
+class WB_LIB_EXPORT WbTcpServer : public QObject {
   Q_OBJECT
 
 public:
@@ -39,7 +41,7 @@ public:
   virtual ~WbTcpServer();
 
   void setView3D(WbView3D *);
-  void setMainWindow(WbMainWindow *mainWindow);
+  void setVideoArea(WbVideoArea *videoArea);
   virtual void start(int port);
   void sendToClients(const QString &message = "");
   void closeClient(const QString &clientID);
@@ -78,7 +80,7 @@ protected:
 
   static QString clientToId(QWebSocket *client);
   static QString simulationStateString(bool pauseTime = true);
-  static WbMainWindow *cMainWindow;
+  static WbVideoArea *cVideoArea;
 
 private slots:
   void setWorldLoadingProgress(const int progress);

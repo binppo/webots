@@ -17,11 +17,13 @@
 
 #include "WbGeometry.hpp"
 
+#include <core/WbConfig.h>
+
 class WbCoordinate;
 
 struct WrMaterial;
 
-class WbIndexedLineSet : public WbGeometry {
+class WB_LIB_EXPORT WbIndexedLineSet : public WbGeometry {
   Q_OBJECT
 
 public:

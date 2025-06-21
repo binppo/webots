@@ -26,7 +26,6 @@
 #include "WbLensFlare.hpp"
 #include "WbLight.hpp"
 #include "WbNetwork.hpp"
-#include "WbObjectDetection.hpp"
 #include "WbPerformanceLog.hpp"
 #include "WbPreferences.hpp"
 #include "WbProtoModel.hpp"
@@ -46,7 +45,7 @@
 #include "WbWrenTextureOverlay.hpp"
 #include "WbZoom.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QtGlobal>
@@ -56,45 +55,6 @@
 #else
 #include <QtCore/QSharedMemory>
 #endif
-
-class WbRecognizedObject : public WbObjectDetection {
-public:
-  WbRecognizedObject(WbCamera *camera, WbSolid *object, const int occlusion, const double maxRange) :
-    WbObjectDetection(camera, object, occlusion, maxRange, camera->fieldOfView()) {
-    mId = object->uniqueId();
-    mModel = "";
-    mRelativeOrientation = WbRotation(0.0, 1.0, 0.0, 0.0);
-    mPositionOnImage = WbVector2(0, 0);
-    mPixelSize = WbVector2(0, 0);
-    mColors.clear();
-  };
-
-  virtual ~WbRecognizedObject() {}
-
-  int id() const { return mId; }
-  const QString &model() const { return mModel; }
-  const WbRotation &relativeOrientation() const { return mRelativeOrientation; }
-  const WbVector2 positionOnImage() const { return mPositionOnImage; }
-  const WbVector2 pixelSize() const { return mPixelSize; }
-  const QList<WbRgb> &colors() const { return mColors; }
-
-  void setModel(const QString &model) { mModel = model; }
-  void setRelativeOrientation(const WbRotation &relativeOrientation) { mRelativeOrientation = relativeOrientation; }
-  void setPositionOnImage(const WbVector2 &positionOnImage) { mPositionOnImage = positionOnImage; }
-  void setPixelSize(const WbVector2 &pixelSize) { mPixelSize = pixelSize; }
-  void addColor(const WbRgb &colors) { mColors.append(colors); }
-  void clearColors() { mColors.clear(); }
-
-protected:
-  double distance() override { return fabs(objectRelativePosition().x()); }
-
-  int mId;
-  QString mModel;
-  WbRotation mRelativeOrientation;
-  WbVector2 mPositionOnImage;
-  WbVector2 mPixelSize;
-  QList<WbRgb> mColors;
-};
 
 void WbCamera::init() {
   mCharType = 'c';
@@ -362,6 +322,58 @@ WrTexture *WbCamera::getWrenTexture() {
   return NULL;
 }
 
+double WbCamera::minFieldOfView() {
+  if (zoom()) {
+    return zoom()->minFieldOfView();
+  } else {
+    return mFieldOfView->value();
+  }
+}
+
+double WbCamera::maxFieldOfView() {
+  if (zoom()) {
+    return zoom()->maxFieldOfView();
+  } else {
+    return mFieldOfView->value();
+  }
+}
+
+double WbCamera::focalLength() {
+  if (focus()) {
+    return focus()->focalLength();
+  } else {
+    return 0.0;
+  }
+}
+
+double WbCamera::focalDistance() {
+  if (focus()) {
+    return focus()->focalDistance();
+  } else {
+    return 0.0;
+  }
+}
+
+double WbCamera::minFocalDistance() {
+  if (focus()) {
+    return focus()->minFocalDistance();
+  } else {
+    return 0.0;
+  }
+}
+
+double WbCamera::maxFocalDistance() {
+  if (focus()) {
+    return focus()->maxFocalDistance();
+  } else {
+    return 0.0;
+  }
+}
+
+double WbCamera::getExposure() {
+  return mExposure->value();
+}
+
 void WbCamera::displayRecognizedObjectsInOverlay() {
   assert(recognition());
 
@@ -385,24 +397,24 @@ void WbCamera::displayRecognizedObjectsInOverlay() {
       clearData[i] = 0;
     }
 
-    WbWrenOpenGlContext::makeWrenCurrent();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      // Clear texture
+      wr_texture_change_data(mRecognizedObjectsTexture, clearData, 0, 0, w, h);
 
-    // Clear texture
-    wr_texture_change_data(mRecognizedObjectsTexture, clearData, 0, 0, w, h);
+      for (int i = 0; i < mRecognizedObjects.size(); ++i) {
+        const WbRecognizedObject *object = mRecognizedObjects.at(i);
+        const int x1 = qMax(0, (int)(object->positionOnImage().x() - object->pixelSize().x() / 2 - 1));
+        const int x2 = qMin(w - 1, (int)(object->positionOnImage().x() + object->pixelSize().x() / 2 + 1));
+        const int y1 = qMax(0, (int)(object->positionOnImage().y() - object->pixelSize().y() / 2 - 1));
+        const int y2 = qMin(h - 1, (int)(object->positionOnImage().y() + object->pixelSize().y() / 2 + 1));
 
-    for (int i = 0; i < mRecognizedObjects.size(); ++i) {
-      const WbRecognizedObject *object = mRecognizedObjects.at(i);
-      const int x1 = qMax(0, (int)(object->positionOnImage().x() - object->pixelSize().x() / 2 - 1));
-      const int x2 = qMin(w - 1, (int)(object->positionOnImage().x() + object->pixelSize().x() / 2 + 1));
-      const int y1 = qMax(0, (int)(object->positionOnImage().y() - object->pixelSize().y() / 2 - 1));
-      const int y2 = qMin(h - 1, (int)(object->positionOnImage().y() + object->pixelSize().y() / 2 + 1));
-
-      wr_texture_change_data(mRecognizedObjectsTexture, data, x1, y1, frameThickness, y2 - y1);
-      wr_texture_change_data(mRecognizedObjectsTexture, data, x2 - frameThickness, y1, frameThickness, y2 - y1);
-      wr_texture_change_data(mRecognizedObjectsTexture, data, x1, y1, x2 - x1, frameThickness);
-      wr_texture_change_data(mRecognizedObjectsTexture, data, x1, y2 - frameThickness, x2 - x1, frameThickness);
+        wr_texture_change_data(mRecognizedObjectsTexture, data, x1, y1, frameThickness, y2 - y1);
+        wr_texture_change_data(mRecognizedObjectsTexture, data, x2 - frameThickness, y1, frameThickness, y2 - y1);
+        wr_texture_change_data(mRecognizedObjectsTexture, data, x1, y1, x2 - x1, frameThickness);
+        wr_texture_change_data(mRecognizedObjectsTexture, data, x1, y2 - frameThickness, x2 - x1, frameThickness);
+      }
+      WbWrenOpenGlContext::doneWren();
     }
-    WbWrenOpenGlContext::doneWren();
 
     delete[] data;
     delete[] clearData;
@@ -544,6 +556,32 @@ void WbCamera::writeConfigure(WbDataStream &stream) {
   WbAbstractCamera::writeConfigure(stream);
 
   mRecognitionSensor->connectToRobotSignal(robot());
+}
+
+int WbCamera::segmentationSize() const {
+  if (!mSegmentationCamera)
+    return 0;
+
+  return mSegmentationCamera->size();
+}
+
+bool WbCamera::copySegmentationImage(unsigned char*& data, int& w, int& h, int& ch) {
+  bool rc = false;
+  data = nullptr;
+  w = 0;
+  h = 0;
+  ch = 0;
+  if (mSegmentationCamera) {
+    int dataSize = mSegmentationCamera->size();
+    w = mSegmentationCamera->width();
+    h = mSegmentationCamera->height();
+    ch = mSegmentationCamera->channel();
+    data = new unsigned char[dataSize];
+    copyImageToMemoryMappedFile(mSegmentationCamera, data);
+    rc = true;
+  }
+
+  return rc;
 }
 
 void WbCamera::writeAnswer(WbDataStream &stream) {
@@ -874,7 +912,18 @@ bool WbCamera::refreshRecognitionSensorIfNeeded() {
       objectsMap.insert(pixelSurface, mRecognizedObjects.at(i));
     }
     mRecognizedObjects.clear();
-    QMultiMapIterator<int, WbRecognizedObject *> i(objectsMap);
+
+    QMultiMap<int, WbRecognizedObject*>::const_iterator i = objectsMap.constBegin();
+    while (i != objectsMap.constEnd() && mRecognizedObjects.size() < recognition()->maxObjects()) {
+      mRecognizedObjects.append(i.value());
+      ++i;
+    }
+    // delete the remaining ones
+    while (i != objectsMap.constEnd()) {
+      delete i.value();
+      ++i;
+    }
+    /*QMultiMapIterator<int, WbRecognizedObject*> i(objectsMap);
     i.toBack();
     while (i.hasPrevious() && mRecognizedObjects.size() < recognition()->maxObjects()) {
       i.previous();
@@ -885,6 +934,7 @@ bool WbCamera::refreshRecognitionSensorIfNeeded() {
       i.previous();
       delete i.value();
     }
+    */
   }
 
   mRecognitionSensor->updateTimer();
@@ -1282,3 +1332,72 @@ void WbCamera::applyLensToWren() {
     updateOverlayMaskTexture();
   }
 }
+
+void WbCamera::SET_FOV(double fov) {
+  const WbZoom* z = zoom();
+  if (z) {
+    if (fov >= z->minFieldOfView() && fov <= z->maxFieldOfView())
+      mFieldOfView->setValue(fov);
+    else
+      warn(
+        tr("wb_camera_set_fov(%1) out of zoom range [%2, %3].").arg(fov).arg(z->minFieldOfView()).arg(z->maxFieldOfView()));
+  }
+  else
+    warn(tr("wb_camera_set_fov() cannot be applied to this camera: missing 'zoom'."));
+}
+
+void WbCamera::SET_EXPOSURE(double exposure) {
+  mExposure->setValue(exposure);
+}
+
+void WbCamera::SET_FOCAL(double focalDistance) {
+  WbFocus* f = focus();
+  if (f) {
+    if ((focalDistance >= f->minFocalDistance()) && (focalDistance <= f->maxFocalDistance()))
+      f->setFocalDistance(focalDistance);
+    else
+      warn(tr("wb_camera_set_focal_distance(%1) out of focus range [%2, %3].")
+        .arg(focalDistance)
+        .arg(f->minFocalDistance())
+        .arg(f->maxFocalDistance()));
+  }
+  else
+    warn(tr("wb_camera_set_focal_distance() cannot be applied to this camera: missing 'focus'."));
+}
+
+void WbCamera::SET_RECOGNITION_SAMPLING_PERIOD(int refreshRate) {
+  mRecognitionRefreshRate = refreshRate;
+  mRecognitionSensor->setRefreshRate(mRecognitionRefreshRate);
+}
+
+void WbCamera::ENABLE_SEGMENTATION(bool segmentationEnabled) {
+  mSegmentationEnabled = segmentationEnabled;
+  if (!hasBeenSetup())
+    setup();
+  else
+    updateOverlayMaskTexture();
+  emit enabled(this, isEnabled());
+}
+
+QByteArray WbCamera::SERIAL_SEGMENTATION_IMAGE() {
+  QByteArray ba(size(), 0);
+  if (mSegmentationCamera) {
+    mSegmentationCamera->enableCopying(true);
+    mSegmentationCamera->copyContentsToMemory(ba.data());
+  }
+
+  return ba;
+}
+
+QList<WbRecognizedObject*> WbCamera::CAMERA_OBJECTS() {
+  return mRecognizedObjects;
+}
+
+QByteArray WbCamera::SEGMENTATION_MEMORY_MAPPED_FILE() {
+  if (mSegmentationMemoryMappedFile) {
+    return QFile::encodeName(mSegmentationMemoryMappedFile->nativeKey());
+  }
+
+  return QByteArray();
+}
+

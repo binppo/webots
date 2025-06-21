@@ -17,14 +17,16 @@
 
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 namespace WbControllerPlugin {
 
   enum Type { ROBOT_WINDOW, REMOTE_CONTROL };
 
   // absolute filenames in the resources directory, the files doesn't exist necessarily
-  const QStringList &defaultList(Type type);
+  WB_LIB_EXPORT const QStringList &defaultList(Type type);
 
-  Type pluginSubDirectoryToType(const QString &pluginSubDirectory);
+  WB_LIB_EXPORT Type pluginSubDirectoryToType(const QString &pluginSubDirectory);
 
 };  // namespace WbControllerPlugin
 

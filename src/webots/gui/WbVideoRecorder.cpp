@@ -18,7 +18,6 @@
 #include "WbDesktopServices.hpp"
 #include "WbFileUtil.hpp"
 #include "WbLog.hpp"
-#include "WbMainWindow.hpp"
 #include "WbMessageBox.hpp"
 #include "WbPreferences.hpp"
 #include "WbProject.hpp"
@@ -100,7 +99,7 @@ private:
 static const QString TEMP_FRAME_FILENAME_PREFIX = "webotsFrame_";
 
 WbVideoRecorder *WbVideoRecorder::cInstance = NULL;
-WbMainWindow *WbVideoRecorder::cMainWindow = NULL;
+WbVideoArea *WbVideoRecorder::cVideoArea = NULL;
 int WbVideoRecorder::cDisplayRefresh = 1;
 
 WbVideoRecorder *WbVideoRecorder::instance() {
@@ -154,14 +153,14 @@ bool WbVideoRecorder::initRecording(WbSimulationView *view, double basicTimeStep
 bool WbVideoRecorder::setMainWindowFullScreen(bool fullScreen) {
   bool success = false;
   if (fullScreen) {
-    success = cMainWindow->setFullScreen(true, true);
+    success = cVideoArea->setFullScreen(true, true);
     if (success)
-      cMainWindow->lockFullScreen(true);
+      cVideoArea->lockFullScreen(true);
   } else {
     // first unlock, otherwise not possible
     // to switch to normal mode
-    cMainWindow->lockFullScreen(false);
-    success = cMainWindow->setFullScreen(false, true);
+    cVideoArea->lockFullScreen(false);
+    success = cVideoArea->setFullScreen(false, true);
   }
 
   return success;
@@ -291,7 +290,7 @@ void WbVideoRecorder::stopRecording(bool canceled) {
     emit videoCreationStatusChanged(WB_SUPERVISOR_MOVIE_SIMULATION_ERROR);
 
     if (!canceled)
-      WbMessageBox::warning("Nothing was recorded because the simulation didn't run.", cMainWindow, "Warning");
+      WbMessageBox::warning("Nothing was recorded because the simulation didn't run.", cVideoArea, "Warning");
 
     return;
   }
@@ -321,7 +320,7 @@ void WbVideoRecorder::stopRecording(bool canceled) {
     }
 
     mVideoName =
-      QFileDialog::getSaveFileName(cMainWindow, tr("Save Video"), WbProject::computeBestPathForSaveAs(proposedFilename),
+      QFileDialog::getSaveFileName(cVideoArea, tr("Save Video"), WbProject::computeBestPathForSaveAs(proposedFilename),
                                    tr("Videos (*%1)").arg(videoFilter));
     if (mVideoName.isEmpty()) {
       // canceled by user
@@ -397,7 +396,7 @@ void WbVideoRecorder::terminateVideoCreation(int exitCode, QProcess::ExitStatus 
 
   if (mIsGraphicFeedbackEnabled) {
     QCheckBox *checkBox = new QCheckBox(tr("Open containg folder and YouTube upload page."));
-    QMessageBox box(cMainWindow);
+    QMessageBox box(cVideoArea);
     box.setWindowTitle(tr("Make Movie"));
     box.setText(tr("The movie has been created:\n%1\n\nDo you want to play it back?\n").arg(mVideoName));
     box.setIcon(QMessageBox::Icon::Question);

@@ -24,7 +24,9 @@
 
 #include "WbVersion.hpp"
 
-class WbPreferences : public QSettings {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPreferences : public QSettings {
   Q_OBJECT
 
 public:

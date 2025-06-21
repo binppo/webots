@@ -28,7 +28,9 @@
 
 #include <cmath>
 
-class WbQuaternion {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbQuaternion {
 public:
   // construct an identity quaternion
   WbQuaternion() : mW(1.0), mX(0.0), mY(0.0), mZ(0.0) {}

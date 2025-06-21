@@ -16,6 +16,12 @@
 #define WB_CAMERA_HPP
 
 #include "WbAbstractCamera.hpp"
+#include "utils/WbObjectDetection.hpp"
+
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 struct WrTexture;
 
@@ -28,7 +34,7 @@ class WbRecognition;
 class WbRecognizedObject;
 class WbZoom;
 
-class WbCamera : public WbAbstractCamera {
+class WB_LIB_EXPORT WbCamera : public WbAbstractCamera {
   Q_OBJECT
 
 public:
@@ -62,6 +68,42 @@ public:
 
   virtual WrTexture *getWrenTexture();
 
+  double minFieldOfView();
+  double maxFieldOfView();
+
+  double focalLength();
+  double focalDistance();
+  double minFocalDistance();
+  double maxFocalDistance();
+  double getExposure();
+
+  int size() const override { return 4 * width() * height(); }
+  double minRange() const override { return mNear->value(); }
+  double maxRange() const override { return mFar->value(); }
+  bool antiAliasing() const override { return mAntiAliasing->value(); }
+  bool isFrustumEnabled() const override;
+
+  WbFocus *focus() const;
+  WbZoom *zoom() const;
+  WbRecognition *recognition() const;
+  WbLensFlare *lensFlare() const;
+
+  int recognitionRefreshRate() { return mRecognitionRefreshRate; }
+  bool segmentationEnabled() { return mSegmentationEnabled; }
+  int segmentationSize() const;
+  bool copySegmentationImage(unsigned char*& data, int& w, int& h, int& ch);
+
+public slots:
+  void SET_FOV(double fov);
+  void SET_EXPOSURE(double exposure);
+  void SET_FOCAL(double focalDistance);
+  void SET_RECOGNITION_SAMPLING_PERIOD(int refreshRate);
+  void ENABLE_SEGMENTATION(bool segmentationEnabled);
+
+  QByteArray SERIAL_SEGMENTATION_IMAGE();
+  QList<WbRecognizedObject*> CAMERA_OBJECTS();
+  QByteArray SEGMENTATION_MEMORY_MAPPED_FILE();
+
 protected:
   WbVector3 urdfRotation(const WbMatrix3 &rotationMatrix) const override;
   void setup() override;
@@ -83,21 +125,10 @@ private:
   // private functions
   void addConfigureToStream(WbDataStream &stream, bool reconfigure = false) override;
 
-  WbFocus *focus() const;
-  WbZoom *zoom() const;
-  WbRecognition *recognition() const;
-  WbLensFlare *lensFlare() const;
-
   WbCamera &operator=(const WbCamera &);  // non copyable
   WbNode *clone() const override { return new WbCamera(*this); }
   void init();
   void initializeImageMemoryMappedFile() override;
-
-  int size() const override { return 4 * width() * height(); }
-  double minRange() const override { return mNear->value(); }
-  double maxRange() const override { return mFar->value(); }
-  bool antiAliasing() const override { return mAntiAliasing->value(); }
-  bool isFrustumEnabled() const override;
 
   // WREN methods
   void createWrenCamera() override;
@@ -154,6 +185,45 @@ private slots:
   void applyLensToWren() override;
   void updateFrustumDisplayIfNeeded(int optionalRendering) override;
   void updateOverlayMaskTexture();
+};
+
+class WB_LIB_EXPORT WbRecognizedObject : public WbObjectDetection {
+public:
+  WbRecognizedObject(WbCamera *camera, WbSolid *object, const int occlusion, const double maxRange) :
+    WbObjectDetection(camera, object, occlusion, maxRange, camera->fieldOfView()) {
+    mId = object->uniqueId();
+    mModel = "";
+    mRelativeOrientation = WbRotation(0.0, 1.0, 0.0, 0.0);
+    mPositionOnImage = WbVector2(0, 0);
+    mPixelSize = WbVector2(0, 0);
+    mColors.clear();
+  };
+
+  virtual ~WbRecognizedObject() {}
+
+  int id() const { return mId; }
+  const QString &model() const { return mModel; }
+  const WbRotation &relativeOrientation() const { return mRelativeOrientation; }
+  const WbVector2 positionOnImage() const { return mPositionOnImage; }
+  const WbVector2 pixelSize() const { return mPixelSize; }
+  const QList<WbRgb> &colors() const { return mColors; }
+
+  void setModel(const QString &model) { mModel = model; }
+  void setRelativeOrientation(const WbRotation &relativeOrientation) { mRelativeOrientation = relativeOrientation; }
+  void setPositionOnImage(const WbVector2 &positionOnImage) { mPositionOnImage = positionOnImage; }
+  void setPixelSize(const WbVector2 &pixelSize) { mPixelSize = pixelSize; }
+  void addColor(const WbRgb &colors) { mColors.append(colors); }
+  void clearColors() { mColors.clear(); }
+
+protected:
+  double distance() override { return fabs(objectRelativePosition().x()); }
+
+  int mId;
+  QString mModel;
+  WbRotation mRelativeOrientation;
+  WbVector2 mPositionOnImage;
+  WbVector2 mPixelSize;
+  QList<WbRgb> mColors;
 };
 
 #endif  // WB_CAMERA_HPP

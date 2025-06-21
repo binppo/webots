@@ -18,6 +18,8 @@
 #include <QtCore/QList>
 #include "WbSolid.hpp"
 
+#include <core/WbConfig.h>
+
 class WbGroup;
 class WbMFDouble;
 class WbRobot;
@@ -27,7 +29,7 @@ class WbSFDouble;
 
 struct VisualElement;
 
-class WbCharger : public WbSolid {
+class WB_LIB_EXPORT WbCharger : public WbSolid {
   Q_OBJECT
 
 public:

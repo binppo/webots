@@ -24,7 +24,12 @@
 #include "WbJointDevice.hpp"
 #include "WbSensor.hpp"
 
-class WbPositionSensor : public WbJointDevice {
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPositionSensor : public WbJointDevice {
   Q_OBJECT
 
 public:
@@ -46,6 +51,14 @@ public:
 
   // inherited from WbJointDevice
   double position() const;
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  const WbLogicalDevice* GET_ASSOCIATED_DEVICE(int deviceType);
+
+  double value();
 
 private:
   // user accessible field

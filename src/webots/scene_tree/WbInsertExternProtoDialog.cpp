@@ -86,7 +86,7 @@ void WbInsertExternProtoDialog::updateProtoTree() {
     new QTreeWidgetItem(QStringList("PROTO nodes (Webots Projects)"), WbProtoManager::PROTO_WEBOTS);
 
   const QRegularExpression regexp(
-    QRegularExpression::wildcardToRegularExpression(mSearchBar->text(), QRegularExpression::UnanchoredWildcardConversion),
+    QRegularExpression::wildcardToRegularExpression(mSearchBar->text()/*, QRegularExpression::UnanchoredWildcardConversion*/),
     QRegularExpression::CaseInsensitiveOption);
 
   const int categories[4] = {WbProtoManager::PROTO_WORLD, WbProtoManager::PROTO_PROJECT, WbProtoManager::PROTO_EXTRA,

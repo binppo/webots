@@ -21,12 +21,14 @@
 
 #include "WbNodeFactory.hpp"
 
+#include <core/WbConfig.h>
+
 class WbTokenizer;
 class WbNode;
 class QString;
 class WbWriter;
 
-class WbConcreteNodeFactory : public WbNodeFactory {
+class WB_LIB_EXPORT WbConcreteNodeFactory : public WbNodeFactory {
 public:
   // reimplemented public functions
   WbNode *createNode(const QString &modelName, WbTokenizer *tokenizer = 0, WbNode *parentNode = NULL,

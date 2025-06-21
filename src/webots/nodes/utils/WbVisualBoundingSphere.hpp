@@ -23,6 +23,8 @@
 #include "QtCore/QObject"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 
 struct WrMaterial;
@@ -30,7 +32,7 @@ struct WrStaticMesh;
 struct WrRenderable;
 struct WrTransform;
 
-class WbVisualBoundingSphere : public QObject {
+class WB_LIB_EXPORT WbVisualBoundingSphere : public QObject {
   Q_OBJECT
 
 public:

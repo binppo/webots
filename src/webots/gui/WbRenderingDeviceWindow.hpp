@@ -18,7 +18,9 @@
 #include "WbRenderingDevice.hpp"
 
 #include <QtGui/QWindow>
-#include <QtOpenGL/QOpenGLFunctions_3_3_Core>
+#include <QtGui/QOpenGLFunctions_3_3_Core>
+
+#include <core/WbConfig.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -29,7 +31,7 @@ class QOpenGLShaderProgram;
 
 class WbAbstractCamera;
 
-class WbRenderingDeviceWindow : public QWindow {
+class WB_LIB_EXPORT WbRenderingDeviceWindow : public QWindow {
   Q_OBJECT
 
 public:

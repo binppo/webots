@@ -130,34 +130,36 @@ void WbVisualBoundingSphere::show(const WbBaseNode *node) {
   WbVector3 center;
   double radius;
   boundingSphere->computeSphereInGlobalCoordinates(center, radius);
-  WbWrenOpenGlContext::makeWrenCurrent();
-  createSphere(center, radius);
-  wr_renderable_set_visibility_flags(mWrenRenderable, WbWrenRenderingContext::VF_INVISIBLE_FROM_CAMERA);
-  wr_node_set_visible(WR_NODE(mWrenScaleTransform), true);
-  WbWrenOpenGlContext::doneWren();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    createSphere(center, radius);
+    wr_renderable_set_visibility_flags(mWrenRenderable, WbWrenRenderingContext::VF_INVISIBLE_FROM_CAMERA);
+    wr_node_set_visible(WR_NODE(mWrenScaleTransform), true);
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 void WbVisualBoundingSphere::deleteWrenObjects() {
   if (!mInitialized)
     return;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  wr_static_mesh_delete(mWrenMesh);
-  mWrenMesh = NULL;
-  if (mWrenRenderable) {
-    if (mWrenMaterial)
-      wr_renderable_set_material(mWrenRenderable, NULL, NULL);
-    wr_material_delete(mWrenMaterial);
-    mWrenMaterial = NULL;
-    wr_material_delete(mWrenEncodeDepthMaterial);
-    mWrenEncodeDepthMaterial = NULL;
-    wr_material_delete(mWrenSegmentationMaterial);
-    mWrenSegmentationMaterial = NULL;
-    wr_node_delete(WR_NODE(mWrenRenderable));
-    mWrenRenderable = NULL;
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_static_mesh_delete(mWrenMesh);
+    mWrenMesh = NULL;
+    if (mWrenRenderable) {
+      if (mWrenMaterial)
+        wr_renderable_set_material(mWrenRenderable, NULL, NULL);
+      wr_material_delete(mWrenMaterial);
+      mWrenMaterial = NULL;
+      wr_material_delete(mWrenEncodeDepthMaterial);
+      mWrenEncodeDepthMaterial = NULL;
+      wr_material_delete(mWrenSegmentationMaterial);
+      mWrenSegmentationMaterial = NULL;
+      wr_node_delete(WR_NODE(mWrenRenderable));
+      mWrenRenderable = NULL;
+    }
+    wr_node_delete(WR_NODE(mWrenScaleTransform));
+    mWrenScaleTransform = NULL;
+    WbWrenOpenGlContext::doneWren();
   }
-  wr_node_delete(WR_NODE(mWrenScaleTransform));
-  mWrenScaleTransform = NULL;
-  WbWrenOpenGlContext::doneWren();
   mInitialized = false;
 }

@@ -18,6 +18,8 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 //
 // Description: Helper class used to log the signal activity of a qobject
 // Notes:
@@ -27,7 +29,7 @@
 
 class QSignalSpy;
 
-class WbQtObjectSpy : public QObject {
+class WB_LIB_EXPORT WbQtObjectSpy : public QObject {
   Q_OBJECT
 
 public:

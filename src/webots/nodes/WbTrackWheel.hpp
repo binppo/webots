@@ -28,7 +28,9 @@
 #include "WbSFDouble.hpp"
 #include "WbSFVector2.hpp"
 
-class WbTrackWheel : public WbPose {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTrackWheel : public WbPose {
   Q_OBJECT
 public:
   explicit WbTrackWheel(WbTokenizer *tokenizer = NULL);

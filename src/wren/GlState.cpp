@@ -32,6 +32,8 @@
 #include <glad/glad.h>
 #endif
 
+#include <base/logging.h>
+
 #include <algorithm>
 #include <map>
 #include <string>
@@ -111,7 +113,7 @@ namespace wren {
     void init() {
 #ifndef __EMSCRIPTEN__
       if (!gladLoadGL())
-        std::cerr << "ERROR: Unable to load OpenGL functions!" << std::endl;
+        LOG(WARNING) << "ERROR: Unable to load OpenGL functions!";
 
       // attempt to use clip-space Z-values in [0, 1] instead of [-1, 1] for better precision
       if (!GLAD_GL_ARB_clip_control)
@@ -812,27 +814,25 @@ namespace wren {
       do {
         error = glGetError();
         if (error != GL_NO_ERROR && error != ignore) {
-          std::cerr << "OpenGL error: ";
           switch (error) {
             case GL_INVALID_ENUM:
-              std::cerr << "GL_INVALID_ENUM";
+              LOG(WARNING) << "OpenGL error : GL_INVALID_ENUM";
               break;
             case GL_INVALID_VALUE:
-              std::cerr << "GL_INVALID_VALUE";
+              LOG(WARNING) << "OpenGL error : GL_INVALID_VALUE";
               break;
             case GL_INVALID_OPERATION:
-              std::cerr << "GL_INVALID_OPERATION";
+              LOG(WARNING) << "OpenGL error : GL_INVALID_OPERATION";
               break;
             case GL_OUT_OF_MEMORY:
-              std::cerr << "GL_OUT_OF_MEMORY";
+              LOG(WARNING) << "OpenGL error : GL_OUT_OF_MEMORY";
               break;
             case GL_INVALID_FRAMEBUFFER_OPERATION:
-              std::cerr << "GL_INVALID_FRAMEBUFFER_OPERATION";
+              LOG(WARNING) << "OpenGL error : GL_INVALID_FRAMEBUFFER_OPERATION";
               break;
             default:
-              std::cerr << "unknown error (" << error << ")";
+              LOG(WARNING) << "OpenGL error : unknown error (" << error << ")";
           }
-          std::cerr << std::endl;
         }
       } while (error != GL_NO_ERROR);
     }

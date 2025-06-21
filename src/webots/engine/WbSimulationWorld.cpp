@@ -41,6 +41,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTimer>
+#include <QtCore/QThread>
 #include <QtCore/QtGlobal>
 
 #include <cassert>
@@ -54,10 +55,11 @@ WbSimulationWorld::WbSimulationWorld(WbTokenizer *tokenizer) :
   mCluster(NULL),
   mOdeContext(new WbOdeContext()),  // create ODE worlds and spaces
   mPhysicsPlugin(NULL),
-  mTimer(new QTimer(this)),
   mSimulationHasRunAfterSave(false) {
   if (mWorldLoadingCanceled)
     return;
+
+  mTimer = new QTimer(this);
 
   emit worldLoadingStatusHasChanged(tr("Downloading assets"));
   emit worldLoadingHasProgressed(0);
@@ -145,16 +147,18 @@ WbSimulationWorld::WbSimulationWorld(WbTokenizer *tokenizer) :
                    "https://cyberbotics.com/doc/guide/upgrading-webots"));
 
   WbNodeUtilities::fixBackwardCompatibility(WbWorld::instance()->root());
+
+  step();
 }
 
 WbSimulationWorld::~WbSimulationWorld() {
   setIsCleaning(true);
 
+  mTimer->stop();
+
   WbPerformanceLog *log = WbPerformanceLog::instance();
   if (log)
     log->worldClosed(fileName(), logWorldMetrics());
-
-  delete mTimer;
 
   WbPaintTexture::cleanup();
   WbSoundEngine::setWorld(NULL);
@@ -213,7 +217,9 @@ void WbSimulationWorld::step() {
     } else if (mean < timeStep)
       mSleepRealTime += 0.03 * timeStep;
 
-    mTimer->start(mSleepRealTime);
+    //mTimer->start(mSleepRealTime);
+    mTimer->setInterval(mSleepRealTime);
+    QTimer::singleShot(0, mTimer, SLOT(start()));
   }
 
   emit physicsStepStarted();
@@ -292,13 +298,15 @@ void WbSimulationWorld::step() {
 }
 
 void WbSimulationWorld::pauseStepTimer() {
-  mTimer->stop();
+  //mTimer->stop();
+  QTimer::singleShot(0, mTimer, SLOT(stop()));
 }
 
 void WbSimulationWorld::restartStepTimer() {
   const WbSimulationState::Mode mode = WbSimulationState::instance()->mode();
   if (!mTimer->isActive() && (mode == WbSimulationState::REALTIME || mode == WbSimulationState::FAST))
-    mTimer->start();
+    QTimer::singleShot(0, mTimer, SLOT(start()));
+    //mTimer->start();
 }
 
 void WbSimulationWorld::modeChanged() {
@@ -307,7 +315,8 @@ void WbSimulationWorld::modeChanged() {
   const WbSimulationState::Mode mode = WbSimulationState::instance()->mode();
   switch (mode) {
     case WbSimulationState::PAUSE:
-      mTimer->stop();
+      //mTimer->stop();
+      QTimer::singleShot(0, mTimer, SLOT(stop()));
       WbSoundEngine::setPause(true);
       WbSoundEngine::setMute(WbPreferences::instance()->value("Sound/mute").toBool());
       if (log)
@@ -320,12 +329,16 @@ void WbSimulationWorld::modeChanged() {
       mRealTimeTimer.start();
       WbSoundEngine::setPause(false);
       WbSoundEngine::setMute(WbPreferences::instance()->value("Sound/mute").toBool());
-      mTimer->start(mSleepRealTime);
+      //mTimer->start(mSleepRealTime);
+      mTimer->setInterval(mSleepRealTime);
+      QTimer::singleShot(0, mTimer, SLOT(start()));
       break;
     case WbSimulationState::FAST:
       WbSoundEngine::setPause(false);
       WbSoundEngine::setMute(true);
-      mTimer->start(0);  // the 0 argument here is important, don't remove it
+      //mTimer->start(0);  // the 0 argument here is important, don't remove it
+      mTimer->setInterval(0);
+      QTimer::singleShot(0, mTimer, SLOT(start()));
       break;
     case WbSimulationState::NONE:
       assert(false);
@@ -421,7 +434,7 @@ void WbSimulationWorld::storeAddedNodeIfNeeded(WbNode *node) {
 
 void WbSimulationWorld::removeNodeFromAddedNodeList(const QObject *node) {
   const WbNode *n = static_cast<const WbNode *>(node);
-  mAddedNode.removeAll(n);
+  mAddedNode.removeAll(const_cast<WbNode*>(n));
 }
 
 bool WbSimulationWorld::saveAs(const QString &fileName) {

@@ -24,7 +24,9 @@
 #include "WbJointParameters.hpp"
 #include "WbSFDouble.hpp"
 
-class WbBallJointParameters : public WbJointParameters {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBallJointParameters : public WbJointParameters {
   Q_OBJECT
 
 public:
@@ -35,6 +37,7 @@ public:
   explicit WbBallJointParameters(const WbNode &other);
 
   int nodeType() const override { return WB_NODE_BALL_JOINT_PARAMETERS; }
+  void preFinalize() override;
   void postFinalize() override;
 
   virtual const WbVector3 &anchor() const { return mAnchor->value(); }

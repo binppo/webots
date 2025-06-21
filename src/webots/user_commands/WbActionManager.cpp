@@ -20,8 +20,8 @@
 #ifdef __linux__
 #include <QtCore/QCoreApplication>
 #endif
-#include <QtGui/QAction>
-#include <QtGui/QActionGroup>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QActionGroup>
 #include <QtWidgets/QApplication>
 
 #include <cassert>
@@ -132,7 +132,7 @@ void WbActionManager::populateActions() {
   newAction->setText(tr("Real-&time"));
   newAction->setStatusTip(tr("Run the simulation in real-time. (%1+2)").arg(mapControlKey()));
   newAction->setToolTip(newAction->statusTip());
-  newAction->setShortcut(Qt::CTRL | Qt::Key_2);
+  //newAction->setShortcut(Qt::CTRL | Qt::Key_2);
   newAction->setIcon(icon);
   mActions[REAL_TIME] = newAction;
 
@@ -143,7 +143,7 @@ void WbActionManager::populateActions() {
   newAction->setText(tr("&Pause"));
   newAction->setStatusTip(tr("Pause the simulation. (%1+0)").arg(mapControlKey()));
   newAction->setToolTip(newAction->statusTip());
-  newAction->setShortcut(Qt::CTRL | Qt::Key_0);
+  //newAction->setShortcut(Qt::CTRL | Qt::Key_0);
   newAction->setIcon(icon);
   mActions[PAUSE] = newAction;
 
@@ -154,7 +154,7 @@ void WbActionManager::populateActions() {
   newAction->setText(tr("St&ep"));
   newAction->setStatusTip(tr("Execute one simulation step. (%1+1)").arg(mapControlKey()));
   newAction->setToolTip(newAction->statusTip());
-  newAction->setShortcut(Qt::CTRL | Qt::Key_1);
+  //newAction->setShortcut(Qt::CTRL | Qt::Key_1);
   newAction->setIcon(icon);
   mActions[STEP] = newAction;
 
@@ -165,13 +165,13 @@ void WbActionManager::populateActions() {
   newAction->setText(tr("&Fast"));
   newAction->setStatusTip(tr("Run the simulation as fast as possible. (%1+3)").arg(mapControlKey()));
   newAction->setToolTip(newAction->statusTip());
-  newAction->setShortcut(Qt::CTRL | Qt::Key_3);
+  //newAction->setShortcut(Qt::CTRL | Qt::Key_3);
   newAction->setIcon(icon);
   mActions[FAST] = newAction;
 
   newAction = new QAction(this);
   newAction->setCheckable(true);
-  newAction->setShortcut(Qt::CTRL | Qt::Key_4);
+  //newAction->setShortcut(Qt::CTRL | Qt::Key_4);
   newAction->setText(tr("&Rendering"));
   mActions[RENDERING] = newAction;
 

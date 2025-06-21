@@ -27,7 +27,9 @@
 
 #include <cassert>
 
-class WbMFVector3 : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFVector3 : public WbMultipleValue {
   Q_OBJECT
 
 public:

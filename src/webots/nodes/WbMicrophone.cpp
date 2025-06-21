@@ -18,7 +18,7 @@
 #include "WbSFDouble.hpp"
 #include "WbSensor.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <cassert>
@@ -90,6 +90,14 @@ void WbMicrophone::writeAnswer(WbDataStream &stream) {
   }
 }
 
+int WbMicrophone::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+int WbMicrophone::sampleSize() {
+  return mSampleSize;
+}
+
 void WbMicrophone::handleMessage(QDataStream &stream) {
   unsigned char command;
   stream >> command;
@@ -114,3 +122,12 @@ void WbMicrophone::receiveSoundSample(char *sample, int size) {
 void WbMicrophone::computeValue() {
   emit soundSampleRequested(mSensor->lastUpdate());
 }
+
+void WbMicrophone::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+QByteArray WbMicrophone::RECEIVE() {
+  return QByteArray(mSoundSample, mSampleSize);
+}
+

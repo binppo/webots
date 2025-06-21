@@ -24,15 +24,17 @@
 
 #include <ode/ode.h>
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 
 #include <cassert>
 
+#include <core/WbConfig.h>
+
 /* ------- WbUTMConverter ------- */
 
-class WbUTMConverter {
+class WB_LIB_EXPORT WbUTMConverter {
   // This class is used to make conversion between latitude-longitude
   // and North-East coordinate using a Universal Transverse Mercator projection
   // (https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)
@@ -343,6 +345,14 @@ void WbGps::reset(const QString &id) {
   mSpeedVector = WbVector3();
 }
 
+int WbGps::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+QString WbGps::coordSystem() {
+  return WbWorld::instance()->worldInfo()->gpsCoordinateSystem();
+}
+
 void WbGps::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -389,3 +399,20 @@ void WbGps::writeConfigure(WbDataStream &stream) {
   mSensor->connectToRobotSignal(robot());
   addConfigureToStream(stream);
 }
+
+void WbGps::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+QVector3D WbGps::POSITION() {
+  return QVector3D(mMeasuredPosition[0], mMeasuredPosition[1], mMeasuredPosition[2]);
+}
+
+double WbGps::SPEED() {
+  return mMeasuredSpeed;
+}
+
+QVector3D WbGps::SPEED_VECTOR() {
+  return QVector3D(mSpeedVector[0], mSpeedVector[1], mSpeedVector[2]);
+}
+

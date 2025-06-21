@@ -18,6 +18,11 @@
 #include "WbMFColor.hpp"
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSFBool;
 class WbRgb;
 class WbLight;
@@ -27,7 +32,7 @@ class WbGroup;
 
 class QDataStream;
 
-class WbLed : public WbSolidDevice {
+class WB_LIB_EXPORT WbLed : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -39,6 +44,7 @@ public:
 
   // reimplemented public functions
   int nodeType() const override { return WB_NODE_LED; }
+  void preFinalize() override;
   void postFinalize() override;
   void reset(const QString &id) override;
 
@@ -53,6 +59,9 @@ public:
 
   void powerOn(bool) override;
   void handleMessage(QDataStream &) override;
+
+public slots:
+  void SET(int v);
 
 protected slots:
   void updateChildren() override;

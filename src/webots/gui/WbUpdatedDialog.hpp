@@ -21,7 +21,9 @@
 
 #include <QtWidgets/QDialog>
 
-class WbUpdatedDialog : public QDialog {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbUpdatedDialog : public QDialog {
   Q_OBJECT
 public:
   explicit WbUpdatedDialog(QWidget *parent = NULL);

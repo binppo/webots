@@ -27,6 +27,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 class WbNodeModel;
 class WbNodeProtoInfo;
 class WbProtoModel;
@@ -54,7 +56,7 @@ class WbMFRotation;
 class WbMFNode;
 class WbWriter;
 
-class WbNode : public QObject {
+class WB_LIB_EXPORT WbNode : public QObject {
   Q_OBJECT
 
 public:

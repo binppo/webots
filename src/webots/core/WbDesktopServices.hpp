@@ -21,8 +21,10 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 namespace WbDesktopServices {
-  bool openUrl(const QString &url);
+  WB_LIB_EXPORT bool openUrl(const QString &url);
 };
 
 #endif

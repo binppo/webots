@@ -508,7 +508,7 @@ void WbProtoModel::setIsTemplate(bool value) {
 
 void WbProtoModel::verifyNodeAliasing(WbNode *node, WbFieldModel *param, WbTokenizer *tokenizer, bool searchInParameters,
                                       bool &ok) const {
-  QVector<WbField *> fields;
+  QList<WbField *> fields;
   if (searchInParameters)
     fields = node->parameters();
   else

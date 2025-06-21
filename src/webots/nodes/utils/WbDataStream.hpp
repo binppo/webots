@@ -17,9 +17,11 @@
 
 #include <QtCore/QByteArray>
 
+#include <core/WbConfig.h>
+
 class QByteArray;
 
-class WbDataStream : public QByteArray {
+class WB_LIB_EXPORT WbDataStream : public QByteArray {
 public:
   using QByteArray::QByteArray;
 

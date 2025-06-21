@@ -21,9 +21,11 @@
 
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class QPushButton;
 
-class WbExternProtoEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbExternProtoEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

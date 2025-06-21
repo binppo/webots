@@ -18,14 +18,18 @@
 #include "WbAbstractCamera.hpp"
 #include "WbSFInt.hpp"
 
-#include "../../../include/controller/c/webots/lidar_point.h"
+#include <QtCore/QDataStream>
+
+#include <controller/c/webots/lidar_point.h>
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 struct WrRenderable;
 struct WrDynamicMesh;
 struct WrStaticMesh;
 struct WrMaterial;
 
-class WbLidar : public WbAbstractCamera {
+class WB_LIB_EXPORT WbLidar : public WbAbstractCamera {
   Q_OBJECT
 
 public:
@@ -56,6 +60,7 @@ public:
   void exportNodeSubNodes(WbWriter &writer) const override;
   WbRgb enabledCameraFrustrumColor() const override { return WbRgb(0.0f, 1.0f, 1.0f); }
 
+  double minRange() const override { return mMinRange->value(); }
   double maxRange() const override { return mMaxRange->value(); }
 
   // These functions return the value actually used by the lidar (that was initially loaded from the world file or changed
@@ -79,6 +84,32 @@ public:
 
   // lazy matrix multiplication system
   void setMatrixNeedUpdate() override;
+
+  double verticalFieldOfView() const { return actualFieldOfView() * ((double)height() / (double)width()); }
+
+  int refreshRate();
+  double defaultFrequency() const;
+  double minFrequency() const;
+  double maxFrequency() const;
+  bool isPointCloudEnabled() const { return mIsPointCloudEnabled; }
+
+  const float *rangeImage() const;
+  float *lidarImage() const;
+
+  WbLidarPoint *pointArray() {
+    return mIsRemoteExternController ?
+             mTcpCloudPoints :
+             reinterpret_cast<WbLidarPoint *>(lidarImage() + actualHorizontalResolution() * actualNumberOfLayers());
+  }
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  void ENABLE_POINT_CLOUD();
+  void DISABLE_POINT_CLOUD();
+  void SET_FREQUENCY(double frequency);
+
+  QByteArray SERIAL_IMAGE();
+  QByteArray POINT_CLOUD();
 
 private:
   // user accessible fields
@@ -126,7 +157,6 @@ private:
 
   void copyAllLayersToMemoryMappedFile();
   void updatePointCloud(int minWidth, int maxWidth);
-  float *lidarImage() const;
 
   WbLidar &operator=(const WbLidar &);  // non copyable
   WbNode *clone() const override { return new WbLidar(*this); }
@@ -135,14 +165,6 @@ private:
 
   int size() const override {
     return (sizeof(float) + sizeof(WbLidarPoint)) * actualHorizontalResolution() * actualNumberOfLayers();
-  }
-  double minRange() const override { return mMinRange->value(); }
-  double verticalFieldOfView() const { return actualFieldOfView() * ((double)height() / (double)width()); }
-
-  WbLidarPoint *pointArray() {
-    return mIsRemoteExternController ?
-             mTcpCloudPoints :
-             reinterpret_cast<WbLidarPoint *>(lidarImage() + actualHorizontalResolution() * actualNumberOfLayers());
   }
 
   // WREN methods

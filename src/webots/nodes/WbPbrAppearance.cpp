@@ -224,11 +224,12 @@ void WbPbrAppearance::preFinalize() {
   updateEmissiveColorMap();
 
   if (cInstanceCounter == 0) {
-    WbWrenOpenGlContext::makeWrenCurrent();
-    const int quality = WbPreferences::instance()->value("OpenGL/textureQuality", 4).toInt() / 2;
-    const int resolution = pow(2, 6 + quality);  // 0: 64, 1: 128, 2: 256
-    cBrdfTexture = wr_texture_cubemap_bake_brdf(WbWrenShaders::iblBrdfBakingShader(), resolution);
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      const int quality = WbPreferences::instance()->value("OpenGL/textureQuality", 4).toInt() / 2;
+      const int resolution = pow(2, 6 + quality);  // 0: 64, 1: 128, 2: 256
+      cBrdfTexture = wr_texture_cubemap_bake_brdf(WbWrenShaders::iblBrdfBakingShader(), resolution);
+      WbWrenOpenGlContext::doneWren();
+    }
   }
   ++cInstanceCounter;
 

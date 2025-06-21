@@ -18,9 +18,11 @@
 #include "WbGeometry.hpp"
 #include "WbSFDouble.hpp"
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
-class WbSphere : public WbGeometry {
+class WB_LIB_EXPORT WbSphere : public WbGeometry {
   Q_OBJECT
 
 public:

@@ -19,7 +19,7 @@
 #include "WbFieldChecker.hpp"
 #include "WbReceiver.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 
@@ -160,6 +160,10 @@ void WbEmitter::writeConfigure(WbDataStream &stream) {
   mNeedToSetAllowedChannels = false;
 }
 
+int WbEmitter::bufferSize() {
+  return (int)mBufferSize->value();
+}
+
 void WbEmitter::writeAnswer(WbDataStream &stream) {
   if (mNeedToSetRange) {
     stream << tag();
@@ -238,4 +242,18 @@ void WbEmitter::reset(const QString &id) {
   WbSolidDevice::reset(id);
   qDeleteAll(mQueue);
   mQueue.clear();
+}
+
+void WbEmitter::SEND(const QByteArray& data, int newChannel, double newRange) {
+  mChannel->setValue(newChannel);
+  mRange->setValue(newRange);
+  mQueue.enqueue(new WbDataPacket(this, mChannel->value(), data.constData(), data.size()));
+}
+
+void WbEmitter::SET_CHANNEL(int newChannel) {
+  mChannel->setValue(newChannel);
+}
+
+void WbEmitter::SET_RANGE(double newRange) {
+  mRange->setValue(newRange);
 }

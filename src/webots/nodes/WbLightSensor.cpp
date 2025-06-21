@@ -30,7 +30,7 @@
 #include "WbWrenRenderingContext.hpp"
 #include "WbWrenShaders.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <wren/config.h>
 #include <wren/material.h>
@@ -170,6 +170,25 @@ void WbLightSensor::postFinalize() {
   connect(mSensor, &WbSensor::stateChanged, this, &WbLightSensor::applySensorRayToWren);
 }
 
+int WbLightSensor::lookupTableSize() const {
+  return mLookupTable->size();
+}
+
+QVector<QVector3D> WbLightSensor::lookupTable() const {
+  QVector<QVector3D> table;
+  for (int i = 0; i < mLookupTable->size(); i++) {
+    table << QVector3D(mLookupTable->item(i).x()
+        , mLookupTable->item(i).y()
+        , mLookupTable->item(i).z());
+  }
+
+  return table;
+}
+
+int WbLightSensor::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbLightSensor::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -183,6 +202,10 @@ void WbLightSensor::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+double WbLightSensor::value() {
+  return mValue;
 }
 
 void WbLightSensor::writeAnswer(WbDataStream &stream) {
@@ -473,4 +496,8 @@ void WbLightSensor::applySensorRayToWren() {
     wr_phong_material_set_emissive(mMaterial, yellowColor);
   else
     wr_phong_material_set_emissive(mMaterial, greyColor);
+}
+
+void WbLightSensor::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

@@ -21,8 +21,8 @@
 
 #include <QtCore/QDataStream>
 #include <cassert>
-#include "../../../include/plugins/radio.h"
-#include "../../controller/c/messages.h"
+#include <plugins/radio.h>
+#include <controller/c/messages.h>
 
 static QList<WbRadio *> radioList;  // list of radio nodes
 static bool pluginLoadFailed = false;
@@ -123,6 +123,10 @@ void WbRadio::updateSetup() {
   plugin->setTxPower(mID, mTxPower->value());
 }
 
+int WbRadio::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbRadio::handleMessage(QDataStream &stream) {
   WbRadioPlugin *plugin = WbRadioPlugin::instance();
   unsigned char command;
@@ -138,11 +142,12 @@ void WbRadio::handleMessage(QDataStream &stream) {
     case C_RADIO_SET_ADDRESS: {
       int adressSize = 0;
       stream >> adressSize;
-      char address[adressSize];
+      char* address = new char[adressSize];
       stream.readRawData(address, adressSize);
       mAddress->setValue(address);
       if (plugin)
         plugin->setAddress(mID, address);
+      delete[] address;
       return;
     }
 
@@ -189,16 +194,18 @@ void WbRadio::handleMessage(QDataStream &stream) {
     case C_RADIO_SEND: {
       int destSize = 0;
       stream >> destSize;
-      char dest[destSize];
+      char* dest = new char[destSize];
       stream.readRawData(dest, destSize);
       int dataSize = 0;
       stream >> dataSize;
-      char data[dataSize];  // 'void *' previously
+      char* data = new char[dataSize];  // 'void *' previously
       stream.readRawData(data, dataSize);
       double delay;
       stream >> delay;
       if (plugin)
         plugin->send(mID, dest, data, dataSize, delay);
+      delete[] dest;
+      delete[] data;
       return;
     }
 
@@ -330,4 +337,66 @@ void WbRadio::writeAnswer(WbDataStream &stream) {
     }
     mReceivedEvents.clear();
   }
+}
+
+void WbRadio::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+void WbRadio::SET_ADDRESS(const QString& address) {
+  mAddress->setValue(address);
+
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+      plugin->setAddress(mID, address.toLatin1().constData());
+}
+
+void WbRadio::SET_FREQUENCY(double frequency) {
+  mFrequency->setValue(frequency);
+
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+    plugin->setFrequency(mID, frequency);
+}
+
+void WbRadio::SET_CHANNEL(int channel) {
+  mChannel->setValue(channel);
+
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+    plugin->setChannel(mID, channel);
+}
+
+void WbRadio::SET_BITRATE(int bitrate) {
+  mBitrate->setValue(bitrate);
+
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+    plugin->setBitrate(mID, bitrate);
+}
+
+void WbRadio::SET_RX_SENSITIVITY(double rxSensitivity) {
+  mRxSensitivity->setValue(rxSensitivity);
+
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+    plugin->setRxSensitivity(mID, rxSensitivity);
+}
+
+void WbRadio::SET_TX_POWER(double txPower) {
+  mTxPower->setValue(txPower);
+
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+    plugin->setTxPower(mID, txPower);
+}
+
+void WbRadio::SEND(const QString& dest, const QByteArray& data, double delay) {
+  WbRadioPlugin *plugin = WbRadioPlugin::instance();
+  if (plugin)
+    plugin->send(mID, dest.toLatin1().constData(), data.constData(), data.size(), delay);
+}
+
+QList<struct WebotsRadioEvent*> WbRadio::RECEIVE() {
+  return mReceivedEvents;
 }

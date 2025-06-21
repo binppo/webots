@@ -26,11 +26,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 class WbField;
 class QPixmap;
 
-class WbTreeItem : public QObject {
+class WB_LIB_EXPORT WbTreeItem : public QObject {
   Q_OBJECT
 
 public:

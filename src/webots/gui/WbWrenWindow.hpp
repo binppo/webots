@@ -21,14 +21,16 @@
 
 #include <QtCore/QMutex>
 #include <QtGui/QWindow>
-#include <QtOpenGL/QOpenGLFunctions_3_3_Core>
+#include <QtGui/QOpenGLFunctions_3_3_Core>
+
+#include <core/WbConfig.h>
 
 class WbMultimediaStreamingServer;
 
 struct WrTextureRtt;
 struct WrFrameBuffer;
 
-class WbWrenWindow : public QWindow {
+class WB_LIB_EXPORT WbWrenWindow : public QWindow {
   Q_OBJECT;
 
 public:

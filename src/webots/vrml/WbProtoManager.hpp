@@ -33,7 +33,9 @@ class WbVersion;
 #include <QtCore/QRegularExpression>
 #include <QtCore/QStringList>
 
-class WbExternProto {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbExternProto {
 public:
   WbExternProto(const QString &name, const QString &url, bool isImportable) :
     mName(name),
@@ -52,7 +54,7 @@ private:
   bool mImportable;
 };
 
-class WbProtoInfo {
+class WB_LIB_EXPORT WbProtoInfo {
 public:
   WbProtoInfo(const QString &url, const QString &baseType, const QString &license, const QString &licenseUrl,
               const QString &documentationUrl, const QString &description, const QString &slotType, const QStringList &tags,
@@ -116,7 +118,7 @@ private:
   QStringList mParameterNames;
 };
 
-class WbProtoManager : public QObject {
+class WB_LIB_EXPORT WbProtoManager : public QObject {
   Q_OBJECT
 public:
   static WbProtoManager *instance();

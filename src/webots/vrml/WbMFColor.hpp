@@ -27,12 +27,15 @@
 
 #include <cassert>
 
-class WbMFColor : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFColor : public WbMultipleValue {
   Q_OBJECT
 
 public:
   typedef WbMFIterator<WbMFColor, WbRgb> Iterator;
 
+  WbMFColor() {}
   WbMFColor(WbTokenizer *tokenizer, const QString &worldPath) { read(tokenizer, worldPath); }
   WbMFColor(const WbMFColor &other) : mVector(other.mVector) {}
   virtual ~WbMFColor() override {}

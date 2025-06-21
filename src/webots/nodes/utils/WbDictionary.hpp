@@ -22,13 +22,15 @@
 #include <QtCore/QMultiMap>
 #include <QtCore/QStringList>
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 class WbField;
 class WbNode;
 class WbMFNode;
 class WbSFNode;
 
-class WbDictionary {
+class WB_LIB_EXPORT WbDictionary {
 public:
   static WbDictionary *instance();
   static void cleanup();

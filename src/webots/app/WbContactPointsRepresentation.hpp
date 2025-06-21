@@ -26,9 +26,11 @@
 #include <wren/renderable.h>
 #include <wren/transform.h>
 
+#include <core/WbConfig.h>
+
 class WbWrenRenderingContext;
 
-class WbContactPointsRepresentation : public QObject {
+class WB_LIB_EXPORT WbContactPointsRepresentation : public QObject {
   Q_OBJECT;
 
 public:

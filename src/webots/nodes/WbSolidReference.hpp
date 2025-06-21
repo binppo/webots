@@ -26,9 +26,11 @@
 #include "WbBaseNode.hpp"
 #include "WbSFString.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSolid;
 
-class WbSolidReference : public WbBaseNode {
+class WB_LIB_EXPORT WbSolidReference : public WbBaseNode {
   Q_OBJECT
 
 public:

@@ -426,7 +426,7 @@ void WbAddNodeDialog::buildTree() {
   QTreeWidgetItem *item = NULL;
 
   const QRegularExpression regexp(
-    QRegularExpression::wildcardToRegularExpression(mFindLineEdit->text(), QRegularExpression::UnanchoredWildcardConversion),
+    QRegularExpression::wildcardToRegularExpression(mFindLineEdit->text()/*, QRegularExpression::UnanchoredWildcardConversion*/),
     QRegularExpression::CaseInsensitiveOption);
 
   // add valid basic nodes

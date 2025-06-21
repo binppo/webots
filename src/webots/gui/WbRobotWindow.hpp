@@ -19,7 +19,9 @@
 
 #include "WbRobot.hpp"
 
-class WbRobotWindow : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRobotWindow : public QObject {
   Q_OBJECT
 public:
   explicit WbRobotWindow(WbRobot *);

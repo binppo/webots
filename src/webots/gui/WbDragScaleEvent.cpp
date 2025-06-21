@@ -14,6 +14,7 @@
 
 #include "WbDragScaleEvent.hpp"
 
+#include "WbAbstractPose.hpp"
 #include "WbBox.hpp"
 #include "WbCapsule.hpp"
 #include "WbCone.hpp"

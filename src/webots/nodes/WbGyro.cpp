@@ -23,7 +23,7 @@
 #include "WbSFDouble.hpp"
 #include "WbSensor.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <ode/ode.h>
 #include <QtCore/QDataStream>
@@ -92,6 +92,25 @@ void WbGyro::updateResolution() {
   WbFieldChecker::resetDoubleIfNonPositiveAndNotDisabled(this, mResolution, -1.0, -1.0);
 }
 
+int WbGyro::lookupTableSize() const {
+  return mLookupTable->size();
+}
+
+QVector<QVector3D> WbGyro::lookupTable() const {
+  QVector<QVector3D> table;
+  for (int i = 0; i < mLookupTable->size(); i++) {
+    table << QVector3D(mLookupTable->item(i).x()
+        , mLookupTable->item(i).y()
+        , mLookupTable->item(i).z());
+  }
+
+  return table;
+}
+
+int WbGyro::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbGyro::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -105,6 +124,10 @@ void WbGyro::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+QVector3D WbGyro::value() {
+  return QVector3D(mValues[0], mValues[1], mValues[2]);
 }
 
 void WbGyro::writeAnswer(WbDataStream &stream) {
@@ -175,4 +198,8 @@ void WbGyro::computeValue() {
     }
   } else
     parsingWarn(tr("this node or its parents requires a 'physics' field to be functional."));
+}
+
+void WbGyro::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

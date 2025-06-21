@@ -17,7 +17,9 @@
 
 #include <QtCore/QObject>
 
-class WbQjsFile : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbQjsFile : public QObject {
   Q_OBJECT
 
 public:

@@ -297,7 +297,7 @@ QString WbUrl::combinePaths(const QString &rawUrl, const QString &rawParentUrl) 
     // if it is not available in those folders, infer the URL based on the parent's url
     if (WbUrl::isWeb(parentUrl) || QDir::isAbsolutePath(parentUrl) || WbUrl::isLocalUrl(parentUrl)) {
       // remove filename from parent url
-      parentUrl = parentUrl.sliced(0, parentUrl.lastIndexOf("/") + 1);
+      parentUrl = parentUrl.mid(0, parentUrl.lastIndexOf("/") + 1);
       if (WbUrl::isLocalUrl(parentUrl))
         parentUrl.replace("webots://", WbStandardPaths::webotsHomePath());
 

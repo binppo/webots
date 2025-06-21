@@ -22,10 +22,12 @@
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QTreeView>
 
+#include <core/WbConfig.h>
+
 class WbTreeItemDelegate;
 
 // cppcheck-suppress noConstructor
-class WbTreeView : public QTreeView {
+class WB_LIB_EXPORT WbTreeView : public QTreeView {
   Q_OBJECT
   Q_PROPERTY(QColor defaultColor MEMBER mDefaultColor READ defaultColor WRITE setDefaultColor)
   Q_PROPERTY(QColor modifiedColor MEMBER mModifiedColor READ modifiedColor WRITE setModifiedColor)

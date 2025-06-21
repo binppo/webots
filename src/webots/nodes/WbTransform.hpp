@@ -22,9 +22,11 @@
 #include "WbMatrix3.hpp"
 #include "WbPose.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 
-class WbTransform : public WbPose {
+class WB_LIB_EXPORT WbTransform : public WbPose {
   Q_OBJECT
 
 public:

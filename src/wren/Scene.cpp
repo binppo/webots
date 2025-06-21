@@ -876,11 +876,13 @@ void wr_scene_destroy() {
 }
 
 void wr_scene_init(WrScene *scene) {
-  reinterpret_cast<wren::Scene *>(scene)->init();
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->init();
 }
 
 void wr_scene_apply_pending_updates(WrScene *scene) {
-  reinterpret_cast<wren::Scene *>(scene)->applyPendingUpdates();
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->applyPendingUpdates();
 }
 
 void wr_scene_get_main_buffer(int width, int height, unsigned int format, unsigned int data_type, void *buffer) {
@@ -888,30 +890,37 @@ void wr_scene_get_main_buffer(int width, int height, unsigned int format, unsign
 }
 
 void wr_scene_init_frame_capture(WrScene *scene, int pixel_buffer_count, unsigned int *pixel_buffer_ids, int frame_size) {
-  reinterpret_cast<wren::Scene *>(scene)->initFrameCapture(pixel_buffer_count, pixel_buffer_ids, frame_size);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->initFrameCapture(pixel_buffer_count, pixel_buffer_ids, frame_size);
 }
 
 void wr_scene_bind_pixel_buffer(WrScene *scene, int buffer) {
-  reinterpret_cast<wren::Scene *>(scene)->bindPixelBuffer(buffer);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->bindPixelBuffer(buffer);
 }
 
 void *wr_scene_map_pixel_buffer(WrScene *scene, unsigned int access_mode) {
+  if (!scene)
+    return nullptr;
   return reinterpret_cast<wren::Scene *>(scene)->mapPixelBuffer(access_mode);
 }
 
 void wr_scene_unmap_pixel_buffer(WrScene *scene) {
-  reinterpret_cast<wren::Scene *>(scene)->unMapPixelBuffer();
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->unMapPixelBuffer();
 }
 
 void wr_scene_terminate_frame_capture(WrScene *scene) {
-  reinterpret_cast<wren::Scene *>(scene)->terminateFrameCapture();
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->terminateFrameCapture();
 }
 
 void wr_scene_render(WrScene *scene, const char *material_name, bool culling, bool offScreen) {
   if (material_name)
     wren::Renderable::setUseMaterial(material_name);
 
-  reinterpret_cast<wren::Scene *>(scene)->render(culling, offScreen);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->render(culling, offScreen);
 
   wren::Renderable::setUseMaterial(NULL);
 }
@@ -923,13 +932,15 @@ void wr_scene_render_to_viewports(WrScene *scene, int count, WrViewport **viewpo
 
   wren::Viewport **start = reinterpret_cast<wren::Viewport **>(viewports);
   std::vector<wren::Viewport *> viewportsVector(start, start + count);
-  reinterpret_cast<wren::Scene *>(scene)->renderToViewports(viewportsVector, culling, offScreen);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->renderToViewports(viewportsVector, culling, offScreen);
 
   wren::Renderable::setUseMaterial(NULL);
 }
 
 void wr_scene_reset(WrScene *scene) {
-  reinterpret_cast<wren::Scene *>(scene)->reset();
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->reset();
 }
 
 void wr_scene_set_ambient_light(const float *ambient_light) {
@@ -937,71 +948,94 @@ void wr_scene_set_ambient_light(const float *ambient_light) {
 }
 
 int wr_scene_get_active_spot_light_count(WrScene *scene) {
+  if (!scene)
+    return 0;
   return reinterpret_cast<wren::Scene *>(scene)->spotLights().size();
 }
 
 int wr_scene_get_active_point_light_count(WrScene *scene) {
+  if (!scene)
+    return 0;
   return reinterpret_cast<wren::Scene *>(scene)->pointLights().size();
 }
 
 int wr_scene_get_active_directional_light_count(WrScene *scene) {
+  if (!scene)
+    return 0;
   return reinterpret_cast<wren::Scene *>(scene)->directionalLights().size();
 }
 
 void wr_scene_set_fog(WrScene *scene, WrSceneFogType fogType, WrSceneFogDepthType depthType, const float *color, float density,
                       float start, float end) {
-  reinterpret_cast<wren::Scene *>(scene)->setFog(
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->setFog(
     fogType, depthType, color != NULL ? glm::vec4(color[0], color[1], color[2], 1.0f) : wren::gVec4Ones, density, start, end);
 }
 
 void wr_scene_set_skybox(WrScene *scene, WrRenderable *renderable) {
-  reinterpret_cast<wren::Scene *>(scene)->setSkybox(reinterpret_cast<wren::Renderable *>(renderable));
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->setSkybox(reinterpret_cast<wren::Renderable *>(renderable));
 }
 
 void wr_scene_set_hdr_clear_quad(WrScene *scene, WrRenderable *renderable) {
-  reinterpret_cast<wren::Scene *>(scene)->setHdrClearQuad(reinterpret_cast<wren::Renderable *>(renderable));
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->setHdrClearQuad(reinterpret_cast<wren::Renderable *>(renderable));
 }
 
 void wr_scene_set_fog_program(WrScene *scene, WrShaderProgram *program) {
-  reinterpret_cast<wren::Scene *>(scene)->setFogProgram(reinterpret_cast<wren::ShaderProgram *>(program));
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->setFogProgram(reinterpret_cast<wren::ShaderProgram *>(program));
 }
 
 void wr_scene_set_shadow_volume_program(WrScene *scene, WrShaderProgram *program) {
-  reinterpret_cast<wren::Scene *>(scene)->setShadowVolumeProgram(reinterpret_cast<wren::ShaderProgram *>(program));
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->setShadowVolumeProgram(reinterpret_cast<wren::ShaderProgram *>(program));
 }
 
 void wr_scene_enable_depth_reset(WrScene *scene, bool enable) {
-  reinterpret_cast<wren::Scene *>(scene)->enableDepthReset(enable);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->enableDepthReset(enable);
 }
 
 void wr_scene_enable_skybox(WrScene *scene, bool enable) {
-  reinterpret_cast<wren::Scene *>(scene)->enableSkybox(enable);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->enableSkybox(enable);
 }
 
 void wr_scene_enable_hdr_clear(WrScene *scene, bool enable) {
-  reinterpret_cast<wren::Scene *>(scene)->enableHdrClear(enable);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->enableHdrClear(enable);
 }
 
 void wr_scene_enable_translucence(WrScene *scene, bool enable) {
-  reinterpret_cast<wren::Scene *>(scene)->enableTranslucence(enable);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->enableTranslucence(enable);
 }
 
 int wr_scene_compute_node_count(WrScene *scene) {
+  if (!scene)
+    return 0;
   return reinterpret_cast<wren::Scene *>(scene)->computeNodeCount();
 }
 
 WrTransform *wr_scene_get_root(WrScene *scene) {
+  if (!scene)
+    return nullptr;
   return reinterpret_cast<WrTransform *>(reinterpret_cast<wren::Scene *>(scene)->root());
 }
 
 WrViewport *wr_scene_get_viewport(WrScene *scene) {
+  if (!scene)
+    return nullptr;
   return reinterpret_cast<WrViewport *>(reinterpret_cast<wren::Scene *>(scene)->mainViewport());
 }
 
 void wr_scene_add_frame_listener(WrScene *scene, void (*listener)()) {
-  reinterpret_cast<wren::Scene *>(scene)->addFrameListener(listener);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->addFrameListener(listener);
 }
 
 void wr_scene_remove_frame_listener(WrScene *scene, void (*listener)()) {
-  reinterpret_cast<wren::Scene *>(scene)->removeFrameListener(listener);
+  if (scene)
+    reinterpret_cast<wren::Scene *>(scene)->removeFrameListener(listener);
 }

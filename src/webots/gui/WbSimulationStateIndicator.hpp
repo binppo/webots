@@ -21,9 +21,11 @@
 
 #include <QtWidgets/QFrame>
 
+#include <core/WbConfig.h>
+
 class QLabel;
 
-class WbSimulationStateIndicator : public QFrame {
+class WB_LIB_EXPORT WbSimulationStateIndicator : public QFrame {
   Q_OBJECT
 
 public:

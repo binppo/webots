@@ -27,7 +27,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 
-class WbTransform;
+#include <core/WbConfig.h>
+
+class WbAbstractPose;
 class WbCone;
 class WbCylinder;
 class WbGeometry;
@@ -35,7 +37,7 @@ class WbScaleManipulator;
 class WbViewpoint;
 
 // Scale Cylinder
-class WbRescaleCylinderEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbRescaleCylinderEvent : public WbRegularResizeEvent {
 public:
   WbRescaleCylinderEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                          WbGeometry *selectedGeometry);
@@ -47,7 +49,7 @@ private:
 };
 
 // Scale Capsule
-class WbRescaleCapsuleEvent : public WbResizeCapsuleEvent {
+class WB_LIB_EXPORT WbRescaleCapsuleEvent : public WbResizeCapsuleEvent {
 public:
   WbRescaleCapsuleEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                         WbGeometry *selectedGeometry);
@@ -56,7 +58,7 @@ public:
 };
 
 // Scale Box
-class WbRescaleBoxEvent : public WbResizeBoxEvent {
+class WB_LIB_EXPORT WbRescaleBoxEvent : public WbResizeBoxEvent {
 public:
   WbRescaleBoxEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber, WbGeometry *selectedGeometry);
   void apply(const QPoint &currentMousePosition) override;
@@ -64,7 +66,7 @@ public:
 };
 
 // Scale Plane
-class WbRescalePlaneEvent : public WbResizePlaneEvent {
+class WB_LIB_EXPORT WbRescalePlaneEvent : public WbResizePlaneEvent {
 public:
   WbRescalePlaneEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                       WbGeometry *selectedGeometry);
@@ -73,7 +75,7 @@ public:
 };
 
 // Scale Cone
-class WbRescaleConeEvent : public WbRegularResizeEvent {
+class WB_LIB_EXPORT WbRescaleConeEvent : public WbRegularResizeEvent {
 public:
   WbRescaleConeEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                      WbGeometry *selectedGeometry);
@@ -85,7 +87,7 @@ private:
 };
 
 // Scale ElevationGrid
-class WbRescaleElevationGridEvent : public WbResizeElevationGridEvent {
+class WB_LIB_EXPORT WbRescaleElevationGridEvent : public WbResizeElevationGridEvent {
 public:
   WbRescaleElevationGridEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                               WbGeometry *selectedGeometry);
@@ -94,7 +96,7 @@ public:
 };
 
 // Scale IndexedFaceSet
-class WbRescaleIndexedFaceSetEvent : public WbResizeIndexedFaceSetEvent {
+class WB_LIB_EXPORT WbRescaleIndexedFaceSetEvent : public WbResizeIndexedFaceSetEvent {
 public:
   WbRescaleIndexedFaceSetEvent(const QPoint &initialMousePosition, WbViewpoint *viewpoint, int handleNumber,
                                WbGeometry *selectedGeometry);

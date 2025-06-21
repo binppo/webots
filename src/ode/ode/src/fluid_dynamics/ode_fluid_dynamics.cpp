@@ -42,7 +42,7 @@
 #define ALLOCA dALLOCA16
 
 #ifdef ODE_MT
-#include <pthread.h>
+//#include <pthread.h>
 #endif
 
 extern void addObjectToList( dObject *obj, dObject **first );

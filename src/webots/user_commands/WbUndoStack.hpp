@@ -19,9 +19,11 @@
 // Description: Singleton class representing the undo/redo stack of world changes
 //
 
-#include <QtGui/QUndoStack>
+#include <QtWidgets/QUndoStack>
 
-class WbUndoStack : public QUndoStack {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbUndoStack : public QUndoStack {
   Q_OBJECT
 
 public:

@@ -90,7 +90,7 @@ namespace {
   bool checkForUseOrDefNode(const WbNode *node, const QString &useName, const QString &previousUseName, bool &useOverlap,
                             bool &defOverlap, bool &abortSearch) {
     // Check fields and parameters
-    const QVector<WbField *> &fields = node->fieldsOrParameters();
+    const auto &fields = node->fieldsOrParameters();
     for (int i = 0, size = fields.size(); i < size; ++i) {
       if (checkForUseOrDefNode(fields[i], useName, previousUseName, useOverlap, defOverlap, abortSearch))
         return true;
@@ -233,7 +233,7 @@ const WbField *WbVrmlNodeUtilities::findClosestParameterInProto(const WbField *f
   const WbNode *parameterNode = proto;
   while (parameterNode) {
     const WbField *parameter = field;
-    const QVector<WbField *> parameterList = parameterNode->parameters();
+    const auto parameterList = parameterNode->parameters();
 
     while (parameter) {
       if (parameterList.contains(const_cast<WbField *>(parameter)))
@@ -267,8 +267,8 @@ QList<const WbNode *> WbVrmlNodeUtilities::protoNodesInWorldFile(const WbNode *r
     const WbNode *node = queue.dequeue();
     if (node->isProtoInstance())
       result.append(node);
-    QVector<WbField *> fields = node->fieldsOrParameters();
-    QVectorIterator<WbField *> it(fields);
+    auto fields = node->fieldsOrParameters();
+    QListIterator<WbField *> it(fields);
     while (it.hasNext()) {
       const WbField *field = it.next();
       if (field->isDefault())
@@ -292,8 +292,8 @@ bool WbVrmlNodeUtilities::existsVisibleProtoNodeNamed(const QString &modelName, 
     const WbNode *node = queue.dequeue();
     if (node->modelName() == modelName)
       return true;
-    QVector<WbField *> fields = node->fieldsOrParameters();
-    QVectorIterator<WbField *> it(fields);
+    auto fields = node->fieldsOrParameters();
+    QListIterator<WbField *> it(fields);
     while (it.hasNext()) {
       const WbField *field = it.next();
       if (field->isDefault())
@@ -395,7 +395,7 @@ bool WbVrmlNodeUtilities::hasASubsequentUseOrDefNode(const WbNode *defNode, cons
     }
 
     const int fieldIndex = parentNode->fieldIndex(parentField) + 1;
-    const QVector<WbField *> &fields = parentNode->fieldsOrParameters();
+    const auto &fields = parentNode->fieldsOrParameters();
     const int size = fields.size();
     for (int i = fieldIndex; i < size; ++i) {
       WbField *const f = fields[i];

@@ -37,6 +37,9 @@ namespace wren {
   std::unordered_map<cache::Key, cache::PbrMaterialData> PbrMaterial::cCache;
 
   void PbrMaterial::setTexture(Texture *texture, size_t index) {
+    if (!mCacheData)
+      return;
+
     Material::setTexture(texture, index);
 
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
@@ -51,6 +54,9 @@ namespace wren {
   }
 
   void PbrMaterial::setTextureCubeMap(TextureCubeMap *texture, size_t index) {
+    if (!mCacheData)
+      return;
+
     Material::setTextureCubeMap(texture, index);
 
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
@@ -60,6 +66,9 @@ namespace wren {
   }
 
   size_t PbrMaterial::sortingId() const {
+    if (!mCacheData)
+      return 0;
+
     const unsigned long long programId = static_cast<unsigned long long>(mDefaultProgram->glName());
 
     size_t textureId = 0;
@@ -82,6 +91,9 @@ namespace wren {
   }
 
   void PbrMaterial::clearMaterial() {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
 
     material.mBaseColorAndTransparency = glm::vec4(gVec3Ones, 0.0f);
@@ -105,6 +117,9 @@ namespace wren {
   }
 
   void PbrMaterial::setBaseColor(const glm::vec3 &baseColor) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mBaseColorAndTransparency = colorutils::srgbToLinear(glm::vec4(baseColor, material.mBaseColorAndTransparency.w));
 
@@ -112,6 +127,9 @@ namespace wren {
   }
 
   void PbrMaterial::setBackgroundColor(const glm::vec3 &backgroundColor) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mBackgroundColorAndIblStrength =
       colorutils::srgbToLinear(glm::vec4(backgroundColor, material.mBackgroundColorAndIblStrength.w));
@@ -120,6 +138,9 @@ namespace wren {
   }
 
   void PbrMaterial::setEmissiveColor(const glm::vec3 &emissiveColor) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mEmissiveColorAndIntensity =
       colorutils::srgbToLinear(glm::vec4(emissiveColor, material.mEmissiveColorAndIntensity.w));
@@ -128,6 +149,9 @@ namespace wren {
   }
 
   void PbrMaterial::setRoughness(float roughness) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mRoughnessMetalnessNormalMapFactorOcclusion =
       glm::vec4(roughness, material.mRoughnessMetalnessNormalMapFactorOcclusion.y,
@@ -137,6 +161,9 @@ namespace wren {
   }
 
   void PbrMaterial::setMetalness(float metalness) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mRoughnessMetalnessNormalMapFactorOcclusion =
       glm::vec4(material.mRoughnessMetalnessNormalMapFactorOcclusion.x, metalness,
@@ -146,6 +173,9 @@ namespace wren {
   }
 
   void PbrMaterial::setIblStrength(float iblStrength) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mBackgroundColorAndIblStrength.w = iblStrength;
 
@@ -153,6 +183,9 @@ namespace wren {
   }
 
   void PbrMaterial::setNormalMapFactor(float normalMapFactor) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mRoughnessMetalnessNormalMapFactorOcclusion =
       glm::vec4(material.mRoughnessMetalnessNormalMapFactorOcclusion.x, material.mRoughnessMetalnessNormalMapFactorOcclusion.y,
@@ -162,6 +195,9 @@ namespace wren {
   }
 
   void PbrMaterial::setOcclusionMapStrength(float occlusionMapStrength) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mRoughnessMetalnessNormalMapFactorOcclusion.w = occlusionMapStrength;
 
@@ -169,6 +205,9 @@ namespace wren {
   }
 
   void PbrMaterial::setEmissiveIntensity(float emissiveIntensity) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mEmissiveColorAndIntensity.w = emissiveIntensity;
 
@@ -176,6 +215,9 @@ namespace wren {
   }
 
   void PbrMaterial::setTransparency(float transparency) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
     material.mBaseColorAndTransparency.w = transparency;
 
@@ -185,6 +227,9 @@ namespace wren {
   void PbrMaterial::setAllParameters(const glm::vec3 &backgroundColor, const glm::vec3 &baseColor, float transparency,
                                      float roughness, float metalness, float iblStrength, float normalMapFactor,
                                      float occlusionMapStrength, const glm::vec3 &emissiveColor, float emissiveIntensity) {
+    if (!mCacheData)
+      return;
+
     GlslLayout::PbrMaterial material(mCacheData->mMaterial);
 
     material.mBaseColorAndTransparency = colorutils::srgbToLinear(glm::vec4(baseColor, transparency));
@@ -200,8 +245,10 @@ namespace wren {
     if (bindProgram)
       Material::useProgram();
 
-    assert(mCacheData);
-    glstate::bindPbrMaterial(mCacheData);
+    if (mCacheData) {
+      assert(mCacheData);
+      glstate::bindPbrMaterial(mCacheData);
+    }
 
     updateUniforms();
     Material::bindTextures();
@@ -253,7 +300,7 @@ namespace wren {
   void PbrMaterial::updateTranslucency() {
     Material::updateTranslucency();
 
-    if (!mIsTranslucent)
+    if (mCacheData && !mIsTranslucent)
       mIsTranslucent = mCacheData->mMaterial.mBaseColorAndTransparency.w > 0.0f;
   }
 

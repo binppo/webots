@@ -17,10 +17,16 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbLookupTable;
 
-class WbAccelerometer : public WbSolidDevice {
+class WB_LIB_EXPORT WbAccelerometer : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -46,6 +52,14 @@ public:
     mValues[2] = z;
   }
   const double *getAcceleration() const { return mValues; }
+
+  int lookupTableSize() const;
+  QVector<QVector3D> lookupTable() const;
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
 
 private:
   // user accessible fields

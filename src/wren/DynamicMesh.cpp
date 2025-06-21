@@ -98,27 +98,33 @@ namespace wren {
   }
 
   void DynamicMesh::bind() {
-    glstate::bindVertexArrayObject(mGlNameVertexArrayObject);
+    if (mGlNameVertexArrayObject)
+      glstate::bindVertexArrayObject(mGlNameVertexArrayObject);
     // Indices should be part VAO state, but this doesn't seem to be the case for all
     // drivers, so we need to bind the buffer manually to be sure
-    glstate::bindElementArrayBuffer(mGlNameBufferIndices);
+    if (mGlNameBufferIndices)
+      glstate::bindElementArrayBuffer(mGlNameBufferIndices);
 
     updateGl();
   }
 
   void DynamicMesh::release() {
-    glstate::releaseVertexArrayObject(mGlNameVertexArrayObject);
-    glstate::releaseElementArrayBuffer(mGlNameBufferIndices);
+    if (mGlNameVertexArrayObject)
+      glstate::releaseVertexArrayObject(mGlNameVertexArrayObject);
+    if (mGlNameBufferIndices)
+      glstate::releaseElementArrayBuffer(mGlNameBufferIndices);
   }
 
   void DynamicMesh::bindShadowVolume() {
-    glstate::bindVertexArrayObject(mGlNameVertexArrayObjectShadow);
+    if (mGlNameVertexArrayObjectShadow)
+      glstate::bindVertexArrayObject(mGlNameVertexArrayObjectShadow);
 
     updateGlShadow();
   }
 
   void DynamicMesh::releaseShadowVolume() {
-    glstate::releaseVertexArrayObject(mGlNameVertexArrayObjectShadow);
+    if (mGlNameVertexArrayObjectShadow)
+      glstate::releaseVertexArrayObject(mGlNameVertexArrayObjectShadow);
   }
 
   void DynamicMesh::render(unsigned int drawingMode) {
@@ -330,7 +336,8 @@ namespace wren {
     glGenBuffers(1, &mGlNameBufferCoords);
 
     // Init buffers
-    glstate::bindVertexArrayObject(mGlNameVertexArrayObject);
+    if (mGlNameVertexArrayObject)
+      glstate::bindVertexArrayObject(mGlNameVertexArrayObject);
 
     glBindBuffer(GL_ARRAY_BUFFER, mGlNameBufferCoords);
     glVertexAttribPointer(GlslLayout::gLocationCoords, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), NULL);
@@ -361,7 +368,8 @@ namespace wren {
     glGenVertexArrays(1, &mGlNameVertexArrayObjectShadow);
     glGenBuffers(1, &mGlNameBufferShadowCoords);
 
-    glstate::bindVertexArrayObject(mGlNameVertexArrayObjectShadow);
+    if (mGlNameVertexArrayObjectShadow)
+      glstate::bindVertexArrayObject(mGlNameVertexArrayObjectShadow);
     glBindBuffer(GL_ARRAY_BUFFER, mGlNameBufferShadowCoords);
     glVertexAttribPointer(GlslLayout::gLocationCoords, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), NULL);
     glEnableVertexAttribArray(GlslLayout::gLocationCoords);
@@ -375,9 +383,12 @@ namespace wren {
   void DynamicMesh::cleanupGl() {
     release();
 
-    glDeleteVertexArrays(1, &mGlNameVertexArrayObject);
-    glDeleteBuffers(1, &mGlNameBufferCoords);
-    glDeleteBuffers(1, &mGlNameBufferIndices);
+    if (mGlNameVertexArrayObject)
+      glDeleteVertexArrays(1, &mGlNameVertexArrayObject);
+    if (mGlNameBufferCoords)
+      glDeleteBuffers(1, &mGlNameBufferCoords);
+    if (mGlNameBufferIndices)
+      glDeleteBuffers(1, &mGlNameBufferIndices);
 
     if (mHasNormals && mGlNameBufferNormals)
       glDeleteBuffers(1, &mGlNameBufferNormals);
@@ -388,8 +399,10 @@ namespace wren {
     if (mHasColorPerVertex && mGlNameBufferColors)
       glDeleteBuffers(1, &mGlNameBufferColors);
 
-    glDeleteVertexArrays(1, &mGlNameVertexArrayObjectShadow);
-    glDeleteBuffers(1, &mGlNameBufferShadowCoords);
+    if (mGlNameVertexArrayObjectShadow)
+      glDeleteVertexArrays(1, &mGlNameVertexArrayObjectShadow);
+    if (mGlNameBufferShadowCoords)
+      glDeleteBuffers(1, &mGlNameBufferShadowCoords);
   }
 
   void DynamicMesh::updateGl() {

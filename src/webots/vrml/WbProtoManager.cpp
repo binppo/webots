@@ -36,6 +36,7 @@
 #include <QtCore/QDirIterator>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QUrl>
+#include <QtCore/QSet>
 #include <QtCore/QXmlStreamReader>
 
 static WbProtoManager *gInstance = NULL;

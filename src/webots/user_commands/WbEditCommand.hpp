@@ -20,13 +20,15 @@
 //              and definition of respective undo and redo functions
 //
 
-#include <QtGui/QUndoCommand>
+#include <QtWidgets/QUndoCommand>
 
 #include "WbVariant.hpp"
 
+#include <core/WbConfig.h>
+
 class WbValue;
 
-class WbEditCommand : public QUndoCommand {
+class WB_LIB_EXPORT WbEditCommand : public QUndoCommand {
 public:
   WbEditCommand(WbValue *fieldValue, const WbVariant &prevValue, const WbVariant &nextValue, int index = -1,
                 QUndoCommand *parent = 0);

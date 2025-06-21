@@ -22,10 +22,13 @@
 #include "WbSingleValue.hpp"
 #include "WbWriter.hpp"
 
-class WbSFBool : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFBool : public WbSingleValue {
   Q_OBJECT
 
 public:
+  WbSFBool() : mValue(false) {}
   WbSFBool(WbTokenizer *tokenizer, const QString &worldPath) { readSFBool(tokenizer, worldPath); }
   WbSFBool(const WbSFBool &other);
   explicit WbSFBool(bool value) : mValue(value) {}

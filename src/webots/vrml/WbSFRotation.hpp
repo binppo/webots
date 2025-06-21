@@ -23,7 +23,9 @@
 #include "WbSingleValue.hpp"
 #include "WbWriter.hpp"
 
-class WbSFRotation : public WbSingleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSFRotation : public WbSingleValue {
   Q_OBJECT
 
 public:

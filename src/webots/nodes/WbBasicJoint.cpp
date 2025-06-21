@@ -136,7 +136,7 @@ void WbBasicJoint::postFinalize() {
   }
 
   if (protoParameterNode()) {
-    const QVector<WbNode *> nodes = protoParameterNode()->protoParameterNodeInstances();
+    const auto nodes = protoParameterNode()->protoParameterNodeInstances();
     if (nodes.size() > 1 && nodes.at(0) == this)
       parsingWarn(tr("Joint node defined in PROTO field is used multiple times. "
                      "Webots doesn't fully support this because the multiple node instances cannot be identical."));

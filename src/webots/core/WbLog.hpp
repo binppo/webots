@@ -26,12 +26,14 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 // ERROR is apparently already defined under Windows, which causes trouble with the enums below
 #ifdef ERROR
 #undef ERROR
 #endif
 
-class WbLog : public QObject {
+class WB_LIB_EXPORT WbLog : public QObject {
   Q_OBJECT
 
 public:

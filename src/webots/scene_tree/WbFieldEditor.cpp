@@ -44,15 +44,17 @@
 #include "WbVector2Editor.hpp"
 #include "WbVector3Editor.hpp"
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QStackedLayout>
 #include <QtWidgets/QToolButton>
 
 #include <cassert>
 
+#include <core/WbConfig.h>
+
 // empty value editor: used when nothing needs editing
-class WbEmptyEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbEmptyEditor : public WbValueEditor {
 public:
   explicit WbEmptyEditor(QWidget *parent = NULL) : WbValueEditor(parent) {}
 

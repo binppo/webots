@@ -45,6 +45,8 @@ namespace wren {
     static StaticMesh *createQuad();
     static StaticMesh *createLineSet(int coordCount, const float *coordData, const float *colorData);
     static StaticMesh *createPointSet(int coordCount, const float *coordData, const float *colorData);
+    static StaticMesh *preCreatePointSet(int coordCount, const float *coordData, const float *colorData, float *&coordPtr, float *&colorPtr);
+    static void postCreatePointSet(StaticMesh *mesh);
     static StaticMesh *createTriangleMesh(int coordCount, int indexCount, const float *coordData, const float *normalData,
                                           const float *texCoordData, const float *unwrappedTexCoordData,
                                           const unsigned int *indexData, bool outline);
@@ -78,7 +80,7 @@ namespace wren {
     primitive::Sphere recomputeBoundingSphere(const glm::vec3 &scale = gVec3Ones) override;
     void computeBoundingVolumes();
 
-    bool supportShadows() const override { return mCacheData->mSupportShadows; }
+    bool supportShadows() const override { return mCacheData ? mCacheData->mSupportShadows : false; }
 
   protected:
     StaticMesh();

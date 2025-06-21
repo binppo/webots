@@ -25,12 +25,14 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbField;
 class WbNode;
 class WbTokenizer;
 class WbWriter;
 
-class WbNodeFactory {
+class WB_LIB_EXPORT WbNodeFactory {
 public:
   static WbNodeFactory *instance();
 

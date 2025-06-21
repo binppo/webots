@@ -17,9 +17,11 @@
 
 #include <ode/ode.h>
 
+#include <core/WbConfig.h>
+
 class WbContactProperties;
 
-class WbOdeContact {
+class WB_LIB_EXPORT WbOdeContact {
 public:
   WbOdeContact(const dContactGeom &geom, const WbContactProperties *contactProperties) :
     mContactGeom(geom),

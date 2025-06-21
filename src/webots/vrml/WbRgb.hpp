@@ -25,7 +25,9 @@
 
 #include <cassert>
 
-class WbRgb {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRgb {
 public:
   WbRgb() : mRed(0.0), mGreen(0.0), mBlue(0.0) {}
   WbRgb(double r, double g, double b) : mRed(r), mGreen(g), mBlue(b) {}

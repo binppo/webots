@@ -17,6 +17,12 @@
 
 #include "WbRenderingDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QPolygon>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbCamera;
 class WbDisplayFont;
 class WbDisplayImage;
@@ -24,7 +30,7 @@ class WbImageTexture;
 
 class QDataStream;
 
-class WbDisplay : public WbRenderingDevice {
+class WB_LIB_EXPORT WbDisplay : public WbRenderingDevice {
   Q_OBJECT
 public:
   // constructors and destructor
@@ -46,6 +52,42 @@ public:
   void enableExternalWindow(bool enabled) override;
 
   WbCamera *const attachedCamera() const { return mAttachedCamera; }
+
+  void drawPixel(int x, int y);
+  void fastDrawPixel(int offset);
+  void drawLine(int x0, int y0, int x1, int y1);
+  void drawRectangle(int x, int y, int w, int h, bool fill);
+  void drawOval(int cx, int cy, int a, int b, bool fill);
+  int drawChar(unsigned long c, int x, int y);  // return character width in pixels
+  void setFont(const char *font, unsigned int size);
+  void drawText(const char *txt, int x, int y);
+  void drawPolygon(const int *px, const int *py, int size, bool fill);
+  unsigned int *imageCopy(short int x, short int y, short int &w,
+                          short int &h);  // return copied data and clipped width and height
+  void imagePaste(int id, int x, int y, bool blend);
+  void imageLoad(int id, int w, int h, const char *data, int format);
+  void imageDelete(int id);
+  WbDisplayImage *imageFind(int id);
+
+public slots:
+  void ATTACH_CAMERA(int cameraTag);
+  void DETACH_CAMERA();
+  void SET_COLOR(int color);
+  void SET_ALPHA(int alpha);
+  void SET_OPACITY(int opacity);
+  void SET_FONT(const QString& font, int fontSize, bool antiAliasing);
+  void DRAW_PIXEL(int px, int py);
+  void DRAW_LINE(const QLine& ln);
+  void DRAW_TEXT(const QString& text, int px, int py);
+  void DRAW_RECTANGLE(const QRect& rect, bool fill);
+  void DRAW_OVAL(const QRect& rect, bool fill);
+  void DRAW_POLYGON(const QPolygon& points, bool fill);
+  void IMAGE_COPY(int id, int x, int y);
+  void IMAGE_PASTE(int id, int x, int y, bool blend);
+  void IMAGE_LOAD(int id, const QImage& img);
+  void IMAGE_DELETE(int id);
+  void IMAGE_SAVE(const QString& fileName, int id);
+  QVector<WbDisplayImage*> IMAGE_GET_ALL();
 
 signals:
   void attachedCameraChanged(const WbRenderingDevice *previousAttachedDevice, const WbRenderingDevice *newAttachedDevice);
@@ -73,21 +115,6 @@ private:
 
   void attachCamera(WbDeviceTag cameraTag);
 
-  void drawPixel(int x, int y);
-  void fastDrawPixel(int offset);
-  void drawLine(int x0, int y0, int x1, int y1);
-  void drawRectangle(int x, int y, int w, int h, bool fill);
-  void drawOval(int cx, int cy, int a, int b, bool fill);
-  int drawChar(unsigned long c, int x, int y);  // return character width in pixels
-  void setFont(char *font, unsigned int size);
-  void drawText(const char *txt, int x, int y);
-  void drawPolygon(const int *px, const int *py, int size, bool fill);
-  unsigned int *imageCopy(short int x, short int y, short int &w,
-                          short int &h);  // return copied data and clipped width and height
-  void imagePaste(int id, int x, int y, bool blend);
-  void imageLoad(int id, int w, int h, void *data, int format);
-  void imageDelete(int id);
-  WbDisplayImage *imageFind(int id);
   static int channelNumberFromPixelFormat(int pixelFormat);
 
   unsigned int *mImage;  // BGRA 8+8+8+8

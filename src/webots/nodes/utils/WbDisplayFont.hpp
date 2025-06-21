@@ -18,13 +18,15 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 #include <ft2build.h>
 #ifdef FT_FREETYPE_H
 // cppcheck-suppress preprocessorErrorDirective
 #include FT_FREETYPE_H
 #endif
 
-class WbDisplayFont {
+class WB_LIB_EXPORT WbDisplayFont {
 public:
   WbDisplayFont();
   virtual ~WbDisplayFont();

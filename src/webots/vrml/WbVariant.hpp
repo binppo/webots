@@ -24,6 +24,8 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbRgb;
 class WbNode;
 class QString;
@@ -31,7 +33,7 @@ class WbVector2;
 class WbVector3;
 class WbRotation;
 
-class WbVariant : public QObject {
+class WB_LIB_EXPORT WbVariant : public QObject {
   Q_OBJECT
 
 public:

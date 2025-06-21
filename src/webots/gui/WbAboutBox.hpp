@@ -21,7 +21,9 @@
 
 #include <QtWidgets/QDialog>
 
-class WbAboutBox : public QDialog {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbAboutBox : public QDialog {
   Q_OBJECT
 public:
   explicit WbAboutBox(QWidget *parent = NULL);

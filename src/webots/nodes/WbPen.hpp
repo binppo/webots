@@ -17,9 +17,14 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbPaintTexture;
 
-class WbPen : public WbSolidDevice {
+class WB_LIB_EXPORT WbPen : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -36,6 +41,11 @@ public:
   void handleMessage(QDataStream &) override;
   void prePhysicsStep(double ms) override;
   void reset(const QString &id) override;
+
+public slots:
+  void WRITE();
+  void DONT_WRITE();
+  void SET_INK_COLOR(int r, int g, int b, double density);
 
 private:
   WbSFBool *mWrite;

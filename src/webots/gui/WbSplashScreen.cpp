@@ -26,10 +26,13 @@ WbSplashScreen::WbSplashScreen(const QStringList &screenshots, const QString &lo
   QSplashScreen::setPixmap(background);
 
   // rand is already given a fixed seed so use millisecond-time since epoch for pseudorandomness
-  int randomImageIndex = QTime::currentTime().msecsSinceStartOfDay() % screenshots.size();
+  if(!screenshots.isEmpty())
+  {
+    int randomImageIndex = QTime::currentTime().msecsSinceStartOfDay() % screenshots.size();
 
-  mScreenshot = QImage("images:splash_images/" + screenshots.at(randomImageIndex));
-  mWebotsLogo = QImage("images:" + logoFileName);
+    mScreenshot = QImage("images:splash_images/" + screenshots.at(randomImageIndex));
+    mWebotsLogo = QImage("images:" + logoFileName);
+  }
 #ifdef _WIN32
   setWindowModality(Qt::ApplicationModal);
 #endif
@@ -53,10 +56,12 @@ void WbSplashScreen::drawContents(QPainter *painter) {
   painter->fillRect(QRect(0, 0, 380, 580), gradient);
 
   // draw screenshot image
-  painter->drawImage(QRect(380, 0, 580, 580), mScreenshot);
+  if(!mScreenshot.isNull())
+    painter->drawImage(QRect(380, 0, 580, 580), mScreenshot);
 
   // draw webots logo
-  painter->drawImage(QRect(15, 34, 128, 120), mWebotsLogo);
+  if(!mWebotsLogo.isNull())
+    painter->drawImage(QRect(15, 34, 128, 120), mWebotsLogo);
 
   // draw application name
   QFont font;

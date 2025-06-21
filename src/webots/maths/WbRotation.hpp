@@ -28,7 +28,9 @@
 
 #include <cassert>
 
-class WbRotation {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRotation {
 public:
   // construct as identity rotation
   WbRotation() : mX(0.0), mY(0.0), mZ(1.0), mAngle(0.0) {}

@@ -21,10 +21,12 @@
 
 #include "WbNewWorldWizard.hpp"
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 class WbProject;
 
-class WbNewProjectWizard : public WbNewWorldWizard {
+class WB_LIB_EXPORT WbNewProjectWizard : public WbNewWorldWizard {
   Q_OBJECT
 
 public:

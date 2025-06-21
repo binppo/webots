@@ -33,7 +33,7 @@
 #include <wren/static_mesh.h>
 #include <wren/transform.h>
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <cassert>
@@ -190,4 +190,18 @@ void WbPen::applyOptionalRenderingToWren() {
     wr_phong_material_set_color(mMaterial, enabledColor);
   else
     wr_phong_material_set_color(mMaterial, disabledColor);
+}
+
+void WbPen::WRITE() {
+  mWrite->setValue(true);
+}
+
+void WbPen::DONT_WRITE() {
+  mWrite->setValue(false);
+}
+
+void WbPen::SET_INK_COLOR(int r, int g, int b, double density) {
+  mInkColor->setValue(r / 255.0f, g / 255.0f, b / 255.0f);
+  mInkDensity->setValue(density);
+  WbFieldChecker::clampDoubleToRangeWithIncludedBounds(this, mInkDensity, 0.0, 1.0);
 }

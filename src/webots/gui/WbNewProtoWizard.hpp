@@ -24,10 +24,12 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QWizard>
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 class QLabel;
 
-class WbNewProtoWizard : public QWizard {
+class WB_LIB_EXPORT WbNewProtoWizard : public QWizard {
   Q_OBJECT
 
 public:

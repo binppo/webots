@@ -21,7 +21,9 @@
 #include "WbDevice.hpp"
 #include "WbSFString.hpp"
 
-class WbLogicalDevice : public WbBaseNode, public WbDevice {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbLogicalDevice : public WbBaseNode, public WbDevice {
 public:
   virtual ~WbLogicalDevice() override;
   const QString &deviceName() const override { return mDeviceName->value(); }

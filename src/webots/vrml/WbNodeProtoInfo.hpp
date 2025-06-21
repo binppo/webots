@@ -22,6 +22,8 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbField;
 
 struct WbFieldReference {
@@ -29,7 +31,7 @@ struct WbFieldReference {
   WbField *actualField;
 };
 
-class WbNodeProtoInfo {
+class WB_LIB_EXPORT WbNodeProtoInfo {
 public:
   WbNodeProtoInfo(const QString &modelName, const QList<WbField *> &parameters);
   explicit WbNodeProtoInfo(const WbNodeProtoInfo &other);

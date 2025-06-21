@@ -27,7 +27,7 @@
 #include "WbTextFind.hpp"
 #include "WbWorld.hpp"
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocumentFragment>
 

@@ -22,11 +22,13 @@
 #include "WbRotation.hpp"
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFieldDoubleSpinBox;
 class QLabel;
 class QPushButton;
 
-class WbRotationEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbRotationEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

@@ -17,12 +17,18 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbMFVector3;
 class WbSFBool;
 class WbLookupTable;
 
-class WbGyro : public WbSolidDevice {
+class WB_LIB_EXPORT WbGyro : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -40,6 +46,16 @@ public:
   void writeAnswer(WbDataStream &) override;
   void writeConfigure(WbDataStream &) override;
   bool refreshSensorIfNeeded() override;
+
+  int lookupTableSize() const;
+  QVector<QVector3D> lookupTable() const;
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+
+  QVector3D value();
 
 private:
   // user accessible fields

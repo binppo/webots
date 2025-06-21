@@ -91,6 +91,9 @@ namespace wren {
   }
 
   void Texture2d::prepareGl() {
+    if (!mCacheData)
+      return;
+
     assert(mCacheData);
     assert(!mCacheData->mGlName);
 

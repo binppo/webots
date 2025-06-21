@@ -25,6 +25,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbGroup;
 class WbNode;
 class WbPerspective;
@@ -36,7 +38,7 @@ class WbViewpoint;
 struct dImmersionGeom;
 class WbOdeContact;
 
-class WbWorld : public QObject {
+class WB_LIB_EXPORT WbWorld : public QObject {
   Q_OBJECT;
 
 public:
@@ -136,6 +138,8 @@ public:
   const QList<dImmersionGeom> &immersionGeoms() const { return mImmersionGeoms; }
   void appendOdeContact(const WbOdeContact &odeContact);
   void appendOdeImmersionGeom(const dImmersionGeom &immersionGeom);
+  void lockOdeContact();
+  void unlockOdeContact();
 
   void retrieveNodeNamesWithOptionalRendering(QStringList &centerOfMassNodeNames, QStringList &centerOfBuoyancyNodeNames,
                                               QStringList &supportPolygonNodeNames) const;

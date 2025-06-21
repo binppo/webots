@@ -17,13 +17,15 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QDialogButtonBox;
 class QItemSelection;
 class QLineEdit;
 class QStandardItemModel;
 class QTreeView;
 
-class WbOpenSampleWorldDialog : public QDialog {
+class WB_LIB_EXPORT WbOpenSampleWorldDialog : public QDialog {
   Q_OBJECT
 
 public:

@@ -393,9 +393,10 @@ void WbGeometry::setTransparent(bool isTransparent) {
 
 void WbGeometry::destroyWrenObjects() {
   if (areWrenObjectsInitialized()) {
-    WbWrenOpenGlContext::makeWrenCurrent();
-    deleteWrenRenderable();
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      deleteWrenRenderable();
+      WbWrenOpenGlContext::doneWren();
+    }
   }
 }
 

@@ -26,11 +26,16 @@
 #include "WbSFDouble.hpp"
 #include "WbSFVector3.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbDownloader;
 class WbSensor;
 class WbSoundClip;
 
-class WbMotor : public WbJointDevice {
+class WB_LIB_EXPORT WbMotor : public WbJointDevice {
   Q_OBJECT
 
 public:
@@ -80,6 +85,25 @@ public:
   static const QList<const WbMotor *> &motors() { return cMotors; }
 
   void setupJointFeedback();
+
+  bool fetchTransportQue(double &val);
+  double targetPosition() const { return mTargetPosition; }
+  double refreshRate() const;
+  double forceFeedback();
+  double targetVelocity() const { return mTargetVelocity; }
+  double availableForce() const { return mMotorForceOrTorque; }
+
+public slots:
+  void SET_POSITION(double p);
+  void SET_VELOCITY(double v);
+  void SET_ACCELERATION(double a);
+  void SET_FORCE(double forceOrTorque);
+  void SET_AVAILABLE_FORCE(double availableForceOrTorque);
+  void SET_CONTROL_PID(double controlP, double controlI, double controlD);
+  void SET_FEEDBACK(int rate);
+  double GET_FEEDBACK();
+  const WbLogicalDevice* GET_ASSOCIATED_DEVICE(int deviceType);
+  void RESET_POSITION(double position);
 
 signals:
   void minPositionChanged();
@@ -150,6 +174,7 @@ private:
   bool mNeedToConfigure;
   int mKinematicVelocitySign;
   QList<WbJointDevice *> mChangedAssociatedDevices;
+  QList<double> mTransportQueue;
   WbDeviceTag *mRequestedDeviceTag;
   WbDownloader *mDownloader;
   WbSFDouble *mMultiplier;

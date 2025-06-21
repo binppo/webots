@@ -25,7 +25,9 @@
 #include "WbValue.hpp"
 #include "WbVariant.hpp"
 
-class WbSingleValue : public WbValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbSingleValue : public WbValue {
   Q_OBJECT
 
 public:

@@ -43,7 +43,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "../../controller/c/messages.h"  // contains the definitions for the macros C_SET_SAMPLING_PERIOD, C_MOTOR_SET_POSITION, C_MOTOR_SET_VELOCITY ...
+#include <controller/c/messages.h>
 
 QList<const WbMotor *> WbMotor::cMotors;
 
@@ -705,7 +705,7 @@ void WbMotor::enableMotorFeedback(int rate) {
 }
 
 void WbMotor::handleMessage(QDataStream &stream) {
-  short command;
+  unsigned char command;
   stream >> command;
 
   switch (command) {
@@ -774,6 +774,33 @@ void WbMotor::handleMessage(QDataStream &stream) {
     default:
       assert(0);  // Invalid command.
   }
+}
+
+bool WbMotor::fetchTransportQue(double &val) {
+  if (mTransportQueue.isEmpty())
+    return false;
+
+  val = mTransportQueue.takeFirst();
+  mTargetPosition = val;
+  mCurrentVelocity = 0.0;
+  mErrorIntegral = 0.0;
+  mPreviousError = 0.0;
+  mUserControl = true;
+
+  return true;
+}
+
+double WbMotor::refreshRate() const {
+  return mForceOrTorqueSensor->refreshRate();
+}
+
+double WbMotor::forceFeedback() {
+  if (!mForceOrTorqueSensor)
+    return 0.0;
+
+  refreshSensorIfNeeded();
+
+  return mForceOrTorqueLastValue;
 }
 
 void WbMotor::writeAnswer(WbDataStream &stream) {
@@ -852,4 +879,69 @@ QList<const WbBaseNode *> WbMotor::findClosestDescendantNodesWithDedicatedWrenNo
   while (it.hasNext())
     list << static_cast<WbBaseNode *>(it.next());
   return list;
+}
+
+void WbMotor::SET_POSITION(double p) {
+  setTargetPosition(p);
+  // relay target position to coupled motors, if any
+  for (int i = 0; i < mCoupledMotors.size(); ++i)
+    mCoupledMotors[i]->setTargetPosition(p);
+}
+
+void WbMotor::SET_VELOCITY(double v) {
+  setVelocity(v);
+  // relay target velocity to coupled motors, if any
+  for (int i = 0; i < mCoupledMotors.size(); ++i)
+    mCoupledMotors[i]->setVelocity(v);
+}
+
+void WbMotor::SET_ACCELERATION(double a) {
+  setAcceleration(a);
+}
+
+void WbMotor::SET_FORCE(double forceOrTorque) {
+  setForceOrTorque(forceOrTorque);
+  for (int i = 0; i < mCoupledMotors.size(); ++i)
+    mCoupledMotors[i]->setForceOrTorque(forceOrTorque);
+}
+
+void WbMotor::SET_AVAILABLE_FORCE(double availableForceOrTorque) {
+  setAvailableForceOrTorque(availableForceOrTorque);
+}
+
+void WbMotor::SET_CONTROL_PID(double controlP, double controlI, double controlD) {
+  mControlPID->setValue(controlP, controlI, controlD);
+  awake();
+}
+
+void WbMotor::SET_FEEDBACK(int rate) {
+  enableMotorFeedback(rate);
+}
+
+double WbMotor::GET_FEEDBACK() {
+  if (!mForceOrTorqueSensor)
+    return 0.0;
+
+  refreshSensorIfNeeded();
+
+  return mForceOrTorqueLastValue;
+}
+
+const WbLogicalDevice* WbMotor::GET_ASSOCIATED_DEVICE(int deviceType) {
+  const WbLogicalDevice* device = getSiblingDeviceByType(deviceType);
+  return device;
+}
+
+void WbMotor::RESET_POSITION(double position) {
+  const double maxp = mMaxPosition->value();
+  const double minp = mMinPosition->value();
+  if (maxp != minp) {
+    if (position > maxp) {
+      position = maxp;
+    } else if (position< minp) {
+      position = minp;
+    }
+  }
+
+  mTransportQueue << position;
 }

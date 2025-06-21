@@ -222,67 +222,67 @@ void WbVirtualRealityHeadset::createWrenObjects(WrTransform *node, bool antiAlia
     unsigned int recommendedWidth, recommendedHeight;
     mSystem->GetRecommendedRenderTargetSize(&recommendedWidth, &recommendedHeight);
 
-    WbWrenOpenGlContext::makeWrenCurrent();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      // first camera for left eye
+      mWrenCameras[LEFT] = wr_camera_new();
+      wr_transform_attach_child(node, WR_NODE(mWrenCameras[LEFT]));
+      mWrenViewports[LEFT] = wr_viewport_new();
+      wr_viewport_set_camera(mWrenViewports[LEFT], mWrenCameras[LEFT]);
+      wr_viewport_set_visibility_mask(mWrenViewports[LEFT], WbWrenRenderingContext::instance()->visibilityMask());
 
-    // first camera for left eye
-    mWrenCameras[LEFT] = wr_camera_new();
-    wr_transform_attach_child(node, WR_NODE(mWrenCameras[LEFT]));
-    mWrenViewports[LEFT] = wr_viewport_new();
-    wr_viewport_set_camera(mWrenViewports[LEFT], mWrenCameras[LEFT]);
-    wr_viewport_set_visibility_mask(mWrenViewports[LEFT], WbWrenRenderingContext::instance()->visibilityMask());
+      WrTextureRtt *texture = wr_texture_rtt_new();
+      wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGBA16F);
 
-    WrTextureRtt *texture = wr_texture_rtt_new();
-    wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGBA16F);
+      mWrenFrameBuffer[LEFT] = wr_frame_buffer_new();
+      wr_frame_buffer_set_size(mWrenFrameBuffer[LEFT], recommendedWidth, recommendedHeight);
+      wr_frame_buffer_append_output_texture(mWrenFrameBuffer[LEFT], texture);
 
-    mWrenFrameBuffer[LEFT] = wr_frame_buffer_new();
-    wr_frame_buffer_set_size(mWrenFrameBuffer[LEFT], recommendedWidth, recommendedHeight);
-    wr_frame_buffer_append_output_texture(mWrenFrameBuffer[LEFT], texture);
+      texture = wr_texture_rtt_new();
+      wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGB8);
+      wr_frame_buffer_append_output_texture(mWrenFrameBuffer[LEFT], texture);
 
-    texture = wr_texture_rtt_new();
-    wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGB8);
-    wr_frame_buffer_append_output_texture(mWrenFrameBuffer[LEFT], texture);
+      wr_frame_buffer_enable_depth_buffer(mWrenFrameBuffer[LEFT], true);
+      wr_frame_buffer_setup(mWrenFrameBuffer[LEFT]);
+      wr_viewport_set_frame_buffer(mWrenViewports[LEFT], mWrenFrameBuffer[LEFT]);
 
-    wr_frame_buffer_enable_depth_buffer(mWrenFrameBuffer[LEFT], true);
-    wr_frame_buffer_setup(mWrenFrameBuffer[LEFT]);
-    wr_viewport_set_frame_buffer(mWrenViewports[LEFT], mWrenFrameBuffer[LEFT]);
+      // second camera for right eye
+      mWrenCameras[RIGHT] = wr_camera_new();
+      wr_transform_attach_child(node, WR_NODE(mWrenCameras[RIGHT]));
+      mWrenViewports[RIGHT] = wr_viewport_new();
+      wr_viewport_set_camera(mWrenViewports[RIGHT], mWrenCameras[RIGHT]);
+      wr_viewport_set_visibility_mask(mWrenViewports[RIGHT], WbWrenRenderingContext::instance()->visibilityMask());
 
-    // second camera for right eye
-    mWrenCameras[RIGHT] = wr_camera_new();
-    wr_transform_attach_child(node, WR_NODE(mWrenCameras[RIGHT]));
-    mWrenViewports[RIGHT] = wr_viewport_new();
-    wr_viewport_set_camera(mWrenViewports[RIGHT], mWrenCameras[RIGHT]);
-    wr_viewport_set_visibility_mask(mWrenViewports[RIGHT], WbWrenRenderingContext::instance()->visibilityMask());
+      texture = wr_texture_rtt_new();
+      wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGBA16F);
 
-    texture = wr_texture_rtt_new();
-    wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGBA16F);
+      mWrenFrameBuffer[RIGHT] = wr_frame_buffer_new();
+      wr_frame_buffer_set_size(mWrenFrameBuffer[RIGHT], recommendedWidth, recommendedHeight);
+      wr_frame_buffer_append_output_texture(mWrenFrameBuffer[RIGHT], texture);
 
-    mWrenFrameBuffer[RIGHT] = wr_frame_buffer_new();
-    wr_frame_buffer_set_size(mWrenFrameBuffer[RIGHT], recommendedWidth, recommendedHeight);
-    wr_frame_buffer_append_output_texture(mWrenFrameBuffer[RIGHT], texture);
+      texture = wr_texture_rtt_new();
+      wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGB8);
+      wr_frame_buffer_append_output_texture(mWrenFrameBuffer[RIGHT], texture);
 
-    texture = wr_texture_rtt_new();
-    wr_texture_set_internal_format(WR_TEXTURE(texture), WR_TEXTURE_INTERNAL_FORMAT_RGB8);
-    wr_frame_buffer_append_output_texture(mWrenFrameBuffer[RIGHT], texture);
+      wr_frame_buffer_enable_depth_buffer(mWrenFrameBuffer[RIGHT], true);
+      wr_frame_buffer_setup(mWrenFrameBuffer[RIGHT]);
+      wr_viewport_set_frame_buffer(mWrenViewports[RIGHT], mWrenFrameBuffer[RIGHT]);
 
-    wr_frame_buffer_enable_depth_buffer(mWrenFrameBuffer[RIGHT], true);
-    wr_frame_buffer_setup(mWrenFrameBuffer[RIGHT]);
-    wr_viewport_set_frame_buffer(mWrenViewports[RIGHT], mWrenFrameBuffer[RIGHT]);
+      mLeftEyeSmaa = new WbWrenSmaa();
+      mRightEyeSmaa = new WbWrenSmaa();
 
-    mLeftEyeSmaa = new WbWrenSmaa();
-    mRightEyeSmaa = new WbWrenSmaa();
+      if (antiAliasing) {
+        mLeftEyeSmaa->setup(mWrenViewports[LEFT]);
+        mRightEyeSmaa->setup(mWrenViewports[RIGHT]);
+      }
 
-    if (antiAliasing) {
-      mLeftEyeSmaa->setup(mWrenViewports[LEFT]);
-      mRightEyeSmaa->setup(mWrenViewports[RIGHT]);
+      mLeftEyeHdr = new WbWrenHdr();
+      mRightEyeHdr = new WbWrenHdr();
+
+      mLeftEyeHdr->setup(mWrenViewports[LEFT]);
+      mRightEyeHdr->setup(mWrenViewports[RIGHT]);
+
+      WbWrenOpenGlContext::doneWren();
     }
-
-    mLeftEyeHdr = new WbWrenHdr();
-    mRightEyeHdr = new WbWrenHdr();
-
-    mLeftEyeHdr->setup(mWrenViewports[LEFT]);
-    mRightEyeHdr->setup(mWrenViewports[RIGHT]);
-
-    WbWrenOpenGlContext::doneWren();
 
     const WbBackground *const background = WbBackground::firstInstance();
     if (background) {
@@ -405,9 +405,10 @@ void WbVirtualRealityHeadset::updateOrientationAndPosition() {
   }
 
   if (mWrenViewports[0] && mSystem) {
-    WbWrenOpenGlContext::makeWrenCurrent();
-    wr_scene_render_to_viewports(wr_scene_get_instance(), 2, mWrenViewports, NULL, true, false);
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      wr_scene_render_to_viewports(wr_scene_get_instance(), 2, mWrenViewports, NULL, true, false);
+      WbWrenOpenGlContext::doneWren();
+    }
     vr::VRCompositor()->Submit(vr::Eye_Left, mTextureReferences[LEFT], mTextureBounds);
     vr::VRCompositor()->Submit(vr::Eye_Right, mTextureReferences[RIGHT], mTextureBounds);
     setTextureOverlayVisible(false);

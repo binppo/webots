@@ -18,9 +18,11 @@
 #include <WbSFInt.hpp>
 #include <WbSolidDevice.hpp>
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 
-class WbVacuumGripper : public WbSolidDevice {
+class WB_LIB_EXPORT WbVacuumGripper : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -43,9 +45,23 @@ public:
   void reset(const QString &id) override;
   void save(const QString &id) override;
 
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  void TURN_ON();
+  void TURN_OFF();
+
+  void turnOn();
+  void turnOff();
+  void setRefreshRate(int refreshRate);
+  bool isOn();
+  bool value() { return mValue; }
+
   bool isWaitingForConnection();
   int contactPoints() const { return mContactPoints->value(); }
   void addCollidedSolid(WbSolid *solid, const double depth);
+
+  double getEffectiveTensileStrength() const;
+  double getEffectiveShearStrength() const;
 
 private:
   // fields
@@ -71,12 +87,8 @@ private:
   void detachFromSolid();
   void createFixedJoint(WbSolid *other);
   void destroyFixedJoint();
-  void turnOn();
-  void turnOff();
   void computeValue();
   void detachIfForceExceedStrength();
-  double getEffectiveTensileStrength() const;
-  double getEffectiveShearStrength() const;
   void init();
 
 private slots:

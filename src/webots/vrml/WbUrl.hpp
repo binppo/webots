@@ -17,39 +17,41 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 class WbMFString;
 class WbWriter;
 
 namespace WbUrl {
-  QString resolveUrl(const QString &rawUrl);
-  QString computePath(const WbNode *node, const QString &field, const QString &rawUrl, bool showWarning = false);
-  QString computePath(const WbNode *node, const QString &field, const WbMFString *urlField, int index,
+  WB_LIB_EXPORT QString resolveUrl(const QString &rawUrl);
+  WB_LIB_EXPORT QString computePath(const WbNode *node, const QString &field, const QString &rawUrl, bool showWarning = false);
+  WB_LIB_EXPORT QString computePath(const WbNode *node, const QString &field, const WbMFString *urlField, int index,
                       bool showWarning = false);
 
-  QString combinePaths(const QString &rawUrl, const QString &rawParentUrl);
+  WB_LIB_EXPORT QString combinePaths(const QString &rawUrl, const QString &rawParentUrl);
 
-  QString exportResource(const WbNode *node, const QString &url, const QString &sourcePath, const QString &relativeResourcePath,
+  WB_LIB_EXPORT QString exportResource(const WbNode *node, const QString &url, const QString &sourcePath, const QString &relativeResourcePath,
                          const WbWriter &writer, const bool isTexture = true);
-  QString exportTexture(const WbNode *node, const WbMFString *urlField, int index, const WbWriter &writer);
-  QString exportMesh(const WbNode *node, const WbMFString *urlField, int index, const WbWriter &writer);
+  WB_LIB_EXPORT QString exportTexture(const WbNode *node, const WbMFString *urlField, int index, const WbWriter &writer);
+  WB_LIB_EXPORT QString exportMesh(const WbNode *node, const WbMFString *urlField, int index, const WbWriter &writer);
 
-  QString missing(const QString &url);
-  const QString &missingTexture();
-  const QString &missingProtoIcon();
-  bool isWeb(const QString &url);
-  bool isLocalUrl(const QString &url);
-  QString computeLocalAssetUrl(QString url, bool isW3d);
-  QString computePrefix(const QString &rawUrl);
+  WB_LIB_EXPORT QString missing(const QString &url);
+  WB_LIB_EXPORT const QString &missingTexture();
+  WB_LIB_EXPORT const QString &missingProtoIcon();
+  WB_LIB_EXPORT bool isWeb(const QString &url);
+  WB_LIB_EXPORT bool isLocalUrl(const QString &url);
+  WB_LIB_EXPORT QString computeLocalAssetUrl(QString url, bool isW3d);
+  WB_LIB_EXPORT QString computePrefix(const QString &rawUrl);
 
-  QString remoteWebotsAssetRegex(bool capturing);
-  const QString &remoteWebotsAssetPrefix();
+  WB_LIB_EXPORT QString remoteWebotsAssetRegex(bool capturing);
+  WB_LIB_EXPORT const QString &remoteWebotsAssetPrefix();
 
-  const QRegularExpression &vrmlResourceRegex();
+  WB_LIB_EXPORT const QRegularExpression &vrmlResourceRegex();
 
-  QString expressRelativeToWorld(const QString &url);
+  WB_LIB_EXPORT QString expressRelativeToWorld(const QString &url);
 
-  void setWorldFileName(const QString &fileName);
+  WB_LIB_EXPORT void setWorldFileName(const QString &fileName);
 
 };  // namespace WbUrl
 

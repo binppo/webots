@@ -26,7 +26,9 @@ class QPushButton;
 #include <QtGui/QIcon>
 #include <QtWidgets/QFrame>
 
-class WbDockTitleBar : public QFrame {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbDockTitleBar : public QFrame {
   Q_OBJECT
 
 public:

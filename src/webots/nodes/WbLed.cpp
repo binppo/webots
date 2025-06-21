@@ -23,7 +23,7 @@
 #include "WbPbrAppearance.hpp"
 #include "WbShape.hpp"
 
-#include "../../controller/c/messages.h"  // contains the definitions for the macros C_SET_LED
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <cassert>
@@ -48,6 +48,10 @@ WbLed::WbLed(const WbNode &other) : WbSolidDevice(other) {
 
 WbLed::~WbLed() {
   clearMaterialsAndLights();
+}
+
+void WbLed::preFinalize() {
+  WbSolidDevice::preFinalize();
 }
 
 void WbLed::postFinalize() {
@@ -232,4 +236,9 @@ void WbLed::powerOn(bool e) {  // turn off
   WbDevice::powerOn(e);
   if (!e)
     setValue(0);
+}
+
+void WbLed::SET(int v) {
+  if (isAnyMaterialOrLightFound())
+    setValue(v);
 }

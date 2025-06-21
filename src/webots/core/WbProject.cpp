@@ -17,6 +17,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QRegularExpression>
+#include <QtCore/QSet>
 
 #include <cassert>
 #include "WbFileUtil.hpp"

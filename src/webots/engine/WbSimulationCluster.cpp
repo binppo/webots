@@ -466,7 +466,7 @@ static bool needCollisionDetection(const WbSolid *solid, bool isOtherRayGeom) {
 // cppcheck-suppress constParameterPointer
 void WbSimulationCluster::appendCollisionedRobot(WbKinematicDifferentialWheels *robot) {
   if (WbOdeContext::instance()->numberOfThreads() > 1) {
-    QMutexLocker<QMutex> lock(&mCollisionedRobotsMutex);
+    QMutexLocker lock(&mCollisionedRobotsMutex);
     mCollisionedRobots.append(robot);
   } else
     mCollisionedRobots.append(robot);
@@ -487,7 +487,7 @@ void WbSimulationCluster::handleCollisionIfSpace(void *data, dGeomID o1, dGeomID
 void WbSimulationCluster::warnMoreContactPointsThanContactJoints(const QString &material1, const QString &material2, int max,
                                                                  int n) {
   static QMutex mutex;
-  QMutexLocker<QMutex> lock(&mutex);
+  QMutexLocker lock(&mutex);
   static double lastWarningTime = -INFINITY;
   const double currentSimulationTime = WbSimulationState::instance()->time();
   if (currentSimulationTime > lastWarningTime + 1000.0) {

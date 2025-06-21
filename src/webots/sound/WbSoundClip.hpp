@@ -21,11 +21,13 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class QIODevice;
 
 class WbWaveFile;
 
-class WbSoundClip {
+class WB_LIB_EXPORT WbSoundClip {
 public:
   WbSoundClip();
   virtual ~WbSoundClip();

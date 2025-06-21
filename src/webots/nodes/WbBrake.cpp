@@ -17,7 +17,7 @@
 
 #include <QtCore/QDataStream>
 #include <cassert>
-#include "../../controller/c/messages.h"  // contains the definitions for the macros C_BRAKE_SET_DAMPING_CONSTANT and C_CONFIGURE
+#include <controller/c/messages.h>
 
 WbBrake::WbBrake(const QString &modelName, WbTokenizer *tokenizer) : WbJointDevice(modelName, tokenizer) {
   init();
@@ -82,4 +82,18 @@ void WbBrake::writeAnswer(WbDataStream &stream) {
     delete[] mRequestedDeviceTag;
     mRequestedDeviceTag = NULL;
   }
+}
+
+void WbBrake::SET_DAMPING_CONSTANT(double dampingConstant) {
+  mBrakingDampingConstant = dampingConstant;
+  emit brakingChanged();
+}
+
+const WbLogicalDevice* WbBrake::GET_ASSOCIATED_DEVICE(int deviceType) {
+  const WbLogicalDevice *device = getSiblingDeviceByType(deviceType);
+  if (!device && deviceType == WB_NODE_ROTATIONAL_MOTOR)
+    // check both motor types
+    device = getSiblingDeviceByType(WB_NODE_LINEAR_MOTOR);
+
+  return device;
 }

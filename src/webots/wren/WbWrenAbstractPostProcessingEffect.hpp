@@ -20,7 +20,9 @@ struct WrPostProcessingEffect;
 
 #include <wren/texture.h>
 
-class WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenAbstractPostProcessingEffect();
   virtual ~WbWrenAbstractPostProcessingEffect();

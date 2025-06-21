@@ -17,11 +17,17 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbLookupTable;
 struct dJointFeedback;
 
-class WbTouchSensor : public WbSolidDevice {
+class WB_LIB_EXPORT WbTouchSensor : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -46,6 +52,16 @@ public:
   void setSolidMerger() override;
   void createOdeObjects() override;
   bool refreshSensorIfNeeded() override;
+
+  int lookupTableSize() const;
+  QVector<QVector3D> lookupTable() const;
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+
+  QList<double> value();
 
 protected:
   // reimplemented protected functions

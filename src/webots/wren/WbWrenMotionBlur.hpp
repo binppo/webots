@@ -17,7 +17,9 @@
 
 #include "WbWrenAbstractPostProcessingEffect.hpp"
 
-class WbWrenMotionBlur : public WbWrenAbstractPostProcessingEffect {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenMotionBlur : public WbWrenAbstractPostProcessingEffect {
 public:
   WbWrenMotionBlur();
 

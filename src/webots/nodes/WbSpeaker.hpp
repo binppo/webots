@@ -18,11 +18,14 @@
 #include "WbSolidDevice.hpp"
 
 #include <QtCore/QMap>
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 class WbSoundSource;
-class QDataStream;
 
-class WbSpeaker : public WbSolidDevice {
+class WB_LIB_EXPORT WbSpeaker : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -38,6 +41,18 @@ public:
   void handleMessage(QDataStream &stream) override;
   void writeAnswer(WbDataStream &) override;
   void postPhysicsStep() override;
+
+  bool isPlaying(const QString& key) const;
+  bool isSpeaking() const;
+  QString engine() const { return mEngine; }
+  QString language() const { return mLanguage; }
+
+public slots:
+  void PLAY_SOUND(const QVector<QByteArray>& sounds);
+  void STOP(const QVector<QByteArray>& sounds);
+  void SET_ENGINE(const QString& engine);
+  void SET_LANGUAGE(const QString& language);
+  void SPEAK(const QString& text, double volume);
 
 private:
   // private data types

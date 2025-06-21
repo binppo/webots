@@ -43,13 +43,13 @@ const QString &WbStandardPaths::webotsHomePath() {
   const int depth = 2;
 #else
   // on Windows, the webots binary is located in $WEBOTS_HOME/msys64/mingw64/bin/webots
-  const int depth = 3;
+  //const int depth = 3;
+  const int depth = 0;
 #endif
   if (path.isEmpty()) {
     QDir dir(QCoreApplication::applicationDirPath());
     for (int i = 0; i < depth; i++)
-      if (!dir.cdUp())
-        assert(false);
+      dir.cdUp();
     path = dir.absolutePath() + "/";
   }
   return path;

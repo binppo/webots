@@ -18,12 +18,14 @@
 #include "WbBaseNode.hpp"
 #include "WbSFVector2.hpp"
 
+#include <core/WbConfig.h>
+
 class WbVector2;
 
 struct WrMaterial;
 struct WrTextureTransform;
 
-class WbTextureTransform : public WbBaseNode {
+class WB_LIB_EXPORT WbTextureTransform : public WbBaseNode {
   Q_OBJECT
 
 public:

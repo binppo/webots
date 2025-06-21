@@ -22,11 +22,13 @@
 #include "WbRgb.hpp"
 #include "WbValueEditor.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFieldDoubleSpinBox;
 class QLabel;
 class QToolButton;
 
-class WbColorEditor : public WbValueEditor {
+class WB_LIB_EXPORT WbColorEditor : public WbValueEditor {
   Q_OBJECT
 
 public:

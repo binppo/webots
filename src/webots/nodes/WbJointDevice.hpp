@@ -19,12 +19,14 @@
 
 #include "WbLogicalDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbJoint;
 class WbPropeller;
 class WbRobot;
 class WbTrack;
 
-class WbJointDevice : public WbLogicalDevice {
+class WB_LIB_EXPORT WbJointDevice : public WbLogicalDevice {
   Q_OBJECT
 
 public:

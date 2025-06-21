@@ -15,8 +15,8 @@
 #include "WbPosixMemoryMappedFile.hpp"
 
 #include <fcntl.h>
-#include <sys/mman.h>
-#include <unistd.h>
+//#include <sys/mman.h>
+//#include <unistd.h>
 
 WbPosixMemoryMappedFile::WbPosixMemoryMappedFile(const QString &name) : mName(name), mSize(0), mData(NULL) {
 }

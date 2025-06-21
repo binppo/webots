@@ -21,7 +21,9 @@
 
 #include <QtCore/QString>
 
-class WbToken {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbToken {
 public:
   // scan word and determine topen mType
   // token will be INVALID if the mType could not be determined

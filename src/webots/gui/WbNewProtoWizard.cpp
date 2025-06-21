@@ -430,7 +430,7 @@ void WbNewProtoWizard::updateNodeTree() {
 
   const QStringList nodes = WbNodeModel::baseModelNames();
   const QRegularExpression regexp(
-    QRegularExpression::wildcardToRegularExpression(mFindLineEdit->text(), QRegularExpression::UnanchoredWildcardConversion),
+    QRegularExpression::wildcardToRegularExpression(mFindLineEdit->text()/*, QRegularExpression::UnanchoredWildcardConversion*/),
     QRegularExpression::CaseInsensitiveOption);
 
   // list of all available base nodes

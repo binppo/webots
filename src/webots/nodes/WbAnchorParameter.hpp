@@ -18,13 +18,16 @@
 #include "WbBaseNode.hpp"
 #include "WbSFVector3.hpp"
 
-class WbAnchorParameter : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbAnchorParameter : public WbBaseNode {
   Q_OBJECT
 
 public:
   virtual ~WbAnchorParameter() override;
 
   const WbVector3 &anchor() const { return mAnchor->value(); }
+  void preFinalize() override;
   void postFinalize() override;
 
 signals:

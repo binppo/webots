@@ -25,7 +25,7 @@
 #include <ode/ode.h>
 #include <QtCore/QDataStream>
 #include <cassert>
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 void WbAccelerometer::init() {
   for (int i = 0; i < 3; i++) {
@@ -91,6 +91,25 @@ void WbAccelerometer::updateLookupTable() {
 
 void WbAccelerometer::updateResolution() {
   WbFieldChecker::resetDoubleIfNonPositiveAndNotDisabled(this, mResolution, -1.0, -1.0);
+}
+
+int WbAccelerometer::lookupTableSize() const {
+  return mLookupTable->size();
+}
+
+QVector<QVector3D> WbAccelerometer::lookupTable() const {
+  QVector<QVector3D> table;
+  for (int i = 0; i < mLookupTable->size(); i++) {
+    table << QVector3D(mLookupTable->item(i).x()
+        , mLookupTable->item(i).y()
+        , mLookupTable->item(i).z());
+  }
+
+  return table;
+}
+
+int WbAccelerometer::refreshRate() {
+  return mSensor->refreshRate();
 }
 
 void WbAccelerometer::handleMessage(QDataStream &stream) {
@@ -188,4 +207,8 @@ void WbAccelerometer::computeValue() {
     if (mZAxis->isTrue())
       mValues[2] = WbMathsUtilities::discretize(mValues[2], mResolution->value());
   }
+}
+
+void WbAccelerometer::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

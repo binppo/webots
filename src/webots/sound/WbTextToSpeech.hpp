@@ -19,7 +19,9 @@
 
 #include <QtCore/QString>
 
-class WbTextToSpeech {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTextToSpeech {
 public:
   virtual ~WbTextToSpeech() {}
   virtual qint16 *generateBufferFromText(const QString &text, int *size, const QString &language) = 0;

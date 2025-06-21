@@ -23,7 +23,7 @@
 #include "WbSensor.hpp"
 #include "WbWorld.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <cassert>
@@ -89,6 +89,25 @@ void WbCompass::updateLookupTable() {
 
 void WbCompass::updateResolution() {
   WbFieldChecker::resetDoubleIfNonPositiveAndNotDisabled(this, mResolution, -1.0, -1.0);
+}
+
+int WbCompass::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+int WbCompass::lookupTableSize() const {
+  return mLookupTable->size();
+}
+
+QVector<QVector3D> WbCompass::lookupTable() const {
+  QVector<QVector3D> table;
+  for (int i = 0; i < mLookupTable->size(); i++) {
+    table << QVector3D(mLookupTable->item(i).x()
+        , mLookupTable->item(i).y()
+        , mLookupTable->item(i).z());
+  }
+
+  return table;
 }
 
 void WbCompass::handleMessage(QDataStream &stream) {
@@ -169,4 +188,12 @@ void WbCompass::computeValue() {
     if (mZAxis->isTrue())
       mValues[2] = WbMathsUtilities::discretize(mValues[2], mResolution->value());
   }
+}
+
+void WbCompass::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+QVector3D WbCompass::value() {
+  return QVector3D(mValues[0], mValues[1], mValues[2]);
 }

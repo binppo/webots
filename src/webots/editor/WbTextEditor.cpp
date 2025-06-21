@@ -26,7 +26,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QRegularExpression>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrintPreviewDialog>
 #include <QtPrintSupport/QPrinter>

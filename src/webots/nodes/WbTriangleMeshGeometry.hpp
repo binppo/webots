@@ -20,6 +20,8 @@
 
 #include <unordered_map>
 
+#include <core/WbConfig.h>
+
 class WbTriangleMesh;
 class WbVector3;
 
@@ -29,7 +31,7 @@ typedef std::unordered_map<WbTriangleMeshCache::TriangleMeshGeometryKey, WbTrian
                            WbTriangleMeshCache::TriangleMeshGeometryKeyHasher>
   WbTriangleMeshMap;
 
-class WbTriangleMeshGeometry : public WbGeometry {
+class WB_LIB_EXPORT WbTriangleMeshGeometry : public WbGeometry {
   Q_OBJECT
 
 public:

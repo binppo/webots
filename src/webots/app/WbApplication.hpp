@@ -23,18 +23,18 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 class WbControlledWorld;
 class QElapsedTimer;
 
-class WbApplication : public QObject {
+class WB_LIB_EXPORT WbApplication : public QObject {
   Q_OBJECT
 
 public:
-  static WbApplication *instance() { return cInstance; }
+  static WbApplication *instance();
 
-  WbApplication();
   virtual ~WbApplication();
-  void setup();
 
   const QString &worldName() const { return mWorldName; }
 
@@ -101,6 +101,7 @@ signals:
   void worldLoadCompleted();
 
 public slots:
+  void setup();
   // load a world .wbt file
   // worldName must be absolute or specified with respect to WEBOTS_HOME
   // return true on success, false otherwise
@@ -114,6 +115,8 @@ public slots:
 private:
   static WbApplication *cInstance;
   static QString cWebotsTmpDirName;
+
+  WbApplication();
 
   WbControlledWorld *mWorld;
   QString mWorldName;

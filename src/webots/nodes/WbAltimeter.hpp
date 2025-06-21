@@ -17,12 +17,17 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSFString;
 class WbSFDouble;
 class WbSensor;
 class WbUTMConverter;
 
-class WbAltimeter : public WbSolidDevice {
+class WB_LIB_EXPORT WbAltimeter : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -42,6 +47,14 @@ public:
   void writeConfigure(WbDataStream &) override;
   bool refreshSensorIfNeeded() override;
   void reset(const QString &id) override;
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+
+  double value();
+  void setValue(double val);
 
 private:
   // user accessible fields

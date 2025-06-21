@@ -641,6 +641,55 @@ void WbBallJoint::postPhysicsStep() {
   WbJointParameters *const p3 = parameters3();
   if (p3)
     p3->setPositionFromOde(mPosition3);
+
+  if (motor() || motor2() || motor3()) {
+    double position;
+    bool updated = false;
+    if (motor() && motor()->fetchTransportQue(position)) {
+      mPosition = position;
+
+      if (p)
+        p->setPosition(position);
+
+      updated = true;
+    }
+
+    if (motor2() && motor2()->fetchTransportQue(position)) {
+      mPosition2 = position;
+
+      if (p2)
+        p2->setPosition(position);
+
+      updated = true;
+    }
+
+    if (motor3() && motor3()->fetchTransportQue(position)) {
+      mPosition3 = position;
+
+      if (p3)
+        p3->setPosition(position);
+
+      updated = true;
+    }
+
+    if (updated) {
+      WbSolid *const s = solidEndPoint();
+      WbVector3 translation;
+      WbRotation rotation;
+      computeEndPointSolidPositionFromParameters(translation, rotation);
+      mIsEndPointPositionChangedByJoint = true;
+      s->setTranslationAndRotation(translation, rotation);
+      s->resetPhysics();
+      mIsEndPointPositionChangedByJoint = false;
+
+      if (motor())
+        motor()->refreshSensorIfNeeded();
+      if (motor2())
+        motor2()->refreshSensorIfNeeded();
+      if (motor3())
+        motor3()->refreshSensorIfNeeded();
+    }
+  }
 }
 
 void WbBallJoint::reset(const QString &id) {

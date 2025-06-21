@@ -17,7 +17,6 @@
 #include "WbAffinePlane.hpp"
 #include "WbDataStream.hpp"
 #include "WbFieldChecker.hpp"
-#include "WbObjectDetection.hpp"
 #include "WbRandom.hpp"
 #include "WbSensor.hpp"
 #include "WbWorld.hpp"
@@ -30,43 +29,12 @@
 #include <wren/static_mesh.h>
 #include <wren/transform.h>
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QVector>
 
 #include <cassert>
-
-class WbRadarTarget : public WbObjectDetection {
-public:
-  WbRadarTarget(WbRadar *radar, WbSolid *solidTarget, const bool needToCheckCollision, const double maxRange) :
-    WbObjectDetection(radar, solidTarget, needToCheckCollision ? WbObjectDetection::ONE_RAY : WbObjectDetection::NONE, maxRange,
-                      radar->horizontalFieldOfView()) {
-    mTargetDistance = 0.0;
-    mReceivedPower = 0.0;
-    mSpeed = 0.0;
-    mAzimuth = 0.0;
-  };
-
-  virtual ~WbRadarTarget() {}
-
-  double targetDistance() const { return mTargetDistance; }
-  double receivedPower() const { return mReceivedPower; }
-  double speed() const { return mSpeed; }
-  double azimuth() const { return mAzimuth; }
-  void setTargetDistance(double distance) { mTargetDistance = distance; }
-  void setReceivedPower(double receivedPower) { mReceivedPower = receivedPower; }
-  void setSpeed(double speed) { mSpeed = speed; }
-  void setAzimuth(double azimuth) { mAzimuth = azimuth; }
-
-protected:
-  double distance() override { return objectRelativePosition().length(); }
-
-  double mTargetDistance;
-  double mReceivedPower;
-  double mSpeed;
-  double mAzimuth;
-};
 
 void WbRadar::init() {
   mMinRange = findSFDouble("minRange");
@@ -328,7 +296,7 @@ void WbRadar::updateRaysSetupIfNeeded() {
   const WbAffinePlane radarPlane(radarRotation * WbVector3(0.0, 0.0, 1.0), radarAxis);
   const WbAffinePlane *frustumPlanes =
     WbObjectDetection::computeFrustumPlanes(this, verticalFieldOfView(), horizontalFieldOfView(), maxRange(), true);
-  foreach (WbRadarTarget *target, mRadarTargets) {
+  foreach (WbRadarTargetObject *target, mRadarTargets) {
     target->object()->updateTransformForPhysicsStep();
     if (!target->recomputeRayDirection(frustumPlanes) ||
         !setTargetProperties(radarPosition, radarRotation, radarAxis, radarPlane, target)) {
@@ -341,7 +309,7 @@ void WbRadar::updateRaysSetupIfNeeded() {
 }
 
 void WbRadar::rayCollisionCallback(dGeomID geom, WbSolid *collidingSolid, double depth) {
-  foreach (WbRadarTarget *target, mRadarTargets) {
+  foreach (WbRadarTargetObject *target, mRadarTargets) {
     // check if this target is the one that collides
     if (target->contains(geom)) {
       // make sure the colliding solid is not the target itself
@@ -371,6 +339,10 @@ void WbRadar::createWrenObjects() {
 
   applyFrustumToWren();
   updateOptionalRendering(WbWrenRenderingContext::VF_RADAR_FRUSTUMS);
+}
+
+int WbRadar::refreshRate() {
+  return mSensor->refreshRate();
 }
 
 void WbRadar::handleMessage(QDataStream &stream) {
@@ -431,7 +403,7 @@ void WbRadar::computeTargets(bool finalSetup, bool needCollisionDetection) {
     if (target == this)
       continue;
     // create target
-    WbRadarTarget *generatedTarget = new WbRadarTarget(this, target, needCollisionDetection, maxRange());
+    WbRadarTargetObject *generatedTarget = new WbRadarTargetObject(this, target, needCollisionDetection, maxRange());
     if (finalSetup) {
       if (!generatedTarget->isContainedInFrustum(frustumPlanes) ||
           !setTargetProperties(radarPosition, radarRotation, radarAxis, radarPlane, generatedTarget)) {
@@ -446,7 +418,7 @@ void WbRadar::computeTargets(bool finalSetup, bool needCollisionDetection) {
 }
 
 bool WbRadar::setTargetProperties(const WbVector3 &radarPosition, const WbMatrix3 &radarRotation, const WbVector3 &radarAxis,
-                                  const WbAffinePlane &radarPlane, WbRadarTarget *radarTarget) {
+                                  const WbAffinePlane &radarPlane, WbRadarTargetObject *radarTarget) {
   assert(radarTarget);
 
   const WbVector3 targetPosition = radarTarget->object()->position();
@@ -732,4 +704,8 @@ void WbRadar::applyFrustumToWren() {
 
   mMesh = wr_static_mesh_line_set_new(vertices.size() / 3, vertices.data(), NULL);
   wr_renderable_set_mesh(mRenderable, WR_MESH(mMesh));
+}
+
+void WbRadar::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

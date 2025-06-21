@@ -43,12 +43,13 @@ void WbWrenMotionBlur::setup(WrViewport *viewport) {
 
   applyParametersToWren();
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_viewport_add_post_processing_effect(mWrenViewport, mWrenPostProcessingEffect);
+    wr_post_processing_effect_setup(mWrenPostProcessingEffect);
 
-  wr_viewport_add_post_processing_effect(mWrenViewport, mWrenPostProcessingEffect);
-  wr_post_processing_effect_setup(mWrenPostProcessingEffect);
+    WbWrenOpenGlContext::doneWren();
+  }
 
-  WbWrenOpenGlContext::doneWren();
   mHasBeenSetup = true;
 }
 

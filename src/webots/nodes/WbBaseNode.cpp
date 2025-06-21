@@ -82,7 +82,7 @@ void WbBaseNode::finalize() {
 
   if (isProtoParameterNode()) {
     // finalize PROTO parameter node instances of the current node
-    QVector<WbNode *> nodeInstances = protoParameterNodeInstances();
+    auto nodeInstances = protoParameterNodeInstances();
     WbBaseNode *baseNodeInstance = NULL;
     foreach (WbNode *nodeInstance, nodeInstances) {
       baseNodeInstance = dynamic_cast<WbBaseNode *>(nodeInstance);
@@ -93,33 +93,33 @@ void WbBaseNode::finalize() {
     return;
   }
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    if (!isPreFinalizedCalled())
+      preFinalize();
 
-  if (!isPreFinalizedCalled())
-    preFinalize();
+    if (!areOdeObjectsCreated() && (WbWorld::instance()->isLoading() || !WbNodeUtilities::isTrackAnimatedGeometry(this)))
+      // in case of nodes descending from Track.animatedGeometries field we don't want to create ODE objects
+      // these nodes are automatically skipped if a Track or ancestor node is finalized, so we only have to check in case of node
+      // insertion
+      createOdeObjects();
 
-  if (!areOdeObjectsCreated() && (WbWorld::instance()->isLoading() || !WbNodeUtilities::isTrackAnimatedGeometry(this)))
-    // in case of nodes descending from Track.animatedGeometries field we don't want to create ODE objects
-    // these nodes are automatically skipped if a Track or ancestor node is finalized, so we only have to check in case of node
-    // insertion
-    createOdeObjects();
+    if (!areWrenObjectsInitialized())
+      createWrenObjects();
 
-  if (!areWrenObjectsInitialized())
-    createWrenObjects();
+    if (mFinalizationCanceled) {
+      WbWrenOpenGlContext::doneWren();
+      return;
+    }
 
-  if (mFinalizationCanceled) {
+    setFieldsParentNode();
+
+    if (!isPostFinalizedCalled())
+      postFinalize();
+
+    validateProtoNodes();
+
     WbWrenOpenGlContext::doneWren();
-    return;
   }
-
-  setFieldsParentNode();
-
-  if (!isPostFinalizedCalled())
-    postFinalize();
-
-  validateProtoNodes();
-
-  WbWrenOpenGlContext::doneWren();
 
   emit finalizationCompleted(this);
 }
@@ -228,7 +228,7 @@ WbBaseNode *WbBaseNode::getFirstFinalizedProtoInstance() const {
   while (baseNode && !baseNode->isPostFinalizedCalled() && baseNode->isProtoParameterNode()) {
     // if node is a proto parameter node we need to find the corresponding proto parameter node instance
     // if the parameter is used multiple times all the instances are inspected in depth-first search (using the "nodes" list)
-    const QVector<WbNode *> nodeInstances = baseNode->protoParameterNodeInstances();
+    const auto nodeInstances = baseNode->protoParameterNodeInstances();
     if (nodeInstances.isEmpty()) {
       if (nodes.isEmpty())
         return NULL;

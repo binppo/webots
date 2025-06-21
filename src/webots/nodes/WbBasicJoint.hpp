@@ -22,6 +22,8 @@
 #include "WbRotation.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBoundingSphere;
 class WbSlot;
 class WbSolid;
@@ -32,7 +34,7 @@ struct WrRenderable;
 struct WrStaticMesh;
 struct WrMaterial;
 
-class WbBasicJoint : public WbBaseNode {
+class WB_LIB_EXPORT WbBasicJoint : public WbBaseNode {
   Q_OBJECT
 
 public:

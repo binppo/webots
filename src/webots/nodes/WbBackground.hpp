@@ -18,6 +18,8 @@
 #include "WbBaseNode.hpp"
 #include "WbSFDouble.hpp"
 
+#include <core/WbConfig.h>
+
 class WbDownloader;
 class WbRgb;
 
@@ -27,7 +29,7 @@ struct WrRenderable;
 struct WrMaterial;
 struct WrStaticMesh;
 
-class WbBackground : public WbBaseNode {
+class WB_LIB_EXPORT WbBackground : public WbBaseNode {
   Q_OBJECT
 
 public:

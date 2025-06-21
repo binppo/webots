@@ -27,6 +27,8 @@
 #include "WbActionManager.hpp"
 #include "WbDockWidget.hpp"
 
+#include <core/WbConfig.h>
+
 class WbFindReplaceDialog;
 class WbTextBuffer;
 class WbTextFind;
@@ -36,7 +38,7 @@ class QRegularExpression;
 class QTabWidget;
 class QToolBar;
 
-class WbTextEditor : public WbDockWidget {
+class WB_LIB_EXPORT WbTextEditor : public WbDockWidget {
   Q_OBJECT
 
 public:

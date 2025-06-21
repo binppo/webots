@@ -22,12 +22,14 @@
 //   Directly or indirectly by every node class in the 'nodes' subproject
 //
 
-#include "../../../include/controller/c/webots/nodes.h"
+#include <webots/nodes.h>
 #include "WbNode.hpp"
 
 #include "WbMatrix3.hpp"
 #include "WbRgb.hpp"
 #include "WbVector3.hpp"
+
+#include <core/WbConfig.h>
 
 class WbPose;
 class WbTransform;
@@ -36,7 +38,7 @@ class WbBoundingSphere;
 
 struct WrTransform;
 
-class WbBaseNode : public WbNode {
+class WB_LIB_EXPORT WbBaseNode : public WbNode {
   Q_OBJECT
 
 public:

@@ -43,7 +43,7 @@
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QImage>
 #include <QtGui/QResizeEvent>
 #include <QtWidgets/QFileDialog>
@@ -63,19 +63,21 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   mIsDecorationVisible(true),
   mToolBarExtensionMenu(NULL),
   mSelection(new WbSelection()),
-  mSplitter(new QSplitter()),
-  mSceneTree(new WbSceneTree(mSplitter)),
+  //mSplitter(new QSplitter()),
+  mSceneTree(new WbSceneTree(/*mSplitter*/)),
   mSplitterStatus(0),
+  mHandleWidth(6),
   mSupervisorMovieRecordingEnabled(false) {
   // add container widget to 'hide' the black window by forcing it to
   // have the same position of the rendering window
-  QWidget *const view3DVideoResizeWidget = new QWidget(mSplitter);
+  QWidget *const view3DVideoResizeWidget = new QWidget(/*mSplitter*/);
   mView3D = new WbView3D;
   mView3DContainer = QWidget::createWindowContainer(mView3D, view3DVideoResizeWidget);
   mView3DContainer->setMinimumSize(mView3D->minimumSize());
   mView3D->setParentWidget(mView3DContainer);
   mView3DContainer->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(mView3D, &WbView3D::contextMenuRequested, this, &WbSimulationView::showMenu);
+  connect(mView3D, &WbView3D::keyPressed, this, &WbSimulationView::keyPressed);
 
   // it is preferable to resize the mView3DContainer instead of the mView3D
   // when creating a video so that the black window always has exactly the
@@ -90,14 +92,14 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   setView3DResizeStretch(false);
 
   // central widget
-  mSplitter->setObjectName("horizontalSplitter");
-  mSplitter->addWidget(mSceneTree);
-  mSplitter->addWidget(view3DVideoResizeWidget);
-  mSplitter->setStretchFactor(0, 0);
-  mSplitter->setStretchFactor(1, 1);
-  QList<int> initialSplitterSizes;
-  initialSplitterSizes << 0 << (mSceneTree->sizeHint().width() + view3DVideoResizeWidget->sizeHint().width());
-  mSplitter->setSizes(initialSplitterSizes);
+  //mSplitter->setObjectName("horizontalSplitter");
+  //mSplitter->addWidget(mSceneTree);
+  //mSplitter->addWidget(view3DVideoResizeWidget);
+  //mSplitter->setStretchFactor(0, 0);
+  //mSplitter->setStretchFactor(1, 1);
+  //QList<int> initialSplitterSizes;
+  //initialSplitterSizes << 0 << (mSceneTree->sizeHint().width() + view3DVideoResizeWidget->sizeHint().width());
+  //mSplitter->setSizes(initialSplitterSizes);
 
   mShowSceneTreeButton = new QToolButton(this);
   mShowSceneTreeButton->setObjectName("menuButton");
@@ -122,7 +124,8 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
     vlayout->addLayout(hlayout, 0);
   } else  // assuming left alignment
     vlayout->addWidget(mToolBar);
-  vlayout->addWidget(mSplitter, 1);
+  //vlayout->addWidget(mSplitter, 1);
+  vlayout->addWidget(view3DVideoResizeWidget, 1);
 
   const WbSimulationState *state = WbSimulationState::instance();
 
@@ -133,7 +136,7 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   connect(mTitleBar, &WbDockTitleBar::closeClicked, this, &WbSimulationView::hide);
   connect(mTitleBar, &WbDockTitleBar::maximizeClicked, this, &WbSimulationView::needsMaximize);
   connect(mTitleBar, &WbDockTitleBar::minimizeClicked, this, &WbSimulationView::needsMinimize);
-  connect(mSplitter, &QSplitter::splitterMoved, this, &WbSimulationView::needsActionsUpdate);
+  //connect(mSplitter, &QSplitter::splitterMoved, this, &WbSimulationView::needsActionsUpdate);
   connect(WbActionManager::instance()->action(WbAction::STEP), &QAction::triggered, mView3D, &WbView3D::unleashAndClean);
   connect(WbActionManager::instance()->action(WbAction::DISABLE_RENDERING), &QAction::triggered, this,
           &WbSimulationView::disableRendering);
@@ -143,15 +146,15 @@ WbSimulationView::WbSimulationView(QWidget *parent, const QString &toolBarAlign)
   mRecordingTimer = new QTimer(this);
   connect(mRecordingTimer, &QTimer::timeout, this, &WbSimulationView::toggleRecordingIcon);
   connect(WbApplication::instance(), &WbApplication::requestScreenshot, this, &WbSimulationView::takeScreenshotAndSaveAs);
-  connect(WbApplication::instance(), SIGNAL(videoCaptureStarted(const QString &, int, int, int, int, int, bool)), this,
-          SLOT(startVideoCapture(const QString &, int, int, int, int, int, bool)));
-  connect(WbApplication::instance(), &WbApplication::videoCaptureStopped, this, &WbSimulationView::stopVideoCapture);
+  //connect(WbApplication::instance(), SIGNAL(videoCaptureStarted(const QString &, int, int, int, int, int, bool)), this,
+  //        SLOT(startVideoCapture(const QString &, int, int, int, int, int, bool)));
+  //connect(WbApplication::instance(), &WbApplication::videoCaptureStopped, this, &WbSimulationView::stopVideoCapture);
   connect(WbVideoRecorder::instance(), &WbVideoRecorder::videoCreationStatusChanged, WbApplication::instance(),
           &WbApplication::videoCreationStatusChanged);
 
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parent);
-  assert(mainWindow);
-  WbVideoRecorder::setMainWindow(mainWindow);
+  //WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parent);
+  //assert(mainWindow);
+  //WbVideoRecorder::setVideoArea(mainWindow);
   mWasMinimized = false;
 }
 
@@ -286,7 +289,7 @@ void WbSimulationView::createActions() {
   action->setChecked(true);
   action->setText(tr("3D View"));
   action->setStatusTip("Toggle the 3D View.");
-  action->setShortcut(Qt::CTRL | Qt::Key_B);
+  //action->setShortcut(Qt::CTRL | Qt::Key_B);
   connect(action, &QAction::toggled, this, &WbSimulationView::updateVisibility);
 
   action = mToggleSceneTreeAction = new QAction(this);
@@ -294,7 +297,7 @@ void WbSimulationView::createActions() {
   action->setChecked(true);
   action->setText(tr("Scene Tree"));
   action->setStatusTip("Toggle the scene tree.");
-  action->setShortcut(Qt::CTRL | Qt::Key_T);
+  //action->setShortcut(Qt::CTRL | Qt::Key_T);
   connect(action, &QAction::toggled, this, &WbSimulationView::updateVisibility);
 
   updateSceneTreeActions(true);
@@ -347,6 +350,11 @@ void WbSimulationView::setDecorationVisible(bool visible) {
   mToolBar->setVisible(visible);
   mTitleBar->setVisible(visible);
   mIsDecorationVisible = visible;
+}
+
+void WbSimulationView::setSceneTreeVisible(bool visible)
+{
+  mSceneTree->setVisible(visible);
 }
 
 bool WbSimulationView::isSceneTreeButtonStatusVisible() const {
@@ -408,14 +416,14 @@ void WbSimulationView::toggleSceneTreeVisibility() {
     if (lastSplitterPosition >= view3DWidth)
       lastSplitterPosition = view3DWidth / 2;
 
-    QList<int> sizes = QList<int>() << lastSplitterPosition << (view3DWidth - lastSplitterPosition);
-    mSplitter->setSizes(sizes);
+    //QList<int> sizes = QList<int>() << lastSplitterPosition << (view3DWidth - lastSplitterPosition);
+    //mSplitter->setSizes(sizes);
 
   } else {
     // hide scene tree
     lastSplitterPosition = mSceneTree->width();
-    QList<int> sizes = QList<int>() << 0 << (lastSplitterPosition + mView3D->width());
-    mSplitter->setSizes(sizes);
+    //QList<int> sizes = QList<int>() << 0 << (lastSplitterPosition + mView3D->width());
+    //mSplitter->setSizes(sizes);
     updateToggleView3DAction(true);
   }
 
@@ -432,8 +440,8 @@ void WbSimulationView::setView3DVisibility(bool visible) {
     // hide view 3D
     lastSplitterPosition = view3DWidth;
 
-    QList<int> sizes = QList<int>() << (lastSplitterPosition + mSceneTree->width()) << 0;
-    mSplitter->setSizes(sizes);
+    //QList<int> sizes = QList<int>() << (lastSplitterPosition + mSceneTree->width()) << 0;
+    //mSplitter->setSizes(sizes);
     updateToggleView3DAction(false);
 
   } else if (visible && view3DWidth <= 1) {
@@ -445,8 +453,8 @@ void WbSimulationView::setView3DVisibility(bool visible) {
     if (lastSplitterPosition >= sceneTreeWidth)
       lastSplitterPosition = sceneTreeWidth / 2;
 
-    QList<int> sizes = QList<int>() << (sceneTreeWidth - lastSplitterPosition) << lastSplitterPosition;
-    mSplitter->setSizes(sizes);
+    //QList<int> sizes = QList<int>() << (sceneTreeWidth - lastSplitterPosition) << lastSplitterPosition;
+    //mSplitter->setSizes(sizes);
     updateToggleView3DAction(true);
   }
 }
@@ -545,7 +553,7 @@ void WbSimulationView::toggleRecordingIcon() {
   }
 }
 
-void WbSimulationView::startVideoCapture(const QString &fileName, int codec, int width, int height, int quality,
+bool WbSimulationView::startVideoCapture(const QString &fileName, int codec, int width, int height, int quality,
                                          int acceleration, bool showCaption) {
   WbVideoRecorder *videoRecorder = WbVideoRecorder::instance();
   const bool success = videoRecorder->initRecording(this, WbWorld::instance()->worldInfo()->basicTimeStep(),
@@ -556,20 +564,18 @@ void WbSimulationView::startVideoCapture(const QString &fileName, int codec, int
     toggleMovieAction(true);
     mTakeScreenshotAction->setEnabled(false);
     showRenderingIfNecessary();
-    WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-    if (mainWindow->isMinimized()) {
-      mWasMinimized = true;
-      mainWindow->showMaximized();
-    }
+	mWasMinimized = true;
   }
+
+  return success;
 }
 
-void WbSimulationView::stopVideoCapture(bool canceled) {
+bool WbSimulationView::stopVideoCapture(bool canceled) {
   WbVideoRecorder::instance()->stopRecording(canceled);
   restoreNoRenderingIfNecessary();
   if (mWasMinimized) {
-    WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-    mainWindow->showMinimized();
+	QWidget *parent = parentWidget();
+    parent->showMinimized();
     mWasMinimized = false;
   }
   // re-enable take screenshot action
@@ -577,6 +583,8 @@ void WbSimulationView::stopVideoCapture(bool canceled) {
   mRecordingTimer->stop();
   toggleMovieAction(false);
   mSupervisorMovieRecordingEnabled = false;
+
+  return true;
 }
 
 void WbSimulationView::cancelSupervisorMovieRecording() {
@@ -588,8 +596,7 @@ void WbSimulationView::cancelSupervisorMovieRecording() {
 
 void WbSimulationView::stopMovie() {
   stopVideoCapture();
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-  mainWindow->restorePerspective(false, false, true);
+  emit requestRestorePerspective(false, false, true);
 }
 
 void WbSimulationView::makeMovie() {
@@ -604,8 +611,7 @@ void WbSimulationView::makeMovie() {
     pause();
 
   // store our perspective for when we stop
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-  mainWindow->savePerspective(false, false);
+  emit requestSavePerspective(false, false);
 
   WbVideoRecorder *videoRecorder = WbVideoRecorder::instance();
   bool success = videoRecorder->initRecording(this, WbWorld::instance()->worldInfo()->basicTimeStep());
@@ -658,8 +664,9 @@ void WbSimulationView::writeScreenshot() {
   restoreNoRenderingIfNecessary();
 
   if (mWasMinimized) {
-    WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-    mainWindow->showMinimized();
+	QWidget *parent = parentWidget();
+	if(parent)
+      parent->showMinimized();
     mWasMinimized = false;
   }
 
@@ -669,10 +676,10 @@ void WbSimulationView::writeScreenshot() {
 void WbSimulationView::takeScreenshotAndSaveAs(const QString &fileName, int quality) {
   mScreenshotQualityList.append(quality);
   mScreenshotFileNameList.append(fileName);
-  WbMainWindow *mainWindow = dynamic_cast<WbMainWindow *>(parentWidget());
-  if (mainWindow->isMinimized()) {
+  QWidget *parent = parentWidget();
+  if (parent->isMinimized()) {
     mWasMinimized = true;
-    mainWindow->showMaximized();
+    parent->showMaximized();
   }
   // In fullscreen mode we don't have a handy dialog to delay things for us so
   // we must ensure the OpenGL context is correct, delaying the screenshot like
@@ -916,7 +923,7 @@ void WbSimulationView::retrieveSimulationView() {
 
 void WbSimulationView::modeKeyPressed(QKeyEvent *event) {
   switch (event->key()) {
-    case Qt::Key_0:
+    /*case Qt::Key_0:
       // Ctrl + 0
       pause();
       return;
@@ -935,7 +942,7 @@ void WbSimulationView::modeKeyPressed(QKeyEvent *event) {
     case Qt::Key_4:
       // Ctrl + 4
       toggleRendering();
-      return;
+      return;*/
     default:
       break;
   }
@@ -1025,38 +1032,42 @@ void WbSimulationView::updateSoundButtons() {
   mToolBar->update();
 }
 
+void WbSimulationView::resizeView3D(int width, int height) {
+  mView3D->resizeWren(width, height);
+}
+
 QList<QByteArray> WbSimulationView::saveState() const {
   QList<QByteArray> state;
-  state << mSplitter->saveState() << mSceneTree->saveState();
+  state << /*mSplitter->saveState() << */mSceneTree->saveState();
   return state;
 }
 
 void WbSimulationView::restoreState(QList<QByteArray> state, bool firstLoad) {
-  assert(state.size() == 2);
+  //assert(state.size() == 2);
 
   if (!state[0].isEmpty()) {
-    mSplitter->restoreState(state[0]);
-    mSplitter->setHandleWidth(mHandleWidth);
+    //mSplitter->restoreState(state[0]);
+    //mSplitter->setHandleWidth(mHandleWidth);
   } else if (firstLoad)
     restoreFactoryLayout();
 
-  if (!state[1].isEmpty())
-    mSceneTree->restoreState(state[1]);
+  //if (!state[1].isEmpty())
+  //  mSceneTree->restoreState(state[1]);
 
-  updateSceneTreeActions(isVisible() && mSplitter->sizes()[0] > 0);
+  //updateSceneTreeActions(isVisible() && mSplitter->sizes()[0] > 0);
   updateToggleView3DAction(isVisible() && mView3D->width() > 0);
 }
 
 void WbSimulationView::restoreFactoryLayout() {
-  const int halfSplitterWidth = mSplitter->width() * 0.5;
-  int preferredSceneTreeWidth = mSceneTree->sizeHint().width();
-  if (preferredSceneTreeWidth > halfSplitterWidth)
+  //const int halfSplitterWidth = mSplitter->width() * 0.5;
+  //int preferredSceneTreeWidth = mSceneTree->sizeHint().width();
+  //if (preferredSceneTreeWidth > halfSplitterWidth)
     // default scene tree width should never be bigger than 3D view width
-    preferredSceneTreeWidth = halfSplitterWidth;
+    //preferredSceneTreeWidth = halfSplitterWidth;
 
-  QList<int> sizes = QList<int>() << preferredSceneTreeWidth << (mSplitter->width() - preferredSceneTreeWidth);
-  mSplitter->setSizes(sizes);
-  mSplitter->setHandleWidth(mHandleWidth);
+  //QList<int> sizes = QList<int>() << preferredSceneTreeWidth << (mSplitter->width() - preferredSceneTreeWidth);
+  //mSplitter->setSizes(sizes);
+  //mSplitter->setHandleWidth(mHandleWidth);
   mSceneTree->restoreFactoryLayout();
   updateSceneTreeActions(isVisible() && mSceneTree->width() > 0);
   updateToggleView3DAction(isVisible() && mView3D->width() > 0);

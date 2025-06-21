@@ -48,10 +48,10 @@
 #include "WbWorld.hpp"
 #include "WbWrenRenderingContext.hpp"
 
-#include "../../../include/controller/c/webots/keyboard.h"
-#include "../../../include/controller/c/webots/robot.h"
-#include "../../../include/controller/c/webots/supervisor.h"
-#include "../../controller/c/messages.h"
+#include <controller/c/webots/keyboard.h>
+#include <controller/c/webots/robot.h>
+#include <controller/c/webots/supervisor.h>
+#include <controller/c/messages.h>
 
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDataStream>
@@ -80,6 +80,8 @@ static QHash<int, int> createSpecialKeys() {
 
   return map;
 }
+
+static bool isFirstRobot = true;
 
 // LUT to convert Qt key values to Webots key values
 static QHash<int, int> gSpecialKeys = createSpecialKeys();
@@ -250,6 +252,10 @@ void WbRobot::postFinalize() {
   connect(WbSimulationState::instance(), &WbSimulationState::modeChanged, this, &WbRobot::updateSimulationMode);
   connect(mBattery, &WbMFDouble::itemInserted, this, [this]() { this->updateBattery(true); });
   connect(mBattery, &WbMFDouble::itemRemoved, this, [this]() { this->updateBattery(false); });
+
+  mController->setValue("<extern>");
+  mSupervisor->setValue(isFirstRobot);
+  isFirstRobot = false;  // only the first robot can be a supervisor
 }
 
 void WbRobot::reset(const QString &id) {
@@ -600,6 +606,13 @@ void WbRobot::setWaitingForWindow(bool waiting) {
     emit windowReady();
 }
 
+void WbRobot::setSupervisor(bool enable) {
+  if (mSupervisor->value() != enable) {
+    mSupervisor->setValue(enable);
+    updateSupervisor();
+  }
+}
+
 void WbRobot::updateData() {
   mDataNeedToWriteAnswer = true;
 }
@@ -867,9 +880,10 @@ void WbRobot::handleMessage(QDataStream &stream) {
 
       mNeedToWriteUrdf = true;
       stream >> size;
-      char data[size];
+      char* data = new char[size];
       stream.readRawData(data, size);
       setUrdfPrefix(QString(data));
+      delete[] data;
 
       return;
     }
@@ -893,9 +907,10 @@ void WbRobot::handleMessage(QDataStream &stream) {
     case C_ROBOT_SET_DATA: {
       short size;
       stream >> size;
-      char data[size];
+      char* data = new char[size];
       stream.readRawData(data, size);
       mCustomData->setValue(data);
+      delete[] data;
       return;
     }
     case C_ROBOT_SET_KEYBOARD_SAMPLING_PERIOD: {
@@ -1010,11 +1025,12 @@ void WbRobot::handleMessage(QDataStream &stream) {
       stream >> streamChannel;
       unsigned int size;
       stream >> size;
-      char nativeMessage[size];
+      char* nativeMessage = new char[size];
       stream.readRawData(nativeMessage, size);
       QString message(nativeMessage);
       if (!message.endsWith('\n'))
         message += '\n';
+      delete[] nativeMessage;
       // cppcheck-suppress knownConditionTrueFalse
       emit appendMessageToConsole(message, streamChannel == 1);  // 1 is stdout
       return;
@@ -1584,4 +1600,126 @@ void WbRobot::removeRemoteExternController() {
     if (ac)
       ac->removeRemoteExternController();
   }
+}
+
+void WbRobot::SET_URDF(const QString& data) {
+  setUrdfPrefix(QString(data));
+}
+
+QString WbRobot::GET_URDF() const {
+  QString urdfContent;
+  WbWriter writer(&urdfContent, modelName() + ".urdf");
+
+  writer.writeHeader(name());
+  write(writer);
+  writer.writeFooter();
+
+  return urdfContent;
+}
+
+void WbRobot::SET_BATTERY_SAMPLING_PERIOD(int refreshRate) {
+  mBatterySensor->setRefreshRate(refreshRate);
+  if (mBattery->isEmpty())
+    warn(tr("'wb_robot_battery_sensor_enable' called while the 'battery' field is empty."));
+}
+
+void WbRobot::SET_DATA(const QString& data) {
+  mCustomData->setValue(data);
+}
+
+void WbRobot::SET_KEYBOARD_SAMPLING_PERIOD(int refreshRate) {
+  mKeyboardSensor->setRefreshRate(refreshRate);
+}
+
+void WbRobot::SET_JOYSTICK_SAMPLING_PERIOD(int refreshRate) {
+  mJoystickSensor->setRefreshRate(refreshRate);
+  if (refreshRate > 0) {
+    if (!mJoystickInterface) {
+      mJoystickInterface = new WbJoystickInterface();
+      if (mJoystickInterface->isCorrectlyInitialized()) {
+        mJoystickTimer = new QTimer(this);
+        mJoystickTimer->setSingleShot(false);
+        connect(mJoystickTimer, &QTimer::timeout, mJoystickInterface, &WbJoystickInterface::step);
+        mJoystickConfigureRequest = true;
+        mJoystickTimer->start(mJoystickInterface->updateRate());
+      } else {
+        warn(mJoystickInterface->initializationError());
+        delete mJoystickInterface;
+        mJoystickInterface = NULL;
+      }
+    }
+  } else if (mJoystickInterface) {
+    mJoystickTimer->stop();
+    disconnect(mJoystickTimer, &QTimer::timeout, mJoystickInterface, &WbJoystickInterface::step);
+    delete mJoystickTimer;
+    delete mJoystickInterface;
+    mJoystickTimer = NULL;
+    mJoystickInterface = NULL;
+    delete mJoyStickLastValue;
+    mJoyStickLastValue = NULL;
+  }
+}
+
+void WbRobot::SET_MOUSE_SAMPLING_PERIOD(int refreshRate) {
+  if (refreshRate <= 0 && mMouse != NULL) {
+    WbMouse::destroy(mMouse);
+    mMouse = NULL;
+  } else if (refreshRate > 0) {
+    if (mMouse == NULL)
+      mMouse = WbMouse::create();
+    mMouse->setRefreshRate(refreshRate);
+  }
+}
+
+void WbRobot::MOUSE_ENABLE_3D_POSITION(bool enable) {
+  if (mMouse)
+    mMouse->set3dPositionEnabled(enable);
+}
+
+void WbRobot::SET_JOYSTICK_FORCE_FEEDBACK(int level) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->addForce(level);
+}
+
+void WbRobot::SET_JOYSTICK_FORCE_FEEDBACK_DURATION(double duration) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setConstantForceDuration(duration);
+}
+
+void WbRobot::SET_JOYSTICK_AUTO_CENTERING_GAIN(double gain) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setAutoCenteringGain(gain);
+}
+
+void WbRobot::SET_JOYSTICK_RESISTANCE_GAIN(double gain) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setResistanceGain(gain);
+}
+
+void WbRobot::SET_JOYSTICK_FORCE_AXIS(int axis) {
+  if (mJoystickInterface && mJoystickInterface->isCorrectlyInitialized())
+    mJoystickInterface->setForceAxis(axis);
+}
+
+void WbRobot::REMOTE_ON() {
+  emit toggleRemoteMode(true);
+}
+
+void WbRobot::REMOTE_OFF() {
+  emit toggleRemoteMode(false);
+}
+
+void WbRobot::PIN(bool pin) {
+  pinToStaticEnvironment(pin);
+}
+
+void WbRobot::CONSOLE_MESSAGE(QString message, bool streamChannel) {
+  if (!message.endsWith('\n'))
+    message += '\n';
+  // cppcheck-suppress knownConditionTrueFalse
+  emit appendMessageToConsole(message, streamChannel);  // 1 is stdout
+}
+
+void WbRobot::WWI_MESSAGE(const QByteArray& message) {
+  emit sendToJavascript(message);
 }

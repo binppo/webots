@@ -22,11 +22,13 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 class WbField;
 class WbNode;
 
-class WbNodeOperations : public QObject {
+class WB_LIB_EXPORT WbNodeOperations : public QObject {
   Q_OBJECT
 
 public:

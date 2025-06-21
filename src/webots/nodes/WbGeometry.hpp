@@ -27,6 +27,8 @@
 #include "WbOdeTypes.hpp"
 #include "WbVector2.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBoundingSphere;
 class WbMatrix4;
 class WbMatter;
@@ -41,7 +43,7 @@ struct WrStaticMesh;
 struct WrRenderable;
 struct WrTransform;
 
-class WbGeometry : public WbBaseNode {
+class WB_LIB_EXPORT WbGeometry : public WbBaseNode {
   Q_OBJECT
 
 public:

@@ -19,7 +19,12 @@
 
 #include "WbJointDevice.hpp"
 
-class WbBrake : public WbJointDevice {
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbBrake : public WbJointDevice {
   Q_OBJECT
 
 public:
@@ -39,6 +44,10 @@ public:
   void writeConfigure(WbDataStream &stream) override;
   void writeAnswer(WbDataStream &stream) override;
   void handleMessage(QDataStream &stream) override;
+
+public slots:
+  void SET_DAMPING_CONSTANT(double dampingConstant);
+  const WbLogicalDevice* GET_ASSOCIATED_DEVICE(int deviceType);
 
 signals:
   // emitted when received command from controller

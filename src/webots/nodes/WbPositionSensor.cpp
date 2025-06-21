@@ -26,8 +26,8 @@
 #include "WbRandom.hpp"
 #include "WbSolid.hpp"
 
-#include "../../../include/controller/c/webots/position_sensor.h"  // position sensor types
-#include "../../controller/c/messages.h"  // contains the definitions for the macros C_SET_SAMPLING_PERIOD, C_CONFIGURE
+#include <controller/c/webots/position_sensor.h>
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 
@@ -79,6 +79,10 @@ void WbPositionSensor::writeConfigure(WbDataStream &stream) {
   stream << (int)type();
 }
 
+int WbPositionSensor::refreshRate() {
+  return mSensor->refreshRate();
+}
+
 void WbPositionSensor::handleMessage(QDataStream &stream) {
   unsigned char command;
   stream >> command;
@@ -112,6 +116,11 @@ double WbPositionSensor::position() const {
   return pos;
 }
 
+double WbPositionSensor::value() {
+  refreshSensorIfNeeded();
+  return mValue;
+}
+
 void WbPositionSensor::writeAnswer(WbDataStream &stream) {
   if (refreshSensorIfNeeded() || mSensor->hasPendingValue()) {
     stream << tag();
@@ -135,4 +144,17 @@ bool WbPositionSensor::refreshSensorIfNeeded() {
     return true;
   }
   return false;
+}
+
+void WbPositionSensor::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+const WbLogicalDevice* WbPositionSensor::GET_ASSOCIATED_DEVICE(int deviceType) {
+  const WbLogicalDevice *device = getSiblingDeviceByType(deviceType);
+  if (!device && deviceType == WB_NODE_ROTATIONAL_MOTOR)
+    // check both motor types
+    device = getSiblingDeviceByType(WB_NODE_LINEAR_MOTOR);
+
+  return device;
 }

@@ -94,7 +94,7 @@
 #include <QtGui/QWindow>
 #include <QtNetwork/QHttpMultiPart>
 #include <QtNetwork/QNetworkReply>
-#include <QtOpenGL/QOpenGLFunctions_3_3_Core>
+#include <QtGui/QOpenGLFunctions_3_3_Core>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMainWindow>
@@ -163,6 +163,9 @@ WbMainWindow::WbMainWindow(bool minimizedOnStart, WbTcpServer *tcpServer, QWidge
           Qt::QueuedConnection);
   connect(WbApplication::instance(), &WbApplication::worldLoadRequested, this, &WbMainWindow::loadDifferentWorld,
           Qt::QueuedConnection);
+  connect(WbApplication::instance(), SIGNAL(videoCaptureStarted(const QString &, int, int, int, int, int, bool)), this,
+          SLOT(startVideoCapture(const QString &, int, int, int, int, int, bool)));
+  connect(WbApplication::instance(), &WbApplication::videoCaptureStopped, this, &WbMainWindow::stopVideoCapture);
 
   createMainTools();
   createMenus();
@@ -383,9 +386,11 @@ void WbMainWindow::createMainTools() {
   setCentralWidget(mSimulationView);
   addDock(mSimulationView);
   connect(mSimulationView, &WbSimulationView::requestOpenUrl, this, &WbMainWindow::openUrl);
+  connect(mSimulationView->selection(), &WbSelection::selectionChangedFromSceneTree, this, &WbMainWindow::updateOverlayMenu);
+  connect(mSimulationView->selection(), &WbSelection::selectionChangedFromView3D, this, &WbMainWindow::updateOverlayMenu);
   connect(mSimulationView->sceneTree(), &WbSceneTree::editRequested, this, &WbMainWindow::openFileInTextEditor);
   if (mTcpServer) {
-    mTcpServer->setMainWindow(this);
+    //mTcpServer->setMainWindow(this);
     if (mTcpServer->streamStatus()) {
       WbMultimediaStreamingServer *multimediaStreamingServer = dynamic_cast<WbMultimediaStreamingServer *>(mTcpServer);
       if (multimediaStreamingServer)
@@ -2474,7 +2479,7 @@ void WbMainWindow::openFileInTextEditor(const QString &fileName, bool modify, bo
           const int fieldNameStart = binaryMatch.capturedStart(1);
           const int fieldNameLength = binaryMatch.capturedEnd(1) - fieldNameStart;
           WbLog::info(tr("The '%1' field of the robot has been changed to \"<generic>\".")
-                        .arg(line.sliced(fieldNameStart, fieldNameLength)));
+                        .arg(line.mid(fieldNameStart, fieldNameLength)));
         }
       }
       localFile.seek(0);
@@ -2674,5 +2679,22 @@ void WbMainWindow::finalizeNodeRegeneration(WbNode *node) {
       }
     }
     mTemporaryProtoPerspectives.clear();
+  }
+}
+
+void WbMainWindow::startVideoCapture(const QString &fileName, int codec, int width, int height, int quality,
+                                         int acceleration, bool showCaption) {
+  if(mSimulationView->startVideoCapture(fileName, codec, width, height, quality, acceleration, showCaption))
+  {
+    if (isMinimized()) {
+      showMaximized();
+    }
+  }
+}
+
+void WbMainWindow::stopVideoCapture(bool canceled) {
+  if(mSimulationView->stopVideoCapture(canceled))
+  {
+    showMinimized();
   }
 }

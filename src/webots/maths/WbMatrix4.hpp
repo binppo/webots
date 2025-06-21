@@ -28,10 +28,12 @@
 #include <cmath>
 #include <cstring>
 
+#include <core/WbConfig.h>
+
 class WbRotation;
 class WbMatrix3;
 
-class WbMatrix4 {
+class WB_LIB_EXPORT WbMatrix4 {
 public:
   // construct as identity matrix
   WbMatrix4() { setIdentity(); }

@@ -25,7 +25,7 @@
 #include "WbWorld.hpp"
 
 #include <webots/receiver.h>  // for WB_CHANNEL_BROADCAST
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <cassert>
@@ -245,6 +245,10 @@ void WbReceiver::writeAnswer(WbDataStream &stream) {
 
   if (mNeedToConfigure)
     writeConfigure(stream);
+}
+
+int WbReceiver::refreshRate() {
+  return mSensor->refreshRate();
 }
 
 void WbReceiver::handleMessage(QDataStream &stream) {
@@ -494,4 +498,18 @@ void WbReceiver::transmitData(int channel, const void *data, int size) {
     if (r->mSensor->isEnabled() && channel == r->channel())
       r->receiveData(channel, data, size);
   }
+}
+
+void WbReceiver::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+void WbReceiver::SET_CHANNEL(int receiverChannel) {
+  mChannel->setValue(receiverChannel);
+}
+
+QList<WbDataPacket *> WbReceiver::RECEIVE() {
+  refreshSensorIfNeeded();
+
+  return mReadyQueue;
 }

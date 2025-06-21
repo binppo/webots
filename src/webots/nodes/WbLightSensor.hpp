@@ -18,6 +18,12 @@
 #include <QtCore/QList>
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbLight;
 class WbLookupTable;
 class WbSensor;
@@ -28,7 +34,7 @@ struct WrMaterial;
 struct WrStaticMesh;
 struct WrRenderable;
 
-class WbLightSensor : public WbSolidDevice {
+class WB_LIB_EXPORT WbLightSensor : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -54,6 +60,16 @@ public:
 
   void computeLightMeasurement(const WbLight *light, const WbVector3 &sensorAxis, const WbVector3 &sensorPos,
                                WbVector3 &lightDirection, double &distance, double &direct, double &attenuation) const;
+
+  int lookupTableSize() const;
+  QVector<QVector3D> lookupTable() const;
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+
+  double value();
 
 private:
   // private functions

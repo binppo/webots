@@ -21,11 +21,13 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbMatrix4;
 class WbSolid;
 struct dMass;
 
-class WbSolidMerger : public QObject {
+class WB_LIB_EXPORT WbSolidMerger : public QObject {
   Q_OBJECT
 
 public:

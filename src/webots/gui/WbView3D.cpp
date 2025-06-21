@@ -76,7 +76,7 @@
 #endif
 
 #include <QtCore/QTime>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QScreen>
@@ -95,6 +95,7 @@ int WbView3D::cView3DNumber = 0;
 WbView3D::WbView3D() :
   WbWrenWindow(),
   mParentWidget(NULL),
+  mLastRefreshTimer(),
   mMousePressTimer(NULL),
   mAspectRatio(1.0),
   mDisabledRenderingOverlay(NULL),
@@ -861,9 +862,9 @@ void WbView3D::updateMousesPosition(bool fromMouseClick, bool fromMouseMove) {
     if (!mouse->isTracked()) {
       // In the non-tracked case, update the buttons in any cases to avoid loosing a press event
       // in case the press and release events happen in the same step
-      mouse->setLeft(mouse->left() | (mLastButtonState & Qt::LeftButton));
-      mouse->setMiddle(mouse->middle() | (mLastButtonState & Qt::MiddleButton));
-      mouse->setRight(mouse->right() | (mLastButtonState & Qt::RightButton));
+      mouse->setLeft(mouse->left() || (mLastButtonState & Qt::LeftButton));
+      mouse->setMiddle(mouse->middle() || (mLastButtonState & Qt::MiddleButton));
+      mouse->setRight(mouse->right() || (mLastButtonState & Qt::RightButton));
     }
   }
 
@@ -913,7 +914,8 @@ void WbView3D::logWrenStatistics() const {
 }
 
 void WbView3D::prepareWorldLoading() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
 
   // reset text labels
   WbWrenLabelOverlay::removeAllLabels();
@@ -922,7 +924,7 @@ void WbView3D::prepareWorldLoading() {
     initialize();
 
   if (!mLoadingWorldOverlay) {
-    mLoadingWorldOverlay = new WbWrenFullScreenOverlay(tr("Loading world"), 80, true);
+    mLoadingWorldOverlay = new WbWrenFullScreenOverlay(tr("DIFFERENT FUTURE"), 80, true);
     mLoadingWorldOverlay->attachToViewport(wr_scene_get_viewport(wr_scene_get_instance()));
 #ifdef _WIN32
     WbVirtualRealityHeadset::setLoadingTexture(mLoadingWorldOverlay->overlayTexture());
@@ -999,7 +1001,8 @@ void WbView3D::updateShadowState() {
 }
 
 void WbView3D::setWorld(WbSimulationWorld *w) {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
 
   mLoadingWorldOverlay->setVisible(false);
 #ifdef _WIN32
@@ -1113,7 +1116,7 @@ void WbView3D::setWorld(WbSimulationWorld *w) {
 
   // first rendering is offscreen without culling to make sure every meshes/textures are actually
   // loaded on the GPU
-  renderNow(false, true);
+  renderNow(false/*, true*/);
 }
 
 void WbView3D::restoreOptionalRendering(const QStringList &enabledCenterOfMassNodeNames,
@@ -1451,15 +1454,16 @@ void WbView3D::renderNow(bool culling, bool offScreen) {
 #ifdef _WIN32
     if (WbVirtualRealityHeadset::isInUse()) {
       WbVirtualRealityHeadset::instance()->updateOrientationAndPosition();
-      WbWrenOpenGlContext::makeWrenCurrent();
-      if (mVirtualRealityHeadsetOverlay) {
-        // on quit it might be possible that 'cleanupFullScreenOverlay' is called before the world actual destruction
-        mVirtualRealityHeadsetOverlay->render();
+      if (WbWrenOpenGlContext::makeWrenCurrent()) {
+        if (mVirtualRealityHeadsetOverlay) {
+          // on quit it might be possible that 'cleanupFullScreenOverlay' is called before the world actual destruction
+          mVirtualRealityHeadsetOverlay->render();
+        }
+        wr_viewport_render_overlays(wr_scene_get_viewport(wr_scene_get_instance()));
+        WbWrenWindow::blitMainFrameBufferToScreen();
+        WbWrenOpenGlContext::instance()->swapBuffers(this);
+        WbWrenOpenGlContext::doneWren();
       }
-      wr_viewport_render_overlays(wr_scene_get_viewport(wr_scene_get_instance()));
-      WbWrenWindow::blitMainFrameBufferToScreen();
-      WbWrenOpenGlContext::instance()->swapBuffers(this);
-      WbWrenOpenGlContext::doneWren();
     } else
 #endif
       WbWrenWindow::renderNow(culling, offScreen);
@@ -1515,7 +1519,7 @@ void WbView3D::selectNode(const QMouseEvent *event) {
       if (mIsRemoteMouseEvent || mDisabledUserInteractionsMap.value(WbAction::DISABLE_3D_VIEW_CONTEXT_MENU, false))
         mRemoteContextMenuMatter = mPickedMatter;
       else
-        emit contextMenuRequested(event->globalPosition().toPoint(), mParentWidget);
+        emit contextMenuRequested(event->globalPos(), mParentWidget);
     }
     return;
   }
@@ -1557,7 +1561,7 @@ void WbView3D::selectNode(const QMouseEvent *event) {
     if (mIsRemoteMouseEvent || mDisabledUserInteractionsMap.value(WbAction::DISABLE_3D_VIEW_CONTEXT_MENU, false))
       mRemoteContextMenuMatter = selectedMatter;
     else
-      emit contextMenuRequested(event->globalPosition().toPoint(), mParentWidget);
+      emit contextMenuRequested(event->globalPos(), mParentWidget);
   }
 }
 
@@ -1592,8 +1596,10 @@ void WbView3D::mousePressEvent(QMouseEvent *event) {
 
         if (overlay->isInsideResizeArea(position.x(), position.y())) {
           // reset double click timer for resize area
-          delete mMousePressTimer;
-          mMousePressTimer = NULL;
+          if (mMousePressTimer) {
+            delete mMousePressTimer;
+            mMousePressTimer = NULL;
+          }
 
           mLastMouseCursor = cursor();
           setCursor(QCursor(Qt::SizeFDiagCursor));
@@ -1607,8 +1613,10 @@ void WbView3D::mousePressEvent(QMouseEvent *event) {
           renderingDevice->toggleOverlayVisibility(false, true);
 
           // reset double click timer on close area
-          delete mMousePressTimer;
-          mMousePressTimer = NULL;
+          if (mMousePressTimer) {
+            delete mMousePressTimer;
+            mMousePressTimer = NULL;
+          }
           return;
         } else {
           mLastMouseCursor = cursor();
@@ -1631,7 +1639,9 @@ void WbView3D::mousePressEvent(QMouseEvent *event) {
       return;
     }
   }
-  delete mMousePressTimer;
+  if (mMousePressTimer) {
+    delete mMousePressTimer;
+  }
   mMousePressTimer = new QElapsedTimer();
   mMousePressTimer->start();
   mMousePressPosition = position;
@@ -2110,11 +2120,15 @@ void WbView3D::mouseReleaseEvent(QMouseEvent *event) {
   const bool wasNotInAnEvent = !mDragOverlay && !mDragKinematics && !mDragResize && !mDragTranslate &&
                                !mDragVerticalAxisRotate && !mDragRotate && !mDragForce && !mDragTorque && !mTouchSensor;
 
-  delete mDragOverlay;
-  mDragOverlay = NULL;
+  if (mDragOverlay) {
+    delete mDragOverlay;
+    mDragOverlay = NULL;
+  }
 
-  delete mDragKinematics;
-  mDragKinematics = NULL;
+  if (mDragKinematics) {
+    delete mDragKinematics;
+    mDragKinematics = NULL;
+  }
 
   if (mDragResize) {
     mDragResize->addActionInUndoStack();
@@ -2146,10 +2160,14 @@ void WbView3D::mouseReleaseEvent(QMouseEvent *event) {
     if (mDragTorque && !mDragTorque->isLocked())
       mDragTorque->lock();
   } else {
-    delete mDragForce;
-    mDragForce = NULL;
-    delete mDragTorque;
-    mDragTorque = NULL;
+    if (mDragForce) {
+      delete mDragForce;
+      mDragForce = NULL;
+    }
+    if (mDragTorque) {
+      delete mDragTorque;
+      mDragTorque = NULL;
+    }
   }
   if (mTouchSensor) {
     mTouchSensor->setGuiTouch(false);
@@ -2187,6 +2205,9 @@ void WbView3D::keyPressEvent(QKeyEvent *event) {
     QWindow::keyPressEvent(event);
     return;
   }
+
+  if (event->key()>=Qt::Key_F1 && event->key()<=Qt::Key_F35)
+	  emit keyPressed(event->key());
 
   // pass key event to robots if appropriate
   const int modifiers = (((event->modifiers() & Qt::SHIFT) == 0) ? 0 : WbRobot::mapSpecialKey(Qt::SHIFT)) +
@@ -2508,9 +2529,10 @@ void WbView3D::handleWorldModificationFromSupervisor() {
   // even if the simulation is running in no-rendering mode the pending updates need to be executed in order to process
   // supervisor deletions, or Webots might run out of memory
   if (!WbSimulationState::instance()->isRendering()) {
-    WbWrenOpenGlContext::makeWrenCurrent();
-    wr_scene_apply_pending_updates(wr_scene_get_instance());
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      wr_scene_apply_pending_updates(wr_scene_get_instance());
+      WbWrenOpenGlContext::doneWren();
+    }
   }
 
   const WbSimulationState *const sim = WbSimulationState::instance();

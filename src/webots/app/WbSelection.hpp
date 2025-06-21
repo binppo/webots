@@ -21,11 +21,13 @@
 
 #include <QtCore/QObject>
 
-class WbAbstractPose;
+#include <core/WbConfig.h>
+
 class WbBaseNode;
+class WbAbstractPose;
 class WbSolid;
 
-class WbSelection : public QObject {
+class WB_LIB_EXPORT WbSelection : public QObject {
   Q_OBJECT
 
 public:

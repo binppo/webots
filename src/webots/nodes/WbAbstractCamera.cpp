@@ -35,7 +35,7 @@
 #include "WbWrenShaders.hpp"
 #include "WbWrenTextureOverlay.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDataStream>
@@ -403,6 +403,10 @@ void WbAbstractCamera::addConfigureToStream(WbDataStream &stream, bool reconfigu
 
   mNeedToConfigure = false;
   mMemoryMappedFileReset = false;
+}
+
+int WbAbstractCamera::refreshRate() {
+  return mSensor->refreshRate();
 }
 
 bool WbAbstractCamera::handleCommand(QDataStream &stream, unsigned char command) {

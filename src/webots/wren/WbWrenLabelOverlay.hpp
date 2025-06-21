@@ -26,7 +26,9 @@
 #include <wren/font.h>
 #include <wren/overlay.h>
 
-class WbWrenLabelOverlay {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbWrenLabelOverlay {
 public:
   static void cleanup();
   static void updateOverlaysDimensions();

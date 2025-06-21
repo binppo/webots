@@ -25,7 +25,7 @@
 #include "WbSoundSource.hpp"
 #include "WbStandardPaths.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QBuffer>
 #include <QtCore/QDataStream>
@@ -99,9 +99,10 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
         for (int i = 0; i < numberOfSound; ++i) {
           short size;
           stream >> size;
-          char sound[size];
+          char* sound = new char[size];
           stream.readRawData(sound, size);
           stop(sound);
+          delete[] sound;
         }
       }
       return;
@@ -109,32 +110,51 @@ void WbSpeaker::handleMessage(QDataStream &stream) {
     case C_SPEAKER_SET_ENGINE: {
       short size;
       stream >> size;
-      char engine[size];
+      char* engine = new char[size];
       stream.readRawData(engine, size);
       mEngine = QString(engine);
+      delete[] engine;
       return;
     }
     case C_SPEAKER_SET_LANGUAGE: {
       short size;
       stream >> size;
-      char language[size];
+      char* language = new char[size];
       stream.readRawData(language, size);
       mLanguage = QString(language);
+      delete[] language;
       return;
     }
     case C_SPEAKER_SPEAK: {
       short size;
       double volume;
       stream >> size;
-      char text[size];
+      char* text = new char[size];
       stream.readRawData(text, size);
       stream >> volume;
       playText(text, volume);
+      delete[] text;
       return;
     }
     default:
       assert(0);
   }
+}
+
+bool WbSpeaker::isPlaying(const QString& key) const {
+  WbSoundSource *source = mSoundSourcesMap.value(key, NULL);
+  if (!source)
+    return false;
+
+  return source->isPlaying();
+}
+
+bool WbSpeaker::isSpeaking() const {
+  WbSoundSource *source = mSoundSourcesMap.value(TEXT_TO_SPEECH_KEY, NULL);
+  if (!source)
+    return false;
+
+  return source->isPlaying();
 }
 
 void WbSpeaker::writeAnswer(WbDataStream &stream) {
@@ -298,9 +318,10 @@ WbSpeaker::SoundPlayData::SoundPlayData(QDataStream &stream) : mFile(), mRawData
   short size;
   unsigned char loopByte;
   stream >> size;
-  char soundFile[size];
+  char* soundFile = new char[size];
   stream.readRawData(soundFile, size);
   mFile = QString(soundFile);
+  delete[] soundFile;
 
   stream >> mVolume;
   stream >> mPitch;
@@ -313,4 +334,35 @@ WbSpeaker::SoundPlayData::SoundPlayData(QDataStream &stream) : mFile(), mRawData
     mRawData.resize(mRawLength);
     stream.readRawData(mRawData.data(), mRawLength);
   }
+}
+
+void WbSpeaker::PLAY_SOUND(const QVector<QByteArray>& sounds) {
+  for (int i = 0; i < sounds.size(); ++i) {
+    QDataStream stream(sounds[i]);
+    SoundPlayData playData(stream);
+    playSound(playData);
+  }
+}
+
+void WbSpeaker::STOP(const QVector<QByteArray>& sounds) {
+  // cppcheck-suppress knownConditionTrueFalse
+  if (sounds.isEmpty())
+    stopAll();
+  else {
+    for (int i = 0; i < sounds.size(); ++i) {
+      stop(sounds[i].constData());
+    }
+  }
+}
+
+void WbSpeaker::SET_ENGINE(const QString& engine) {
+  mEngine = engine;
+}
+
+void WbSpeaker::SET_LANGUAGE(const QString& language) {
+  mLanguage = language;
+}
+
+void WbSpeaker::SPEAK(const QString& text, double volume) {
+  playText(text.toLatin1().constData(), volume);
 }

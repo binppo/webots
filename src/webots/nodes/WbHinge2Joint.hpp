@@ -21,9 +21,11 @@
 
 #include <QtCore/QMap>
 
+#include <core/WbConfig.h>
+
 class QString;
 
-class WbHinge2Joint : public WbHingeJoint {
+class WB_LIB_EXPORT WbHinge2Joint : public WbHingeJoint {
   Q_OBJECT
 
 public:

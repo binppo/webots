@@ -50,7 +50,7 @@
 #include <wren/skeleton_bone.h>
 #include <wren/transform.h>
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QQueue>
@@ -769,7 +769,7 @@ bool WbSkin::createSkeletonFromWebotsNodes() {
   // Once we're sure bones are valid, attach them to solids & create skeleton representation
   QMap<WrTransform *, WbSolid *>::const_iterator it = boneToSolidMap.constBegin();
   while (it != boneToSolidMap.constEnd()) {
-    const WrTransform *wrenBone = it.key();
+    WrTransform *wrenBone = it.key();
     const WbSolid *solid = it.value();
 
     WrTransform *parentBone = wr_node_get_parent(WR_NODE(wrenBone));
@@ -940,6 +940,23 @@ void WbSkin::handleMessage(QDataStream &stream) {
   }
 }
 
+int WbSkin::boneCount() const {
+  const int boneCount = mSkeleton ? wr_skeleton_get_bone_count(mSkeleton) : 0;
+
+  return boneCount;
+}
+
+QStringList WbSkin::boneName() const {
+  QStringList name;
+  const int boneCount = mSkeleton ? wr_skeleton_get_bone_count(mSkeleton) : 0;
+  for (int i = 0; i < boneCount; ++i) {
+    WrSkeletonBone *bone = wr_skeleton_get_bone_by_index(mSkeleton, i);
+    name << wr_skeleton_bone_get_name(bone);
+  }
+
+  return name;
+}
+
 void WbSkin::writeAnswer(WbDataStream &stream) {
   if (mNeedConfigureAfterModelChanged) {
     writeConfigure(stream);
@@ -1041,3 +1058,36 @@ const WbVector3 &WbSkin::absoluteScale() const {
 
   return mAbsoluteScale;
 }
+
+void WbSkin::SET_BONE_POSITION(int index, double x, double y, double z, bool absolute) {
+  if (mSkeleton && mBonesField->size() < 1)
+    setBonePosition(index, x, y, z, absolute);
+}
+
+void WbSkin::SET_BONE_ORIENTATION(int index, double x, double y, double z, double angle, bool absolute) {
+  if (mSkeleton && mBonesField->size() < 1)
+    setBoneOrientation(index, x, y, z, angle, absolute);
+}
+
+QVector3D WbSkin::GET_BONE_POSITION(int index, bool absolute) {
+  if (!mSkeleton)
+    return QVector3D();
+
+  WrSkeletonBone* bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+  float position[3];
+  wr_skeleton_bone_get_position(bone, absolute, position);
+
+  return QVector3D(position[0], position[1], position[2]);
+}
+
+QVector4D WbSkin::GET_BONE_ORIENTATION(int index, bool absolute) {
+  if (!mSkeleton)
+    return QVector4D();
+
+  WrSkeletonBone* bone = wr_skeleton_get_bone_by_index(mSkeleton, index);
+  float orientation[4];
+  wr_skeleton_bone_get_orientation(bone, absolute, orientation);
+
+  return QVector4D(orientation[1], orientation[2], orientation[3], orientation[0]);
+}
+

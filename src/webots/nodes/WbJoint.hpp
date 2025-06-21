@@ -21,6 +21,8 @@
 
 #include <QtCore/QMap>
 
+#include <core/WbConfig.h>
+
 class QString;
 
 class WbBrake;
@@ -30,7 +32,7 @@ class WbLogicalDevice;
 class WbMotor;
 class WbPositionSensor;
 
-class WbJoint : public WbBasicJoint {
+class WB_LIB_EXPORT WbJoint : public WbBasicJoint {
   Q_OBJECT
 
 public:

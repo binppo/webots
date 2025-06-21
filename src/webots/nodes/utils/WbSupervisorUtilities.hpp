@@ -19,6 +19,14 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
+#include <QtCore/QVariant>
+#include <QtGui/QVector3D>
+#include <QtGui/QMatrix3x3>
+#include <QtGui/QMatrix4x4>
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 class QDataStream;
 
@@ -27,6 +35,7 @@ struct WbFieldGetRequest;
 struct WbTrackedFieldInfo;
 struct WbTrackedPoseInfo;
 struct WbTrackedContactPointInfo;
+class WbNodeProtoInfo;
 class WbFieldSetRequest;
 
 class WbBaseNode;
@@ -38,7 +47,7 @@ class WbSolid;
 class WbWrenLabelOverlay;
 class WbField;
 
-class WbSupervisorUtilities : public QObject {
+class WB_LIB_EXPORT WbSupervisorUtilities : public QObject {
   Q_OBJECT
 
 public:
@@ -56,6 +65,79 @@ public:
   bool shouldBeRemoved() const { return mShouldRemoveNode; }
   QStringList labelsState() const;
 
+  const WbBaseNode *getNodeFromId(int id);
+  const WbNode *getNodeFromDEF(const QString &defName, bool allowSearchInProto, const WbNode *fromNode = NULL);
+  const WbNode *getNodeFromProtoDEF(const WbNode *fromNode, const QString &defName) const;
+  const WbBaseNode *getSelectedNode();
+
+  int *movieStatus() const { return mMovieStatus; }
+  WbNode *getProtoParameterNodeInstance(int nodeId, const QString &functionName) const;
+
+public slots:
+  void SIMULATION_QUIT(int exitStatus);
+  void SIMULATION_RESET();
+  void RESET_STATE(int nodeId, const QString& stateName);
+  void SAVE_STATE(int nodeId, const QString& stateName);
+  void SET_JOINT_POSITION(int nodeId, int index, double position);
+  void RELOAD_WORLD();
+  void SIMULATION_RESET_PHYSICS();
+  void SIMULATION_CHANGE_MODE(int newMode);
+  void SET_LABEL(const QString& text, const QString& font, int id, double x, double y, double size, int color);
+  void EXPORT_IMAGE(QString fileName, int quality);
+  void START_MOVIE(QString fileName, int width, int height, int codec, int quality, int acceleration, bool caption);
+  void STOP_MOVIE();
+  void START_ANIMATION(QString fileName);
+  void STOP_ANIMATION();
+  QVector<const WbSolid*> GET_CONTACT_NODES(int id, bool includeDescendants);
+  QVector<QVector3D> GET_CONTACT_POINTS(int id, bool includeDescendants);
+  void SET_VELOCITY(int id, const QVector3D& linearVelocity, const QVector3D& angularVelocity);
+  void RESET_PHYSICS(int id);
+  void SET_VISIBILITY(int nodeId, int fromId, bool visible);
+  void MOVE_VIEWPOINT(int nodeId);
+  void ADD_FORCE(int id, const QVector3D& fv, bool relative);
+  void ADD_FORCE_WITH_OFFSET(int id, const QVector3D& fv, const QVector3D& ov, bool relative);
+  void ADD_TORQUE(int id, const QVector3D& tv, bool relative);
+  void LOAD_WORLD(const QString& worldToLoad);
+  bool SAVE_WORLD(const QString& saveAs);
+  const WbNodeProtoInfo* GET_PROTO(int nodeId, int parentProtoId);
+  void GET_FROM_INDEX(int nodeId, int protoIndex, int fieldIndex, bool allowSearchInProto);
+  void CONTACT_POINTS_CHANGE_TRACKING_STATE(int nodeId, bool includeDescendants, int refreshRate);
+  void POSE_CHANGE_TRACKING_STATE(int fromNodeId, int toNodeId, int refreshRate);
+  void FIELD_CHANGE_TRACKING_STATE(int nodeId, int fieldId, bool internal, int refreshRate);
+  void FIELD_SET_VALUE(int uniqueId, int fieldId, const QVariant& fieldValue, bool internal = false, int index = -1);
+  void FIELD_INSERT_VALUE(int nodeId, int fieldId, const QVariant& fieldValue, int index = -1);
+  void REMOVE_NODE(int nodeId);
+  void FIELD_REMOVE_VALUE(int nodeId, int fieldId, int index = -1);
+  const WbBaseNode* GET_FROM_ID(int id);
+  const WbBaseNode* GET_FROM_DEF(const QString& nodeName, int parentProtoId);
+  const WbBaseNode* GET_FROM_TAG(int tag);
+  const WbBaseNode* GET_SELECTED();
+  const WbField* GET_FROM_NAME(int id, const QString& name, bool allowSearchInProto);
+  QMatrix4x4 GET_POSE(int idFrom, int idTo);
+  QVector3D GET_POSITION(int id);
+  QMatrix4x4 GET_ORIENTATION(int id);
+  QVector3D GET_CENTER_OF_MASS(int id);
+  bool GET_STATIC_BALANCE(int id);
+  QList<QVector3D> GET_VELOCITY(int id);
+  QString EXPORT_STRING(int nodeId);
+  int GET_FIELD_COUNT(int nodeId, bool allowSearchInProto);
+  QVariant GET_VALUE(int uniqueId, int fieldId, bool internal, int index);
+  bool REALITY_HEADSET_IS_USED();
+  QVector3D REALITY_HEADSET_GET_POSITION();
+  QMatrix4x4 HEADSET_GET_ORIENTATION();
+
+  void moveTo(const QVector3D& targetPosition, const QVector4D& targetRotation);
+  void orbitTo(const QVector3D& targetUnitVector, const QVector4D& targetRotation);
+
+  void southView();
+  void northView();
+  void westView();
+  void eastView();
+  void topView();
+  void bottomView();
+
+  void changeSimulationMode(int newMode);
+
 signals:
   void worldModified();
   void changeSimulationModeRequested(int newMode);
@@ -65,7 +147,6 @@ private slots:
   void animationStartStatusChanged(int status);
   void animationStopStatusChanged(int status);
   void movieStatusChanged(int status);
-  void changeSimulationMode(int newMode);
   void updateDeletedNodeList(WbNode *node);
   void notifyNodeUpdate(WbNode *node);
   void notifyFieldUpdate();
@@ -138,9 +219,6 @@ private:
   void initControllerRequests();
   void deleteControllerRequests();
   void writeNode(WbDataStream &stream, const WbBaseNode *baseNode, int messageType);
-  const WbNode *getNodeFromDEF(const QString &defName, bool allowSearchInProto, const WbNode *fromNode = NULL);
-  const WbNode *getNodeFromProtoDEF(const WbNode *fromNode, const QString &defName) const;
-  WbNode *getProtoParameterNodeInstance(int nodeId, const QString &functionName) const;
   void applyFieldSetRequest(struct field_set_request *request);
   QString readString(QDataStream &);
   void makeFilenameAbsolute(QString &filename);

@@ -24,14 +24,16 @@
 //
 
 #include <QtCore/QObject>
-#include "../../../include/controller/c/webots/supervisor.h"
+#include <webots/supervisor.h>
 
 #include "WbPrecision.hpp"
+
+#include <core/WbConfig.h>
 
 class WbTokenizer;
 class WbWriter;
 
-class WbValue : public QObject {
+class WB_LIB_EXPORT WbValue : public QObject {
   Q_OBJECT
 
 public:

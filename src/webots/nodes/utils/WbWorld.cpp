@@ -208,11 +208,12 @@ WbWorld::~WbWorld() {
 
   delete mPerspective;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  // Sanity-check: make sure only the root wren::Transform remains
-  assert(wr_scene_compute_node_count(wr_scene_get_instance()) == 1);
-  wr_scene_reset(wr_scene_get_instance());
-  WbWrenOpenGlContext::doneWren();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    // Sanity-check: make sure only the root wren::Transform remains
+    assert(wr_scene_compute_node_count(wr_scene_get_instance()) == 1);
+    wr_scene_reset(wr_scene_get_instance());
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 bool WbWorld::needSaving() const {
@@ -379,9 +380,10 @@ void WbWorld::write(WbWriter &writer) const {
     // make sure all the meshes data are up-to-date
     // only W3D exporter relies on OpenGL data
     // this is needed for example in minimize and streaming mode because the world is exported before the first main rendering
-    WbWrenOpenGlContext::makeWrenCurrent();
-    wr_scene_apply_pending_updates(wr_scene_get_instance());
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      wr_scene_apply_pending_updates(wr_scene_get_instance());
+      WbWrenOpenGlContext::doneWren();
+    }
   }
 
   writer.writeHeader(worldInfo()->title());
@@ -542,6 +544,14 @@ void WbWorld::appendOdeContact(const WbOdeContact &odeContact) {
 void WbWorld::appendOdeImmersionGeom(const dImmersionGeom &immersionGeom) {
   mOdeContactsMutex.lock();  // TODO: check if this mutex is necessary and if it needs to be renamed
   mImmersionGeoms.append(immersionGeom);
+  mOdeContactsMutex.unlock();
+}
+
+void WbWorld::lockOdeContact() {
+  mOdeContactsMutex.lock();
+}
+
+void WbWorld::unlockOdeContact() {
   mOdeContactsMutex.unlock();
 }
 

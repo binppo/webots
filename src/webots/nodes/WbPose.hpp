@@ -25,7 +25,9 @@
 #include "WbGroup.hpp"
 #include "WbShape.hpp"
 
-class WbPose : public WbGroup, public WbAbstractPose {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPose : public WbGroup, public WbAbstractPose {
   Q_OBJECT
 
 public:

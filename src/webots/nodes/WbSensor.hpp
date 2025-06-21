@@ -17,11 +17,13 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 //
 // Description: a sensor placed on a device
 //
 class WbRobot;
-class WbSensor : public QObject {
+class WB_LIB_EXPORT WbSensor : public QObject {
   Q_OBJECT
 public:
   WbSensor();

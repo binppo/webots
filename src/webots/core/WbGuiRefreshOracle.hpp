@@ -24,7 +24,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
-class WbGuiRefreshOracle : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbGuiRefreshOracle : public QObject {
   Q_OBJECT
 
 public:

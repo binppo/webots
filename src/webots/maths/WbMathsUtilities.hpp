@@ -19,6 +19,8 @@
 
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class WbPolygon;
 class WbVector2;
 class WbVector3;
@@ -29,40 +31,40 @@ namespace WbMathsUtilities {
 
   enum { X, Y, Z };
 
-  bool isPowerOf2(unsigned int n);
-  unsigned int nextPowerOf2(unsigned int n);
-  int round(double n);
-  inline double discretize(double value, double resolution) {
+  WB_LIB_EXPORT bool isPowerOf2(unsigned int n);
+  WB_LIB_EXPORT unsigned int nextPowerOf2(unsigned int n);
+  WB_LIB_EXPORT int round(double n);
+  WB_LIB_EXPORT inline double discretize(double value, double resolution) {
     return ((int)(value / resolution + 0.5)) * resolution;
   }
-  inline double discretize(float value, float resolution) {
+  WB_LIB_EXPORT inline double discretize(float value, float resolution) {
     return ((int)(value / resolution + 0.5f)) * ((double)resolution);
   }
 
   // performs two Graham scan and returns the indices of points in the convex hull
-  int twoStepsConvexHull(const QVector<WbVector2> &points, QVector<int> &hullIndices);
-  int convexHull(const QVector<WbVector2> &points, QVector<int> &hullIndices);
+  WB_LIB_EXPORT int twoStepsConvexHull(const QVector<WbVector2> &points, QVector<int> &hullIndices);
+  WB_LIB_EXPORT int convexHull(const QVector<WbVector2> &points, QVector<int> &hullIndices);
   // builds a direct orthonormal basis (b[X], b[Y] = vY.normalized(), b[Z])
-  void orthoBasis(const WbVector3 &vY, WbVector3 b[3]);
-  bool isConvex(const WbPolygon &p);
+  WB_LIB_EXPORT void orthoBasis(const WbVector3 &vY, WbVector3 b[3]);
+  WB_LIB_EXPORT bool isConvex(const WbPolygon &p);
 
   // Angles
   // find alpha such that |alpha - lastSpot| <= pi and alpha = angle mod 2 * pi
-  inline double normalizeAngle(double angle, double lastSpot);
-  bool isZeroAngle(double angle);
+  WB_LIB_EXPORT inline double normalizeAngle(double angle, double lastSpot);
+  WB_LIB_EXPORT bool isZeroAngle(double angle);
   // clamps angles in the -pi..pi range and possibly swap clamped angles to comply with min <= max.
-  void clampAngles(double &min, double &max);
+  WB_LIB_EXPORT void clampAngles(double &min, double &max);
   // Vectors
-  bool isZeroVector3(const double *v);
-  void printVector3(const char *str, const double *v);
-  void printMatrix3x4(const char *str, const double *m);
+  WB_LIB_EXPORT bool isZeroVector3(const double *v);
+  WB_LIB_EXPORT void printVector3(const char *str, const double *v);
+  WB_LIB_EXPORT void printMatrix3x4(const char *str, const double *m);
   // Find rational approximation of given real number
   // returns false if no approximation is found
-  bool computeRationalApproximation(double value, int maxDenominator, int &numerator, int &denominator);
+  WB_LIB_EXPORT bool computeRationalApproximation(double value, int maxDenominator, int &numerator, int &denominator);
   // This will clamp value between -1 and 1 to avoid NaN generation
-  inline double clampedAcos(double value);
+  WB_LIB_EXPORT inline double clampedAcos(double value);
   // This will clamp value between -1 and 1 to avoid indefinite value being generated
-  inline double clampedAsin(double value);
+  WB_LIB_EXPORT inline double clampedAsin(double value);
 };  // namespace WbMathsUtilities
 
 // Normalize angle to be within +/-pi of lastSpot.

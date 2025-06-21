@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
+#include <core/WbConfig.h>
+
 class QIODevice;
 
 struct WrCamera;
@@ -45,7 +47,7 @@ class WbWrenRangeNoise;
 class WbWrenRangeQuantization;
 class WbWrenSmaa;
 
-class WbWrenCamera : public QObject {
+class WB_LIB_EXPORT WbWrenCamera : public QObject {
   Q_OBJECT
 
 public:
@@ -74,6 +76,10 @@ public:
   void render();
 
   void setSize(int width, int height);
+  int size() const;
+  int channel() const { return 4; }
+  int width() const { return mWidth; }
+  int height() const { return mHeight; }
   void setNear(float nearValue);
   void setFar(float farValue);
   void setExposure(float exposure);

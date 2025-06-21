@@ -23,17 +23,19 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include "../../../include/controller/c/webots/supervisor.h"
+#include <webots/supervisor.h>
 
 #include "WbFieldModel.hpp"
 #include "WbPrecision.hpp"
+
+#include <core/WbConfig.h>
 
 class WbNode;  // circular dependency: needed by PROTO mechanism for easily retrieving the parent of internal fields
 class WbTokenizer;
 class WbWriter;
 class WbValue;
 
-class WbField : public QObject {
+class WB_LIB_EXPORT WbField : public QObject {
   Q_OBJECT
 
 public:

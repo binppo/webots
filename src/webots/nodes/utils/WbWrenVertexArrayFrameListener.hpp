@@ -17,10 +17,12 @@
 
 #include <QtCore/QList>
 
+#include <core/WbConfig.h>
+
 class WbMuscle;
 class WbTrack;
 
-class WbWrenVertexArrayFrameListener {
+class WB_LIB_EXPORT WbWrenVertexArrayFrameListener {
 public:
   static WbWrenVertexArrayFrameListener *instance();
   static void clear();

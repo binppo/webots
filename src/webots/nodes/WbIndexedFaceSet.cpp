@@ -25,9 +25,13 @@
 #include "WbSFBool.hpp"
 #include "WbSFDouble.hpp"
 #include "WbSFNode.hpp"
+#include "WbSFString.hpp"
 #include "WbTextureCoordinate.hpp"
 #include "WbTriangleMesh.hpp"
+#include "WbUrl.hpp"
 #include "WbVrmlNodeUtilities.hpp"
+
+#include <QtCore/QFileInfo>
 
 void WbIndexedFaceSet::init() {
   mCoord = findSFNode("coord");
@@ -39,6 +43,7 @@ void WbIndexedFaceSet::init() {
   mNormalIndex = findMFInt("normalIndex");
   mTexCoordIndex = findMFInt("texCoordIndex");
   mCreaseAngle = findSFDouble("creaseAngle");
+  mUrl = findSFString("url");
   setCcw(mCcw->value());
 }
 
@@ -78,6 +83,7 @@ void WbIndexedFaceSet::postFinalize() {
   connect(mNormalIndex, &WbMFInt::changed, this, &WbIndexedFaceSet::updateNormalIndex);
   connect(mTexCoordIndex, &WbMFInt::changed, this, &WbIndexedFaceSet::updateTexCoordIndex);
   connect(mCreaseAngle, &WbSFDouble::changed, this, &WbIndexedFaceSet::updateCreaseAngle);
+  connect(mUrl, &WbSFString::changed, this, &WbIndexedFaceSet::updateSource);
 
   if (coord())
     connect(coord(), &WbCoordinate::fieldChanged, this, &WbIndexedFaceSet::updateCoord, Qt::UniqueConnection);
@@ -104,9 +110,21 @@ void WbIndexedFaceSet::reset(const QString &id) {
 }
 
 void WbIndexedFaceSet::updateTriangleMesh(bool issueWarnings) {
-  mTriangleMeshError = mTriangleMesh->init(
-    coord() ? &(coord()->point()) : NULL, mCoordIndex, normal() ? &(normal()->vector()) : NULL, mNormalIndex,
-    texCoord() ? &(texCoord()->point()) : NULL, mTexCoordIndex, mCreaseAngle->value(), mNormalPerVertex->value());
+  if (mUrl && !mUrl->value().isEmpty()) {
+    QString filePath(mUrl->value());
+    if(filePath.indexOf('.')>0)
+      filePath = WbUrl::computePath(this, "url", mUrl->value(), false);
+    if(filePath.isEmpty())
+      filePath = mUrl->value();
+
+    mTriangleMeshError =
+      mTriangleMesh->init(filePath, mCreaseAngle->value(),
+                          mCcw->value(), mNormalPerVertex->value());
+  } else {
+    mTriangleMeshError = mTriangleMesh->init(
+      coord() ? &(coord()->point()) : NULL, mCoordIndex, normal() ? &(normal()->vector()) : NULL, mNormalIndex,
+      texCoord() ? &(texCoord()->point()) : NULL, mTexCoordIndex, mCreaseAngle->value(), mNormalPerVertex->value());
+  }
 
   if (issueWarnings) {
     foreach (const QString &warning, mTriangleMesh->warnings())
@@ -119,6 +137,10 @@ void WbIndexedFaceSet::updateTriangleMesh(bool issueWarnings) {
 
 uint64_t WbIndexedFaceSet::computeHash() const {
   uint64_t hash = 0;
+
+  if (mUrl && !mUrl->value().isEmpty()) {
+    hash ^= (uint64_t)qHash(mUrl->value());
+  }
 
   if (coord() && coord()->pointSize()) {
     const double *startCoord = coord()->point().item(0).ptr();
@@ -183,7 +205,7 @@ bool WbIndexedFaceSet::areSizeFieldsVisibleAndNotRegenerator() const {
 }
 
 void WbIndexedFaceSet::attachResizeManipulator() {
-  if (coord())
+  if (coord() || (mUrl && !mUrl->value().isEmpty()))
     WbTriangleMeshGeometry::attachResizeManipulator();
 }
 
@@ -280,6 +302,28 @@ void WbIndexedFaceSet::updateCreaseAngle() {
   emit changed();
 }
 
+void WbIndexedFaceSet::updateSource() {
+  if (!mUrl || mUrl->value().isEmpty())
+    return;
+
+  buildWrenMesh(true);
+
+  if (isAValidBoundingObject())
+    applyToOdeData();
+
+  if (mBoundingSphere && !isInBoundingObject())
+    mBoundingSphere->setOwnerSizeChanged();
+
+  if (resizeManipulator() && resizeManipulator()->isAttached())
+    setResizeManipulatorDimensions();  // Must be called after updateTriangleMesh()
+
+  if(defName().isEmpty()) {
+    setDefName(QFileInfo(mUrl->value()).baseName());
+  }
+
+  emit changed();
+}
+
 QStringList WbIndexedFaceSet::fieldsToSynchronizeWithW3d() const {
   QStringList fields;
   fields << "ccw"
@@ -295,23 +339,28 @@ QStringList WbIndexedFaceSet::fieldsToSynchronizeWithW3d() const {
 //  WREN related methods for resizing by pulling handles   //
 /////////////////////////////////////////////////////////////
 void WbIndexedFaceSet::rescale(const WbVector3 &v) {
-  coord()->rescale(v);
+  if (coord() && coord()->pointSize())
+    coord()->rescale(v);
 }
 
 void WbIndexedFaceSet::rescaleAndTranslate(int coordinate, double scale, double translation) {
-  coord()->rescaleAndTranslate(coordinate, scale, translation);
+  if (coord() && coord()->pointSize())
+    coord()->rescaleAndTranslate(coordinate, scale, translation);
 }
 
 void WbIndexedFaceSet::rescaleAndTranslate(double factor, const WbVector3 &t) {
-  coord()->rescaleAndTranslate(WbVector3(factor, factor, factor), t);
+  if (coord() && coord()->pointSize())
+    coord()->rescaleAndTranslate(WbVector3(factor, factor, factor), t);
 }
 
 void WbIndexedFaceSet::rescaleAndTranslate(const WbVector3 &scale, const WbVector3 &translation) {
-  coord()->rescaleAndTranslate(scale, translation);
+  if (coord() && coord()->pointSize())
+    coord()->rescaleAndTranslate(scale, translation);
 }
 
 void WbIndexedFaceSet::translate(const WbVector3 &v) {
-  coord()->translate(v);
+  if (coord() && coord()->pointSize())
+    coord()->translate(v);
 }
 
 bool WbIndexedFaceSet::exportNodeHeader(WbWriter &writer) const {

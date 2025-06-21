@@ -23,11 +23,13 @@
 #include <QtGui/QSyntaxHighlighter>
 #include <QtGui/QTextCharFormat>
 
+#include <core/WbConfig.h>
+
 class QTextDocument;
 class WbLanguage;
 
 // a generic highlighter for search text
-class WbSyntaxHighlighter : public QSyntaxHighlighter {
+class WB_LIB_EXPORT WbSyntaxHighlighter : public QSyntaxHighlighter {
   Q_OBJECT
 
 public:
@@ -55,7 +57,7 @@ protected:
 };
 
 // a highlighter for programming, scripting or modelling languages
-class WbLanguageHighlighter : public WbSyntaxHighlighter {
+class WB_LIB_EXPORT WbLanguageHighlighter : public WbSyntaxHighlighter {
 public:
   WbLanguageHighlighter(const WbLanguage *language, QTextDocument *parentWidget);
 
@@ -85,7 +87,7 @@ protected:
 };
 
 // a highlighter specialized for languages with multiple line comments (/**/), e.g. C, C++ and Java
-class WbMultiLineCommentHighlighter : public WbLanguageHighlighter {
+class WB_LIB_EXPORT WbMultiLineCommentHighlighter : public WbLanguageHighlighter {
 public:
   WbMultiLineCommentHighlighter(const WbLanguage *language, const QRegularExpression &commentStartExpression,
                                 const QRegularExpression &commentEndExpression, QTextDocument *parent);
@@ -100,25 +102,25 @@ protected:
 };
 
 // a highlighter specialized C, C++, Java, and Javascript
-class WbCHighlighter : public WbMultiLineCommentHighlighter {
+class WB_LIB_EXPORT WbCHighlighter : public WbMultiLineCommentHighlighter {
 public:
   WbCHighlighter(const WbLanguage *language, QTextDocument *parent);
 };
 
 // a highlighter specialized for Python
-class WbPythonHighlighter : public WbMultiLineCommentHighlighter {
+class WB_LIB_EXPORT WbPythonHighlighter : public WbMultiLineCommentHighlighter {
 public:
   WbPythonHighlighter(const WbLanguage *language, QTextDocument *parent);
 };
 
 // a highlighter specialized for Lua
-class WbLuaHighlighter : public WbMultiLineCommentHighlighter {
+class WB_LIB_EXPORT WbLuaHighlighter : public WbMultiLineCommentHighlighter {
 public:
   WbLuaHighlighter(const WbLanguage *language, QTextDocument *parent);
 };
 
 // a highlighter specialized for PROTO files
-class WbProtoHighlighter : public WbCHighlighter {
+class WB_LIB_EXPORT WbProtoHighlighter : public WbCHighlighter {
 public:
   WbProtoHighlighter(const WbLanguage *language, QTextDocument *parent);
 

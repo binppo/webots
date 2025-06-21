@@ -19,12 +19,14 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <core/WbConfig.h>
+
 class WbWrenTextureOverlay;
 class WbSFDouble;
 class WbSFInt;
 class WbSFVector2;
 
-class WbRenderingDevice : public WbSolidDevice {
+class WB_LIB_EXPORT WbRenderingDevice : public WbSolidDevice {
   Q_OBJECT
 
 public:

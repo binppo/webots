@@ -17,12 +17,18 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSFString;
 class WbSFDouble;
 class WbSensor;
 class WbUTMConverter;
 
-class WbGps : public WbSolidDevice {
+class WB_LIB_EXPORT WbGps : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -42,6 +48,15 @@ public:
   void writeConfigure(WbDataStream &) override;
   bool refreshSensorIfNeeded() override;
   void reset(const QString &id) override;
+
+  int refreshRate();
+  QString coordSystem();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  QVector3D POSITION();
+  double SPEED();
+  QVector3D SPEED_VECTOR();
 
 private:
   // user accessible fields

@@ -112,7 +112,7 @@ void WbTemplateManager::subscribe(WbNode *node, bool subscribedDescendant) {
 
 void WbTemplateManager::unsubscribe(QObject *node) {
   const WbNode *n = static_cast<WbNode *>(node);
-  if (n->isTemplate() && mTemplates.removeAll(n) > 0)
+  if (n->isTemplate() && mTemplates.removeAll(const_cast<WbNode*>(n)) > 0)
     disconnect(n, &WbNode::regenerationRequired, this, &WbTemplateManager::nodeNeedRegeneration);
   mNodesSubscribedForRegeneration.remove(n);
 }
@@ -141,7 +141,7 @@ void WbTemplateManager::recursiveFieldSubscribeToRegenerateNode(WbNode *node, bo
   //   - subscribe sub-nodes in fields if a parameter is redirected to the sub-node
   // else normal nodes:
   //   - subscribe sub-nodes in fields
-  QVector<WbField *> fields = node->fields();
+  auto fields = node->fields();
   int directSubscribeMinIndex = 0;
   if (node->isProtoInstance()) {
     directSubscribeMinIndex = fields.size();
@@ -264,7 +264,7 @@ void WbTemplateManager::regenerateNode(WbNode *node, bool restarted) {
 
   WbNode::setGlobalParentNode(parent);
 
-  WbNode *newNode = WbNode::createProtoInstanceFromParameters(proto, parameters, WbWorld::instance()->fileName(), uniqueId);
+  WbNode *newNode = WbNode::createProtoInstanceFromParameters(proto, parameters.toList(), WbWorld::instance()->fileName(), uniqueId);
 
   if (!newNode) {
     WbLog::error(tr("Template regeneration failed. The node cannot be generated."), false, WbLog::PARSING);

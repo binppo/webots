@@ -21,10 +21,12 @@
 
 #include <QtWidgets/QDoubleSpinBox>
 
+#include <core/WbConfig.h>
+
 class WbClipboard;
 class QKeyEvent;
 
-class WbDoubleSpinBox : public QDoubleSpinBox {
+class WB_LIB_EXPORT WbDoubleSpinBox : public QDoubleSpinBox {
   Q_OBJECT
 
 public:

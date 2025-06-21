@@ -23,7 +23,9 @@
 #include "WbAddItemCommand.hpp"
 #include "WbMultipleValue.hpp"
 
-class WbRemoveItemCommand : public WbAddItemCommand {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRemoveItemCommand : public WbAddItemCommand {
 public:
   WbRemoveItemCommand(WbMultipleValue *fieldValue, int index, QUndoCommand *parent = 0);
 

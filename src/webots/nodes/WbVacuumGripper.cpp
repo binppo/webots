@@ -21,7 +21,7 @@
 #include "WbSFDouble.hpp"
 #include "WbSensor.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QList>
@@ -272,6 +272,10 @@ void WbVacuumGripper::turnOff() {
     detachFromSolid();
 }
 
+bool WbVacuumGripper::isOn() {
+  return mIsOn->isTrue();
+}
+
 void WbVacuumGripper::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -291,6 +295,13 @@ void WbVacuumGripper::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+void WbVacuumGripper::setRefreshRate(int refreshRate) {
+  if (!mSensor)
+    return;
+
+  mSensor->setRefreshRate(refreshRate);
 }
 
 void WbVacuumGripper::computeValue() {
@@ -342,4 +353,16 @@ void WbVacuumGripper::addConfigure(WbDataStream &stream) {
   stream << (unsigned char)C_CONFIGURE;
   stream << (unsigned char)(mIsOn->value() ? 1 : 0);
   mNeedToReconfigure = false;
+}
+
+void WbVacuumGripper::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+}
+
+void WbVacuumGripper::TURN_ON() {
+  turnOn();
+}
+
+void WbVacuumGripper::TURN_OFF() {
+  turnOff();
 }

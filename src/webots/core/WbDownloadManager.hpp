@@ -19,11 +19,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
 
+#include <core/WbConfig.h>
+
 class WbDownloader;
 class QTimer;
 class QUrl;
 
-class WbDownloadManager : public QObject {
+class WB_LIB_EXPORT WbDownloadManager : public QObject {
   Q_OBJECT
 public:
   static WbDownloadManager *instance();

@@ -23,17 +23,27 @@
 #include <QtCore/QObject>
 #include <QtCore/QProcess>
 #include <QtCore/QSize>
+#include <QtWidgets/QWidget>
+
+#include <core/WbConfig.h>
 
 class WbSimulationView;
-class WbMainWindow;
 
-class WbVideoRecorder : public QObject {
+class WB_LIB_EXPORT WbVideoArea : public QWidget {
+public:
+  WbVideoArea(QWidget* parent = nullptr) : QWidget(parent) {}
+  virtual void lockFullScreen(bool isLocked) = 0;
+  virtual bool setFullScreen(bool isEnabled, bool isRecording = false, bool showDialog = true, bool startup = false) = 0;
+  virtual void loadDifferentWorld(const QString& fileName) = 0;
+};
+
+class WB_LIB_EXPORT WbVideoRecorder : public QObject {
   Q_OBJECT
 public:
   // singleton: avoid multiple simultaneous recordings
   static WbVideoRecorder *instance();
 
-  static void setMainWindow(WbMainWindow *mainWindow) { cMainWindow = mainWindow; }
+  static void setVideoArea(WbVideoArea *videoArea) { cVideoArea = videoArea; }
 
   static int displayRefresh() { return cDisplayRefresh; }
 
@@ -80,7 +90,7 @@ private:
   static int cDisplayRefresh;
 
   WbSimulationView *mSimulationView;
-  static WbMainWindow *cMainWindow;
+  static WbVideoArea *cVideoArea;
 
   QProcess *mScriptProcess;
 

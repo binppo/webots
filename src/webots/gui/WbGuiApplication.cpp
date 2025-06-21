@@ -55,6 +55,7 @@
 #include <QtGui/QFileOpenEvent>
 #endif
 
+#include <resource.h>
 #include <iostream>
 
 using namespace std;
@@ -79,7 +80,8 @@ WbGuiApplication::WbGuiApplication(int &argc, char **argv) :
   QApplication::setStyle("windowsvista");
 #endif
 
-  mApplication = new WbApplication();  // creates WbApplication singleton
+  //mApplication = new WbApplication();  // creates WbApplication singleton
+  mApplication = WbApplication::instance();  // creates WbApplication singleton
   connect(mApplication, &WbApplication::createWorldLoadingProgressDialog, this, &WbGuiApplication::closeSplashScreenIfNeeded);
   // translation settings is the first thing to do in order
   // to have all the messages in the right language

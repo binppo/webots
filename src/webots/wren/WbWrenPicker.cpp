@@ -70,7 +70,8 @@ WbWrenPicker::~WbWrenPicker() {
 }
 
 void WbWrenPicker::setup() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
 
   WrViewport *viewport = wr_scene_get_viewport(wr_scene_get_instance());
   mWidth = wr_viewport_get_width(viewport);
@@ -93,7 +94,8 @@ void WbWrenPicker::setup() {
 }
 
 void WbWrenPicker::cleanup() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
 
   wr_texture_delete(WR_TEXTURE(mOutputTexture));
   wr_frame_buffer_delete(mFrameBuffer);
@@ -115,7 +117,9 @@ bool WbWrenPicker::hasSizeChanged() {
 }
 
 bool WbWrenPicker::pick(int x, int y) {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return false;
+
   mCoordinates.setXyz(0.0, 0.0, 0.0);
   mSelectedId = -1;
   mPickedTranslation = 0;

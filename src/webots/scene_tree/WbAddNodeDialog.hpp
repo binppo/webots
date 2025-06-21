@@ -20,7 +20,10 @@
 //
 
 #include <QtCore/QDir>
+#include <QtCore/QMap>
 #include <QtWidgets/QDialog>
+
+#include <core/WbConfig.h>
 
 class WbField;
 class WbNode;
@@ -35,7 +38,7 @@ class QRegularExpression;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class WbAddNodeDialog : public QDialog {
+class WB_LIB_EXPORT WbAddNodeDialog : public QDialog {
   Q_OBJECT
 
 public:

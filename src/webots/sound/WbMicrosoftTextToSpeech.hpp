@@ -19,7 +19,9 @@
 
 #include "WbTextToSpeech.hpp"
 
-class WbMicrosoftTextToSpeech : public WbTextToSpeech {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMicrosoftTextToSpeech : public WbTextToSpeech {
 public:
   WbMicrosoftTextToSpeech();
   ~WbMicrosoftTextToSpeech() override;

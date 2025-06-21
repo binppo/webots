@@ -17,6 +17,11 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbVector3;
 typedef double dQuaternion[4];
@@ -26,7 +31,7 @@ struct WrMaterial;
 struct WrStaticMesh;
 struct WrTransform;
 
-class WbConnector : public WbSolidDevice {
+class WB_LIB_EXPORT WbConnector : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -55,6 +60,15 @@ public:
   // interface with auto-assembly mechanism
   static bool isAllowingMouseMotion();
   static void solidHasMoved(WbSolid *solid);
+
+  int refreshRate();
+  bool isLocked();
+
+public slots:
+  int GET_PRESENCE();
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  void LOCK();
+  void UNLOCK();
 
 private:
   // fields

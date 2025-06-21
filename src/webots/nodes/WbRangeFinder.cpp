@@ -22,7 +22,7 @@
 #include "WbWrenRenderingContext.hpp"
 #include "WbWrenTextureOverlay.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 

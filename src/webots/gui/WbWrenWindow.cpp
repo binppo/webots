@@ -107,39 +107,42 @@ WbWrenWindow::WbWrenWindow() :
 }
 
 WbWrenWindow::~WbWrenWindow() {
-  WbWrenOpenGlContext::makeWrenCurrent();
-  WbWrenPostProcessingEffects::clearResources();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    WbWrenPostProcessingEffects::clearResources();
 
-  if (mWrenMainFrameBuffer)
-    wr_frame_buffer_delete(mWrenMainFrameBuffer);
+    if (mWrenMainFrameBuffer)
+      wr_frame_buffer_delete(mWrenMainFrameBuffer);
 
-  if (mWrenMainFrameBufferTexture)
-    wr_texture_delete(WR_TEXTURE(mWrenMainFrameBufferTexture));
+    if (mWrenMainFrameBufferTexture)
+      wr_texture_delete(WR_TEXTURE(mWrenMainFrameBufferTexture));
 
-  if (mWrenNormalFrameBufferTexture)
-    wr_texture_delete(WR_TEXTURE(mWrenNormalFrameBufferTexture));
+    if (mWrenNormalFrameBufferTexture)
+      wr_texture_delete(WR_TEXTURE(mWrenNormalFrameBufferTexture));
 
-  if (mWrenDepthFrameBufferTexture)
-    wr_texture_delete(WR_TEXTURE(mWrenDepthFrameBufferTexture));
+    if (mWrenDepthFrameBufferTexture)
+      wr_texture_delete(WR_TEXTURE(mWrenDepthFrameBufferTexture));
 
-  mWrenMainFrameBuffer = NULL;
-  mWrenMainFrameBufferTexture = NULL;
-  mWrenNormalFrameBufferTexture = NULL;
-  mWrenDepthFrameBufferTexture = NULL;
+    mWrenMainFrameBuffer = NULL;
+    mWrenMainFrameBufferTexture = NULL;
+    mWrenNormalFrameBufferTexture = NULL;
+    mWrenDepthFrameBufferTexture = NULL;
 
-  wr_scene_destroy();
+    wr_scene_destroy();
 
-  // delete shaders on exit
-  WbWrenShaders::deleteShaders();
+    // delete shaders on exit
+    WbWrenShaders::deleteShaders();
 
 #ifndef _WIN32
-  destroy();
+    destroy();
 #endif
 
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
+
   WbWrenOpenGlContext::destroy();
 
-  delete[] mSnapshotBuffer;
+  if(mSnapshotBuffer)
+    delete[] mSnapshotBuffer;
 }
 
 // A custom initialization function is used here,
@@ -154,31 +157,32 @@ void WbWrenWindow::initialize() {
   // Moving these calls into the constructor causes rendering issues on Windows
   create();
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_scene_init(wr_scene_get_instance());
 
-  wr_scene_init(wr_scene_get_instance());
+    // Useful for debugging
+    // wr_config_set_bounding_volume_program(WbWrenShaders::boundingVolumeShader());
+    // wr_config_set_show_axis_aligned_bounding_boxes(true);
+    // wr_config_set_show_shadow_axis_aligned_bounding_boxes(true);
+    // wr_config_set_show_bounding_spheres(true);
 
-  // Useful for debugging
-  // wr_config_set_bounding_volume_program(WbWrenShaders::boundingVolumeShader());
-  // wr_config_set_show_axis_aligned_bounding_boxes(true);
-  // wr_config_set_show_shadow_axis_aligned_bounding_boxes(true);
-  // wr_config_set_show_bounding_spheres(true);
+    // Workaround an OpenGL driver bug occuring in VMWare virtual machines:
+    // - The OpenGL state when calling the glDrawElements function may be corrupted.
+    //   In such case, the previous vertex buffers may be overriden with the current material.
+    wr_config_set_requires_flush_after_draw(WbSysInfo::isVirtualMachine());
 
-  // Workaround an OpenGL driver bug occuring in VMWare virtual machines:
-  // - The OpenGL state when calling the glDrawElements function may be corrupted.
-  //   In such case, the previous vertex buffers may be overriden with the current material.
-  wr_config_set_requires_flush_after_draw(WbSysInfo::isVirtualMachine());
+    // Workaround an OpenGL driver bug occuring in VMWare virtual machines:
+    // - The OpenGL depth buffer returns the square root of the expected value when getting the depth buffer.
+    wr_config_set_requires_depth_buffer_distortion(WbSysInfo::isVirtualMachine());
 
-  // Workaround an OpenGL driver bug occuring in VMWare virtual machines:
-  // - The OpenGL depth buffer returns the square root of the expected value when getting the depth buffer.
-  wr_config_set_requires_depth_buffer_distortion(WbSysInfo::isVirtualMachine());
+    updateFrameBuffer();
 
-  updateFrameBuffer();
+    wr_scene_set_fog_program(wr_scene_get_instance(), WbWrenShaders::fogShader());
+    wr_scene_set_shadow_volume_program(wr_scene_get_instance(), WbWrenShaders::shadowVolumeShader());
 
-  wr_scene_set_fog_program(wr_scene_get_instance(), WbWrenShaders::fogShader());
-  wr_scene_set_shadow_volume_program(wr_scene_get_instance(), WbWrenShaders::shadowVolumeShader());
+    WbWrenOpenGlContext::doneWren();
+  }
 
-  WbWrenOpenGlContext::doneWren();
   WbWrenPostProcessingEffects::loadResources();
   updateWrenViewportDimensions();
 }
@@ -223,13 +227,13 @@ void WbWrenWindow::renderNow(bool culling, bool offScreen) {
     viewpoint->updatePostProcessingParameters();
   }
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_scene_render(wr_scene_get_instance(), NULL, culling, offScreen);
 
-  wr_scene_render(wr_scene_get_instance(), NULL, culling, offScreen);
-
-  if (!offScreen)
-    WbWrenOpenGlContext::instance()->swapBuffers(this);
-  WbWrenOpenGlContext::doneWren();
+    if (!offScreen && WbWrenOpenGlContext::instance())
+      WbWrenOpenGlContext::instance()->swapBuffers(this);
+    WbWrenOpenGlContext::doneWren();
+  }
 
   if (mVideoStreamingServer && mVideoStreamingServer->isNewFrameNeeded() && !first)
     // Skip the first call to 'renderNow()' because OpenGL context seems to be not ready. Not skipping causes a freeze.
@@ -261,21 +265,24 @@ bool WbWrenWindow::event(QEvent *event) {
 }
 
 void WbWrenWindow::resizeWren(int width, int height) {
+  //if(!isVisible())
+  //  return;
+
   if (!wr_gl_state_is_initialized())
     return;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    updateFrameBuffer();
 
-  updateFrameBuffer();
+    WbWrenTextureOverlay::updateOverlayDimensions();
+    WbWrenLabelOverlay::updateOverlaysDimensions();
+    WbLightRepresentation::updateScreenScale(width, height);
 
-  WbWrenTextureOverlay::updateOverlayDimensions();
-  WbWrenLabelOverlay::updateOverlaysDimensions();
-  WbLightRepresentation::updateScreenScale(width, height);
+    if (WbWorld::instance() && WbWorld::instance()->viewpoint())
+      WbWorld::instance()->viewpoint()->updatePostProcessingEffects();
 
-  if (WbWorld::instance() && WbWorld::instance()->viewpoint())
-    WbWorld::instance()->viewpoint()->updatePostProcessingEffects();
-
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
 
   renderLater();
 
@@ -303,127 +310,130 @@ void WbWrenWindow::flipAndScaleDownImageBuffer(const unsigned char *source, unsi
 }
 
 QImage WbWrenWindow::grabWindowBufferNow() {
-  WbWrenOpenGlContext::makeWrenCurrent();
-
-  const int destinationWidth = width();
-  const int destinationHeight = height();
-  if (mSnapshotBuffer == NULL || destinationWidth != mSnapshotBufferWidth || destinationHeight != mSnapshotBufferHeight) {
-    delete[] mSnapshotBuffer;
-    mSnapshotBufferWidth = destinationWidth;
-    mSnapshotBufferHeight = destinationHeight;
-    mSnapshotBuffer = new unsigned char[4 * destinationWidth * destinationHeight];
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    const int destinationWidth = width();
+    const int destinationHeight = height();
+    if (mSnapshotBuffer == NULL || destinationWidth != mSnapshotBufferWidth || destinationHeight != mSnapshotBufferHeight) {
+      delete[] mSnapshotBuffer;
+      mSnapshotBufferWidth = destinationWidth;
+      mSnapshotBufferHeight = destinationHeight;
+      mSnapshotBuffer = new unsigned char[4 * destinationWidth * destinationHeight];
+    }
+    const int sourceWidth = destinationWidth;
+    const int sourceHeight = destinationHeight;
+    unsigned char *temp = new unsigned char[4 * sourceWidth * sourceHeight];
+    readPixels(sourceWidth, sourceHeight, GL_BGRA, temp);
+    flipAndScaleDownImageBuffer(temp, mSnapshotBuffer, sourceWidth, sourceHeight, 1.0);
+    delete[] temp;
+    WbWrenOpenGlContext::doneWren();
   }
-  const int sourceWidth = destinationWidth;
-  const int sourceHeight = destinationHeight;
-  unsigned char *temp = new unsigned char[4 * sourceWidth * sourceHeight];
-  readPixels(sourceWidth, sourceHeight, GL_BGRA, temp);
-  flipAndScaleDownImageBuffer(temp, mSnapshotBuffer, sourceWidth, sourceHeight, 1.0);
-  delete[] temp;
-  WbWrenOpenGlContext::doneWren();
 
   return QImage(mSnapshotBuffer, mSnapshotBufferWidth, mSnapshotBufferHeight, QImage::Format_RGB32);
 }
 
 void WbWrenWindow::initVideoPBO() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    mVideoWidth = width();
+    mVideoHeight = height();
+    const int size = 4 * mVideoWidth * mVideoHeight;
+    wr_scene_init_frame_capture(wr_scene_get_instance(), PBO_COUNT, mVideoPBOIds, size);
+    mVideoPBOIndex = -1;
 
-  mVideoWidth = width();
-  mVideoHeight = height();
-  const int size = 4 * mVideoWidth * mVideoHeight;
-  wr_scene_init_frame_capture(wr_scene_get_instance(), PBO_COUNT, mVideoPBOIds, size);
-  mVideoPBOIndex = -1;
-
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 void WbWrenWindow::completeVideoPBOProcessing(bool canceled) {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    // process last frame
+    if (!canceled)
+      processVideoPBO();
+    mVideoPBOIndex = -1;
+    wr_scene_terminate_frame_capture(wr_scene_get_instance());
 
-  // process last frame
-  if (!canceled)
-    processVideoPBO();
-  mVideoPBOIndex = -1;
-  wr_scene_terminate_frame_capture(wr_scene_get_instance());
-
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 void WbWrenWindow::processVideoPBO() {
   if (mVideoPBOIndex < 0)
     return;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    // Process previously copied pixels
+    WrScene *scene = wr_scene_get_instance();
+    wr_scene_bind_pixel_buffer(scene, mVideoPBOIds[mVideoPBOIndex]);
+    unsigned char *buffer = static_cast<unsigned char *>(wr_scene_map_pixel_buffer(scene, GL_READ_ONLY));
+    if (buffer) {
+      emit videoImageReady(buffer);
+      wr_scene_unmap_pixel_buffer(scene);
+    }
 
-  // Process previously copied pixels
-  WrScene *scene = wr_scene_get_instance();
-  wr_scene_bind_pixel_buffer(scene, mVideoPBOIds[mVideoPBOIndex]);
-  unsigned char *buffer = static_cast<unsigned char *>(wr_scene_map_pixel_buffer(scene, GL_READ_ONLY));
-  if (buffer) {
-    emit videoImageReady(buffer);
-    wr_scene_unmap_pixel_buffer(scene);
+    WbWrenOpenGlContext::doneWren();
   }
-
-  WbWrenOpenGlContext::doneWren();
 }
 
 void WbWrenWindow::updateFrameBuffer() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if(!isVisible())
+    return;
 
-  if (mWrenMainFrameBuffer)
-    wr_frame_buffer_delete(mWrenMainFrameBuffer);
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    if (mWrenMainFrameBuffer)
+      wr_frame_buffer_delete(mWrenMainFrameBuffer);
 
-  if (mWrenMainFrameBufferTexture)
-    wr_texture_delete(WR_TEXTURE(mWrenMainFrameBufferTexture));
+    if (mWrenMainFrameBufferTexture)
+      wr_texture_delete(WR_TEXTURE(mWrenMainFrameBufferTexture));
 
-  if (mWrenNormalFrameBufferTexture)
-    wr_texture_delete(WR_TEXTURE(mWrenNormalFrameBufferTexture));
+    if (mWrenNormalFrameBufferTexture)
+      wr_texture_delete(WR_TEXTURE(mWrenNormalFrameBufferTexture));
 
-  if (mWrenDepthFrameBufferTexture)
-    wr_texture_delete(WR_TEXTURE(mWrenDepthFrameBufferTexture));
+    if (mWrenDepthFrameBufferTexture)
+      wr_texture_delete(WR_TEXTURE(mWrenDepthFrameBufferTexture));
 
-  mWrenMainFrameBuffer = wr_frame_buffer_new();
-  wr_frame_buffer_set_size(mWrenMainFrameBuffer, width(), height());
+    mWrenMainFrameBuffer = wr_frame_buffer_new();
+    wr_frame_buffer_set_size(mWrenMainFrameBuffer, width(), height());
 
-  mWrenMainFrameBufferTexture = wr_texture_rtt_new();
-  wr_texture_set_internal_format(WR_TEXTURE(mWrenMainFrameBufferTexture), WR_TEXTURE_INTERNAL_FORMAT_RGB16F);
+    mWrenMainFrameBufferTexture = wr_texture_rtt_new();
+    wr_texture_set_internal_format(WR_TEXTURE(mWrenMainFrameBufferTexture), WR_TEXTURE_INTERNAL_FORMAT_RGB16F);
 
-  mWrenNormalFrameBufferTexture = wr_texture_rtt_new();
-  wr_texture_set_internal_format(WR_TEXTURE(mWrenNormalFrameBufferTexture), WR_TEXTURE_INTERNAL_FORMAT_RGB8);
+    mWrenNormalFrameBufferTexture = wr_texture_rtt_new();
+    wr_texture_set_internal_format(WR_TEXTURE(mWrenNormalFrameBufferTexture), WR_TEXTURE_INTERNAL_FORMAT_RGB8);
 
-  wr_frame_buffer_append_output_texture(mWrenMainFrameBuffer, mWrenMainFrameBufferTexture);
-  wr_frame_buffer_append_output_texture(mWrenMainFrameBuffer, mWrenNormalFrameBufferTexture);
-  wr_frame_buffer_enable_depth_buffer(mWrenMainFrameBuffer, true);
+    wr_frame_buffer_append_output_texture(mWrenMainFrameBuffer, mWrenMainFrameBufferTexture);
+    wr_frame_buffer_append_output_texture(mWrenMainFrameBuffer, mWrenNormalFrameBufferTexture);
+    wr_frame_buffer_enable_depth_buffer(mWrenMainFrameBuffer, true);
 
-  mWrenDepthFrameBufferTexture = wr_texture_rtt_new();
-  wr_texture_set_internal_format(WR_TEXTURE(mWrenDepthFrameBufferTexture), WR_TEXTURE_INTERNAL_FORMAT_DEPTH24_STENCIL8);
-  wr_frame_buffer_set_depth_texture(mWrenMainFrameBuffer, mWrenDepthFrameBufferTexture);
+    mWrenDepthFrameBufferTexture = wr_texture_rtt_new();
+    wr_texture_set_internal_format(WR_TEXTURE(mWrenDepthFrameBufferTexture), WR_TEXTURE_INTERNAL_FORMAT_DEPTH24_STENCIL8);
+    wr_frame_buffer_set_depth_texture(mWrenMainFrameBuffer, mWrenDepthFrameBufferTexture);
 
-  wr_frame_buffer_setup(mWrenMainFrameBuffer);
-  wr_viewport_set_frame_buffer(wr_scene_get_viewport(wr_scene_get_instance()), mWrenMainFrameBuffer);
+    wr_frame_buffer_setup(mWrenMainFrameBuffer);
+    wr_viewport_set_frame_buffer(wr_scene_get_viewport(wr_scene_get_instance()), mWrenMainFrameBuffer);
 
-  wr_viewport_set_size(wr_scene_get_viewport(wr_scene_get_instance()), width(), height());
+    wr_viewport_set_size(wr_scene_get_viewport(wr_scene_get_instance()), width(), height());
 
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 void WbWrenWindow::requestGrabWindowBuffer() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    // Asynchronous pixels copy from GPU
+    if (mVideoPBOIndex >= 0)
+      // process previous frame image stored in PBO
+      processVideoPBO();
 
-  // Asynchronous pixels copy from GPU
-  if (mVideoPBOIndex >= 0)
-    // process previous frame image stored in PBO
-    processVideoPBO();
+    WrScene *scene = wr_scene_get_instance();
 
-  WrScene *scene = wr_scene_get_instance();
+    mVideoPBOIndex = (mVideoPBOIndex + 1) % PBO_COUNT;
+    // Request pixels copy
+    // read pixels from framebuffer to PBO: wr_scene_get_main_buffer() should return immediately
+    wr_scene_bind_pixel_buffer(scene, mVideoPBOIds[mVideoPBOIndex]);
+    readPixels(mVideoWidth, mVideoHeight, GL_BGRA, 0);
+    wr_scene_bind_pixel_buffer(scene, 0);
 
-  mVideoPBOIndex = (mVideoPBOIndex + 1) % PBO_COUNT;
-  // Request pixels copy
-  // read pixels from framebuffer to PBO: wr_scene_get_main_buffer() should return immediately
-  wr_scene_bind_pixel_buffer(scene, mVideoPBOIds[mVideoPBOIndex]);
-  readPixels(mVideoWidth, mVideoHeight, GL_BGRA, 0);
-  wr_scene_bind_pixel_buffer(scene, 0);
-
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 QSize WbWrenWindow::minimumSize() const {

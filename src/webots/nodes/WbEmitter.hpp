@@ -21,10 +21,14 @@
 #include "WbSolidDevice.hpp"
 
 #include <QtCore/QQueue>
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 class WbDataPacket;
 
-class WbEmitter : public WbSolidDevice {
+class WB_LIB_EXPORT WbEmitter : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -49,6 +53,13 @@ public:
   double range() const { return mRange->value(); }
   double aperture() const { return mAperture->value(); }
   int mediumType() const { return mMediumType; }
+
+  int bufferSize();
+
+public slots:
+  void SEND(const QByteArray& data, int newChannel, double newRante);
+  void SET_CHANNEL(int newChannel);
+  void SET_RANGE(double newRange);
 
 private:
   int mMediumType;                // UNKNOWN, RADIO, SERIAL or INFRA_RED

@@ -21,11 +21,13 @@
 
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QLineEdit;
 class QTreeWidget;
 class QPushButton;
 
-class WbInsertExternProtoDialog : public QDialog {
+class WB_LIB_EXPORT WbInsertExternProtoDialog : public QDialog {
   Q_OBJECT
 
 public:

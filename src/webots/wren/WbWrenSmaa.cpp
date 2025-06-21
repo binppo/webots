@@ -41,11 +41,12 @@ void WbWrenSmaa::setup(WrViewport *viewport) {
 
   mWrenPostProcessingEffect = WbWrenPostProcessingEffects::smaa(width, height, WR_TEXTURE_INTERNAL_FORMAT_RGBA8);
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_viewport_set_anti_aliasing_effect(mWrenViewport, mWrenPostProcessingEffect);
+    wr_post_processing_effect_setup(mWrenPostProcessingEffect);
 
-  wr_viewport_set_anti_aliasing_effect(mWrenViewport, mWrenPostProcessingEffect);
-  wr_post_processing_effect_setup(mWrenPostProcessingEffect);
+    WbWrenOpenGlContext::doneWren();
+  }
 
-  WbWrenOpenGlContext::doneWren();
   mHasBeenSetup = true;
 }

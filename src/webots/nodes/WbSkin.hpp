@@ -20,6 +20,13 @@
 #include "WbDevice.hpp"
 #include "WbSFString.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+#include <QtGui/QVector4D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbBoundingSphere;
 class WbDownloader;
 class WbMFNode;
@@ -30,7 +37,7 @@ struct WrRenderable;
 struct WrSkeleton;
 struct WrStaticMesh;
 
-class WbSkin : public WbBaseNode, public WbAbstractPose, public WbDevice {
+class WB_LIB_EXPORT WbSkin : public WbBaseNode, public WbAbstractPose, public WbDevice {
   Q_OBJECT
 
 public:
@@ -63,6 +70,15 @@ public:
   // ray tracing
   WbBoundingSphere *boundingSphere() const override { return mBoundingSphere; }
   void recomputeBoundingSphere() const;
+
+  int boneCount() const;
+  QStringList boneName() const;
+
+public slots:
+  void SET_BONE_POSITION(int index, double x, double y, double z, bool absolute);
+  void SET_BONE_ORIENTATION(int index, double x, double y, double z, double angle, bool absolute);
+  QVector3D GET_BONE_POSITION(int index, bool absolute);
+  QVector4D GET_BONE_ORIENTATION(int index, bool absolute);
 
 signals:
   void wrenMaterialChanged();

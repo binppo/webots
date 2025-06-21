@@ -19,6 +19,8 @@
 #include <cassert>
 #include <cstdlib>
 
+#include <Windows.h>
+
 #ifdef __APPLE__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"

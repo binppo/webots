@@ -18,7 +18,9 @@
 #include "WbBaseNode.hpp"
 #include "WbSFDouble.hpp"
 
-class WbZoom : public WbBaseNode {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbZoom : public WbBaseNode {
   Q_OBJECT
 
 public:

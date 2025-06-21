@@ -17,12 +17,14 @@
 
 #include "WbVector2.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBaseNode;
 class WbCylinder;
 class WbHingeJoint;
 class WbRobot;
 
-class WbKinematicDifferentialWheels {
+class WB_LIB_EXPORT WbKinematicDifferentialWheels {
 public:
   virtual ~WbKinematicDifferentialWheels() {}
   static WbKinematicDifferentialWheels *createKinematicDifferentialWheelsIfNeeded(WbRobot *robot);

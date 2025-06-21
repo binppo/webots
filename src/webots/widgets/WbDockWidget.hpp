@@ -27,7 +27,9 @@ class WbDockTitleBar;
 #include <QtGui/QIcon>
 #include <QtWidgets/QDockWidget>
 
-class WbDockWidget : public QDockWidget {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbDockWidget : public QDockWidget {
   Q_OBJECT
 
 public:

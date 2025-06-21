@@ -118,7 +118,8 @@ void WbWrenFullScreenOverlay::adjustSize() {
 void WbWrenFullScreenOverlay::setupTexture(const QString &text, int fontSize) {
   // Prepare font
   WrFont *font = wr_font_new();
-  wr_font_set_face(font, (WbStandardPaths::fontsPath() + "Ariali.ttf").toUtf8().constData());
+  //wr_font_set_face(font, (WbStandardPaths::fontsPath() + "Ariali.ttf").toUtf8().constData());
+  wr_font_set_face(font, (WbStandardPaths::fontsPath() + "Lucida Console.ttf").toUtf8().constData());
   wr_font_set_size(font, fontSize);
 
   assert(wr_font_get_error(font) == WR_FONT_ERROR_NONE);

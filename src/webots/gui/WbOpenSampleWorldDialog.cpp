@@ -50,7 +50,7 @@ namespace {
       QStringList fileList = dir.entryList();
       const QDir projectsDir = QDir(WbStandardPaths::projectsPath());
       const QRegularExpression regexp = QRegularExpression(
-        QRegularExpression::wildcardToRegularExpression(wildcard, QRegularExpression::UnanchoredWildcardConversion),
+        QRegularExpression::wildcardToRegularExpression(wildcard/*, QRegularExpression::UnanchoredWildcardConversion*/),
         QRegularExpression::CaseInsensitiveOption);
       foreach (const QString &fileName, fileList) {
         if (projectsDir.relativeFilePath(dir.path() + fileName).contains(regexp))
@@ -84,7 +84,7 @@ namespace {
       QFileInfoList fileInfos = dir.entryInfoList();
       const QDir projectsDir = QDir(WbStandardPaths::projectsPath());
       const QRegularExpression re = QRegularExpression(
-        QRegularExpression::wildcardToRegularExpression(wildcard, QRegularExpression::UnanchoredWildcardConversion),
+        QRegularExpression::wildcardToRegularExpression(wildcard/*, QRegularExpression::UnanchoredWildcardConversion*/),
         QRegularExpression::CaseInsensitiveOption);
       foreach (const QFileInfo &fileInfo, fileInfos) {
         if (projectsDir.relativeFilePath(fileInfo.filePath()).contains(re)) {

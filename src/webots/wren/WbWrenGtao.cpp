@@ -90,6 +90,9 @@ void WbWrenGtao::setup(WrViewport *viewport) {
 
   WrFrameBuffer *viewportFramebuffer = wr_viewport_get_frame_buffer(mWrenViewport);
 
+  if(!viewportFramebuffer)
+    return;
+
   WrTexture *depthTexture = WR_TEXTURE(wr_frame_buffer_get_depth_texture(viewportFramebuffer));
   WrTexture *normalTexture = WR_TEXTURE(wr_frame_buffer_get_output_texture(viewportFramebuffer, 1));
 
@@ -101,12 +104,12 @@ void WbWrenGtao::setup(WrViewport *viewport) {
 
   applyParametersToWren();
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_viewport_set_ambient_occlusion_effect(mWrenViewport, mWrenPostProcessingEffect);
+    wr_post_processing_effect_setup(mWrenPostProcessingEffect);
 
-  wr_viewport_set_ambient_occlusion_effect(mWrenViewport, mWrenPostProcessingEffect);
-  wr_post_processing_effect_setup(mWrenPostProcessingEffect);
-
-  WbWrenOpenGlContext::doneWren();
+    WbWrenOpenGlContext::doneWren();
+  }
 
   mHasBeenSetup = true;
 }
@@ -167,7 +170,9 @@ void WbWrenGtao::applyParametersToWren() {
   if (!mWrenPostProcessingEffect)
     return;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
+
   mClipInfo[0] = mNear;
   mClipInfo[1] = mFar ? mFar : 1000000.0f;
   mClipInfo[2] = 0.5f * (wr_viewport_get_height(mWrenViewport) / (2.0f * tanf(mFov * 0.5f)));

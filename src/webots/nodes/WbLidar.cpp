@@ -26,7 +26,7 @@
 #include "WbWrenRenderingContext.hpp"
 #include "WbWrenShaders.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <QtCore/QDataStream>
 
@@ -105,11 +105,11 @@ WbLidar::WbLidar(const WbNode &other) : WbAbstractCamera(other) {
 }
 
 WbLidar::~WbLidar() {
-  delete mTemporaryImage;
+  delete []mTemporaryImage;
   if (mIsRemoteExternController) {
     if (mIsPointCloudEnabled)
       delete mTcpCloudPoints;
-    delete mTcpImage;
+    delete []mTcpImage;
   }
   if (areWrenObjectsInitialized())
     deleteWren();
@@ -288,6 +288,22 @@ void WbLidar::writeAnswer(WbDataStream &stream) {
     }
   } else
     WbAbstractCamera::writeAnswer(stream);
+}
+
+int WbLidar::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+double WbLidar::defaultFrequency() const {
+  return mDefaultFrequency->value();
+}
+
+double WbLidar::minFrequency() const {
+  return mMinFrequency->value();
+}
+
+double WbLidar::maxFrequency() const {
+  return mMaxFrequency->value();
 }
 
 void WbLidar::handleMessage(QDataStream &stream) {
@@ -469,6 +485,12 @@ float *WbLidar::lidarImage() const {
   return reinterpret_cast<float *>(image());
 }
 
+const float *WbLidar::rangeImage() const {
+  const float *image = mIsRemoteExternController ? mTcpImage : lidarImage();
+
+  return image;
+}
+
 void WbLidar::createWrenCamera() {
   mActualNumberOfLayers = mNumberOfLayers->value();
   mActualHorizontalResolution = mHorizontalResolution->value();
@@ -609,7 +631,7 @@ void WbLidar::applyFrustumToWren() {
 
   const int intermediatePointsNumber = floor(fovH / 0.2);
   const int vertexCount = 4 * actualNumberOfLayers() * (intermediatePointsNumber + 3);
-  float vertices[3 * vertexCount];
+  float *vertices = new float[3 * vertexCount];
 
   for (int layer = 0; layer < actualNumberOfLayers(); ++layer) {
     double vAngle = 0;
@@ -646,6 +668,8 @@ void WbLidar::applyFrustumToWren() {
   mFrustumMesh = wr_static_mesh_line_set_new(vertexCount, vertices, NULL);
   wr_renderable_set_mesh(mFrustumRenderable, WR_MESH(mFrustumMesh));
   wr_node_set_visible(WR_NODE(mFrustumRenderable), true);
+
+  delete[] vertices;
 }
 
 int WbLidar::height() const {
@@ -1068,4 +1092,69 @@ void WbLidar::createWrenObjects() {
   WbSolid *const s = solidEndPoint();
   if (s)
     s->createWrenObjects();
+}
+
+void WbLidar::SET_SAMPLING_PERIOD(int refreshRate) {
+  mRefreshRate = refreshRate;
+  if (mIsActuallyRotating)
+    mRefreshRate = WbWorld::instance()->basicTimeStep();
+
+  mSensor->setRefreshRate(mRefreshRate);
+
+  emit enabled(this, mSensor->isEnabled());
+
+  if (!hasBeenSetup()) {
+    setup();
+    mSendMemoryMappedFile = true;
+  }
+  else if (mHasExternControllerChanged) {
+    mSendMemoryMappedFile = true;
+    mHasExternControllerChanged = false;
+  }
+}
+
+void WbLidar::ENABLE_POINT_CLOUD() {
+  mIsPointCloudEnabled = true;
+  mTcpCloudPoints =
+    mIsRemoteExternController ? new WbLidarPoint[actualHorizontalResolution() * actualNumberOfLayers()] : NULL;
+}
+
+void WbLidar::DISABLE_POINT_CLOUD() {
+  mIsPointCloudEnabled = false;
+  if (mIsRemoteExternController)
+    delete mTcpCloudPoints;
+  hidePointCloud();
+}
+
+void WbLidar::SET_FREQUENCY(double frequency) {
+  mDefaultFrequency->setValue(frequency);
+}
+
+QByteArray WbLidar::SERIAL_IMAGE() {
+  QByteArray ba;
+
+  if (!mIsActuallyRotating && mSensor->isEnabled())  // in case of rotating lidar, the copy is done during the step
+    copyAllLayersToMemoryMappedFile();  // for non-rotating lidar, copy the layers needed in the memory mapped file
+  if (mIsRemoteExternController) {
+    const int lidarDataSize = actualHorizontalResolution() * actualNumberOfLayers();
+
+    // copy image to stream
+    ba.resize(lidarDataSize * sizeof(float));
+    memcpy(ba.data(), mTcpImage, lidarDataSize * sizeof(float));
+  }
+
+  return ba;
+}
+
+QByteArray WbLidar::POINT_CLOUD() {
+  if (!mIsPointCloudEnabled)
+    return QByteArray();
+
+  QByteArray ba;
+
+  const int lidarDataSize = actualHorizontalResolution() * actualNumberOfLayers();
+  ba.resize(lidarDataSize * sizeof(WbLidarPoint));
+  memcpy(ba.data(), mTcpCloudPoints, lidarDataSize * sizeof(WbLidarPoint));
+
+  return ba;
 }

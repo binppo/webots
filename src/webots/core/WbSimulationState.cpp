@@ -69,6 +69,33 @@ void WbSimulationState::resetTime() {
 
 void WbSimulationState::increaseTime(double dt) {
   mTime += dt;
+
+  mScheduleMutex.lock();
+  QMap<double,QPair<int,int>> events = mScheduledEvents;
+  mScheduleMutex.unlock();
+
+  QList<QPair<int, int>> finishedEvents;
+
+  if (!events.isEmpty()) {
+    auto itr = events.begin();
+    while (itr != events.end()) {
+      if (itr.key() >= mTime)
+        break;
+
+      finishedEvents.push_back(qMakePair(itr.value().first, itr.value().second));
+
+      itr = events.erase(itr);
+    }
+  }
+
+  if (!finishedEvents.isEmpty()) {
+    for (const auto& evt : finishedEvents)
+      emit(scheduledEvent(evt.first, evt.second));
+  }
+
+  mScheduleMutex.lock();
+  mScheduledEvents = events;
+  mScheduleMutex.unlock();
 }
 
 void WbSimulationState::setEnabled(bool enabled) {
@@ -89,4 +116,32 @@ void WbSimulationState::subscribeToRayTracing() {
 void WbSimulationState::unsubscribeToRayTracing() {
   assert(mRayTracingSubscribersCount > 0);
   mRayTracingSubscribersCount--;
+}
+
+void WbSimulationState::registerSchedule(double timestamp, int procId, int taskId) {
+  QMutexLocker l(&mScheduleMutex);
+  mScheduledEvents.insertMulti(timestamp, qMakePair(procId, taskId));
+}
+
+void WbSimulationState::clearSchedule(int procId) {
+  QMutexLocker l(&mScheduleMutex);
+
+  if (procId < 0) {
+    mScheduledEvents.clear();
+    return;
+  }
+
+  auto itr = mScheduledEvents.begin();
+  while (itr != mScheduledEvents.end()) {
+    if (itr.value().first != procId) {
+      ++itr;
+      continue;
+    }
+
+    itr = mScheduledEvents.erase(itr);
+  }
+}
+
+const QMap<double, QPair<int,int>>& WbSimulationState::schedule() const {
+  return mScheduledEvents;
 }

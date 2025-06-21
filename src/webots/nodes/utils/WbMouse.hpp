@@ -18,9 +18,11 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbSensor;
 
-class WbMouse : public QObject {
+class WB_LIB_EXPORT WbMouse : public QObject {
   Q_OBJECT
 
 public:

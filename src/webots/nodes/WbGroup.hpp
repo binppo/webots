@@ -20,9 +20,11 @@
 #include "WbMFNode.hpp"
 #include "WbOdeTypes.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBoundingSphere;
 
-class WbGroup : public WbBaseNode {
+class WB_LIB_EXPORT WbGroup : public WbBaseNode {
   Q_OBJECT
 
 public:

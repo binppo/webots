@@ -21,38 +21,40 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 namespace WbFileUtil {
 
   // copy file from 'sourcePath' to 'destPath' while replacing a string pattern
-  bool copyAndReplaceString(const QString &sourcePath, const QString &destinationPath,
+  WB_LIB_EXPORT bool copyAndReplaceString(const QString &sourcePath, const QString &destinationPath,
                             const QList<std::pair<QString, QString>> &values);
-  bool copyAndReplaceString(const QString &sourcePath, const QString &destinationPath, const QString &before,
+  WB_LIB_EXPORT bool copyAndReplaceString(const QString &sourcePath, const QString &destinationPath, const QString &before,
                             const QString &after);
 
   // force copy a file (remove the target if existing)
-  bool forceCopy(const QString &source, const QString &target);
+  WB_LIB_EXPORT bool forceCopy(const QString &source, const QString &target);
 
   // copy all files from 'sourcePath' to 'destPath'
   // return the number of files copied or 0 if there was a problem
-  int copyDir(const QString &sourcePath, const QString &destPath, bool recurse, bool merge, bool setWritable = false);
+  WB_LIB_EXPORT int copyDir(const QString &sourcePath, const QString &destPath, bool recurse, bool merge, bool setWritable = false);
 
   // check if 2 files are identical
-  bool areIdenticalFiles(const QString &fileAPath, const QString &fileBPath);
+  WB_LIB_EXPORT bool areIdenticalFiles(const QString &fileAPath, const QString &fileBPath);
 
   // check if a file is located in the specified directory tree; both paths are absolute
-  bool isLocatedInDirectory(const QString &file, const QString &directory);
-  bool isLocatedInInstallationDirectory(const QString &file, bool ignoreAllowModify = false);
+  WB_LIB_EXPORT bool isLocatedInDirectory(const QString &file, const QString &directory);
+  WB_LIB_EXPORT bool isLocatedInInstallationDirectory(const QString &file, bool ignoreAllowModify = false);
 
   // search all the directories named directoryName in the root directory
-  void searchDirectoryNameRecursively(QStringList &results, const QString &directoryName, const QString &root);
+  WB_LIB_EXPORT void searchDirectoryNameRecursively(QStringList &results, const QString &directoryName, const QString &root);
 
   // check if the directory is writable
   // if it doesn't exists, check if it can be created (i.e. if parent directory is writable)
-  bool isDirectoryWritable(const QString &path);
+  WB_LIB_EXPORT bool isDirectoryWritable(const QString &path);
 
   enum FileType { EXECUTABLE, CLASS, JAR, PYTHON, MATLAB, BOTSTUDIO, DOCKER, UNKNOWN };
 
-  void revealInFileManager(const QString &file);
+  WB_LIB_EXPORT void revealInFileManager(const QString &file);
 };  // namespace WbFileUtil
 
 #endif

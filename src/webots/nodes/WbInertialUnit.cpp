@@ -23,7 +23,7 @@
 #include "WbSensor.hpp"
 #include "WbWorld.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <ode/ode.h>
 #include <QtCore/QDataStream>
@@ -77,6 +77,14 @@ void WbInertialUnit::updateResolution() {
   WbFieldChecker::resetDoubleIfNonPositiveAndNotDisabled(this, mResolution, -1.0, -1.0);
 }
 
+int WbInertialUnit::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+double WbInertialUnit::noise() {
+  return mNoise->value();
+}
+
 void WbInertialUnit::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -90,6 +98,10 @@ void WbInertialUnit::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+QQuaternion WbInertialUnit::value() {
+  return QQuaternion(mQuaternion.w(), mQuaternion.x(), mQuaternion.y(), mQuaternion.z());
 }
 
 void WbInertialUnit::writeAnswer(WbDataStream &stream) {
@@ -157,4 +169,8 @@ void WbInertialUnit::computeValue() {
     mQuaternion.setZ(WbMathsUtilities::discretize(mQuaternion.z(), mResolution->value()));
     mQuaternion.setW(WbMathsUtilities::discretize(mQuaternion.w(), mResolution->value()));
   }
+}
+
+void WbInertialUnit::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
 }

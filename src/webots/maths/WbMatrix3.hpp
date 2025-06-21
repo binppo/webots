@@ -25,9 +25,11 @@
 #include <cmath>
 #include <cstring>
 
+#include <core/WbConfig.h>
+
 class WbQuaternion;
 
-class WbMatrix3 {
+class WB_LIB_EXPORT WbMatrix3 {
 public:
   // construct as identity matrix
   WbMatrix3() { setIdentity(); }

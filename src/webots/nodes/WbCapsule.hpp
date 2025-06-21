@@ -18,7 +18,9 @@
 #include "WbGeometry.hpp"
 #include "WbSFDouble.hpp"
 
-class WbCapsule : public WbGeometry {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbCapsule : public WbGeometry {
   Q_OBJECT
 
 public:

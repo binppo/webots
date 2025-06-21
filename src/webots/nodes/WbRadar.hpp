@@ -16,17 +16,23 @@
 #define WB_RADAR_HPP
 
 #include "WbSolidDevice.hpp"
+#include "utils/WbObjectDetection.hpp"
+
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
 
 class WbAffinePlane;
 class WbSensor;
-class WbRadarTarget;
+class WbRadarTargetObject;
 
 struct WrTransform;
 struct WrRenderable;
 struct WrMaterial;
 struct WrStaticMesh;
 
-class WbRadar : public WbSolidDevice {
+class WB_LIB_EXPORT WbRadar : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -58,6 +64,16 @@ public:
   double horizontalFieldOfView() const { return mHorizontalFieldOfView->value(); }
   double verticalFieldOfView() const { return mVerticalFieldOfView->value(); }
   double wavelength() const { return 0.299792458 / mFrequency->value(); }
+
+  bool setTargetProperties(const WbVector3 &radarPosition, const WbMatrix3 &radarRotation, const WbVector3 &radarAxis,
+                           const WbAffinePlane &radarPlane, WbRadarTargetObject *radarTarget);
+
+  int refreshRate();
+
+  QList<WbRadarTargetObject*> targets() const { return mRadarTargets; }
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
 
 private:
   // user accessible fields
@@ -92,8 +108,8 @@ private:
 
   // other stuff
   WbSensor *mSensor;
-  QList<WbRadarTarget *> mRadarTargets;
-  QList<WbRadarTarget *> mInvalidRadarTargets;
+  QList<WbRadarTargetObject *> mRadarTargets;
+  QList<WbRadarTargetObject *> mInvalidRadarTargets;
   QMap<WbSolid *, WbVector3> mRadarTargetsPreviousTranslations;
 
   // WREN Data (for optional rendering)
@@ -111,8 +127,6 @@ private:
   void updateRaysSetupIfNeeded() override;
   void updateReceivedPowerFactor();
   void computeTargets(bool finalSetup, bool needCollisionDetection);
-  bool setTargetProperties(const WbVector3 &radarPosition, const WbMatrix3 &radarRotation, const WbVector3 &radarAxis,
-                           const WbAffinePlane &radarPlane, WbRadarTarget *radarTarget);
 
 private slots:
   void updateMinRange();
@@ -132,6 +146,37 @@ private slots:
   void updateMinDetectableSignal();
   virtual void applyFrustumToWren();
   void updateOptionalRendering(int option);
+};
+
+class WB_LIB_EXPORT WbRadarTargetObject : public WbObjectDetection {
+public:
+  WbRadarTargetObject(WbRadar *radar, WbSolid *solidTarget, const bool needToCheckCollision, const double maxRange) :
+    WbObjectDetection(radar, solidTarget, needToCheckCollision ? WbObjectDetection::ONE_RAY : WbObjectDetection::NONE, maxRange,
+                      radar->horizontalFieldOfView()) {
+    mTargetDistance = 0.0;
+    mReceivedPower = 0.0;
+    mSpeed = 0.0;
+    mAzimuth = 0.0;
+  };
+
+  virtual ~WbRadarTargetObject() {}
+
+  double targetDistance() const { return mTargetDistance; }
+  double receivedPower() const { return mReceivedPower; }
+  double speed() const { return mSpeed; }
+  double azimuth() const { return mAzimuth; }
+  void setTargetDistance(double distance) { mTargetDistance = distance; }
+  void setReceivedPower(double receivedPower) { mReceivedPower = receivedPower; }
+  void setSpeed(double speed) { mSpeed = speed; }
+  void setAzimuth(double azimuth) { mAzimuth = azimuth; }
+
+protected:
+  double distance() override { return objectRelativePosition().length(); }
+
+  double mTargetDistance;
+  double mReceivedPower;
+  double mSpeed;
+  double mAzimuth;
 };
 
 #endif

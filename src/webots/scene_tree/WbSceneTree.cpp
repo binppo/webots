@@ -60,7 +60,7 @@
 
 #include <cassert>
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QPushButton>
@@ -82,7 +82,14 @@ WbSceneTree::WbSceneTree(QWidget *parent) :
   QWidget(parent),
   mSplitter(new QSplitter(Qt::Vertical, this)),
   mActionManager(WbActionManager::instance()),
-  mClipboard(WbClipboard::instance()) {
+  mClipboard(WbClipboard::instance()),
+  mHandleWidth(6) {
+
+  setStyleSheet(
+R"???(
+font: 57 9pt "Roboto Bold";
+)???");
+
   mModel = NULL;
   mTreeView = NULL;
   mSelectedItem = NULL;
@@ -507,6 +514,35 @@ void WbSceneTree::del(WbNode *nodeToDel) {
   updateToolbar();
 }
 
+void WbSceneTree::del(const QString &name) {
+  if(name.isEmpty())
+    return;
+
+  QModelIndex id = mModel->findModelIndexFromName(name);
+  if(!id.isValid())
+    return;
+
+  WbTreeItem *deletedItem = mModel->indexToItem(id);
+  if (!deletedItem)
+    return;
+
+  WbNode *node = deletedItem->node();
+
+  del(node);
+}
+
+WbNode *WbSceneTree::find(const QString &name) {
+  QModelIndex id = mModel->findModelIndexFromName(name);
+  if(!id.isValid())
+    return nullptr;
+
+  WbTreeItem *item = mModel->indexToItem(id);
+  if (!item)
+    return nullptr;
+
+  return item->node();
+}
+
 void WbSceneTree::reset() {
   WbField *field = mSelectedItem->field();
   assert(field);
@@ -668,7 +704,7 @@ void WbSceneTree::transform(const QString &modelName) {
 
   // copy fields and adopt children
   WbNode::setGlobalParentNode(newNode);
-  QVector<WbField *> fields = currentNode->fieldsOrParameters();
+  auto fields = currentNode->fieldsOrParameters();
   foreach (const WbField *originalField, fields) {
     // copy field if it exists
     WbField *const newField = newNode->findField(originalField->name());
@@ -1008,6 +1044,79 @@ void WbSceneTree::addNew() {
   }
 
   mTreeView->scrollToModelIndex(mModel->itemToIndex(mSelectedItem));
+
+  WbWorld::instance()->setModifiedFromSceneTree();
+
+  updateValue();
+  updateToolbar();
+}
+
+void WbSceneTree::addToScene(const QString &phrase) {
+  mSelectedItem = mModel->rootItem()->lastChild();
+  assert(mSelectedItem);
+
+  // set selected WbField and WbNode
+  WbTreeItem *selectedFieldItem = NULL;
+  WbField *selectedField = NULL;
+  WbNode *selectedNodeParent = NULL;
+  int newNodeIndex = 0;
+
+  if (!mSelectedItem->isNode()) {
+    // field or item
+    if (mSelectedItem->isField()) {  // field
+      selectedFieldItem = mSelectedItem;
+      selectedField = selectedFieldItem->field();
+    } else {  // item
+      newNodeIndex = mSelectedItem->row() + 1;
+      selectedFieldItem = mSelectedItem->parent();
+      selectedField = selectedFieldItem->field();
+    }
+
+    selectedNodeParent = mSelectedItem->parent()->node();
+
+  } else {  // node
+    newNodeIndex = mSelectedItem->row() + 1;
+    selectedFieldItem = mSelectedItem->parent();
+    selectedField = selectedFieldItem->field();
+    selectedNodeParent = mSelectedItem->node()->parentNode();
+  }
+
+  // import node
+  WbBaseNode *const parentBaseNode = qobject_cast<WbBaseNode *>(selectedNodeParent);
+  WbNodeOperations::instance()->importNode(parentBaseNode, selectedField, newNodeIndex, WbNodeOperations::DEFAULT, phrase);
+
+  //updateSelection();
+
+  mTreeView->scrollToModelIndex(mModel->itemToIndex(mSelectedItem));
+
+  WbWorld::instance()->setModifiedFromSceneTree();
+
+  updateValue();
+  updateToolbar();
+}
+
+void WbSceneTree::addToNode(const QString &phrase, WbBaseNode *baseNode) {
+  auto fields = baseNode->fields();
+  if(fields.isEmpty())
+    return;
+
+  int newNodeIndex = 0;
+  WbField *parentField = nullptr;
+  foreach (WbField *const field, fields) {
+    if(WB_MF_NODE == field->type()) {
+      parentField = field;
+      const WbMFNode *const mfnode = qobject_cast<WbMFNode *>(field->value());
+      newNodeIndex = mfnode->size();
+      break;
+    }
+  }
+
+  if(!parentField) {
+    parentField = fields[0];
+  }
+
+  // import node
+  WbNodeOperations::instance()->importNode(baseNode, parentField, newNodeIndex, WbNodeOperations::DEFAULT, phrase);
 
   WbWorld::instance()->setModifiedFromSceneTree();
 

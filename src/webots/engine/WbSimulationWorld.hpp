@@ -25,12 +25,15 @@
 
 #include "WbWorld.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSimulationCluster;
 class WbOdeContext;
 class WbPhysicsPlugin;
 class QTimer;
+class QThread;
 
-class WbSimulationWorld : public WbWorld {
+class WB_LIB_EXPORT WbSimulationWorld : public WbWorld {
   Q_OBJECT
 
 public:

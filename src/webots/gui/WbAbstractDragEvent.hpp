@@ -24,13 +24,15 @@
 
 #include <QtCore/QPoint>
 
+#include <core/WbConfig.h>
+
 class WbVector2;
 class WbVector3;
 class WbWrenLabelOverlay;
 class WbViewpoint;
 
 // WbDragEvent class
-class WbDragEvent : public QObject {
+class WB_LIB_EXPORT WbDragEvent : public QObject {
   Q_OBJECT;
 
 public:
@@ -51,7 +53,7 @@ protected:
 //////////////////////////////////////////////////////////
 
 // WbDragView3DEvent class
-class WbDragView3DEvent : public WbDragEvent {
+class WB_LIB_EXPORT WbDragView3DEvent : public WbDragEvent {
 public:
   virtual ~WbDragView3DEvent() override {}
   void apply(const QPoint &currentMousePosition) override = 0;
@@ -70,7 +72,7 @@ protected:
 
 // WbDragKinematicsEvent class (abstract)
 /////////////////////////////////////////
-class WbDragKinematicsEvent : public WbDragView3DEvent {
+class WB_LIB_EXPORT WbDragKinematicsEvent : public WbDragView3DEvent {
 public:
   virtual ~WbDragKinematicsEvent() override {}
   void apply(const QPoint &currentMousePosition) override = 0;

@@ -14,7 +14,9 @@
 
 #include <QtCore/QSize>
 
-class WbMultimediaStreamingLimiter {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMultimediaStreamingLimiter {
 public:
   WbMultimediaStreamingLimiter(const QSize &resolution, int updateTimeStep);
 

@@ -23,9 +23,11 @@
 #include <QtGui/QTextCursor>
 #include <QtGui/QTextDocument>
 
+#include <core/WbConfig.h>
+
 class QPlainTextEdit;
 
-class WbTextFind : public QObject {
+class WB_LIB_EXPORT WbTextFind : public QObject {
   Q_OBJECT
 public:
   // options

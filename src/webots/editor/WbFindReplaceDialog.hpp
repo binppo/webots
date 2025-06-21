@@ -24,11 +24,13 @@
 #include <QtGui/QTextCursor>
 #include <QtWidgets/QDialog>
 
+#include <core/WbConfig.h>
+
 class QComboBox;
 class QCheckBox;
 class QPushButton;
 
-class WbFindReplaceDialog : public QDialog {
+class WB_LIB_EXPORT WbFindReplaceDialog : public QDialog {
   Q_OBJECT
 
 public:

@@ -24,14 +24,16 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-class WbShareWindow : public QDialog {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbShareWindow : public QDialog {
   Q_OBJECT
 public:
   explicit WbShareWindow(QWidget *parent = NULL);
   virtual ~WbShareWindow() {}
 };
 
-class WbLinkWindow : public QDialog {
+class WB_LIB_EXPORT WbLinkWindow : public QDialog {
   Q_OBJECT
 public:
   explicit WbLinkWindow(QWidget *parent = NULL);

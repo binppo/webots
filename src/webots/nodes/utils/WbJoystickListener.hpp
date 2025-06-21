@@ -18,7 +18,9 @@
 #include <OIS/OISJoyStick.h>
 #include <QtCore/QObject>
 
-class WbJoystickListener : public QObject, public OIS::JoyStickListener {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbJoystickListener : public QObject, public OIS::JoyStickListener {
   Q_OBJECT
 
 public:

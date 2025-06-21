@@ -24,10 +24,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 class WbField;
 
-class WbTemplateManager : public QObject {
+class WB_LIB_EXPORT WbTemplateManager : public QObject {
   Q_OBJECT
 
 public:

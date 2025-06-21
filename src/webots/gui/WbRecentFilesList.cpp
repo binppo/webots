@@ -16,7 +16,7 @@
 
 #include "WbPreferences.hpp"
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
 WbRecentFilesList::WbRecentFilesList(int size, QMenu *parent) : QObject(parent) {

@@ -44,7 +44,7 @@ WbTreeItem *WbSceneTreeModel::createItemForNode(WbNode *node) {
   // update
   if (node && (!node->isUseNode() || !WbNodeUtilities::isAValidUseableNode(node))) {
     const int n = node->numFields();
-    const QVector<WbField *> &fields = node->fieldsOrParameters();
+    const auto &fields = node->fieldsOrParameters();
     for (int i = 0; i < n; ++i) {
       WbTreeItem *const child = createItemForField(fields[i]);
       if (child)
@@ -60,7 +60,7 @@ void WbSceneTreeModel::createChildrenItemForNode(WbNode *node) {
   WbTreeItem *const item = findTreeItemFromNode(node, mRootItem);
   assert(item);
   const int n = node->numFields();
-  const QVector<WbField *> &fields = node->fieldsOrParameters();
+  const auto &fields = node->fieldsOrParameters();
   for (int i = 0; i < n; ++i) {
     WbTreeItem *const child = createItemForField(fields[i]);
     if (child)
@@ -83,7 +83,7 @@ WbTreeItem *WbSceneTreeModel::createItemForField(WbField *field) {
       connect(node, &WbNode::defUseNameChanged, this, &WbSceneTreeModel::updateItemAndChildren);
       if (!node->isUseNode()) {
         const int n = node->numFields();
-        const QVector<WbField *> &fields = node->fieldsOrParameters();
+        const auto &fields = node->fieldsOrParameters();
         for (int i = 0; i < n; ++i) {
           WbTreeItem *const child = createItemForField(fields[i]);
           if (child)
@@ -402,6 +402,23 @@ QModelIndex WbSceneTreeModel::findModelIndexFromField(WbField *field, WbTreeItem
     QModelIndex modelIndex = findModelIndexFromField(field, current->child(i));
     if (modelIndex.isValid())
       return modelIndex;
+  }
+
+  return QModelIndex();
+}
+
+QModelIndex WbSceneTreeModel::findModelIndexFromName(const QString &name, WbTreeItem *current) const {
+  if (name.isEmpty() || !current)
+    return QModelIndex();
+
+  if (0==current->data().compare(name, Qt::CaseInsensitive))
+    return itemToIndex(current);
+
+  const int nChild = mRootItem->childCount();
+  for (int i = 0; i < nChild; ++i) {
+    QModelIndex index = findModelIndexFromName(name, current->child(i));
+    if (index.isValid())
+      return index;
   }
 
   return QModelIndex();

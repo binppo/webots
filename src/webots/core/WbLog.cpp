@@ -16,12 +16,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <iostream>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QMetaType>
 #include <QtCore/QUrl>
+#include <QtCore/QtDebug>
 
 static WbLog *gInstance = NULL;
 
@@ -76,7 +77,7 @@ void WbLog::debug(const QString &message, const QString &name, bool popup) {
     return;
   }
 
-  std::cerr << header << message.toUtf8().constData() << "\n" << std::flush;
+  qDebug() << header << message.toUtf8().constData();
   if (!instance()->mConsoleLogsPostponed &&
       instance()->receivers(SIGNAL(logEmitted(WbLog::Level, const QString &, bool, const QString &))) > 1)
     instance()->emitLog(DEBUG, header + message, popup, name);
@@ -87,7 +88,7 @@ void WbLog::debug(const QString &message, const QString &name, bool popup) {
 void WbLog::info(const QString &message, const QString &name, bool popup) {
   const char *header = "INFO: ";
   if (gStdoutRedirect)
-    std::cout << header << message.toUtf8().constData() << "\n" << std::flush;
+    qInfo() << header << message.toUtf8().constData();
   if (popup && instance()->mPopUpMessagesPostponed) {
     instance()->enqueueMessage(instance()->mPostponedPopUpMessageQueue, message, name, INFO);
     return;
@@ -103,7 +104,7 @@ void WbLog::info(const QString &message, const QString &name, bool popup) {
 void WbLog::warning(const QString &message, const QString &name, bool popup) {
   const char *header = "WARNING: ";
   if (gStderrRedirect)
-    std::cerr << header << message.toUtf8().constData() << "\n" << std::flush;
+    qWarning() << header << message.toUtf8().constData();
   if (popup && instance()->mPopUpMessagesPostponed) {
     instance()->enqueueMessage(instance()->mPostponedPopUpMessageQueue, message, name, WARNING);
     return;
@@ -120,7 +121,7 @@ void WbLog::error(const QString &message, const QString &name, bool popup) {
   const int numberOfReceivers = instance()->receivers(SIGNAL(logEmitted(WbLog::Level, const QString &, bool, const QString &)));
   const char *header = "ERROR: ";
   if (gStderrRedirect || numberOfReceivers == 0)
-    std::cerr << header << message.toUtf8().constData() << "\n" << std::flush;
+    qWarning() << header << message.toUtf8().constData();
   if (popup && instance()->mPopUpMessagesPostponed) {
     instance()->enqueueMessage(instance()->mPostponedPopUpMessageQueue, message, name, ERROR);
     return;
@@ -134,7 +135,7 @@ void WbLog::error(const QString &message, const QString &name, bool popup) {
 
 void WbLog::fatal(const QString &message) {
   const char *header = "FATAL: ";
-  std::cerr << header << message.toUtf8().constData() << "\n" << std::flush;
+  qWarning() << header << message.toUtf8().constData();
   instance()->emitLog(FATAL, header + message, true, QString());
   ::exit(EXIT_FAILURE);
 }

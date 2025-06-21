@@ -405,7 +405,7 @@ void WbSolidMerger::attachGeomsToBody(dGeomID g) {
   if (spaceId) {
     const int n = dSpaceGetNumGeoms(spaceId);
     // we need to store the geoms since dGeomSetBody() changes the way they are sorted in their common space
-    dGeomID geoms[n];
+    std::vector<dGeomID> geoms(n);
     for (int i = 0; i < n; ++i)
       geoms[i] = dSpaceGetGeom(spaceId, i);
 

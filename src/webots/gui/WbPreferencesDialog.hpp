@@ -23,6 +23,8 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidget>
 
+#include <core/WbConfig.h>
+
 class WbLineEdit;
 
 class QCheckBox;
@@ -34,7 +36,7 @@ class QTabWidget;
 class QKeyEvent;
 class QLabel;
 
-class WbPreferencesDialog : public QDialog {
+class WB_LIB_EXPORT WbPreferencesDialog : public QDialog {
   Q_OBJECT
 
 public:

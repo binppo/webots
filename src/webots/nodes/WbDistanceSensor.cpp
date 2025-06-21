@@ -33,7 +33,7 @@
 #include "WbWrenRenderingContext.hpp"
 #include "WbWrenShaders.hpp"
 
-#include "../../controller/c/messages.h"
+#include <controller/c/messages.h>
 
 #include <wren/config.h>
 #include <wren/dynamic_mesh.h>
@@ -590,6 +590,41 @@ void WbDistanceSensor::rayCollisionCallback(WbGeometry *object, dGeomID rayGeom,
   assert(0);  // should never be reached
 }
 
+int WbDistanceSensor::lookupTableSize() const {
+  return mLookupTable->size();
+}
+
+QVector<QVector3D> WbDistanceSensor::lookupTable() const {
+  QVector<QVector3D> table;
+  for (int i = 0; i < mLookupTable->size(); i++) {
+    table << QVector3D(mLookupTable->item(i).x()
+        , mLookupTable->item(i).y()
+        , mLookupTable->item(i).z());
+  }
+
+  return table;
+}
+
+int WbDistanceSensor::refreshRate() {
+  return mSensor->refreshRate();
+}
+
+double WbDistanceSensor::minValue() {
+  return mLut->minValue();
+}
+
+double WbDistanceSensor::maxValue() {
+  return mLut->maxValue();
+}
+
+double WbDistanceSensor::aperture() {
+  return mAperture->value();
+}
+
+int WbDistanceSensor::rayType() {
+  return mRayType;
+}
+
 void WbDistanceSensor::handleMessage(QDataStream &stream) {
   unsigned char command;
   short refreshRate;
@@ -607,6 +642,10 @@ void WbDistanceSensor::handleMessage(QDataStream &stream) {
     default:
       assert(0);
   }
+}
+
+double WbDistanceSensor::value() {
+  return mValue;
 }
 
 void WbDistanceSensor::writeAnswer(WbDataStream &stream) {
@@ -847,4 +886,12 @@ void WbDistanceSensor::applyLaserBeamToWren() {
     }
   }
   wr_node_set_visible(WR_NODE(mLaserBeamTransform), false);
+}
+
+void WbDistanceSensor::SET_SAMPLING_PERIOD(int refreshRate) {
+  mSensor->setRefreshRate(refreshRate);
+  if (refreshRate == 0) {  // sensor disabled
+    // update rays appearance
+    applyOptionalRenderingToWren();
+  }
 }

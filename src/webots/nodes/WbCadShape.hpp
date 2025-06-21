@@ -21,6 +21,8 @@
 
 #include <assimp/material.h>
 
+#include <core/WbConfig.h>
+
 class WbBoundingSphere;
 class WbMFString;
 class WbDownloader;
@@ -34,7 +36,7 @@ struct WrMaterial;
 
 struct aiMaterial;
 
-class WbCadShape : public WbBaseNode {
+class WB_LIB_EXPORT WbCadShape : public WbBaseNode {
   Q_OBJECT
 
 public:

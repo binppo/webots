@@ -30,11 +30,12 @@ namespace {
     QByteArray vertexPathBytes = vertexShader.absoluteFilePath().toUtf8();
     QByteArray fragmentPathBytes = fragmentShader.absoluteFilePath().toUtf8();
 
-    WbWrenOpenGlContext::makeWrenCurrent();
-    wr_shader_program_set_vertex_shader_path(shader, vertexPathBytes.constData());
-    wr_shader_program_set_fragment_shader_path(shader, fragmentPathBytes.constData());
-    wr_shader_program_setup(shader);
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      wr_shader_program_set_vertex_shader_path(shader, vertexPathBytes.constData());
+      wr_shader_program_set_fragment_shader_path(shader, fragmentPathBytes.constData());
+      wr_shader_program_setup(shader);
+      WbWrenOpenGlContext::doneWren();
+    }
 
     if (!wr_shader_program_get_gl_name(shader)) {
       QString msg("Shader compilation failed!");

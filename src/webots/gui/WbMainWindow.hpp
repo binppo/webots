@@ -25,6 +25,8 @@
 #include "WbLog.hpp"
 #include "WbShareWindow.hpp"
 
+#include <core/WbConfig.h>
+
 class WbBuildEditor;
 class WbConsole;
 class WbLinkWindow;
@@ -42,7 +44,7 @@ class QProgressDialog;
 class QTimer;
 
 // cppcheck-suppress noConstructor
-class WbMainWindow : public QMainWindow {
+class WB_LIB_EXPORT WbMainWindow : public QMainWindow {
   Q_OBJECT
   Q_PROPERTY(QString enabledIconPath MEMBER mEnabledIconPath READ enabledIconPath WRITE setEnabledIconPath)
   Q_PROPERTY(QString disabledIconPath MEMBER mDisabledIconPath READ disabledIconPath WRITE setDisabledIconPath)
@@ -247,6 +249,10 @@ private slots:
   void prepareNodeRegeneration(WbNode *node);
   void discardNodeRegeneration() { finalizeNodeRegeneration(NULL); }
   void finalizeNodeRegeneration(WbNode *node);
+
+  void startVideoCapture(const QString &fileName, int codec, int width, int height, int quality, int acceleration,
+                         bool showCaption);
+  void stopVideoCapture(bool canceled = false);
 };
 
 #endif

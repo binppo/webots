@@ -35,10 +35,11 @@
 
 #include <climits>
 #include <cmath>
-#include "../../../include/controller/c/webots/display.h"  // contains the definitions of the image format
-#include "../../controller/c/messages.h"  // contains the definitions for the macros C_DISPLAY_SET_COLOR, C_DISPLAY_SET_ALPHA, C_DISPLAY_SET_OPACITY, ...
+#include <controller/c/webots/display.h>  // contains the definitions of the image format
+#include <controller/c/messages.h>  // contains the definitions for the macros C_DISPLAY_SET_COLOR, C_DISPLAY_SET_ALPHA, C_DISPLAY_SET_OPACITY, ...
 
 #include <QtCore/QDataStream>
+#include <QtGui/QImage>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -281,9 +282,10 @@ void WbDisplay::handleMessage(QDataStream &stream) {
       // cppcheck-suppress knownConditionTrueFalse
       mAntiAliasing = antiAliasing == 1;
       stream >> size;
-      char font[size];
+      char *font = new char[size];
       stream.readRawData(font, size);
       setFont(font, fontSize);
+      delete[] font;
       break;
     }
     case C_DISPLAY_DRAW_PIXEL:
@@ -794,7 +796,7 @@ int WbDisplay::drawChar(unsigned long c, int x, int y) {
   return horizontalAdvance;
 }
 
-void WbDisplay::setFont(char *font, unsigned int size) {
+void WbDisplay::setFont(const char *font, unsigned int size) {
   bool fileFound = false;
   QString filename = WbStandardPaths::fontsPath() + QString(font) + ".ttf";
   if (QFile::exists(filename))
@@ -828,8 +830,10 @@ void WbDisplay::drawPolygon(const int *px, const int *py, int size, bool fill) {
   if (minX >= width() || minY >= height() || maxX < 0 || maxY < 0)
     return;  // out of bounds
 
-  int nodeX[size], pixelY, swap;
-  int horizontalEdgesCounter = 0, horizontalEdges[3 * size];
+  std::vector<int> nodeX(size);
+  int pixelY, swap;
+  int horizontalEdgesCounter = 0;
+  std::vector<int> horizontalEdges(3 * size);
 
   // Loop through visible rows of the polygon
   for (pixelY = qMax(0, minY); pixelY <= qMin(height() - 1, maxY); pixelY++) {
@@ -1002,7 +1006,7 @@ void WbDisplay::imagePaste(int id, int x, int y, bool blend) {
   }
 }
 
-void WbDisplay::imageLoad(int id, int w, int h, void *data, int format) {
+void WbDisplay::imageLoad(int id, int w, int h, const char* data, int format) {
   const int nbPixel = w * h;
   unsigned int *clippedImage = new unsigned int[nbPixel];
   bool isTransparent = false;
@@ -1011,27 +1015,27 @@ void WbDisplay::imageLoad(int id, int w, int h, void *data, int format) {
   if (format == WB_IMAGE_BGRA)
     memcpy(clippedImage, data, nbPixel * 4);
   else if (format == WB_IMAGE_ARGB) {
-    const unsigned char *dataUC = static_cast<unsigned char *>(data);
+    const unsigned char *dataUC = (const unsigned char*)data;
     for (int i = 0; i < nbPixel; i++) {
       const int offset = 4 * i;
       isTransparent = (dataUC[offset] & 0XFF) != 0xFF;
       clippedImage[i] = (dataUC[offset] << 24) | (dataUC[offset + 1] << 16) | (dataUC[offset + 2] << 8) | dataUC[offset + 3];
     }
   } else if (format == WB_IMAGE_RGB) {
-    const unsigned char *dataUC = static_cast<unsigned char *>(data);
+    const unsigned char *dataUC = (const unsigned char*)data;
     for (int i = 0; i < nbPixel; i++) {
       const int offset = 3 * i;
       clippedImage[i] = 0xFF000000 | (dataUC[offset] << 16) | (dataUC[offset + 1] << 8) | dataUC[offset + 2];
     }
   } else if (format == WB_IMAGE_RGBA) {
-    const unsigned char *dataUC = static_cast<unsigned char *>(data);
+    const unsigned char *dataUC = (const unsigned char*)data;
     for (int i = 0; i < nbPixel; i++) {
       const int offset = 4 * i;
       isTransparent = (dataUC[offset + 3] & 0xFF) != 0xFF;
       clippedImage[i] = (dataUC[offset + 3] << 24) | (dataUC[offset] << 16) | (dataUC[offset + 1] << 8) | dataUC[offset + 2];
     }
   } else if (format == WB_IMAGE_ABGR) {
-    const unsigned char *dataUC = static_cast<unsigned char *>(data);
+    const unsigned char *dataUC = (const unsigned char*)data;
     for (int i = 0; i < nbPixel; i++) {
       const int offset = 4 * i;
       isTransparent = (dataUC[offset] & 0xFF) != 0xFF;
@@ -1068,7 +1072,8 @@ void WbDisplay::createWrenObjects() {
 }
 
 void WbDisplay::createWrenOverlay() {
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
 
   QStringList previousSettings;
   if (mOverlay)
@@ -1218,3 +1223,128 @@ void WbDisplay::reset(const QString &id) {
 
   setup();
 }
+
+void WbDisplay::ATTACH_CAMERA(int cameraTag) {
+  setTransparentTextureIfNeeded();
+  attachCamera(cameraTag);
+}
+
+void WbDisplay::DETACH_CAMERA() {
+  detachCamera();
+  mUpdateRequired = true;
+}
+
+void WbDisplay::SET_COLOR(int color) {
+  mColor = color;
+}
+
+void WbDisplay::SET_ALPHA(int alpha) {
+  mAlpha = alpha;
+}
+
+void WbDisplay::SET_OPACITY(int opacity) {
+  mOpacity = opacity;
+}
+
+void WbDisplay::SET_FONT(const QString& font, int fontSize, bool antiAliasing) {
+  // cppcheck-suppress knownConditionTrueFalse
+  mAntiAliasing = antiAliasing;
+  setFont(font.toLatin1().constData(), (unsigned int)fontSize);
+}
+
+void WbDisplay::DRAW_PIXEL(int px, int py) {
+  drawPixel(px, py);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DRAW_LINE(const QLine& ln) {
+  drawLine(ln.x1(), ln.y1(), ln.x2(), ln.y2());
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DRAW_TEXT(const QString& text, int px, int py) {
+  drawText(text.toLatin1().constData(), px, py);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DRAW_RECTANGLE(const QRect& rect, bool fill) {
+  drawRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), fill);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DRAW_OVAL(const QRect& rect, bool fill) {
+  drawOval(rect.left(), rect.top(), rect.right(), rect.bottom(), fill);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::DRAW_POLYGON(const QPolygon& points, bool fill) {
+  if(points.isEmpty())
+    return;  // nothing to draw
+
+  QVector<int> px(points.size()), py(points.size());
+  for(int i = 0; i < points.size(); ++i) {
+    px[i] = points.at(i).x();
+    py[i] = points.at(i).y();
+  }
+
+  drawPolygon(&px[0], &py[0], points.size(), fill);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::IMAGE_COPY(int id, int x, int y) {
+  short w, h;
+  unsigned int *data = imageCopy(x, y, w, h);
+  if (data != NULL)
+    mImages.push_back(new WbDisplayImage(id, w, h, data, mIsTextureTransparent));
+  // get copied data and clipped width and height
+}
+
+void WbDisplay::IMAGE_PASTE(int id, int x, int y, bool blend) {
+  imagePaste(id, x, y, blend);
+  mUpdateRequired = true;
+}
+
+void WbDisplay::IMAGE_LOAD(int id, const QImage& img) {
+  int format = 3;
+  if (img.format() == QImage::Format_ARGB32)
+    format = WB_IMAGE_ARGB;
+  else if (img.format() == QImage::Format_RGBA8888)
+    format = WB_IMAGE_RGBA;
+  else if (img.format() == QImage::Format_RGB32)
+    format = WB_IMAGE_RGB;
+  else if (img.format() == QImage::Format_RGB888)
+    format = WB_IMAGE_RGB;
+
+  imageLoad(id, img.width(), img.height(), (const char*)img.bits(), format);
+}
+
+void WbDisplay::IMAGE_DELETE(int id) {
+  imageDelete(id);
+}
+
+void WbDisplay::IMAGE_SAVE(const QString& fileName, int id) {
+  bool rc = false;
+  if (id == 0) {
+    // save current display image
+    short int w = width();
+    short int h = height();
+    // get the image data and the clipped width and height
+    unsigned char *data = reinterpret_cast<unsigned char*>(imageCopy(0, 0, w, h));
+    QImage bitmap(data, w, h, QImage::Format_ARGB32);
+    rc = bitmap.save(fileName);
+
+    delete[] data;
+  }
+  else {
+    const WbDisplayImage *di = imageFind(id);
+    if (di) {
+      QImage bitmap((unsigned char*)di->image(), di->width(), di->height(), QImage::Format_ARGB32);
+      rc = bitmap.save(fileName);
+    }
+  }
+}
+
+QVector<WbDisplayImage*> WbDisplay::IMAGE_GET_ALL() {
+  return mImages;
+}
+

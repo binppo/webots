@@ -21,6 +21,8 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 namespace vr {
   struct IVRSystem;
   struct VRTextureBounds_t;
@@ -40,7 +42,7 @@ class WbWrenSmaa;
 class WbWrenHdr;
 class QTimer;
 
-class WbVirtualRealityHeadset : public QObject {
+class WB_LIB_EXPORT WbVirtualRealityHeadset : public QObject {
   Q_OBJECT
 
 public:

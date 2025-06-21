@@ -358,7 +358,7 @@ void WbHingeJoint::prePhysicsStep(double ms) {
 
 void WbHingeJoint::postPhysicsStep() {
   assert(mJoint);
-  const WbRotationalMotor *const rm = rotationalMotor();
+  WbRotationalMotor *const rm = rotationalMotor();
 
   // First update the position roughly based on the angular rate of the joint so that it is within pi radians...
   double angleRate = dJointGetHingeAngleRate(mJoint);
@@ -378,6 +378,28 @@ void WbHingeJoint::postPhysicsStep() {
   if (isEnabled() && rm && rm->hasMuscles() && !rm->userControl())
     // dynamic position or velocity control
     emit updateMuscleStretch(rm->computeFeedback() / rm->maxForceOrTorque(), false, 1);
+
+  if (rm) {
+    double position;
+    if (rm->fetchTransportQue(position)) {
+
+      mPosition = position;
+
+      if (p)
+        p->setPosition(position);
+
+      WbSolid *const s = solidEndPoint();
+      WbVector3 translation;
+      WbRotation rotation;
+      computeEndPointSolidPositionFromParameters(translation, rotation);
+      mIsEndPointPositionChangedByJoint = true;
+      s->setTranslationAndRotation(translation, rotation);
+      s->resetPhysics();
+      mIsEndPointPositionChangedByJoint = false;
+
+      rm->refreshSensorIfNeeded();
+    }
+  }
 }
 
 void WbHingeJoint::updatePosition() {

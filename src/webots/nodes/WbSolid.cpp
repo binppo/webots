@@ -493,7 +493,7 @@ void WbSolid::postFinalize() {
     WbWorld::instance()->addCameraRecognitionObject(this);
 
   if (protoParameterNode()) {
-    const QVector<WbNode *> nodes = protoParameterNode()->protoParameterNodeInstances();
+    const auto nodes = protoParameterNode()->protoParameterNodeInstances();
     if (nodes.size() > 1 && nodes.at(0) == this)
       parsingWarn(tr("Solid node defined in PROTO field is used multiple times. "
                      "Webots doesn't fully support this because the multiple node instances cannot be identical."));
@@ -2142,7 +2142,7 @@ void WbSolid::reset(const QString &id) {
   if (isSolidMerger()) {
     dBodyID b = body();
     int jointNumber = dBodyGetNumJoints(b);
-    dJointID joints[jointNumber];
+    std::vector<dJointID> joints(jointNumber);
     for (int i = 0; i < jointNumber; ++i)
       joints[i] = dBodyGetJoint(b, i);
     for (int i = 0; i < jointNumber; ++i) {
@@ -2196,9 +2196,9 @@ void WbSolid::jerk(bool resetVelocities, bool rootJerk) {
 }
 
 void WbSolid::notifyChildJerk(WbPose *childNode) {
-  const WbNode *node = childNode->parentNode();
+  WbNode *node = childNode->parentNode();
   while (node != this && node != NULL) {
-    if (mMovedChildren.contains(dynamic_cast<const WbPose *>(node)))
+    if (mMovedChildren.contains(dynamic_cast<WbPose *>(node)))
       return;
     node = node->parentNode();
   }

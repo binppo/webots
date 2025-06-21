@@ -21,10 +21,12 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class QMenu;
 class QAction;
 
-class WbRecentFilesList : public QObject {
+class WB_LIB_EXPORT WbRecentFilesList : public QObject {
   Q_OBJECT
 
 public:

@@ -17,11 +17,17 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QQuaternion>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 class WbMFVector3;
 class WbSFBool;
 
-class WbInertialUnit : public WbSolidDevice {
+class WB_LIB_EXPORT WbInertialUnit : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -39,6 +45,14 @@ public:
   void writeAnswer(WbDataStream &) override;
   void writeConfigure(WbDataStream &) override;
   bool refreshSensorIfNeeded() override;
+
+  int refreshRate();
+  double noise();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+
+  QQuaternion value();
 
 private:
   // user accessible fields

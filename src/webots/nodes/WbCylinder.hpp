@@ -18,9 +18,11 @@
 #include "WbGeometry.hpp"
 #include "WbSFDouble.hpp"
 
+#include <core/WbConfig.h>
+
 class WbSFInt;
 
-class WbCylinder : public WbGeometry {
+class WB_LIB_EXPORT WbCylinder : public WbGeometry {
   Q_OBJECT
 
 public:

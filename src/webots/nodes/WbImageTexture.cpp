@@ -242,16 +242,16 @@ void WbImageTexture::updateWrenTexture() {
   WrTexture2d *texture = wr_texture_2d_copy_from_cache(completeUrl.toUtf8().constData());
   if (!texture) {
     if (loadTexture()) {
-      WbWrenOpenGlContext::makeWrenCurrent();
+      if (WbWrenOpenGlContext::makeWrenCurrent()) {
+        texture = wr_texture_2d_new();
+        wr_texture_set_size(WR_TEXTURE(texture), mImage->width(), mImage->height());
+        wr_texture_set_translucent(WR_TEXTURE(texture), mIsMainTextureTransparent);
+        wr_texture_2d_set_data(texture, reinterpret_cast<const char *>(mImage->bits()));
+        wr_texture_2d_set_file_path(texture, completeUrl.toUtf8().constData());
+        wr_texture_setup(WR_TEXTURE(texture));
 
-      texture = wr_texture_2d_new();
-      wr_texture_set_size(WR_TEXTURE(texture), mImage->width(), mImage->height());
-      wr_texture_set_translucent(WR_TEXTURE(texture), mIsMainTextureTransparent);
-      wr_texture_2d_set_data(texture, reinterpret_cast<const char *>(mImage->bits()));
-      wr_texture_2d_set_file_path(texture, completeUrl.toUtf8().constData());
-      wr_texture_setup(WR_TEXTURE(texture));
-
-      WbWrenOpenGlContext::doneWren();
+        WbWrenOpenGlContext::doneWren();
+      }
       if (mUrl->size() == 0)
         return;
       const QString &url(mUrl->item(0));

@@ -21,11 +21,13 @@
 
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbDownloader;
 
 class QDir;
 
-class WbProtoIcon : public QObject {
+class WB_LIB_EXPORT WbProtoIcon : public QObject {
   Q_OBJECT
 
 public:

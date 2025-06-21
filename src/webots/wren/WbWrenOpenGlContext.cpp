@@ -16,11 +16,13 @@
 
 #include <wren/gl_state.h>
 
+#include <base/logging.h>
+
 #include <QtCore/QStack>
 
-WbWrenOpenGlContext *WbWrenOpenGlContext::mWrenContext;
-QSurface *WbWrenOpenGlContext::mWrenSurface;
-bool WbWrenOpenGlContext::mIsCurrent;
+WbWrenOpenGlContext *WbWrenOpenGlContext::mWrenContext = nullptr;
+QSurface *WbWrenOpenGlContext::mWrenSurface = nullptr;
+bool WbWrenOpenGlContext::mIsCurrent = false;
 QStack<bool> WbWrenOpenGlContext::mPreviousState;
 
 void WbWrenOpenGlContext::destroy() {
@@ -38,7 +40,10 @@ bool WbWrenOpenGlContext::makeWrenCurrent() {
   wr_gl_state_set_context_active(true);
   mIsCurrent = true;
 
-  return mWrenContext->forceMakeCurrent(mWrenSurface);
+  bool rc = mWrenContext->forceMakeCurrent(mWrenSurface);
+  if (!rc)
+    LOG(WARNING) << "Failed to make WREN OpenGL context current.";
+  return rc;
 }
 
 // Marks WREN's OpenGL context as inactive, preventing WREN from making OpenGL calls until it is marked as active again.

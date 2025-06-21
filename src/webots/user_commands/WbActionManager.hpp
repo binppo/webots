@@ -24,9 +24,11 @@
 #include <QtCore/QHash>
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class QAction;
 
-class WbActionManager : public QObject {
+class WB_LIB_EXPORT WbActionManager : public QObject {
   Q_OBJECT
 
 public:

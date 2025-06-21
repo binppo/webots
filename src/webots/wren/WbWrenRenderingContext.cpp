@@ -104,38 +104,38 @@ bool WbWrenRenderingContext::isIntelRenderer() const {
   if (!wr_gl_state_is_initialized())
     return false;
 
-  const char *vendor = wr_gl_state_get_vendor();
-  return (strncasecmp(vendor, "Intel", 5) == 0);
+  QString vendor = wr_gl_state_get_vendor();
+  return vendor.startsWith("Intel");
 }
 
 bool WbWrenRenderingContext::isAmdRenderer() const {
   if (!wr_gl_state_is_initialized())
     return false;
 
-  const char *vendor = wr_gl_state_get_vendor();
-  return (strncasecmp(vendor, "Amd", 3) == 0 || strncasecmp(vendor, "ATI", 3) == 0);
+  QString vendor = wr_gl_state_get_vendor();
+  return vendor.startsWith("Amd") || vendor.startsWith("ATI");
 }
 
 bool WbWrenRenderingContext::isNvidiaRenderer() const {
   if (!wr_gl_state_is_initialized())
     return false;
 
-  const char *vendor = wr_gl_state_get_vendor();
-  return (strncasecmp(vendor, "Nvidia", 6) == 0);
+  QString vendor = wr_gl_state_get_vendor();
+  return vendor.startsWith("Nvidia");
 }
 
 bool WbWrenRenderingContext::isMesaRenderer() const {
   if (!wr_gl_state_is_initialized())
     return false;
 
-  const char *vendor = wr_gl_state_get_vendor();
-  return (strncasecmp(vendor, "Mesa", 4) == 0);
+  QString vendor = wr_gl_state_get_vendor();
+  return vendor.startsWith("Mesa");
 }
 
 bool WbWrenRenderingContext::isMicrosoftRenderer() const {
   if (!wr_gl_state_is_initialized())
     return false;
 
-  const char *vendor = wr_gl_state_get_vendor();
-  return (strncasecmp(vendor, "Microsoft", 9) == 0);
+  QString vendor = wr_gl_state_get_vendor();
+  return vendor.startsWith("Microsoft");
 }

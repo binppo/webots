@@ -21,11 +21,13 @@
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QTimer>
 
+#include <core/WbConfig.h>
+
 class WbMatter;
 class WbMultimediaStreamingLimiter;
 class WbView3D;
 
-class WbMultimediaStreamingServer : public WbTcpServer {
+class WB_LIB_EXPORT WbMultimediaStreamingServer : public WbTcpServer {
   Q_OBJECT
 
 public:

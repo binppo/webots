@@ -25,9 +25,11 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 
+#include <core/WbConfig.h>
+
 class WbVector3;
 
-class WbVector4 {
+class WB_LIB_EXPORT WbVector4 {
 public:
   // construct as a [0 0 0 1] vector
   WbVector4() : mX(0.0), mY(0.0), mZ(0.0), mW(1.0) {}

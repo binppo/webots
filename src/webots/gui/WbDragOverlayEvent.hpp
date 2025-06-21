@@ -21,10 +21,12 @@
 
 #include "WbAbstractDragEvent.hpp"
 
+#include <core/WbConfig.h>
+
 class WbRenderingDevice;
 
 // WbDragOverlayEvent abstract class
-class WbDragOverlayEvent : public WbDragEvent {
+class WB_LIB_EXPORT WbDragOverlayEvent : public WbDragEvent {
 public:
   enum DragOverlayType { TRANSLATE = 0, RESIZE };
   WbDragOverlayEvent(const QPoint &initialMousePosition, WbRenderingDevice *renderingDevice);
@@ -39,7 +41,7 @@ protected:
 
 // WbDragTranslateOverlayEvent class: change the position of an overlay device
 //                                    by dragging the mouse
-class WbDragTranslateOverlayEvent : public WbDragOverlayEvent {
+class WB_LIB_EXPORT WbDragTranslateOverlayEvent : public WbDragOverlayEvent {
 public:
   WbDragTranslateOverlayEvent(const QPoint &initialMousePosition, const QPoint &windowSize, WbRenderingDevice *renderingDevice);
   virtual ~WbDragTranslateOverlayEvent() override{};
@@ -54,7 +56,7 @@ protected:
 
 // WbDragResizeOverlayEvent class: resize the overlay device
 //                                 by dragging the mouse
-class WbDragResizeOverlayEvent : public WbDragOverlayEvent {
+class WB_LIB_EXPORT WbDragResizeOverlayEvent : public WbDragOverlayEvent {
 public:
   WbDragResizeOverlayEvent(const QPoint &initialMousePosition, WbRenderingDevice *renderingDevice);
   virtual ~WbDragResizeOverlayEvent() override;

@@ -22,10 +22,12 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include <core/WbConfig.h>
+
 class WbNode;
 class WbTokenizer;
 
-class WbNodeReader : public QObject {
+class WB_LIB_EXPORT WbNodeReader : public QObject {
   Q_OBJECT;
 
 public:

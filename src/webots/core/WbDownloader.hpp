@@ -18,10 +18,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
 
+#include <core/WbConfig.h>
+
 class QIODevice;
 class QNetworkReply;
 
-class WbDownloader : public QObject {
+class WB_LIB_EXPORT WbDownloader : public QObject {
   Q_OBJECT
 public:
   explicit WbDownloader(const QUrl &url, const WbDownloader *existingDownload, QObject *parent = NULL);

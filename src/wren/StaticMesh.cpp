@@ -239,8 +239,10 @@ namespace wren {
 
     // bounding volumes
     const primitive::Box box;
-    mesh->mCacheData->mBoundingSphere = box.computeBoundingSphere();
-    mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-0.5f), glm::vec3(0.5f));
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = box.computeBoundingSphere();
+      mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-0.5f), glm::vec3(0.5f));
+    }
 
     mesh->setup();
 
@@ -353,8 +355,10 @@ namespace wren {
 
     // bounding volumes
     const primitive::Cone cone(gVec3Zeros, 1.0f, 1.0f, hasSide, hasBottom);
-    mesh->mCacheData->mBoundingSphere = cone.computeBoundingSphere();
-    mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-0.5f), glm::vec3(0.5f));
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = cone.computeBoundingSphere();
+      mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-0.5f), glm::vec3(0.5f));
+    }
 
     mesh->setup();
 
@@ -522,8 +526,10 @@ namespace wren {
 
     // bounding volumes
     const primitive::Box box;
-    mesh->mCacheData->mBoundingSphere = box.computeBoundingSphere();
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = box.computeBoundingSphere();
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
@@ -681,8 +687,10 @@ namespace wren {
     }
 
     // bounding volumes
-    mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
@@ -750,9 +758,11 @@ namespace wren {
 
     // bounding volumes
     const primitive::Box box;
-    mesh->mCacheData->mBoundingSphere = box.computeBoundingSphere();
-    mesh->mCacheData->mAabb =
-      primitive::Aabb(glm::vec3(-0.5f, -0.5f, -glm::epsilon<float>()), glm::vec3(0.5f, 0.5f, glm::epsilon<float>()));
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = box.computeBoundingSphere();
+      mesh->mCacheData->mAabb =
+        primitive::Aabb(glm::vec3(-0.5f, -0.5f, -glm::epsilon<float>()), glm::vec3(0.5f, 0.5f, glm::epsilon<float>()));
+    }
 
     mesh->setup();
 
@@ -898,8 +908,10 @@ namespace wren {
 
     // bounding volumes
     const primitive::Rectangle rect;
-    mesh->mCacheData->mBoundingSphere = primitive::Sphere(gVec3Zeros, 1.0f);
-    mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-1.0f), glm::vec3(1.0f));
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::Sphere(gVec3Zeros, 1.0f);
+      mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-1.0f), glm::vec3(1.0f));
+    }
 
     mesh->setup();
 
@@ -1015,8 +1027,10 @@ namespace wren {
 
     // bounding volumes
     const primitive::Rectangle rect;
-    mesh->mCacheData->mBoundingSphere = primitive::Sphere(gVec3Zeros, 1.0f);
-    mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-1.0f), glm::vec3(1.0f));
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::Sphere(gVec3Zeros, 1.0f);
+      mesh->mCacheData->mAabb = primitive::Aabb(glm::vec3(-1.0f), glm::vec3(1.0f));
+    }
 
     mesh->setup();
 
@@ -1072,8 +1086,8 @@ namespace wren {
       mesh->estimateIndexCount(indexCounter);
 
       const float factor = 2.0f * glm::pi<float>() / subdivision;
-      float x[sub1];
-      float y[sub1];
+      std::vector<float> x(sub1);
+      std::vector<float> y(sub1);
       for (int i = 0; i < sub1; ++i) {
         const float alpha = factor * i;
         x[i] = glm::sin(alpha);
@@ -1097,8 +1111,8 @@ namespace wren {
       }
 
       // compute quarter of circle profile for capsule top
-      float ay[sub5];
-      float ar[sub5];
+      std::vector<float> ay(sub5);
+      std::vector<float> ar(sub5);
       const float factor4 = 0.5f * glm::pi<float>() / sub4;
       for (int i = 0; i < sub5; ++i) {
         float alpha = factor4 * i;
@@ -1215,8 +1229,8 @@ namespace wren {
       if (hasSide) {
         // define points around capsule
         const float factor = 2.0f * glm::pi<float>() / subdivision;
-        float x[sub1];
-        float y[sub1];
+        std::vector<float> x(sub1);
+        std::vector<float> y(sub1);
         for (int i = 0; i < sub1; ++i) {
           const float alpha = factor * i;
           x[i] = glm::sin(alpha);
@@ -1256,8 +1270,8 @@ namespace wren {
 
       if (hasTop || hasBottom) {
         // compute quarter of circle profile for capsule top
-        float ay[sub5];
-        float ar[sub5];
+        std::vector<float> ay(sub5);
+        std::vector<float> ar(sub5);
         const float factor4 = 0.5f * glm::pi<float>() / sub4;
         for (int i = 0; i < sub5; ++i) {
           float alpha = factor4 * i;
@@ -1438,8 +1452,10 @@ namespace wren {
 
     // bounding volumes
     const primitive::Capsule capsule(gVec3Zeros, radius, height, hasSide, hasTop, hasBottom);
-    mesh->mCacheData->mBoundingSphere = capsule.computeBoundingSphere();
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = capsule.computeBoundingSphere();
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
@@ -1482,8 +1498,10 @@ namespace wren {
     mesh->addIndex(0);
 
     // bounding volumes
-    mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
@@ -1525,8 +1543,10 @@ namespace wren {
     }
 
     // bounding volumes
-    mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
@@ -1568,12 +1588,57 @@ namespace wren {
     }
 
     // bounding volumes
-    mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
     return mesh;
+  }
+
+  StaticMesh *StaticMesh::preCreatePointSet(int coordCount, const float *coordData, const float *colorData, float *&coordPtr, float *&colorPtr) {
+    uint64_t hash = cache::sipHash13c(reinterpret_cast<const char *>(reinterpret_cast<const void *>(coordData)), 4);
+    if (colorData) {
+      // cppcheck-suppress uninitvar
+      hash ^= cache::sipHash13c("colorData", 9);
+      hash ^= cache::sipHash13c(reinterpret_cast<const char *>(reinterpret_cast<const void *>(colorData)), 4);
+    }
+
+    const cache::Key key(hash);
+
+    StaticMesh *mesh;
+    if (StaticMesh::createOrRetrieveFromCache(&mesh, key))
+      return mesh;
+
+    std::vector<glm::vec3> &coords = mesh->coords();
+    coords.resize(coordCount);
+
+	coordPtr = reinterpret_cast<float *>(coords.data());
+
+    mesh->estimateIndexCount(coordCount);
+    for (int i = 0; i < coordCount; ++i)
+      mesh->addIndex(i);
+
+    // (Optional) Color per vertex
+    if (colorData) {
+      std::vector<glm::vec3> &colors = mesh->colors();
+      colors.resize(coordCount);
+	  colorPtr = reinterpret_cast<float *>(colors.data());
+    }
+
+    return mesh;
+  }
+
+  void StaticMesh::postCreatePointSet(StaticMesh *mesh) {
+    // bounding volumes
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
+
+    mesh->setup();
   }
 
   StaticMesh *StaticMesh::createTriangleMesh(int coordCount, int indexCount, const float *coordData, const float *normalData,
@@ -1652,8 +1717,10 @@ namespace wren {
     }
 
     // bounding volumes
-    mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
-    mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    if (mesh->mCacheData) {
+      mesh->mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(mesh->coords());
+      mesh->mCacheData->mAabb = primitive::Aabb(mesh->coords());
+    }
 
     mesh->setup();
 
@@ -1670,36 +1737,48 @@ namespace wren {
 
   void StaticMesh::setCachePersistency(bool persistent) {
     mIsCachePersistent = persistent;
-    mCacheData->mIsCachePersistent = persistent;
+    if (mCacheData)
+      mCacheData->mIsCachePersistent = persistent;
   }
 
   void StaticMesh::bind() {
-    assert(mCacheData);
+    if (!mCacheData)
+      return;
 
-    glstate::bindVertexArrayObject(mCacheData->mGlNameVertexArrayObject);
+    if (mCacheData->mGlNameVertexArrayObject)
+      glstate::bindVertexArrayObject(mCacheData->mGlNameVertexArrayObject);
 
     // Indices should be part VAO state, but this doesn't seem to be the case for all
     // drivers, so we need to bind the buffer manually to be sure
-    glstate::bindElementArrayBuffer(mCacheData->mGlNameBufferIndices);
+    if (mCacheData->mGlNameBufferIndices)
+      glstate::bindElementArrayBuffer(mCacheData->mGlNameBufferIndices);
   }
 
   void StaticMesh::release() {
-    glstate::releaseVertexArrayObject(mCacheData->mGlNameVertexArrayObject);
-    glstate::releaseElementArrayBuffer(mCacheData->mGlNameBufferIndices);
+    if (mCacheData) {
+      if (mCacheData->mGlNameVertexArrayObject)
+        glstate::releaseVertexArrayObject(mCacheData->mGlNameVertexArrayObject);
+      if (mCacheData->mGlNameBufferIndices)
+        glstate::releaseElementArrayBuffer(mCacheData->mGlNameBufferIndices);
+    }
   }
 
   void StaticMesh::bindShadowVolume() {
-    assert(mCacheData);
+    if (!mCacheData)
+      return;
 
-    glstate::bindVertexArrayObject(mCacheData->mGlNameVertexArrayObjectShadow);
+    if (mCacheData->mGlNameVertexArrayObjectShadow)
+      glstate::bindVertexArrayObject(mCacheData->mGlNameVertexArrayObjectShadow);
   }
 
   void StaticMesh::releaseShadowVolume() {
-    glstate::releaseVertexArrayObject(mCacheData->mGlNameVertexArrayObjectShadow);
+    if (mCacheData && mCacheData->mGlNameVertexArrayObjectShadow)
+      glstate::releaseVertexArrayObject(mCacheData->mGlNameVertexArrayObjectShadow);
   }
 
   void StaticMesh::render(unsigned int drawingMode) {
-    assert(mCacheData && mCacheData->mNumUsers > 0);
+    if (!mCacheData || mCacheData->mNumUsers < 1)
+      return;
 
     bind();
 
@@ -1709,11 +1788,15 @@ namespace wren {
   }
 
   size_t StaticMesh::sortingId() const {
+    if (!mCacheData)
+      return 0;
+
     return static_cast<size_t>(mCacheData->id());
   }
 
   primitive::Aabb StaticMesh::recomputeAabb(const glm::vec3 &scale) {
-    assert(mCacheData);
+    if (!mCacheData)
+      return primitive::Aabb();
 
     const primitive::Aabb aabb(mCacheData->mAabb);
     const glm::vec3 center = scale * 0.5f * (aabb.mBounds[0] + aabb.mBounds[1]);
@@ -1723,7 +1806,8 @@ namespace wren {
   }
 
   primitive::Sphere StaticMesh::recomputeBoundingSphere(const glm::vec3 &scale) {
-    assert(mCacheData);
+    if (!mCacheData)
+      return primitive::Sphere();
 
     const glm::vec3 center = mCacheData->mBoundingSphere.mCenter * scale;
     const float radius = mCacheData->mBoundingSphere.mRadius * std::max(std::max(scale.x, scale.y), scale.z);
@@ -1732,6 +1816,9 @@ namespace wren {
   }
 
   void StaticMesh::computeBoundingVolumes() {
+    if (!mCacheData)
+      return;
+
     mCacheData->mBoundingSphere = primitive::computeBoundingSphereFromVertices(coords());
     mCacheData->mAabb = primitive::Aabb(coords());
   }
@@ -1768,7 +1855,8 @@ namespace wren {
   }
 
   void StaticMesh::computeTrianglesAndEdges() {
-    assert(mCacheData);
+    if (!mCacheData)
+      return;
 
     // only triangle-list meshes are allowed to cast shadows
     if (mIndices.size() % 3 != 0)
@@ -1820,7 +1908,9 @@ namespace wren {
   }
 
   void StaticMesh::prepareGl() {
-    assert(mCacheData);
+    if (!mCacheData)
+      return;
+
     assert(mCoords.size());
     assert(mIndices.size());
 
@@ -1932,22 +2022,43 @@ namespace wren {
         releaseShadowVolume();
 
         glDeleteVertexArrays(1, &mCacheData->mGlNameVertexArrayObject);
-        glDeleteVertexArrays(1, &mCacheData->mGlNameVertexArrayObjectShadow);
-        glDeleteBuffers(1, &mCacheData->mGlNameBufferCoords);
-        glDeleteBuffers(1, &mCacheData->mGlNameBufferIndices);
-        glDeleteBuffers(1, &mCacheData->mGlNameBufferShadowCoords);
+        mCacheData->mGlNameVertexArrayObject = 0;
+        if (mCacheData->mGlNameVertexArrayObjectShadow) {
+          glDeleteVertexArrays(1, &mCacheData->mGlNameVertexArrayObjectShadow);
+          mCacheData->mGlNameVertexArrayObjectShadow = 0;
+        }
+        if (mCacheData->mGlNameBufferCoords) {
+          glDeleteBuffers(1, &mCacheData->mGlNameBufferCoords);
+          mCacheData->mGlNameBufferCoords = 0;
+        }
+        if (mCacheData->mGlNameBufferIndices) {
+          glDeleteBuffers(1, &mCacheData->mGlNameBufferIndices);
+          mCacheData->mGlNameBufferIndices = 0;
+        }
+        if (mCacheData->mGlNameBufferShadowCoords) {
+          glDeleteBuffers(1, &mCacheData->mGlNameBufferShadowCoords);
+          mCacheData->mGlNameBufferShadowCoords = 0;
+        }
 
-        if (mCacheData->mGlNameBufferNormals)
+        if (mCacheData->mGlNameBufferNormals) {
           glDeleteBuffers(1, &mCacheData->mGlNameBufferNormals);
+          mCacheData->mGlNameBufferNormals = 0;
+        }
 
-        if (mCacheData->mGlNameBufferTexCoords)
+        if (mCacheData->mGlNameBufferTexCoords) {
           glDeleteBuffers(1, &mCacheData->mGlNameBufferTexCoords);
+          mCacheData->mGlNameBufferTexCoords = 0;
+        }
 
-        if (mCacheData->mGlNameBufferColors)
+        if (mCacheData->mGlNameBufferColors) {
           glDeleteBuffers(1, &mCacheData->mGlNameBufferColors);
+          mCacheData->mGlNameBufferColors = 0;
+        }
 
-        if (mCacheData->mGlNameBufferUnwrappedTexCoords)
+        if (mCacheData->mGlNameBufferUnwrappedTexCoords) {
           glDeleteBuffers(1, &mCacheData->mGlNameBufferUnwrappedTexCoords);
+          mCacheData->mGlNameBufferUnwrappedTexCoords = 0;
+        }
       }
 
       StaticMesh::cCache.erase(mCacheKey);
@@ -1985,19 +2096,19 @@ namespace wren {
       if (indexData)
         memcpy(indexData, &mIndices[0], indexCounter * sizeof(unsigned int));
     } else {
-      const int vertexCounter = mCacheData->mVertexCount;
-      const int indexCounter = mCacheData->mIndexCount;
+      const int vertexCounter = mCacheData ? mCacheData->mVertexCount : 0;
+      const int indexCounter = mCacheData ? mCacheData->mIndexCount : 0;
 
       bind();
 
-      if (indexData)
+      if (indexData && mCacheData)
         copyFromBuffer(GL_ELEMENT_ARRAY_BUFFER, mCacheData->mGlNameBufferIndices, indexCounter * sizeof(unsigned int),
                        indexData);
-      if (coordData)
+      if (coordData && mCacheData)
         copyFromBuffer(GL_ARRAY_BUFFER, mCacheData->mGlNameBufferCoords, vertexCounter * sizeof(glm::vec3), coordData);
-      if (normalData)
+      if (normalData && mCacheData)
         copyFromBuffer(GL_ARRAY_BUFFER, mCacheData->mGlNameBufferNormals, vertexCounter * sizeof(glm::vec3), normalData);
-      if (texCoordData)
+      if (texCoordData && mCacheData)
         copyFromBuffer(GL_ARRAY_BUFFER, mCacheData->mGlNameBufferTexCoords, vertexCounter * sizeof(glm::vec2), texCoordData);
 
       glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -2009,15 +2120,17 @@ namespace wren {
   int StaticMesh::vertexCount() const {
     if (mCoords.size() > 0)
       return mCoords.size();
-    else
+    else if (mCacheData)
       return mCacheData->mVertexCount;
+    return 0;
   }
 
   int StaticMesh::indexCount() const {
     if (mIndices.size() > 0)
       return mIndices.size();
-    else
+    else if (mCacheData)
       return mCacheData->mIndexCount;
+    return 0;
   }
 
 }  // namespace wren
@@ -2064,6 +2177,14 @@ WrStaticMesh *wr_static_mesh_capsule_new(int subdivision, float radius, float he
 
 WrStaticMesh *wr_static_mesh_line_set_new(int coord_count, const float *coord_data, const float *color_data) {
   return reinterpret_cast<WrStaticMesh *>(wren::StaticMesh::createLineSet(coord_count, coord_data, color_data));
+}
+
+WrStaticMesh *wr_static_mesh_point_pre_set_new(int coord_count, const float *coord_data, const float *color_data, float *&coordPtr, float *&colorPtr) {
+  return reinterpret_cast<WrStaticMesh *>(wren::StaticMesh::preCreatePointSet(coord_count, coord_data, color_data, coordPtr, colorPtr));
+}
+
+void wr_static_mesh_point_post_set_new(WrStaticMesh *mesh) {
+  wren::StaticMesh::postCreatePointSet(reinterpret_cast<wren::StaticMesh*>(mesh));
 }
 
 WrStaticMesh *wr_static_mesh_point_set_new(int coord_count, const float *coord_data, const float *color_data) {

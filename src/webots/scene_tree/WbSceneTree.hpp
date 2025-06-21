@@ -24,6 +24,8 @@
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 class WbAbstractPose;
 class WbBaseNode;
 class WbClipboard;
@@ -43,7 +45,7 @@ class QPushButton;
 struct TreeItemState;
 
 // cppcheck-suppress noConstructor
-class WbSceneTree : public QWidget {
+class WB_LIB_EXPORT WbSceneTree : public QWidget {
   Q_OBJECT
   Q_PROPERTY(int handleWidth MEMBER mHandleWidth READ handleWidth WRITE setHandleWidth)
 
@@ -53,6 +55,8 @@ public:
 
   void setWorld(WbWorld *world);
   WbSourceFileEditor *sourceFileEditor() const;
+
+  WbSceneTreeModel *model() const { return mModel; }
 
   void cleanup();
 
@@ -67,11 +71,17 @@ public:
   int &handleWidth() { return mHandleWidth; }
   void setHandleWidth(const int &handleWidth) { mHandleWidth = handleWidth; }
 
+  void del(const QString &name);
+  void del(WbNode *nodeToDel = NULL);
+  WbNode *find(const QString &name);
+
 public slots:
   void selectPose(WbAbstractPose *p);
   void updateValue();
   void updateApplicationActions();
   void updateSelection();
+  void addToScene(const QString&);
+  void addToNode(const QString&, WbBaseNode *parentNode);
 
 signals:
   void valueChangedFromGui();
@@ -105,8 +115,6 @@ private slots:
   void editProtoInTextEditor();
   void openTemplateInstanceInTextEditor();
   void showFieldEditor(bool force = false);
-
-  void del(WbNode *nodeToDel = NULL);
 
 private:
   QSplitter *mSplitter;

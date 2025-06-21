@@ -21,12 +21,14 @@
 
 #include <QtWidgets/QWidget>
 
+#include <core/WbConfig.h>
+
 class QVBoxLayout;
 class QComboBox;
 class QLabel;
 class WbPose;
 
-class WbPositionViewer : public QWidget {
+class WB_LIB_EXPORT WbPositionViewer : public QWidget {
   Q_OBJECT
 
 public:

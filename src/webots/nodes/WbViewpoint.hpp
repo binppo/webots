@@ -23,6 +23,8 @@
 #include "WbSFBool.hpp"
 #include "WbSFString.hpp"
 
+#include <core/WbConfig.h>
+
 struct WrCamera;
 struct WrTexture;
 struct WrViewport;
@@ -41,7 +43,7 @@ class WbWrenHdr;
 
 class QVariantAnimation;
 
-class WbViewpoint : public WbBaseNode {
+class WB_LIB_EXPORT WbViewpoint : public WbBaseNode {
   Q_OBJECT
 
 public:
@@ -144,8 +146,6 @@ public:
   void eyeToPixels(const WbVector3 &eyePosition, WbVector2 &P) const;
   double zEye(const WbVector3 &pos) const;
 
-  bool moveViewpointToObject(WbBaseNode *node);  // return true if node was valid
-
   // Virtual reality headset
   bool enableVirtualRealityHeadset(bool enable);
   void setVirtualRealityHeadsetAntiAliasing(bool enable);
@@ -156,6 +156,13 @@ public:
 
 public slots:
   void updateOptionalRendering(int optionalRendering);
+
+  bool moveViewpointToObject(WbBaseNode *node);  // return true if node was valid
+
+  // can be used for any generic animated viewpoint movement
+  void moveTo(const WbVector3 &targetPosition, const WbRotation &targetRotation);
+  void orbitTo(const WbVector3 &targetUnitVector, const WbRotation &targetRotation,
+               const WbAbstractPose *selectedObject = NULL);
 
 private:
   // user accessible fields
@@ -288,11 +295,6 @@ private:
 
   void recomputeFollowField();
   void createCameraListenerIfNeeded();
-
-  // can be used for any generic animated viewpoint movement
-  void moveTo(const WbVector3 &targetPosition, const WbRotation &targetRotation);
-  void orbitTo(const WbVector3 &targetUnitVector, const WbRotation &targetRotation,
-               const WbAbstractPose *selectedObject = NULL);
 
   static WbAbstractPose *computeSelectedObjectPose();
   static WbRotation computeObjectViewRotation(const WbRotation &rotation, const WbAbstractPose *selectedObject);

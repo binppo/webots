@@ -19,7 +19,9 @@
 
 #include "WbWrenAbstractResizeManipulator.hpp"
 
-class WbRegularResizeManipulator : public WbWrenAbstractResizeManipulator {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbRegularResizeManipulator : public WbWrenAbstractResizeManipulator {
   Q_OBJECT
 
 public:
@@ -27,7 +29,7 @@ public:
                                       ResizeConstraint constraint = WbWrenAbstractResizeManipulator::NO_CONSTRAINT);
 };
 
-class WbPlaneResizeManipulator : public WbWrenAbstractResizeManipulator {
+class WB_LIB_EXPORT WbPlaneResizeManipulator : public WbWrenAbstractResizeManipulator {
   Q_OBJECT
 
 public:
@@ -35,7 +37,7 @@ public:
 };
 
 // Scale manipulator for WbTransform
-class WbScaleManipulator : public WbWrenAbstractResizeManipulator {
+class WB_LIB_EXPORT WbScaleManipulator : public WbWrenAbstractResizeManipulator {
   Q_OBJECT
 
 public:

@@ -20,7 +20,6 @@
 #include "WbField.hpp"
 #include "WbHttpReply.hpp"
 #include "WbLanguage.hpp"
-#include "WbMainWindow.hpp"
 #include "WbNodeOperations.hpp"
 #include "WbPerspective.hpp"
 #include "WbPreferences.hpp"
@@ -32,6 +31,7 @@
 #include "WbSupervisorUtilities.hpp"
 #include "WbTemplateManager.hpp"
 #include "WbWorld.hpp"
+#include "WbVideoRecorder.hpp"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
@@ -44,7 +44,7 @@
 
 #include <iostream>
 
-WbMainWindow *WbTcpServer::cMainWindow = NULL;
+WbVideoArea *WbTcpServer::cVideoArea = NULL;
 
 WbTcpServer::WbTcpServer(bool stream) :
   QObject(),
@@ -73,8 +73,8 @@ QString WbTcpServer::clientToId(QWebSocket *client) {
   return QString::number((quintptr)client);
 }
 
-void WbTcpServer::setMainWindow(WbMainWindow *mainWindow) {
-  cMainWindow = mainWindow;
+void WbTcpServer::setVideoArea(WbVideoArea *videoArea) {
+  cVideoArea = videoArea;
 }
 
 void WbTcpServer::start(int port) {
@@ -217,7 +217,7 @@ void WbTcpServer::onNewTcpData() {
     const QString etag = etagIndex ? tokens[etagIndex] : "";
     if (host.isEmpty())
       WbLog::warning(tr("No host specified in HTTP header."));
-    sendTcpRequestReply(tokens[1].startsWith("/") ? tokens[1].sliced(1) : tokens[1], etag, host, socket);
+    sendTcpRequestReply(tokens[1].startsWith("/") ? tokens[1].mid(1) : tokens[1], etag, host, socket);
   }
 }
 
@@ -440,8 +440,8 @@ void WbTcpServer::processTextMessage(QString message) {
         WbLog::error(tr("Streaming server: world %1 doesn't exist.").arg(fullPath));
       else if (QDir(worldsPath) != QFileInfo(fullPath).absoluteDir())
         WbLog::error(tr("Streaming server: you are not allowed to open a world in another project directory."));
-      else if (cMainWindow)
-        cMainWindow->loadDifferentWorld(fullPath);
+      else if (cVideoArea)
+        cVideoArea->loadDifferentWorld(fullPath);
     } else
       WbLog::error(tr("Streaming server: Unsupported message: %1.").arg(message));
   }

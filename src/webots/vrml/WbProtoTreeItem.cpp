@@ -208,7 +208,7 @@ void WbProtoTreeItem::insert(const QString &url) {
 void WbProtoTreeItem::deleteChild(const WbProtoTreeItem *child) {
   assert(mChildren.contains(child));
   mError << child->error();  // accumulate the child's errors on the parent side
-  mChildren.removeAll(child);
+  mChildren.removeAll(const_cast<WbProtoTreeItem*>(child));
   delete child;
   readyCheck();
 }

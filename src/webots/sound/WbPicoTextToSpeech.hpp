@@ -19,7 +19,9 @@
 
 #include "WbTextToSpeech.hpp"
 
-class WbPicoTextToSpeech : public WbTextToSpeech {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbPicoTextToSpeech : public WbTextToSpeech {
 public:
   WbPicoTextToSpeech();
   ~WbPicoTextToSpeech() override;

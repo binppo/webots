@@ -17,10 +17,12 @@
 
 #include <QtCore/QString>
 
+#include <core/WbConfig.h>
+
 namespace WbHttpReply {
-  QByteArray forge404Reply(const QString &url);
-  QByteArray forgeFileReply(const QString &fileName, const QString &etag, const QString &host, const QString &url);
-  QString mimeType(const QString &url, bool generic = false);
+  WB_LIB_EXPORT QByteArray forge404Reply(const QString &url);
+  WB_LIB_EXPORT QByteArray forgeFileReply(const QString &fileName, const QString &etag, const QString &host, const QString &url);
+  WB_LIB_EXPORT QString mimeType(const QString &url, bool generic = false);
 };  // namespace WbHttpReply
 
 #endif

@@ -27,12 +27,15 @@
 
 #include <cassert>
 
-class WbMFVector2 : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFVector2 : public WbMultipleValue {
   Q_OBJECT
 
 public:
   typedef WbMFIterator<WbMFVector2, WbVector2> Iterator;
 
+  WbMFVector2() {}
   WbMFVector2(WbTokenizer *tokenizer, const QString &worldPath) { read(tokenizer, worldPath); }
   WbMFVector2(const WbMFVector2 &other) : mVector(other.mVector) {}
   virtual ~WbMFVector2() override {}

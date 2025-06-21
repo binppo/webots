@@ -17,9 +17,14 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSensor;
 
-class WbRadio : public WbSolidDevice {
+class WB_LIB_EXPORT WbRadio : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -41,6 +46,19 @@ public:
   // functions called from WbWorld.cpp
   static void createAndSetupPluginObjects();
   static void runPlugin(double ms);
+
+  int refreshRate();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  void SET_ADDRESS(const QString& address);
+  void SET_FREQUENCY(double frequency);
+  void SET_CHANNEL(int channel);
+  void SET_BITRATE(int bitrate);
+  void SET_RX_SENSITIVITY(double rxSensitivity);
+  void SET_TX_POWER(double txPower);
+  void SEND(const QString& dest, const QByteArray& data, double delay);
+  QList<struct WebotsRadioEvent*> RECEIVE();
 
 private:
   void receiveCallback(const struct WebotsRadioEvent *event);

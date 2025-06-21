@@ -563,7 +563,7 @@ void WbMatter::updateOdeGeomPosition(dGeomID g) {
 
     // We need to store geoms in a temp array, because the list order gets
     // modified by calling setPlaceableGeom() while we iterate
-    dGeomID geoms[n];
+    std::vector<dGeomID> geoms(n);
     for (int i = 0; i < n; ++i)
       geoms[i] = dSpaceGetGeom(spaceGeom, i);
 

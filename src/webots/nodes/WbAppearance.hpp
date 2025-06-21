@@ -17,6 +17,8 @@
 
 #include "WbAbstractAppearance.hpp"
 
+#include <core/WbConfig.h>
+
 class WbImageTexture;
 class WbMaterial;
 class WbRgb;
@@ -24,7 +26,7 @@ class WbVector2;
 
 struct WrMaterial;
 
-class WbAppearance : public WbAbstractAppearance {
+class WB_LIB_EXPORT WbAppearance : public WbAbstractAppearance {
   Q_OBJECT
 
 public:

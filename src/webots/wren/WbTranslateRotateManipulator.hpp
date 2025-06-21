@@ -30,7 +30,9 @@
 
 #include <vector>
 
-class WbTranslateRotateManipulator : public WbWrenAbstractManipulator {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbTranslateRotateManipulator : public WbWrenAbstractManipulator {
   Q_OBJECT
 
 public:

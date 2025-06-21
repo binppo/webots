@@ -24,10 +24,12 @@
 #include <wren/static_mesh.h>
 #include <wren/transform.h>
 
+#include <core/WbConfig.h>
+
 class WbWrenRenderingContext;
 class WbQuaternion;
 
-class WbCoordinateSystem : public QObject {
+class WB_LIB_EXPORT WbCoordinateSystem : public QObject {
   Q_OBJECT
 
 public:

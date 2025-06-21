@@ -21,17 +21,19 @@
 
 #include <QtCore/QPoint>
 
+#include <core/WbConfig.h>
+
 class QMenu;
 class QWidget;
 class WbNode;
 
 namespace WbContextMenuGenerator {
-  void generateContextMenu(const QPoint &position, const WbNode *selectedNode, QWidget *parentWidget);
-  void enableNodeActions(bool enabled);
-  void enableProtoActions(bool enabled);
-  void enableExternProtoActions(bool enabled);
-  void enableRobotActions(bool enabled);
-  void setOverlaysMenu(QMenu *menu);
+  WB_LIB_EXPORT void generateContextMenu(const QPoint &position, const WbNode *selectedNode, QWidget *parentWidget);
+  WB_LIB_EXPORT void enableNodeActions(bool enabled);
+  WB_LIB_EXPORT void enableProtoActions(bool enabled);
+  WB_LIB_EXPORT void enableExternProtoActions(bool enabled);
+  WB_LIB_EXPORT void enableRobotActions(bool enabled);
+  WB_LIB_EXPORT void setOverlaysMenu(QMenu *menu);
 };  // namespace WbContextMenuGenerator
 
 #endif

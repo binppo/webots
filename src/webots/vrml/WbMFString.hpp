@@ -26,12 +26,15 @@
 
 #include <cassert>
 
-class WbMFString : public WbMultipleValue {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbMFString : public WbMultipleValue {
   Q_OBJECT
 
 public:
   typedef WbMFIterator<WbMFString, QString> Iterator;
 
+  WbMFString() {}
   WbMFString(WbTokenizer *tokenizer, const QString &worldPath) { read(tokenizer, worldPath); }
   WbMFString(const WbMFString &other) : mValue(other.mValue) {}
   explicit WbMFString(const QStringList &value) : mValue(value) {}

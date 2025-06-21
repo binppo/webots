@@ -19,10 +19,12 @@
 #include "WbSFNode.hpp"
 #include "WbSFString.hpp"
 
+#include <core/WbConfig.h>
+
 class WbGroup;
 class WbSolidReference;
 
-class WbSlot : public WbBaseNode {
+class WB_LIB_EXPORT WbSlot : public WbBaseNode {
   Q_OBJECT
 
 public:

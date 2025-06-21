@@ -22,6 +22,8 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QPlainTextEdit>
 
+#include <core/WbConfig.h>
+
 class WbClipboard;
 
 class QCompleter;
@@ -34,7 +36,7 @@ class LineNumberArea;
 class WbLanguage;
 
 // cppcheck-suppress noConstructor
-class WbTextBuffer : public QPlainTextEdit {
+class WB_LIB_EXPORT WbTextBuffer : public QPlainTextEdit {
   Q_OBJECT
   Q_PROPERTY(QColor apiColor MEMBER mApiColor READ apiColor WRITE setApiColor)
   Q_PROPERTY(QColor commentColor MEMBER mCommentColor READ commentColor WRITE setCommentColor)

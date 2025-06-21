@@ -23,12 +23,14 @@
 #include "WbRotation.hpp"
 #include "WbVector3.hpp"
 
+#include <core/WbConfig.h>
+
 class QFile;
 
 class WbField;
 class WbNode;
 
-class WbAnimationCommand : public QObject {
+class WB_LIB_EXPORT WbAnimationCommand : public QObject {
   Q_OBJECT
 
 public:
@@ -64,7 +66,7 @@ private slots:
   void updateValue();
 };
 
-class WbAnimationRecorder : public QObject {
+class WB_LIB_EXPORT WbAnimationRecorder : public QObject {
   Q_OBJECT
 
 public:

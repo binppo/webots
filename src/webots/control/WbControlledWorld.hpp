@@ -18,9 +18,11 @@
 #include <QtCore/QList>
 #include "WbSimulationWorld.hpp"  // TODO: should we rename WbSimulationWorld to WbSimulatedWorld ?
 
+#include <core/WbConfig.h>
+
 class WbController;
 
-class WbControlledWorld : public WbSimulationWorld {
+class WB_LIB_EXPORT WbControlledWorld : public WbSimulationWorld {
   Q_OBJECT
 
 public:

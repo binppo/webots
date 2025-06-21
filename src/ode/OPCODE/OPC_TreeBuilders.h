@@ -135,10 +135,10 @@
 		//! Destructor
 		virtual										~AABBTreeOfVerticesBuilder()						{}
 
-		override(AABBTreeBuilder)	bool			ComputeGlobalBox(const dTriIndex* primitives, udword nb_prims, AABB& global_box)	const;
-		override(AABBTreeBuilder)	float			GetSplittingValue(udword index, udword axis)									const;
-		override(AABBTreeBuilder)	Point			GetSplittingValues(udword index) const;
-		override(AABBTreeBuilder)	float			GetSplittingValue(const dTriIndex* primitives, udword nb_prims, const AABB& global_box, udword axis)	const;
+		_override(AABBTreeBuilder)	bool			ComputeGlobalBox(const dTriIndex* primitives, udword nb_prims, AABB& global_box)	const;
+		_override(AABBTreeBuilder)	float			GetSplittingValue(udword index, udword axis)									const;
+		_override(AABBTreeBuilder)	Point			GetSplittingValues(udword index) const;
+		_override(AABBTreeBuilder)	float			GetSplittingValue(const dTriIndex* primitives, udword nb_prims, const AABB& global_box, udword axis)	const;
 
 		const						Point*			mVertexArray;		//!< Shortcut to an app-controlled array of vertices.
 	};
@@ -151,9 +151,9 @@
 		//! Destructor
 		virtual										~AABBTreeOfAABBsBuilder()					{}
 
-		override(AABBTreeBuilder)	bool			ComputeGlobalBox(const dTriIndex* primitives, udword nb_prims, AABB& global_box)	const;
-		override(AABBTreeBuilder)	float			GetSplittingValue(udword index, udword axis)									const;
-		override(AABBTreeBuilder)	Point			GetSplittingValues(udword index) const;
+		_override(AABBTreeBuilder)	bool			ComputeGlobalBox(const dTriIndex* primitives, udword nb_prims, AABB& global_box)	const;
+		_override(AABBTreeBuilder)	float			GetSplittingValue(udword index, udword axis)									const;
+		_override(AABBTreeBuilder)	Point			GetSplittingValues(udword index) const;
 
 		const						AABB*			mAABBArray;			//!< Shortcut to an app-controlled array of AABBs.
 	};
@@ -166,10 +166,10 @@
 		//! Destructor
 		virtual										~AABBTreeOfTrianglesBuilder()													{}
 
-		override(AABBTreeBuilder)	bool			ComputeGlobalBox(const dTriIndex* primitives, udword nb_prims, AABB& global_box)	const;
-		override(AABBTreeBuilder)	float			GetSplittingValue(udword index, udword axis)									const;
-		override(AABBTreeBuilder)	float			GetSplittingValue(const dTriIndex* primitives, udword nb_prims, const AABB& global_box, udword axis)	const;
-		override(AABBTreeBuilder)	Point			GetSplittingValues(udword index) const;
+		_override(AABBTreeBuilder)	bool			ComputeGlobalBox(const dTriIndex* primitives, udword nb_prims, AABB& global_box)	const;
+		_override(AABBTreeBuilder)	float			GetSplittingValue(udword index, udword axis)									const;
+		_override(AABBTreeBuilder)	float			GetSplittingValue(const dTriIndex* primitives, udword nb_prims, const AABB& global_box, udword axis)	const;
+		_override(AABBTreeBuilder)	Point			GetSplittingValues(udword index) const;
 
 		const				MeshInterface*			mIMesh;			//!< Shortcut to an app-controlled mesh interface
 	};

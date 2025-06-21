@@ -148,6 +148,10 @@ void WbWrenCamera::setSize(int width, int height) {
   init();
 }
 
+int WbWrenCamera::size() const {
+  return (mWidth * mHeight * channel());
+}
+
 void WbWrenCamera::setNear(float nearValue) {
   mNear = nearValue;
   for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i)
@@ -367,16 +371,16 @@ QString WbWrenCamera::setNoiseMask(const QString &noiseMaskUrl) {
       image->swap(tmp);
     }
 
-    WbWrenOpenGlContext::makeWrenCurrent();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      mNoiseMaskTexture = wr_texture_2d_new();
+      wr_texture_set_size(WR_TEXTURE(mNoiseMaskTexture), image->width(), image->height());
+      wr_texture_2d_set_data(mNoiseMaskTexture, reinterpret_cast<const char *>(image->bits()));
+      wr_texture_2d_set_file_path(mNoiseMaskTexture, noiseMaskPath.toUtf8().constData());
+      wr_texture_set_translucent(WR_TEXTURE(mNoiseMaskTexture), isTranslucent);
+      wr_texture_setup(WR_TEXTURE(mNoiseMaskTexture));
 
-    mNoiseMaskTexture = wr_texture_2d_new();
-    wr_texture_set_size(WR_TEXTURE(mNoiseMaskTexture), image->width(), image->height());
-    wr_texture_2d_set_data(mNoiseMaskTexture, reinterpret_cast<const char *>(image->bits()));
-    wr_texture_2d_set_file_path(mNoiseMaskTexture, noiseMaskPath.toUtf8().constData());
-    wr_texture_set_translucent(WR_TEXTURE(mNoiseMaskTexture), isTranslucent);
-    wr_texture_setup(WR_TEXTURE(mNoiseMaskTexture));
-
-    WbWrenOpenGlContext::doneWren();
+      WbWrenOpenGlContext::doneWren();
+    }
 
     delete image;
   }
@@ -436,37 +440,38 @@ void WbWrenCamera::render() {
                                                reinterpret_cast<const char *>(&mMaxRange));
   }
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  if (!isPlanarProjection()) {
-    for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i) {
-      if (mIsCameraActive[i])
-        updatePostProcessingParameters(i);
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    if (!isPlanarProjection()) {
+      for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i) {
+        if (mIsCameraActive[i])
+          updatePostProcessingParameters(i);
+      }
+    } else
+      updatePostProcessingParameters(CAMERA_ORIENTATION_FRONT);
+
+    // Depth information needs to be conserved for post-processing shaders
+    const char *materialName = NULL;
+    if (!mIsColor)
+      materialName = "encodeDepth";
+    else if (mType == 's')
+      materialName = "segmentation";
+    wr_scene_enable_depth_reset(wr_scene_get_instance(), false);
+    wr_scene_render_to_viewports(wr_scene_get_instance(), numActiveViewports, mViewportsToRender, materialName, true, false);
+
+    if (!isPlanarProjection())
+      applySphericalPostProcessingEffect();
+    else if (mUpdateTextureFormatEffect) {
+      WrPostProcessingEffectPass *updateTextureFormatPass =
+        wr_post_processing_effect_get_pass(mUpdateTextureFormatEffect, "PassThrough");
+      wr_post_processing_effect_pass_set_input_texture(updateTextureFormatPass, 0,
+                                                       WR_TEXTURE(wr_frame_buffer_get_output_texture(mResultFrameBuffer, 0)));
+      wr_post_processing_effect_apply(mUpdateTextureFormatEffect);
     }
-  } else
-    updatePostProcessingParameters(CAMERA_ORIENTATION_FRONT);
+    mFirstRenderingCall = false;
 
-  // Depth information needs to be conserved for post-processing shaders
-  const char *materialName = NULL;
-  if (!mIsColor)
-    materialName = "encodeDepth";
-  else if (mType == 's')
-    materialName = "segmentation";
-  wr_scene_enable_depth_reset(wr_scene_get_instance(), false);
-  wr_scene_render_to_viewports(wr_scene_get_instance(), numActiveViewports, mViewportsToRender, materialName, true, false);
-
-  if (!isPlanarProjection())
-    applySphericalPostProcessingEffect();
-  else if (mUpdateTextureFormatEffect) {
-    WrPostProcessingEffectPass *updateTextureFormatPass =
-      wr_post_processing_effect_get_pass(mUpdateTextureFormatEffect, "PassThrough");
-    wr_post_processing_effect_pass_set_input_texture(updateTextureFormatPass, 0,
-                                                     WR_TEXTURE(wr_frame_buffer_get_output_texture(mResultFrameBuffer, 0)));
-    wr_post_processing_effect_apply(mUpdateTextureFormatEffect);
+    wr_scene_enable_depth_reset(wr_scene_get_instance(), true);
+    WbWrenOpenGlContext::doneWren();
   }
-  mFirstRenderingCall = false;
-
-  wr_scene_enable_depth_reset(wr_scene_get_instance(), true);
-  WbWrenOpenGlContext::doneWren();
 
   if (mNotifyOnTextureUpdate)
     emit textureUpdated();
@@ -475,14 +480,16 @@ void WbWrenCamera::render() {
 void WbWrenCamera::enableCopying(bool enable) {
   if (enable && !mIsCopyingEnabled) {
     mIsCopyingEnabled = true;
-    WbWrenOpenGlContext::makeWrenCurrent();
-    wr_frame_buffer_enable_copying(mResultFrameBuffer, 1, true);
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      wr_frame_buffer_enable_copying(mResultFrameBuffer, 1, true);
+      WbWrenOpenGlContext::doneWren();
+    }
   } else if (!enable && mIsCopyingEnabled) {
     mIsCopyingEnabled = false;
-    WbWrenOpenGlContext::makeWrenCurrent();
-    wr_frame_buffer_enable_copying(mResultFrameBuffer, 1, false);
-    WbWrenOpenGlContext::doneWren();
+    if (WbWrenOpenGlContext::makeWrenCurrent()) {
+      wr_frame_buffer_enable_copying(mResultFrameBuffer, 1, false);
+      WbWrenOpenGlContext::doneWren();
+    }
   }
 }
 
@@ -494,12 +501,13 @@ WbRgb WbWrenCamera::copyPixelColourValue(int x, int y) {
   // in paused mode, so even though it isn't optimal, copying is enabled and then disabled again.
   uint8_t pixelData[4];
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  bool wasCopyingEnabled = mIsCopyingEnabled;
-  enableCopying(true);
-  wr_frame_buffer_copy_pixel(mResultFrameBuffer, 1, x, y, reinterpret_cast<void *>(pixelData), false);
-  enableCopying(wasCopyingEnabled);
-  WbWrenOpenGlContext::doneWren();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    bool wasCopyingEnabled = mIsCopyingEnabled;
+    enableCopying(true);
+    wr_frame_buffer_copy_pixel(mResultFrameBuffer, 1, x, y, reinterpret_cast<void *>(pixelData), false);
+    enableCopying(wasCopyingEnabled);
+    WbWrenOpenGlContext::doneWren();
+  }
 
   WbRgb result;
   if (mIsColor) {
@@ -523,9 +531,10 @@ void WbWrenCamera::copyContentsToMemory(void *data) {
     return;
   }
 
-  WbWrenOpenGlContext::makeWrenCurrent();
-  wr_frame_buffer_copy_contents(mResultFrameBuffer, 1, data);
-  WbWrenOpenGlContext::doneWren();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    wr_frame_buffer_copy_contents(mResultFrameBuffer, 1, data);
+    WbWrenOpenGlContext::doneWren();
+  }
 }
 
 void WbWrenCamera::rotateRoll(float angle) {
@@ -564,64 +573,66 @@ void WbWrenCamera::init() {
   else
     mTextureFormat = WR_TEXTURE_INTERNAL_FORMAT_R32F;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (WbWrenOpenGlContext::makeWrenCurrent()) {
+    WrTextureRtt *renderingTexture = wr_texture_rtt_new();
+    wr_texture_rtt_enable_initialize_data(renderingTexture, true);
+    wr_texture_set_internal_format(WR_TEXTURE(renderingTexture), mTextureFormat);
 
-  WrTextureRtt *renderingTexture = wr_texture_rtt_new();
-  wr_texture_rtt_enable_initialize_data(renderingTexture, true);
-  wr_texture_set_internal_format(WR_TEXTURE(renderingTexture), mTextureFormat);
+    WrTextureRtt *outputTexture = wr_texture_rtt_new();
+    wr_texture_rtt_enable_initialize_data(outputTexture, true);
+    if (mIsColor)
+      wr_texture_set_internal_format(WR_TEXTURE(outputTexture), WR_TEXTURE_INTERNAL_FORMAT_RGBA8);
+    else
+      wr_texture_set_internal_format(WR_TEXTURE(outputTexture), mTextureFormat);
 
-  WrTextureRtt *outputTexture = wr_texture_rtt_new();
-  wr_texture_rtt_enable_initialize_data(outputTexture, true);
-  if (mIsColor)
-    wr_texture_set_internal_format(WR_TEXTURE(outputTexture), WR_TEXTURE_INTERNAL_FORMAT_RGBA8);
-  else
-    wr_texture_set_internal_format(WR_TEXTURE(outputTexture), mTextureFormat);
+    mResultFrameBuffer = wr_frame_buffer_new();
+    wr_frame_buffer_set_size(mResultFrameBuffer, mWidth, mHeight);
+    wr_frame_buffer_append_output_texture(mResultFrameBuffer, renderingTexture);
+    wr_frame_buffer_append_output_texture(mResultFrameBuffer, outputTexture);
+    wr_frame_buffer_enable_depth_buffer(mResultFrameBuffer, true);
 
-  mResultFrameBuffer = wr_frame_buffer_new();
-  wr_frame_buffer_set_size(mResultFrameBuffer, mWidth, mHeight);
-  wr_frame_buffer_append_output_texture(mResultFrameBuffer, renderingTexture);
-  wr_frame_buffer_append_output_texture(mResultFrameBuffer, outputTexture);
-  wr_frame_buffer_enable_depth_buffer(mResultFrameBuffer, true);
+    for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i)
+      mIsCameraActive[i] = false;
+    mIsCameraActive[CAMERA_ORIENTATION_FRONT] = true;
 
-  for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i)
-    mIsCameraActive[i] = false;
-  mIsCameraActive[CAMERA_ORIENTATION_FRONT] = true;
-
-  if (!isPlanarProjection()) {
-    setupSphericalSubCameras();
-
-    for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i) {
-      if (mIsCameraActive[i]) {
-        setupCamera(i, mSubCamerasResolutionX, mSubCamerasResolutionY);
-        setupCameraPostProcessing(i);
+    if (!isPlanarProjection()) {
+      setupSphericalSubCameras();
+  
+      for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i) {
+        if (mIsCameraActive[i]) {
+          setupCamera(i, mSubCamerasResolutionX, mSubCamerasResolutionY);
+          setupCameraPostProcessing(i);
+        }
       }
+
+      setupSphericalPostProcessingEffect();
+    } else {
+      setupCamera(CAMERA_ORIENTATION_FRONT, mWidth, mHeight);
+      setupCameraPostProcessing(CAMERA_ORIENTATION_FRONT);
     }
 
-    setupSphericalPostProcessingEffect();
-  } else {
-    setupCamera(CAMERA_ORIENTATION_FRONT, mWidth, mHeight);
-    setupCameraPostProcessing(CAMERA_ORIENTATION_FRONT);
+    wr_frame_buffer_setup(mResultFrameBuffer);
+
+    setCamerasOrientations();
+    setNear(mNear);
+    setMinRange(mMinRange);
+    setMaxRange(mMaxRange);
+    setFieldOfView(mFieldOfView);
+    setBackgroundColor(mBackgroundColor);
+
+    emit cameraInitialized();
+
+    WbWrenOpenGlContext::doneWren();
   }
-
-  wr_frame_buffer_setup(mResultFrameBuffer);
-
-  setCamerasOrientations();
-  setNear(mNear);
-  setMinRange(mMinRange);
-  setMaxRange(mMaxRange);
-  setFieldOfView(mFieldOfView);
-  setBackgroundColor(mBackgroundColor);
-
-  emit cameraInitialized();
-
-  WbWrenOpenGlContext::doneWren();
 }
 
 void WbWrenCamera::cleanup() {
   if (!mCamera[CAMERA_ORIENTATION_FRONT] || (!isPlanarProjection() && !mSphericalPostProcessingEffect))
     return;
 
-  WbWrenOpenGlContext::makeWrenCurrent();
+  if (!WbWrenOpenGlContext::makeWrenCurrent())
+    return;
+
   foreach (WrPostProcessingEffect *const effect, mPostProcessingEffects)
     wr_post_processing_effect_delete(effect);
   mPostProcessingEffects.clear();

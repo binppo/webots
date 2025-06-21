@@ -22,7 +22,7 @@
 #include "WbWorld.hpp"
 
 #include <QtCore/QEvent>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
@@ -109,7 +109,7 @@ void WbExternProtoEditor::insertImportableExternProto() {
 }
 
 void WbExternProtoEditor::removeImportableExternProto() {
-  const QPushButton *const caller = qobject_cast<QPushButton *>(sender());
+  QPushButton *const caller = qobject_cast<QPushButton *>(sender());
   const int index = caller ? mLayout->indexOf(caller) : -1;
   if (index > 1) {
     assert(mLayout->itemAt(index - 1)->widget());  // must be preceeded by a QLabel widget

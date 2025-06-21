@@ -82,8 +82,10 @@ namespace wren {
         std::end(mPostProcessingEffects))
       return;
 
-    postProcessingEffect->setInputFrameBuffer(mFrameBuffer);
-    postProcessingEffect->setResultFrameBuffer(mFrameBuffer);
+    if (mFrameBuffer) {
+      postProcessingEffect->setInputFrameBuffer(mFrameBuffer);
+      postProcessingEffect->setResultFrameBuffer(mFrameBuffer);
+    }
 
     // no post processing effects are present, so we don't care about the order of insertion
     if (mPostProcessingEffects.empty()) {
@@ -135,9 +137,8 @@ namespace wren {
   void Viewport::bind() const {
     DEBUG("Viewport::bind, this=" << this);
 
-    assert(mFrameBuffer);
-
-    mFrameBuffer->bind();
+    if (mFrameBuffer)
+      mFrameBuffer->bind();
 
     glViewport(0, 0, width(), height());
 

@@ -17,6 +17,12 @@
 
 #include "WbSolidDevice.hpp"
 
+#include <QtCore/QDataStream>
+#include <QtGui/QVector3D>
+
+#include <controller/c/messages.h>
+#include <core/WbConfig.h>
+
 class WbSFDouble;
 class WbSFInt;
 class WbSFString;
@@ -34,7 +40,7 @@ struct WrStaticMesh;
 struct WrMaterial;
 struct WrRenderable;
 
-class WbDistanceSensor : public WbSolidDevice {
+class WB_LIB_EXPORT WbDistanceSensor : public WbSolidDevice {
   Q_OBJECT
 
 public:
@@ -60,6 +66,19 @@ public:
 
   // other functions
   void rayCollisionCallback(WbGeometry *object, dGeomID rayGeom, const dContactGeom *);
+
+  int lookupTableSize() const;
+  QVector<QVector3D> lookupTable() const;
+
+  int refreshRate();
+  double minValue();
+  double maxValue();
+  double aperture();
+  int rayType();
+
+public slots:
+  void SET_SAMPLING_PERIOD(int refreshRate);
+  double value();
 
 protected:
   void updateLineScale() override;

@@ -19,12 +19,14 @@
 #include "WbGeometry.hpp"
 #include "WbSFNode.hpp"
 
+#include <core/WbConfig.h>
+
 class WbAbstractAppearance;
 class WbAppearance;
 class WbPbrAppearance;
 class WbRay;
 
-class WbShape : public WbBaseNode {
+class WB_LIB_EXPORT WbShape : public WbBaseNode {
   Q_OBJECT
 
 public:

@@ -32,7 +32,9 @@ class WbTokenizer;
 #include <QtCore/QStringList>
 #include <QtCore/QVector>
 
-class WbProtoModel : public QObject {
+#include <core/WbConfig.h>
+
+class WB_LIB_EXPORT WbProtoModel : public QObject {
   Q_OBJECT
 
 public:
